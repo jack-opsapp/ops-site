@@ -1,5 +1,6 @@
 import type { Metadata } from 'next';
 import { mohave, kosugi } from '@/lib/fonts';
+import PageLayout from '@/components/layout/PageLayout';
 import './globals.css';
 
 export const metadata: Metadata = {
@@ -27,7 +28,9 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en" className={`${mohave.variable} ${kosugi.variable}`}>
-      <body className="font-body antialiased">{children}</body>
+      <body className="font-body antialiased">
+        <PageLayout>{children}</PageLayout>
+      </body>
     </html>
   );
 }
