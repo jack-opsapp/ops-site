@@ -42,7 +42,7 @@ const cards = [
 
 export default function PlatformShowcase() {
   return (
-    <section className="py-24 md:py-32 bg-ops-background overflow-x-clip">
+    <section className="pt-24 md:pt-32 pb-12 md:pb-16 bg-ops-background overflow-x-clip">
       <div className="max-w-[1400px] mx-auto px-6 md:px-10">
         {/* Section header */}
         <FadeInUp>
