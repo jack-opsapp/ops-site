@@ -76,7 +76,6 @@ const FOCAL_LENGTH = 2000;
 
 const DRAG_SENSITIVITY = 0.005;  // radians per pixel
 const SPRING_DECAY = 0.96;       // per-frame, ~60fps → settles in ~2s
-const TILT_CLAMP = 0.8;          // ±46 degrees max offset
 const DRAG_THRESHOLD = 3;        // pixels before drag activates
 
 const ACCENT = { r: 89, g: 119, b: 148 }; // #597794
@@ -239,9 +238,7 @@ export default function StarburstCanvas({ className }: StarburstCanvasProps) {
       }
       if (drag.didDrag) {
         dragYawOffsetRef.current = drag.yawAtStart + deltaX * DRAG_SENSITIVITY;
-        dragTiltOffsetRef.current = Math.max(-TILT_CLAMP, Math.min(TILT_CLAMP,
-          drag.tiltAtStart - deltaY * DRAG_SENSITIVITY,
-        ));
+        dragTiltOffsetRef.current = drag.tiltAtStart - deltaY * DRAG_SENSITIVITY;
       }
     }
   }, []);
@@ -249,6 +246,7 @@ export default function StarburstCanvas({ className }: StarburstCanvasProps) {
   const handleMouseLeave = useCallback(() => {
     mouseRef.current = { x: -9999, y: -9999 };
     dragRef.current.active = false;
+    dragRef.current.didDrag = false;
     if (containerRef.current) containerRef.current.style.cursor = 'grab';
   }, []);
 
@@ -258,6 +256,7 @@ export default function StarburstCanvas({ className }: StarburstCanvasProps) {
 
     const handleWindowMouseUp = () => {
       dragRef.current.active = false;
+      dragRef.current.didDrag = false;
       if (containerRef.current) containerRef.current.style.cursor = 'grab';
     };
     window.addEventListener('mouseup', handleWindowMouseUp);
