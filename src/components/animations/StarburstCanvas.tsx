@@ -277,13 +277,15 @@ export default function StarburstCanvas({ className }: StarburstCanvasProps) {
 
       // Pause auto-rotation while dragging
       if (!drag.active) {
+        // Absorb yaw offset into base yaw so rotation continues from where user left it
+        yaw = (yaw + dragYawOffsetRef.current) % (Math.PI * 2);
+        dragYawOffsetRef.current = 0;
+
         const speedMul = hoveredRef.current ? HOVER_SPEED_FACTOR : 1;
         yaw = (yaw + BASE_ANGULAR_SPEED * dt * speedMul) % (Math.PI * 2);
 
-        // Spring-back: decay drag offsets toward zero
-        dragYawOffsetRef.current *= SPRING_DECAY;
+        // Spring-back tilt only: trend back toward default axis of rotation
         dragTiltOffsetRef.current *= SPRING_DECAY;
-        if (Math.abs(dragYawOffsetRef.current) < 0.001) dragYawOffsetRef.current = 0;
         if (Math.abs(dragTiltOffsetRef.current) < 0.001) dragTiltOffsetRef.current = 0;
       }
 
