@@ -83,6 +83,7 @@ interface Lane {
   exitRgb: [number, number, number];
   sameColor: boolean;
   radius: number;
+  speedMul: number;
 }
 
 /* ─── Get interpolated color at progress ─── */
@@ -160,7 +161,8 @@ function generateLanes(device: DeviceType, cw: number, ch: number): Lane[] {
         y: yStops[j] * ch,
       }));
 
-      lanes.push({ waypoints, entryRgb, exitRgb, sameColor, radius });
+      const speedMul = 0.8 + rand() * 0.4;
+      lanes.push({ waypoints, entryRgb, exitRgb, sameColor, radius, speedMul });
     }
   } else {
     // ── Laptop: vertical flow (top → bottom) ──
@@ -200,7 +202,8 @@ function generateLanes(device: DeviceType, cw: number, ch: number): Lane[] {
         y: y * ch,
       }));
 
-      lanes.push({ waypoints, entryRgb, exitRgb, sameColor: false, radius });
+      const speedMul = 0.8 + rand() * 0.4;
+      lanes.push({ waypoints, entryRgb, exitRgb, sameColor: false, radius, speedMul });
     }
   }
 
@@ -220,7 +223,6 @@ interface Particle {
   progress: number;
   alive: boolean;
   radiusMul: number;
-  speedMul: number;
   offset: number;
 }
 
@@ -234,7 +236,6 @@ function createParticles(laneCount: number, seed: number): Particle[] {
         progress: p / PARTICLES_PER_LANE,
         alive: false,
         radiusMul: 0.6 + rand() * 0.8,
-        speedMul: 0.75 + rand() * 0.5,
         offset: (rand() - 0.5) * 10,
       });
     }
@@ -321,13 +322,15 @@ export default function DataFunnel({ device, isActive }: DataFunnelProps) {
       const wasActive = wasActiveRef.current;
       const particles = particlesRef.current;
 
-      // Activation: trickle in with stagger + per-lane desync
+      // Activation: particles at steady-state spacing, lanes stagger in
+      // Within each lane, particles are already evenly distributed so
+      // spacing is maintained forever (same speed per lane).
       if (active && !wasActive) {
         for (let j = 0; j < particles.length; j++) {
           const pt = particles[j];
           const slot = j % PARTICLES_PER_LANE;
-          const lanePhase = pt.laneIndex * 0.0618;
-          pt.progress = -((slot / PARTICLES_PER_LANE) * 0.15 + lanePhase * 0.2);
+          const laneDelay = pt.laneIndex * 0.04;
+          pt.progress = (slot / PARTICLES_PER_LANE) - laneDelay;
           pt.alive = true;
         }
       }
@@ -337,7 +340,10 @@ export default function DataFunnel({ device, isActive }: DataFunnelProps) {
         const p = particles[i];
         if (!p.alive) continue;
 
-        p.progress += BASE_SPEED * p.speedMul;
+        const lane = lanes[p.laneIndex];
+        if (!lane) continue;
+
+        p.progress += BASE_SPEED * lane.speedMul;
 
         if (p.progress >= 1) {
           if (active) {
@@ -349,9 +355,6 @@ export default function DataFunnel({ device, isActive }: DataFunnelProps) {
         }
 
         if (p.progress < 0) continue;
-
-        const lane = lanes[p.laneIndex];
-        if (!lane) continue;
 
         // Position on spline + perpendicular offset
         const pos = catmullRom(lane.waypoints, p.progress);
