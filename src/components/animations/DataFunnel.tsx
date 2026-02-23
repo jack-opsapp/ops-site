@@ -27,9 +27,9 @@ const ORANGE = '#D4622B';
 
 /* ─── Constants ─── */
 const LANE_COUNT = 14;
-const PARTICLES_PER_LANE = 3;
-const SPEED = 0.004; // progress per frame — full cycle ≈ 4.2s at 60fps
-const FADE_EDGE = 0.08; // fraction of path for edge fade
+const PARTICLES_PER_LANE = 6;
+const SPEED = 0.003; // progress per frame — full cycle ≈ 5.5s at 60fps
+const FADE_EDGE = 0.04; // fraction of path for edge fade
 
 /* ─── Seeded PRNG ─── */
 function seededRandom(seed: number) {
@@ -279,13 +279,14 @@ export default function DataFunnel({ device, isActive }: DataFunnelProps) {
       const wasActive = wasActiveRef.current;
       const particles = particlesRef.current;
 
-      // Activation edge: reset particles with natural stagger so stream fills in
+      // Activation edge: place particles at steady-state positions instantly
+      // Per-lane phase offset (irrational fraction) prevents lanes from syncing
       if (active && !wasActive) {
         for (let j = 0; j < particles.length; j++) {
           const pt = particles[j];
-          const laneStagger = (pt.laneIndex / lanes.length) * 0.3;
-          const slotStagger = (j % PARTICLES_PER_LANE) / PARTICLES_PER_LANE;
-          pt.progress = -(laneStagger + slotStagger * 0.15);
+          const slot = j % PARTICLES_PER_LANE;
+          const lanePhase = pt.laneIndex * 0.0618; // golden-ratio-ish offset per lane
+          pt.progress = ((slot / PARTICLES_PER_LANE) + lanePhase) % 1;
           pt.alive = true;
         }
       }
