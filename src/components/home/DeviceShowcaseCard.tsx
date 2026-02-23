@@ -1,13 +1,18 @@
 /**
  * DeviceShowcaseCard — Alternating text + device visual card
- * Replaces PhoneWireframeCard with multi-device support.
- * Hover activates on desktop; viewport entry activates on mobile.
+ *
+ * Hover sequence (desktop only):
+ * 1. Mouse enters → device tilts to isometric
+ * 2. After 400ms → particle flow begins
+ * 3. Mouse leaves → particle flow fades out
+ * 4. After 600ms → device tilts back to head-on
+ *
+ * Mobile: static wireframes, no animation.
  */
 
 'use client';
 
-import { useState } from 'react';
-import { motion } from 'framer-motion';
+import { useState, useRef, useEffect, useCallback } from 'react';
 import { SectionLabel, Button } from '@/components/ui';
 import DeviceShell from '@/components/animations/DeviceShell';
 import DataFunnel from '@/components/animations/DataFunnel';
@@ -75,17 +80,22 @@ function TextSide({
 function VisualSide({
   variant,
   device,
-  isActive,
+  isTilted,
+  isFlowing,
 }: {
   variant: Variant;
   device: DeviceType;
-  isActive: boolean;
+  isTilted: boolean;
+  isFlowing: boolean;
 }) {
   return (
-    <div className="relative flex items-center justify-center">
-      <div className="relative w-full" style={{ maxWidth: visualMaxWidth[device] }}>
-        <DeviceShell device={device} variant={variant} isActive={isActive} />
-        <DataFunnel device={device} isActive={isActive} />
+    <div className="relative flex items-center justify-center overflow-visible">
+      <div
+        className="relative w-full overflow-visible"
+        style={{ maxWidth: visualMaxWidth[device] }}
+      >
+        <DeviceShell device={device} variant={variant} isActive={isTilted} />
+        <DataFunnel device={device} isActive={isFlowing} />
       </div>
     </div>
   );
@@ -102,21 +112,43 @@ export default function DeviceShowcaseCard({
   device,
   direction,
 }: DeviceShowcaseCardProps) {
-  const [isHovered, setIsHovered] = useState(false);
-  const [isInView, setIsInView] = useState(false);
+  const [isTilted, setIsTilted] = useState(false);
+  const [isFlowing, setIsFlowing] = useState(false);
+  const flowTimerRef = useRef<ReturnType<typeof setTimeout> | undefined>(undefined);
+  const tiltTimerRef = useRef<ReturnType<typeof setTimeout> | undefined>(undefined);
 
-  // Active when hovered (desktop) OR in viewport (mobile fallback)
-  const isActive = isHovered || isInView;
+  const handleMouseEnter = useCallback(() => {
+    // Clear any pending untilt
+    clearTimeout(tiltTimerRef.current);
+    // Start tilting immediately
+    setIsTilted(true);
+    // Start particle flow after tilt settles
+    clearTimeout(flowTimerRef.current);
+    flowTimerRef.current = setTimeout(() => setIsFlowing(true), 400);
+  }, []);
+
+  const handleMouseLeave = useCallback(() => {
+    // Stop flow immediately (DataFunnel fades particles over ~0.5s)
+    clearTimeout(flowTimerRef.current);
+    setIsFlowing(false);
+    // Tilt back after particles have faded
+    clearTimeout(tiltTimerRef.current);
+    tiltTimerRef.current = setTimeout(() => setIsTilted(false), 600);
+  }, []);
+
+  // Cleanup timers
+  useEffect(() => {
+    return () => {
+      clearTimeout(flowTimerRef.current);
+      clearTimeout(tiltTimerRef.current);
+    };
+  }, []);
 
   return (
-    <motion.div
+    <div
       className={`grid grid-cols-1 ${gridClass[device]} gap-12 md:gap-16 items-center`}
-      onMouseEnter={() => setIsHovered(true)}
-      onMouseLeave={() => setIsHovered(false)}
-      onViewportEnter={() => setIsInView(true)}
-      onViewportLeave={() => setIsInView(false)}
-      viewport={{ amount: 0.4 }}
-      style={{ willChange: isActive ? 'transform' : 'auto' }}
+      onMouseEnter={handleMouseEnter}
+      onMouseLeave={handleMouseLeave}
     >
       {direction === 'left' ? (
         <>
@@ -127,12 +159,22 @@ export default function DeviceShowcaseCard({
             ctaText={ctaText}
             ctaHref={ctaHref}
           />
-          <VisualSide variant={variant} device={device} isActive={isActive} />
+          <VisualSide
+            variant={variant}
+            device={device}
+            isTilted={isTilted}
+            isFlowing={isFlowing}
+          />
         </>
       ) : (
         <>
           <div className="order-2 md:order-1">
-            <VisualSide variant={variant} device={device} isActive={isActive} />
+            <VisualSide
+              variant={variant}
+              device={device}
+              isTilted={isTilted}
+              isFlowing={isFlowing}
+            />
           </div>
           <div className="order-1 md:order-2">
             <TextSide
@@ -145,6 +187,6 @@ export default function DeviceShowcaseCard({
           </div>
         </>
       )}
-    </motion.div>
+    </div>
   );
 }

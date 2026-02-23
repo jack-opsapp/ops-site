@@ -1,15 +1,18 @@
 /**
- * DataFunnel — Particles scatter wide → funnel tight into device screen →
- * exit the other side as two color-separated streams (blue + orange).
+ * DataFunnel — Organized particle streams that converge through a device
+ * screen and exit as two color-separated streams (blue + orange).
  *
- * Uses Canvas for smooth 60fps particle rendering with proper retina support.
- * Respects prefers-reduced-motion (shows nothing when reduced).
+ * Design: Lane-based flow at constant velocity. Particles travel in organized
+ * channels that funnel tight through the screen, then diverge cleanly.
+ * Blue and orange are mixed on entry, sorted on exit — metaphor for OPS
+ * taking chaotic data and organizing it.
+ *
+ * Canvas-based for 60fps. Retina-aware. Reduced motion support.
  */
 
 'use client';
 
-import { useRef, useEffect, useMemo, useState, useCallback } from 'react';
-import { screenBounds } from '@/components/animations/DeviceShell';
+import { useRef, useEffect, useMemo, useState } from 'react';
 
 type DeviceType = 'phone' | 'laptop' | 'tablet';
 
@@ -22,7 +25,13 @@ interface DataFunnelProps {
 const BLUE = '#597794';
 const ORANGE = '#D4622B';
 
-/* ─── Seeded PRNG for deterministic particle paths ─── */
+/* ─── Constants ─── */
+const LANE_COUNT = 14;
+const PARTICLES_PER_LANE = 3;
+const SPEED = 0.004; // progress per frame — full cycle ≈ 4.2s at 60fps
+const FADE_EDGE = 0.08; // fraction of path for edge fade
+
+/* ─── Seeded PRNG ─── */
 function seededRandom(seed: number) {
   let s = seed;
   return () => {
@@ -31,193 +40,183 @@ function seededRandom(seed: number) {
   };
 }
 
-/* ─── Particle path definition ─── */
-interface ParticlePath {
-  /** Waypoints as {x,y} in canvas coordinates */
-  points: { x: number; y: number }[];
-  color: string;
-  radius: number;
-  speed: number;
-}
-
-/* ─── Cubic Bezier interpolation between waypoints ─── */
-function interpolatePath(
+/* ─── Catmull-Rom spline interpolation ─── */
+function catmullRom(
   points: { x: number; y: number }[],
   t: number,
 ): { x: number; y: number } {
   const n = points.length - 1;
-  const segFloat = t * n;
+  const clamped = Math.max(0, Math.min(0.9999, t));
+  const segFloat = clamped * n;
   const idx = Math.min(Math.floor(segFloat), n - 1);
-  const segT = segFloat - idx;
+  const u = segFloat - idx;
+  const u2 = u * u;
+  const u3 = u2 * u;
 
-  // Catmull-Rom style smoothing: use neighboring points for control
   const p0 = points[Math.max(idx - 1, 0)];
   const p1 = points[idx];
   const p2 = points[Math.min(idx + 1, n)];
   const p3 = points[Math.min(idx + 2, n)];
 
-  const tt = segT;
-  const tt2 = tt * tt;
-  const tt3 = tt2 * tt;
-
-  // Catmull-Rom spline
-  const x =
-    0.5 *
-    (2 * p1.x +
-      (-p0.x + p2.x) * tt +
-      (2 * p0.x - 5 * p1.x + 4 * p2.x - p3.x) * tt2 +
-      (-p0.x + 3 * p1.x - 3 * p2.x + p3.x) * tt3);
-  const y =
-    0.5 *
-    (2 * p1.y +
-      (-p0.y + p2.y) * tt +
-      (2 * p0.y - 5 * p1.y + 4 * p2.y - p3.y) * tt2 +
-      (-p0.y + 3 * p1.y - 3 * p2.y + p3.y) * tt3);
-
-  return { x, y };
+  return {
+    x: 0.5 * (2 * p1.x + (-p0.x + p2.x) * u + (2 * p0.x - 5 * p1.x + 4 * p2.x - p3.x) * u2 + (-p0.x + 3 * p1.x - 3 * p2.x + p3.x) * u3),
+    y: 0.5 * (2 * p1.y + (-p0.y + p2.y) * u + (2 * p0.y - 5 * p1.y + 4 * p2.y - p3.y) * u2 + (-p0.y + 3 * p1.y - 3 * p2.y + p3.y) * u3),
+  };
 }
 
-/* ─── Per-device path generation ─── */
+/* ─── Lane definition ─── */
+interface Lane {
+  waypoints: { x: number; y: number }[];
+  color: string;
+  radius: number;
+}
 
-const PARTICLE_COUNT = 16;
+/**
+ * Generate organized lane paths in normalized [0,1] coordinates.
+ * All lanes converge through the screen center, then diverge into
+ * two color-separated streams.
+ */
+function generateLanes(device: DeviceType, cw: number, ch: number): Lane[] {
+  const seed = device === 'phone' ? 42 : device === 'laptop' ? 99 : 77;
+  const rand = seededRandom(seed);
+  const lanes: Lane[] = [];
 
-function generatePaths(
-  device: DeviceType,
-  canvasW: number,
-  canvasH: number,
-): ParticlePath[] {
-  const seeds: Record<DeviceType, number> = { phone: 42, laptop: 99, tablet: 77 };
-  const rand = seededRandom(seeds[device]);
+  if (device === 'phone' || device === 'tablet') {
+    // ── Horizontal flow ──
+    const reversed = device === 'tablet'; // tablet: right→left
+    const screenCY = 0.5;
+    const tightBand = 0.04; // how tight the stream is through the screen
 
-  const bounds = screenBounds[device];
+    for (let i = 0; i < LANE_COUNT; i++) {
+      const isBlue = i < LANE_COUNT / 2;
+      const color = isBlue ? BLUE : ORANGE;
+      const radius = 1.5 + rand() * 0.8;
 
-  // Canvas center offsets (padding so particles can spread beyond device)
-  const padX = canvasW * 0.28;
-  const padY = canvasH * 0.19;
+      // Entry: spread across full height (interleaved blue/orange)
+      const entryY = 0.06 + (i / (LANE_COUNT - 1)) * 0.88;
 
-  // Scale factors: device SVG coords → canvas coords
-  const deviceW = device === 'phone' ? 220 : device === 'laptop' ? 520 : 480;
-  const deviceH = device === 'phone' ? 420 : device === 'laptop' ? 340 : 340;
-  const scaleX = (canvasW - padX * 2) / deviceW;
-  const scaleY = (canvasH - padY * 2) / deviceH;
+      // Through screen: tight center band
+      const screenY = screenCY - tightBand + rand() * tightBand * 2;
 
-  const toCanvas = (svgX: number, svgY: number) => ({
-    x: padX + svgX * scaleX,
-    y: padY + svgY * scaleY,
-  });
-
-  const screenLeft = toCanvas(bounds.left, 0).x;
-  const screenRight = toCanvas(bounds.right, 0).x;
-  const screenTop = toCanvas(0, bounds.top).y;
-  const screenBottom = toCanvas(0, bounds.bottom).y;
-  const screenMidX = (screenLeft + screenRight) / 2;
-  const screenMidY = (screenTop + screenBottom) / 2;
-
-  return Array.from({ length: PARTICLE_COUNT }, (_, i) => {
-    const isBlue = i % 2 === 0;
-    const color = isBlue ? BLUE : ORANGE;
-    const radius = 2 + rand() * 1.5;
-    const speed = 0.002 + rand() * 0.002;
-
-    let points: { x: number; y: number }[];
-
-    if (device === 'phone') {
-      // LEFT → RIGHT through screen
-      const entryX = rand() * padX * 0.5;
-      const entryY = rand() * canvasH;
-      const screenY = screenMidY - (screenBottom - screenTop) * 0.3 + rand() * (screenBottom - screenTop) * 0.6;
-      const exitX = canvasW - rand() * padX * 0.5;
+      // Exit: blue curves one way, orange the other — dramatic separation
       const exitY = isBlue
-        ? screenY - 30 - rand() * 70
-        : screenY + 30 + rand() * 70;
+        ? 0.05 + rand() * 0.22
+        : 0.73 + rand() * 0.22;
+      const farY = isBlue
+        ? rand() * 0.12
+        : 0.88 + rand() * 0.12;
 
-      points = [
-        { x: entryX, y: entryY },
-        { x: padX * 0.6, y: entryY * 0.6 + screenY * 0.4 },
-        { x: screenLeft - 10, y: screenY + (rand() - 0.5) * 20 },
-        { x: screenLeft, y: screenY },
-        { x: screenMidX, y: screenY + (rand() - 0.5) * 10 },
-        { x: screenRight, y: screenY },
-        { x: screenRight + 15, y: screenY + (isBlue ? -15 : 15) },
-        { x: exitX, y: exitY },
+      // Build waypoints (left→right for phone, right→left for tablet)
+      const xStops = [0.0, 0.12, 0.26, 0.38, 0.50, 0.62, 0.74, 0.88, 1.0];
+      const yStops = [
+        entryY,
+        entryY * 0.75 + screenY * 0.25,
+        entryY * 0.3 + screenY * 0.7,
+        screenY,
+        screenY + (rand() - 0.5) * 0.01,
+        screenY,
+        screenY * 0.5 + exitY * 0.5,
+        exitY,
+        farY,
       ];
-    } else if (device === 'laptop') {
-      // TOP → BOTTOM through screen
-      const entryX = screenMidX - (screenRight - screenLeft) * 0.4 + rand() * (screenRight - screenLeft) * 0.8;
-      const entryY = rand() * padY * 0.4;
-      const screenX = screenMidX - (screenRight - screenLeft) * 0.25 + rand() * (screenRight - screenLeft) * 0.5;
-      const exitX = isBlue
-        ? screenX - 30 - rand() * 60
-        : screenX + 30 + rand() * 60;
-      const exitY = canvasH - rand() * padY * 0.3;
 
-      points = [
-        { x: entryX, y: entryY },
-        { x: entryX + (rand() - 0.5) * 30, y: padY * 0.7 },
-        { x: screenX + (rand() - 0.5) * 15, y: screenTop - 8 },
-        { x: screenX, y: screenTop },
-        { x: screenX + (rand() - 0.5) * 8, y: (screenTop + screenBottom) / 2 },
-        { x: screenX, y: screenBottom },
-        { x: screenX + (isBlue ? -15 : 15), y: screenBottom + 15 },
-        { x: exitX, y: exitY },
-      ];
-    } else {
-      // RIGHT → LEFT through screen (mirrored)
-      const entryX = canvasW - rand() * padX * 0.5;
-      const entryY = rand() * canvasH;
-      const screenY = screenMidY - (screenBottom - screenTop) * 0.3 + rand() * (screenBottom - screenTop) * 0.6;
-      const exitX = rand() * padX * 0.5;
-      const exitY = isBlue
-        ? screenY - 30 - rand() * 70
-        : screenY + 30 + rand() * 70;
+      const waypoints = xStops.map((x, j) => ({
+        x: (reversed ? 1 - x : x) * cw,
+        y: yStops[j] * ch,
+      }));
 
-      points = [
-        { x: entryX, y: entryY },
-        { x: canvasW - padX * 0.6, y: entryY * 0.6 + screenY * 0.4 },
-        { x: screenRight + 10, y: screenY + (rand() - 0.5) * 20 },
-        { x: screenRight, y: screenY },
-        { x: screenMidX, y: screenY + (rand() - 0.5) * 10 },
-        { x: screenLeft, y: screenY },
-        { x: screenLeft - 15, y: screenY + (isBlue ? -15 : 15) },
-        { x: exitX, y: exitY },
-      ];
+      lanes.push({ waypoints, color, radius });
     }
+  } else {
+    // ── Laptop: vertical flow (top→bottom) ──
+    const screenCX = 0.5;
+    const tightBand = 0.04;
 
-    return { points, color, radius, speed };
-  });
+    for (let i = 0; i < LANE_COUNT; i++) {
+      const isBlue = i < LANE_COUNT / 2;
+      const color = isBlue ? BLUE : ORANGE;
+      const radius = 1.5 + rand() * 0.8;
+
+      const entryX = 0.06 + (i / (LANE_COUNT - 1)) * 0.88;
+      const screenX = screenCX - tightBand + rand() * tightBand * 2;
+      const exitX = isBlue
+        ? 0.05 + rand() * 0.22
+        : 0.73 + rand() * 0.22;
+      const farX = isBlue
+        ? rand() * 0.12
+        : 0.88 + rand() * 0.12;
+
+      const yStops = [0.0, 0.12, 0.26, 0.38, 0.50, 0.62, 0.74, 0.88, 1.0];
+      const xStops = [
+        entryX,
+        entryX * 0.75 + screenX * 0.25,
+        entryX * 0.3 + screenX * 0.7,
+        screenX,
+        screenX + (rand() - 0.5) * 0.01,
+        screenX,
+        screenX * 0.5 + exitX * 0.5,
+        exitX,
+        farX,
+      ];
+
+      const waypoints = yStops.map((y, j) => ({
+        x: xStops[j] * cw,
+        y: y * ch,
+      }));
+
+      lanes.push({ waypoints, color, radius });
+    }
+  }
+
+  return lanes;
 }
 
-/* ─── Opacity / size envelope along 0→1 progress ─── */
-function opacityEnvelope(t: number): number {
-  // Ramp up → peak at 0.4 → ramp down
-  if (t < 0.15) return (t / 0.15) * 0.15;
-  if (t < 0.35) return 0.15 + ((t - 0.15) / 0.2) * 0.4;
-  if (t < 0.55) return 0.55;
-  if (t < 0.75) return 0.55 - ((t - 0.55) / 0.2) * 0.2;
-  return Math.max(0, 0.35 - ((t - 0.75) / 0.25) * 0.35);
+/* ─── Edge fade: smooth fade in/out at path ends ─── */
+function edgeFade(t: number): number {
+  if (t < FADE_EDGE) return t / FADE_EDGE;
+  if (t > 1 - FADE_EDGE) return (1 - t) / FADE_EDGE;
+  return 1.0;
 }
 
-function sizeEnvelope(t: number, baseR: number): number {
-  // Grows through screen, shrinks on exit
-  if (t < 0.3) return baseR * (0.6 + t * 1.33);
-  if (t < 0.55) return baseR * (1.0 + (t - 0.3) * 1.2);
-  return baseR * (1.3 - (t - 0.55) * 1.33);
-}
-
-/* ─── Live particle state ─── */
-interface LiveParticle {
+/* ─── Pre-populated particle set ─── */
+interface Particle {
+  laneIndex: number;
   progress: number;
-  pathIndex: number;
 }
+
+function createParticles(laneCount: number): Particle[] {
+  const particles: Particle[] = [];
+  for (let l = 0; l < laneCount; l++) {
+    for (let p = 0; p < PARTICLES_PER_LANE; p++) {
+      particles.push({
+        laneIndex: l,
+        progress: p / PARTICLES_PER_LANE,
+      });
+    }
+  }
+  return particles;
+}
+
+/* ─── Inset config: how far canvas extends beyond device ─── */
+const insetConfig: Record<DeviceType, string> = {
+  phone: '-250px -500px',
+  laptop: '-250px -400px',
+  tablet: '-250px -450px',
+};
 
 /* ─── Main Component ─── */
 export default function DataFunnel({ device, isActive }: DataFunnelProps) {
   const canvasRef = useRef<HTMLCanvasElement>(null);
+  const containerRef = useRef<HTMLDivElement>(null);
   const rafRef = useRef<number>(0);
-  const particlesRef = useRef<LiveParticle[]>([]);
+  const particlesRef = useRef<Particle[]>([]);
+  const opacityRef = useRef(0); // global opacity multiplier (0→1 fade in/out)
   const [reducedMotion, setReducedMotion] = useState(false);
+  const [dims, setDims] = useState({ w: 1200, h: 800 });
+  const isActiveRef = useRef(isActive);
+  isActiveRef.current = isActive;
 
-  // Check reduced motion preference
+  // Reduced motion check
   useEffect(() => {
     const mq = window.matchMedia('(prefers-reduced-motion: reduce)');
     setReducedMotion(mq.matches);
@@ -226,119 +225,123 @@ export default function DataFunnel({ device, isActive }: DataFunnelProps) {
     return () => mq.removeEventListener('change', handler);
   }, []);
 
-  // Canvas dimensions — match parent container
-  const [dims, setDims] = useState({ w: 500, h: 620 });
-  const containerRef = useRef<HTMLDivElement>(null);
-
+  // ResizeObserver for container dimensions
   useEffect(() => {
     const el = containerRef.current;
     if (!el) return;
     const ro = new ResizeObserver((entries) => {
       const { width, height } = entries[0].contentRect;
-      if (width > 0 && height > 0) {
-        setDims({ w: width, h: height });
-      }
+      if (width > 0 && height > 0) setDims({ w: width, h: height });
     });
     ro.observe(el);
     return () => ro.disconnect();
   }, []);
 
-  // Generate deterministic paths once dims are stable
-  const paths = useMemo(
-    () => generatePaths(device, dims.w, dims.h),
+  // Generate lanes
+  const lanes = useMemo(
+    () => generateLanes(device, dims.w, dims.h),
     [device, dims.w, dims.h],
   );
 
+  // Initialize particles
+  useEffect(() => {
+    particlesRef.current = createParticles(lanes.length);
+  }, [lanes]);
+
   // Animation loop
-  const draw = useCallback(() => {
+  useEffect(() => {
+    if (reducedMotion) return;
+
     const canvas = canvasRef.current;
     if (!canvas) return;
     const ctx = canvas.getContext('2d');
     if (!ctx) return;
 
-    const dpr = window.devicePixelRatio || 1;
-    const w = dims.w;
-    const h = dims.h;
+    let running = true;
 
-    // Ensure canvas buffer matches
-    if (canvas.width !== w * dpr || canvas.height !== h * dpr) {
-      canvas.width = w * dpr;
-      canvas.height = h * dpr;
-      ctx.scale(dpr, dpr);
-    }
+    function draw() {
+      if (!running || !ctx || !canvas) return;
 
-    ctx.clearRect(0, 0, w, h);
+      const dpr = window.devicePixelRatio || 1;
+      const w = dims.w;
+      const h = dims.h;
 
-    const particles = particlesRef.current;
-
-    // Spawn new particles when active
-    if (isActive && particles.length < PARTICLE_COUNT) {
-      // Stagger spawn: one per frame until full
-      particles.push({
-        progress: 0,
-        pathIndex: particles.length % paths.length,
-      });
-    }
-
-    // Update and draw
-    for (let i = particles.length - 1; i >= 0; i--) {
-      const p = particles[i];
-      const path = paths[p.pathIndex];
-      p.progress += path.speed;
-
-      if (p.progress >= 1) {
-        // Reset for infinite loop
-        if (isActive) {
-          p.progress = 0;
-        } else {
-          particles.splice(i, 1);
-          continue;
-        }
+      // Ensure canvas buffer matches container
+      const bw = Math.round(w * dpr);
+      const bh = Math.round(h * dpr);
+      if (canvas.width !== bw || canvas.height !== bh) {
+        canvas.width = bw;
+        canvas.height = bh;
+        ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
       }
 
-      const pos = interpolatePath(path.points, p.progress);
-      const alpha = opacityEnvelope(p.progress);
-      const r = sizeEnvelope(p.progress, path.radius);
+      ctx.clearRect(0, 0, w, h);
 
-      if (alpha <= 0) continue;
+      // Animate global opacity (smooth fade in/out over ~0.5s)
+      const active = isActiveRef.current;
+      if (active && opacityRef.current < 1) {
+        opacityRef.current = Math.min(1, opacityRef.current + 0.033);
+      } else if (!active && opacityRef.current > 0) {
+        opacityRef.current = Math.max(0, opacityRef.current - 0.04);
+      }
 
-      // Fade particles out when deactivating
-      const activeMul = isActive ? 1 : Math.max(0, 1 - p.progress * 3);
+      const globalAlpha = opacityRef.current;
 
-      // Glow
-      ctx.beginPath();
-      ctx.arc(pos.x, pos.y, r * 2.5, 0, Math.PI * 2);
-      ctx.fillStyle = path.color;
-      ctx.globalAlpha = alpha * 0.18 * activeMul;
-      ctx.fill();
+      // Skip drawing when fully invisible
+      if (globalAlpha > 0.001) {
+        const particles = particlesRef.current;
 
-      // Core
-      ctx.beginPath();
-      ctx.arc(pos.x, pos.y, r, 0, Math.PI * 2);
-      ctx.fillStyle = path.color;
-      ctx.globalAlpha = alpha * activeMul;
-      ctx.fill();
+        for (let i = 0; i < particles.length; i++) {
+          const p = particles[i];
+
+          // Advance at constant speed
+          p.progress += SPEED;
+          if (p.progress >= 1) p.progress -= 1;
+
+          const lane = lanes[p.laneIndex];
+          if (!lane) continue;
+
+          const pos = catmullRom(lane.waypoints, p.progress);
+          const fade = edgeFade(p.progress);
+          const alpha = fade * 0.55 * globalAlpha;
+
+          if (alpha < 0.005) continue;
+
+          // Glow
+          ctx.beginPath();
+          ctx.arc(pos.x, pos.y, lane.radius * 3, 0, Math.PI * 2);
+          ctx.fillStyle = lane.color;
+          ctx.globalAlpha = alpha * 0.15;
+          ctx.fill();
+
+          // Core
+          ctx.beginPath();
+          ctx.arc(pos.x, pos.y, lane.radius, 0, Math.PI * 2);
+          ctx.fillStyle = lane.color;
+          ctx.globalAlpha = alpha;
+          ctx.fill();
+        }
+
+        ctx.globalAlpha = 1;
+      }
+
+      rafRef.current = requestAnimationFrame(draw);
     }
 
-    ctx.globalAlpha = 1;
     rafRef.current = requestAnimationFrame(draw);
-  }, [isActive, paths, dims]);
-
-  useEffect(() => {
-    if (reducedMotion) return;
-
-    rafRef.current = requestAnimationFrame(draw);
-    return () => cancelAnimationFrame(rafRef.current);
-  }, [draw, reducedMotion]);
+    return () => {
+      running = false;
+      cancelAnimationFrame(rafRef.current);
+    };
+  }, [reducedMotion, dims, lanes]);
 
   if (reducedMotion) return null;
 
-  // Container extends beyond device bounds to allow particle spread
   return (
     <div
       ref={containerRef}
       className="absolute pointer-events-none"
-      style={{ inset: '-100px -140px' }}
+      style={{ inset: insetConfig[device] }}
     >
       <canvas
         ref={canvasRef}
