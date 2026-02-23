@@ -110,7 +110,7 @@ function generateLanes(device: DeviceType, cw: number, ch: number): Lane[] {
 
   if (device === 'phone' || device === 'tablet') {
     const screenCY = 0.5;
-    const tightBand = 0.04;
+    const tightBand = 0.015;
     // Phone: right→left | Tablet: left→right
     const leftToRight = device === 'tablet';
 
@@ -165,10 +165,10 @@ function generateLanes(device: DeviceType, cw: number, ch: number): Lane[] {
       lanes.push({ waypoints, entryRgb, exitRgb, sameColor, radius, speedMul });
     }
   } else {
-    // ── Laptop: vertical flow (top → bottom) ──
+    // ── Laptop: vertical flow (bottom → top) ──
     // All white entry → blue/orange exit
     const screenCX = 0.5;
-    const tightBand = 0.04;
+    const tightBand = 0.015;
 
     for (let i = 0; i < LANE_COUNT; i++) {
       const blue = isBlue(i);
@@ -184,7 +184,7 @@ function generateLanes(device: DeviceType, cw: number, ch: number): Lane[] {
       const farSeparation = 0.25 + rand() * 0.2;
       const farX = blue ? 0.5 - farSeparation : 0.5 + farSeparation;
 
-      const yStops = [0.0, 0.12, 0.26, 0.38, 0.50, 0.62, 0.74, 0.88, 1.0];
+      const yStops = [1.0, 0.88, 0.74, 0.62, 0.50, 0.38, 0.26, 0.12, 0.0];
       const xStops = [
         entryX,
         entryX * 0.75 + screenX * 0.25,
