@@ -35,6 +35,8 @@ interface SNode {
   text: string;
   /** Whether this node is hoverable */
   interactive: boolean;
+  /** Special promo node — orange glow */
+  promo: boolean;
   /* Computed each frame */
   screenX: number;
   screenY: number;
@@ -108,8 +110,11 @@ const DRAG_SENSITIVITY = 0.005;  // radians per pixel
 const SPRING_DECAY = 0.96;       // per-frame, ~60fps → settles in ~2s
 const DRAG_THRESHOLD = 3;        // pixels before drag activates
 
-const ACCENT = { r: 89, g: 119, b: 148 }; // #597794
+const ACCENT = { r: 89, g: 119, b: 148 };  // #597794
+const ORANGE = { r: 214, g: 138, b: 52 };  // #D68A34
 const GREY = { r: 100, g: 100, b: 100 };   // #646464
+
+const PROMO_TEXT = 'FOR THE ONES WHO DIG DEEPER. [CODE]';
 
 /* ------------------------------------------------------------------ */
 /*  Scene generation (stable across frames)                            */
@@ -141,6 +146,7 @@ function generateScene(): SLine[] {
         size: 4 + Math.random() * 3,
         text: QUOTES[Math.floor(Math.random() * QUOTES.length)],
         interactive: Math.random() < 0.5,
+        promo: false,
         screenX: 0,
         screenY: 0,
         depth: 0,
@@ -150,6 +156,14 @@ function generateScene(): SLine[] {
     }
 
     lines.push({ dx, dy, dz, baseOpacity, hasNode, endDistance, nodes });
+  }
+
+  // Promote one random interactive node to be the promo node
+  const candidates = lines.flatMap(l => l.nodes).filter(n => n.interactive);
+  if (candidates.length > 0) {
+    const promo = candidates[Math.floor(Math.random() * candidates.length)];
+    promo.promo = true;
+    promo.text = PROMO_TEXT;
   }
 
   return lines;
@@ -466,12 +480,15 @@ export default function StarburstCanvas({ className }: StarburstCanvasProps) {
           nd.scale = np.scale;
           nd.depthNorm = (nd.raw.z / maxZ + 1) / 2;
           nd.isFront = nd.raw.z > 0;
+          const tintColor = nd.node.promo ? ORANGE : ACCENT;
           nd.color = nd.node.interactive
-            ? lerpColor(GREY, ACCENT, nd.depthNorm)
+            ? lerpColor(GREY, tintColor, nd.depthNorm)
             : GREY;
-          nd.opacity = nd.node.interactive
-            ? (nd.isFront ? lerp(0.25, 0.65, nd.depthNorm) : lerp(0.10, 0.25, nd.depthNorm))
-            : lerp(0.08, 0.20, nd.depthNorm);
+          nd.opacity = nd.node.promo
+            ? (nd.isFront ? lerp(0.35, 0.75, nd.depthNorm) : lerp(0.15, 0.35, nd.depthNorm))
+            : nd.node.interactive
+              ? (nd.isFront ? lerp(0.25, 0.65, nd.depthNorm) : lerp(0.10, 0.25, nd.depthNorm))
+              : lerp(0.08, 0.20, nd.depthNorm);
 
           nd.node.screenX = nd.sx;
           nd.node.screenY = nd.sy;
@@ -518,9 +535,17 @@ export default function StarburstCanvas({ className }: StarburstCanvasProps) {
 
         for (const nd of c.nodeData) {
           const isHovered = nd.node === hoveredNode;
+          const isPromo = nd.node.promo;
+          const hoverColor = isPromo ? ORANGE : ACCENT;
           const drawSize = (isHovered ? nd.node.size * 1.8 : nd.node.size) * nd.scale;
-          const { r: nr, g: ng, b: nb } = isHovered ? ACCENT : nd.color;
+          const { r: nr, g: ng, b: nb } = isHovered ? hoverColor : nd.color;
           const alpha = isHovered ? 0.85 : nd.opacity;
+
+          // Persistent subtle orange glow on promo node (even when not hovered)
+          if (isPromo && nd.isFront && !isHovered) {
+            ctx.shadowColor = `rgba(${ORANGE.r}, ${ORANGE.g}, ${ORANGE.b}, 0.25)`;
+            ctx.shadowBlur = 8;
+          }
 
           ctx.fillStyle = `rgba(${nr}, ${ng}, ${nb}, ${alpha})`;
           ctx.fillRect(
@@ -530,8 +555,13 @@ export default function StarburstCanvas({ className }: StarburstCanvasProps) {
             drawSize,
           );
 
+          if (isPromo && !isHovered) {
+            ctx.shadowColor = 'transparent';
+            ctx.shadowBlur = 0;
+          }
+
           if (isHovered) {
-            ctx.shadowColor = `rgba(${ACCENT.r}, ${ACCENT.g}, ${ACCENT.b}, 0.4)`;
+            ctx.shadowColor = `rgba(${hoverColor.r}, ${hoverColor.g}, ${hoverColor.b}, 0.4)`;
             ctx.shadowBlur = 12;
             ctx.fillRect(
               nd.sx - drawSize / 2,
@@ -548,13 +578,14 @@ export default function StarburstCanvas({ className }: StarburstCanvasProps) {
       /* ---- Draw hovered node text on canvas ---- */
       hoveredRef.current = !!hoveredNode;
       if (hoveredNode) {
+        const textColor = hoveredNode.promo ? ORANGE : ACCENT;
         const tx = hoveredNode.screenX;
         const ty = hoveredNode.screenY - 16;
         ctx.font = '500 10px "Mohave", sans-serif';
         ctx.letterSpacing = '0.08em';
         ctx.textAlign = 'center';
         ctx.textBaseline = 'bottom';
-        ctx.fillStyle = `rgba(${ACCENT.r}, ${ACCENT.g}, ${ACCENT.b}, 0.85)`;
+        ctx.fillStyle = `rgba(${textColor.r}, ${textColor.g}, ${textColor.b}, 0.85)`;
         ctx.fillText(hoveredNode.text, tx, ty);
       }
 
