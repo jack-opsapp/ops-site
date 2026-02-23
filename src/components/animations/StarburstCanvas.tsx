@@ -124,6 +124,14 @@ function generateScene(): SLine[] {
   const lines: SLine[] = [];
   const GOLDEN_ANGLE = Math.PI * (1 + Math.sqrt(5));
 
+  // Shuffle quotes so every one is used before repeating
+  const shuffled = [...QUOTES];
+  for (let i = shuffled.length - 1; i > 0; i--) {
+    const j = Math.floor(Math.random() * (i + 1));
+    [shuffled[i], shuffled[j]] = [shuffled[j], shuffled[i]];
+  }
+  let quoteIdx = 0;
+
   for (let i = 0; i < LINE_COUNT; i++) {
     // Fibonacci sphere: evenly distributed 3D directions
     const phi = Math.acos(1 - 2 * (i + 0.5) / LINE_COUNT);
@@ -144,13 +152,14 @@ function generateScene(): SLine[] {
         dx, dy, dz,
         distance: endDistance,
         size: 4 + Math.random() * 3,
-        text: QUOTES[Math.floor(Math.random() * QUOTES.length)],
+        text: shuffled[quoteIdx % shuffled.length],
         interactive: Math.random() < 0.5,
         promo: false,
         screenX: 0,
         screenY: 0,
         depth: 0,
       });
+      quoteIdx++;
     } else {
       endDistance = 0.3 + Math.random() * 0.2;
     }
