@@ -77,18 +77,19 @@ export default function BlogPostRow({ post }: BlogPostRowProps) {
         variants={rv}
         transition={TRANSITION}
       >
-        {/* Accent left border — fades in on hover */}
+        {/* Accent left border — fades in on hover only */}
         <motion.div
           className="absolute left-0 top-6 bottom-6 w-[2px] bg-ops-accent rounded-full"
           variants={bv}
           transition={TRANSITION}
+          style={{ opacity: 0 }}
           aria-hidden="true"
         />
 
         <div className="flex items-center gap-4 md:gap-5">
           {/* Thumbnail — left side */}
           {hasThumbnail && (
-            <div className="shrink-0 relative w-16 h-16 md:w-20 md:h-20 rounded-[3px] overflow-hidden">
+            <div className="shrink-0 relative w-20 h-20 md:w-28 md:h-28 rounded-[3px] overflow-hidden">
               <motion.div
                 className="w-full h-full"
                 variants={iv}
@@ -99,7 +100,7 @@ export default function BlogPostRow({ post }: BlogPostRowProps) {
                   alt={post.title}
                   fill
                   className="object-cover"
-                  sizes="(min-width: 768px) 80px, 64px"
+                  sizes="(min-width: 768px) 224px, 160px"
                 />
               </motion.div>
               {/* Feathered edge — fades right into background */}
