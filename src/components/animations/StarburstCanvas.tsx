@@ -14,7 +14,7 @@
 
 'use client';
 
-import { useRef, useEffect, useState, useCallback } from 'react';
+import { useRef, useEffect, useCallback } from 'react';
 
 /* ------------------------------------------------------------------ */
 /*  Types                                                              */
@@ -98,20 +98,10 @@ function generateScene(): SLine[] {
     let endDistance = 0;
 
     if (hasNode) {
-      const d = 0.3 + Math.random() * 0.6;
-      endDistance = d;
-      // Give node its own unique direction — small angular offset from parent line
-      const jitter = 0.08;
-      let ndx = dx + (Math.random() - 0.5) * jitter;
-      let ndy = dy + (Math.random() - 0.5) * jitter;
-      let ndz = dz + (Math.random() - 0.5) * jitter;
-      // Re-normalize to unit vector
-      const len = Math.sqrt(ndx * ndx + ndy * ndy + ndz * ndz);
-      ndx /= len; ndy /= len; ndz /= len;
-
+      endDistance = 0.4 + Math.random() * 0.5;
       nodes.push({
-        dx: ndx, dy: ndy, dz: ndz,
-        distance: d,
+        dx, dy, dz,
+        distance: endDistance,
         size: 4 + Math.random() * 3,
         text: QUOTES[Math.floor(Math.random() * QUOTES.length)],
         screenX: 0,
@@ -186,12 +176,7 @@ export default function StarburstCanvas({ className }: StarburstCanvasProps) {
   const mouseRef = useRef({ x: -9999, y: -9999 });
   const hoveredRef = useRef(false);
 
-  const [tooltip, setTooltip] = useState<{
-    text: string;
-    x: number;
-    y: number;
-    visible: boolean;
-  }>({ text: '', x: 0, y: 0, visible: false });
+  // Tooltip rendered on canvas — no DOM state needed
 
   if (!sceneRef.current) {
     sceneRef.current = generateScene();
@@ -219,7 +204,6 @@ export default function StarburstCanvas({ className }: StarburstCanvasProps) {
 
   const handleMouseLeave = useCallback(() => {
     mouseRef.current = { x: -9999, y: -9999 };
-    setTooltip((prev) => (prev.visible ? { ...prev, visible: false } : prev));
   }, []);
 
   useEffect(() => {
@@ -247,7 +231,7 @@ export default function StarburstCanvas({ className }: StarburstCanvasProps) {
       const h = parseFloat(canvas.style.height) || canvas.height;
       const cx = w / 2;
       const cy = h / 2;
-      const radius = Math.min(w, h) * 0.48;
+      const radius = Math.min(w, h) * 0.55;
       const mouse = mouseRef.current;
 
       ctx.clearRect(0, 0, w, h);
@@ -418,17 +402,17 @@ export default function StarburstCanvas({ className }: StarburstCanvasProps) {
         }
       }
 
-      /* ---- Tooltip + rotation slow state ---- */
+      /* ---- Draw hovered node text on canvas ---- */
       hoveredRef.current = !!hoveredNode;
       if (hoveredNode) {
-        setTooltip({
-          text: hoveredNode.text,
-          x: hoveredNode.screenX,
-          y: hoveredNode.screenY,
-          visible: true,
-        });
-      } else {
-        setTooltip((prev) => (prev.visible ? { ...prev, visible: false } : prev));
+        const tx = hoveredNode.screenX;
+        const ty = hoveredNode.screenY - 16;
+        ctx.font = '500 10px "Mohave", sans-serif';
+        ctx.letterSpacing = '0.08em';
+        ctx.textAlign = 'center';
+        ctx.textBaseline = 'bottom';
+        ctx.fillStyle = `rgba(${ACCENT.r}, ${ACCENT.g}, ${ACCENT.b}, 0.85)`;
+        ctx.fillText(hoveredNode.text, tx, ty);
       }
 
       animRef.current = requestAnimationFrame(draw);
@@ -454,29 +438,6 @@ export default function StarburstCanvas({ className }: StarburstCanvasProps) {
         ref={canvasRef}
         style={{ display: 'block', width: '100%', height: '100%' }}
       />
-
-      {/* Tooltip overlay */}
-      <div
-        className="pointer-events-none absolute font-caption"
-        style={{
-          left: tooltip.x,
-          top: tooltip.y - 36,
-          transform: 'translate(-50%, -100%)',
-          opacity: tooltip.visible ? 1 : 0,
-          transition: 'opacity 150ms ease',
-          background: '#141414',
-          border: '1px solid rgba(89, 119, 148, 0.3)',
-          padding: '6px 12px',
-          fontSize: '10px',
-          letterSpacing: '0.08em',
-          textTransform: 'uppercase' as const,
-          color: 'rgba(89, 119, 148, 0.9)',
-          whiteSpace: 'nowrap',
-          borderRadius: '2px',
-        }}
-      >
-        {tooltip.text}
-      </div>
     </div>
   );
 }
