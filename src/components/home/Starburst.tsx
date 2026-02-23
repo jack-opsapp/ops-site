@@ -11,7 +11,7 @@ import StarburstCanvas from '@/components/animations/StarburstCanvas';
 
 export default function Starburst() {
   return (
-    <section className="relative h-[70vh] md:h-[80vh] w-full overflow-hidden bg-ops-background">
+    <section className="relative h-[60vh] md:h-[80vh] w-full overflow-hidden bg-ops-background">
       {/* Canvas background — absolute, fills section */}
       <StarburstCanvas className="absolute inset-0 w-full h-full" />
 
@@ -19,10 +19,10 @@ export default function Starburst() {
       <div className="pointer-events-none absolute inset-0">
         {/* Upper-left */}
         <h2
-          className="absolute font-heading font-bold uppercase leading-[0.95] tracking-tight text-ops-text-primary text-6xl md:text-8xl"
+          className="absolute font-heading font-bold uppercase leading-[0.95] tracking-tight text-ops-text-primary text-5xl md:text-8xl"
           style={{
-            top: '30%',
-            left: '10%',
+            top: '32%',
+            left: '6%',
             opacity: 0.9,
           }}
         >
@@ -31,10 +31,10 @@ export default function Starburst() {
 
         {/* Lower-right */}
         <h2
-          className="absolute font-heading font-bold uppercase leading-[0.95] tracking-tight text-ops-text-primary text-6xl md:text-8xl"
+          className="absolute font-heading font-bold uppercase leading-[0.95] tracking-tight text-ops-text-primary text-5xl md:text-8xl"
           style={{
-            bottom: '30%',
-            right: '10%',
+            bottom: '32%',
+            right: '6%',
             opacity: 0.9,
           }}
         >
