@@ -79,7 +79,7 @@ const SPRING_DECAY = 0.96;       // per-frame, ~60fps → settles in ~2s
 const DRAG_THRESHOLD = 3;        // pixels before drag activates
 
 const ACCENT = { r: 89, g: 119, b: 148 }; // #597794
-const GREY = { r: 68, g: 68, b: 68 };     // #444
+const GREY = { r: 100, g: 100, b: 100 };   // #646464
 
 /* ------------------------------------------------------------------ */
 /*  Scene generation (stable across frames)                            */
