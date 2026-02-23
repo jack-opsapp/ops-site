@@ -161,7 +161,7 @@ function generateLanes(device: DeviceType, cw: number, ch: number): Lane[] {
         y: yStops[j] * ch,
       }));
 
-      const speedMul = 0.8 + rand() * 0.4;
+      const speedMul = 0.95 + rand() * 0.1;
       lanes.push({ waypoints, entryRgb, exitRgb, sameColor, radius, speedMul });
     }
   } else {
@@ -202,7 +202,7 @@ function generateLanes(device: DeviceType, cw: number, ch: number): Lane[] {
         y: y * ch,
       }));
 
-      const speedMul = 0.8 + rand() * 0.4;
+      const speedMul = 0.95 + rand() * 0.1;
       lanes.push({ waypoints, entryRgb, exitRgb, sameColor: false, radius, speedMul });
     }
   }
@@ -223,6 +223,7 @@ interface Particle {
   progress: number;
   alive: boolean;
   radiusMul: number;
+  speedFactor: number;
   offset: number;
 }
 
@@ -231,11 +232,15 @@ function createParticles(laneCount: number, seed: number): Particle[] {
   const particles: Particle[] = [];
   for (let l = 0; l < laneCount; l++) {
     for (let p = 0; p < PARTICLES_PER_LANE; p++) {
+      const radiusMul = 0.6 + rand() * 0.8;
+      // Larger particles = 60% speed, smaller = 70% speed
+      const speedFactor = 0.7 - (radiusMul - 0.6) * 0.125;
       particles.push({
         laneIndex: l,
         progress: p / PARTICLES_PER_LANE,
         alive: false,
-        radiusMul: 0.6 + rand() * 0.8,
+        radiusMul,
+        speedFactor,
         offset: (rand() - 0.5) * 10,
       });
     }
@@ -343,7 +348,7 @@ export default function DataFunnel({ device, isActive }: DataFunnelProps) {
         const lane = lanes[p.laneIndex];
         if (!lane) continue;
 
-        p.progress += BASE_SPEED * lane.speedMul;
+        p.progress += BASE_SPEED * lane.speedMul * p.speedFactor;
 
         if (p.progress >= 1) {
           if (active) {
