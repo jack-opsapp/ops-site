@@ -5,7 +5,7 @@
  * Color transformations per device:
  *   Phone (R→L):  blue+orange in → blue stays, orange→white through screen
  *   Laptop (T→B): all white in → blue+orange out through screen
- *   Tablet (R→L): blue+orange in → blue→white through screen, orange stays
+ *   Tablet (L→R): orange+white in → all blue out through screen
  *
  * Particle variability: per-particle size, speed, and perpendicular offset
  * create a layered "overlaid flows" effect.
@@ -108,23 +108,25 @@ function generateLanes(device: DeviceType, cw: number, ch: number): Lane[] {
   const isBlue = (i: number) => i % 3 !== 1;
 
   if (device === 'phone' || device === 'tablet') {
-    // ── Horizontal flow: right → left ──
     const screenCY = 0.5;
     const tightBand = 0.04;
+    // Phone: right→left | Tablet: left→right
+    const leftToRight = device === 'tablet';
 
     for (let i = 0; i < LANE_COUNT; i++) {
       const blue = isBlue(i);
       const radius = 1.5 + rand() * 0.8;
 
-      // Color logic per device
       let entryHex: string;
       let exitHex: string;
       if (device === 'phone') {
+        // Blue+orange in, orange→white out
         entryHex = blue ? BLUE : ORANGE;
         exitHex = blue ? BLUE : WHITE;
       } else {
-        entryHex = blue ? BLUE : ORANGE;
-        exitHex = blue ? WHITE : ORANGE;
+        // Tablet: orange+white in, all blue out
+        entryHex = blue ? WHITE : ORANGE;
+        exitHex = BLUE;
       }
 
       const entryRgb = hexToRgb(entryHex);
@@ -138,8 +140,9 @@ function generateLanes(device: DeviceType, cw: number, ch: number): Lane[] {
       const farSeparation = 0.25 + rand() * 0.2;
       const farY = blue ? 0.5 - farSeparation : 0.5 + farSeparation;
 
-      // Right→left: x descends from 1 to 0
-      const xStops = [1.0, 0.88, 0.74, 0.62, 0.50, 0.38, 0.26, 0.12, 0.0];
+      const xStopsLR = [0.0, 0.12, 0.26, 0.38, 0.50, 0.62, 0.74, 0.88, 1.0];
+      const xStopsRL = [1.0, 0.88, 0.74, 0.62, 0.50, 0.38, 0.26, 0.12, 0.0];
+      const xStops = leftToRight ? xStopsLR : xStopsRL;
       const yStops = [
         entryY,
         entryY * 0.75 + screenY * 0.25,
