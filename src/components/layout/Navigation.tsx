@@ -59,9 +59,14 @@ export default function Navigation() {
       <nav
         className={`fixed top-0 left-0 right-0 z-40 transition-all duration-300 ${
           scrolled
-            ? 'bg-ops-background/95 backdrop-blur-sm border-b border-ops-border'
+            ? 'border-b border-white/[0.08]'
             : 'bg-transparent border-b border-transparent'
         }`}
+        style={scrolled ? {
+          background: 'rgba(10, 10, 10, 0.70)',
+          backdropFilter: 'blur(20px) saturate(1.2)',
+          WebkitBackdropFilter: 'blur(20px) saturate(1.2)',
+        } : undefined}
       >
         <div className="max-w-[1400px] mx-auto px-6 md:px-10 flex items-center justify-between h-16">
           {/* Left: Logo */}

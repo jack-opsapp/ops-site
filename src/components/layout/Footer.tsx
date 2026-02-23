@@ -125,14 +125,33 @@ export default function Footer() {
         </div>
       </div>
 
-      {/* Dramatic warm gradient at the very bottom */}
+      {/* Solar horizon glow at the very bottom */}
       <div
-        className="h-32 w-full"
-        style={{
-          background: 'linear-gradient(to bottom, #0A0A0A 0%, #1a0f05 40%, #2a1508 70%, #1a0f05 100%)',
-        }}
+        className="h-40 w-full relative overflow-hidden"
         aria-hidden="true"
-      />
+      >
+        {/* Accent core glow */}
+        <div
+          className="absolute inset-0"
+          style={{
+            background: 'radial-gradient(ellipse 80% 120% at 50% 100%, rgba(89, 119, 148, 0.15) 0%, rgba(89, 119, 148, 0.06) 25%, transparent 60%)',
+          }}
+        />
+        {/* Warm orange mid-layer */}
+        <div
+          className="absolute inset-0"
+          style={{
+            background: 'radial-gradient(ellipse 60% 100% at 50% 100%, rgba(212, 98, 43, 0.10) 0%, rgba(212, 98, 43, 0.04) 30%, transparent 55%)',
+          }}
+        />
+        {/* Tight bright core at the very bottom */}
+        <div
+          className="absolute inset-0"
+          style={{
+            background: 'radial-gradient(ellipse 40% 60% at 50% 100%, rgba(89, 119, 148, 0.20) 0%, rgba(212, 98, 43, 0.08) 40%, transparent 70%)',
+          }}
+        />
+      </div>
     </footer>
   );
 }
