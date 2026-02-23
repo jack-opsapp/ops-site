@@ -114,7 +114,7 @@ const ACCENT = { r: 89, g: 119, b: 148 };  // #597794
 const ORANGE = { r: 214, g: 138, b: 52 };  // #D68A34
 const GREY = { r: 100, g: 100, b: 100 };   // #646464
 
-const PROMO_TEXT = 'FOR THE ONES WHO DIG DEEPER. [CODE]';
+const PROMO_TEXT = 'FOR THE ONES WHO [DIG DEEPER], 10% OFF';
 
 /* ------------------------------------------------------------------ */
 /*  Scene generation (stable across frames)                            */
@@ -485,7 +485,7 @@ export default function StarburstCanvas({ className }: StarburstCanvasProps) {
             ? lerpColor(GREY, tintColor, nd.depthNorm)
             : GREY;
           nd.opacity = nd.node.promo
-            ? (nd.isFront ? lerp(0.35, 0.75, nd.depthNorm) : lerp(0.15, 0.35, nd.depthNorm))
+            ? (nd.isFront ? lerp(0.20, 0.50, nd.depthNorm) : lerp(0.08, 0.20, nd.depthNorm))
             : nd.node.interactive
               ? (nd.isFront ? lerp(0.25, 0.65, nd.depthNorm) : lerp(0.10, 0.25, nd.depthNorm))
               : lerp(0.08, 0.20, nd.depthNorm);
@@ -541,10 +541,10 @@ export default function StarburstCanvas({ className }: StarburstCanvasProps) {
           const { r: nr, g: ng, b: nb } = isHovered ? hoverColor : nd.color;
           const alpha = isHovered ? 0.85 : nd.opacity;
 
-          // Persistent subtle orange glow on promo node (even when not hovered)
+          // Persistent orange glow on promo node (even when not hovered)
           if (isPromo && nd.isFront && !isHovered) {
-            ctx.shadowColor = `rgba(${ORANGE.r}, ${ORANGE.g}, ${ORANGE.b}, 0.25)`;
-            ctx.shadowBlur = 8;
+            ctx.shadowColor = `rgba(${ORANGE.r}, ${ORANGE.g}, ${ORANGE.b}, 0.45)`;
+            ctx.shadowBlur = 14;
           }
 
           ctx.fillStyle = `rgba(${nr}, ${ng}, ${nb}, ${alpha})`;
