@@ -33,6 +33,8 @@ interface SNode {
   distance: number;
   size: number;
   text: string;
+  /** Whether this node is hoverable */
+  interactive: boolean;
   /* Computed each frame */
   screenX: number;
   screenY: number;
@@ -104,6 +106,7 @@ function generateScene(): SLine[] {
         distance: endDistance,
         size: 4 + Math.random() * 3,
         text: QUOTES[Math.floor(Math.random() * QUOTES.length)],
+        interactive: Math.random() < 0.5,
         screenX: 0,
         screenY: 0,
         depth: 0,
@@ -328,10 +331,12 @@ export default function StarburstCanvas({ className }: StarburstCanvasProps) {
           nd.scale = np.scale;
           nd.depthNorm = (nd.raw.z / maxZ + 1) / 2;
           nd.isFront = nd.raw.z > 0;
-          nd.color = lerpColor(GREY, ACCENT, nd.depthNorm);
-          nd.opacity = nd.isFront
-            ? lerp(0.25, 0.65, nd.depthNorm)
-            : lerp(0.10, 0.25, nd.depthNorm);
+          nd.color = nd.node.interactive
+            ? lerpColor(GREY, ACCENT, nd.depthNorm)
+            : GREY;
+          nd.opacity = nd.node.interactive
+            ? (nd.isFront ? lerp(0.25, 0.65, nd.depthNorm) : lerp(0.10, 0.25, nd.depthNorm))
+            : lerp(0.08, 0.20, nd.depthNorm);
 
           nd.node.screenX = nd.sx;
           nd.node.screenY = nd.sy;
@@ -346,7 +351,7 @@ export default function StarburstCanvas({ className }: StarburstCanvasProps) {
 
       for (const c of computed) {
         for (const nd of c.nodeData) {
-          if (!nd.isFront) continue;
+          if (!nd.isFront || !nd.node.interactive) continue;
           const dx = mouse.x - nd.sx;
           const dy = mouse.y - nd.sy;
           const dist = Math.sqrt(dx * dx + dy * dy);
