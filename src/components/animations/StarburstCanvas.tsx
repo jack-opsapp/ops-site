@@ -74,6 +74,11 @@ const HOVER_RADIUS = 22;
 const TILT_ANGLE = 0.30; // ~17 degrees fixed X-axis tilt
 const FOCAL_LENGTH = 2000;
 
+const DRAG_SENSITIVITY = 0.005;  // radians per pixel
+const SPRING_DECAY = 0.96;       // per-frame, ~60fps → settles in ~2s
+const TILT_CLAMP = 0.8;          // ±46 degrees max offset
+const DRAG_THRESHOLD = 3;        // pixels before drag activates
+
 const ACCENT = { r: 89, g: 119, b: 148 }; // #597794
 const GREY = { r: 68, g: 68, b: 68 };     // #444
 
@@ -178,6 +183,16 @@ export default function StarburstCanvas({ className }: StarburstCanvasProps) {
   const animRef = useRef<number>(0);
   const mouseRef = useRef({ x: -9999, y: -9999 });
   const hoveredRef = useRef(false);
+  const dragRef = useRef({
+    active: false,
+    didDrag: false,
+    startX: 0,
+    startY: 0,
+    yawAtStart: 0,
+    tiltAtStart: 0,
+  });
+  const dragYawOffsetRef = useRef(0);
+  const dragTiltOffsetRef = useRef(0);
 
   // Tooltip rendered on canvas — no DOM state needed
 
@@ -199,19 +214,54 @@ export default function StarburstCanvas({ className }: StarburstCanvasProps) {
     if (ctx) ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
   }, []);
 
+  const handleMouseDown = useCallback((e: React.MouseEvent<HTMLDivElement>) => {
+    const drag = dragRef.current;
+    drag.active = true;
+    drag.didDrag = false;
+    drag.startX = e.clientX;
+    drag.startY = e.clientY;
+    drag.yawAtStart = dragYawOffsetRef.current;
+    drag.tiltAtStart = dragTiltOffsetRef.current;
+    if (containerRef.current) containerRef.current.style.cursor = 'grabbing';
+  }, []);
+
   const handleMouseMove = useCallback((e: React.MouseEvent<HTMLDivElement>) => {
     const rect = containerRef.current?.getBoundingClientRect();
     if (!rect) return;
     mouseRef.current = { x: e.clientX - rect.left, y: e.clientY - rect.top };
+
+    const drag = dragRef.current;
+    if (drag.active) {
+      const deltaX = e.clientX - drag.startX;
+      const deltaY = e.clientY - drag.startY;
+      if (!drag.didDrag && Math.sqrt(deltaX * deltaX + deltaY * deltaY) > DRAG_THRESHOLD) {
+        drag.didDrag = true;
+      }
+      if (drag.didDrag) {
+        dragYawOffsetRef.current = drag.yawAtStart + deltaX * DRAG_SENSITIVITY;
+        dragTiltOffsetRef.current = Math.max(-TILT_CLAMP, Math.min(TILT_CLAMP,
+          drag.tiltAtStart - deltaY * DRAG_SENSITIVITY,
+        ));
+      }
+    }
   }, []);
 
   const handleMouseLeave = useCallback(() => {
     mouseRef.current = { x: -9999, y: -9999 };
+    dragRef.current.active = false;
+    if (containerRef.current) containerRef.current.style.cursor = 'grab';
   }, []);
 
   useEffect(() => {
     resize();
     window.addEventListener('resize', resize);
+
+    const handleWindowMouseUp = () => {
+      dragRef.current.active = false;
+      if (containerRef.current) containerRef.current.style.cursor = 'grab';
+    };
+    window.addEventListener('mouseup', handleWindowMouseUp);
+
     const lines = sceneRef.current!;
     let prevTimestamp: number | null = null;
     let yaw = 0;
@@ -222,8 +272,23 @@ export default function StarburstCanvas({ className }: StarburstCanvasProps) {
       if (prevTimestamp === null) prevTimestamp = timestamp;
       const dt = (timestamp - prevTimestamp) / 1000;
       prevTimestamp = timestamp;
-      const speedMul = hoveredRef.current ? HOVER_SPEED_FACTOR : 1;
-      yaw = (yaw + BASE_ANGULAR_SPEED * dt * speedMul) % (Math.PI * 2);
+
+      const drag = dragRef.current;
+
+      // Pause auto-rotation while dragging
+      if (!drag.active) {
+        const speedMul = hoveredRef.current ? HOVER_SPEED_FACTOR : 1;
+        yaw = (yaw + BASE_ANGULAR_SPEED * dt * speedMul) % (Math.PI * 2);
+
+        // Spring-back: decay drag offsets toward zero
+        dragYawOffsetRef.current *= SPRING_DECAY;
+        dragTiltOffsetRef.current *= SPRING_DECAY;
+        if (Math.abs(dragYawOffsetRef.current) < 0.001) dragYawOffsetRef.current = 0;
+        if (Math.abs(dragTiltOffsetRef.current) < 0.001) dragTiltOffsetRef.current = 0;
+      }
+
+      const finalYaw = yaw + dragYawOffsetRef.current;
+      const finalTilt = TILT_ANGLE + dragTiltOffsetRef.current;
 
       const canvas = canvasRef.current;
       if (!canvas) { animRef.current = requestAnimationFrame(draw); return; }
@@ -275,7 +340,7 @@ export default function StarburstCanvas({ className }: StarburstCanvasProps) {
         const ex = line.dx * radius * line.endDistance;
         const ey = line.dy * radius * line.endDistance;
         const ez = line.dz * radius * line.endDistance;
-        const r3 = rotate(ex, ey, ez, yaw, TILT_ANGLE);
+        const r3 = rotate(ex, ey, ez, finalYaw, finalTilt);
         if (Math.abs(r3.z) > maxZ) maxZ = Math.abs(r3.z);
 
         const nodeData: Computed['nodeData'] = [];
@@ -283,7 +348,7 @@ export default function StarburstCanvas({ className }: StarburstCanvasProps) {
           const nx = node.dx * radius * node.distance;
           const ny = node.dy * radius * node.distance;
           const nz = node.dz * radius * node.distance;
-          const nr = rotate(nx, ny, nz, yaw, TILT_ANGLE);
+          const nr = rotate(nx, ny, nz, finalYaw, finalTilt);
           if (Math.abs(nr.z) > maxZ) maxZ = Math.abs(nr.z);
           nodeData.push({
             node,
@@ -349,15 +414,18 @@ export default function StarburstCanvas({ className }: StarburstCanvasProps) {
       let hoveredNode: SNode | null = null;
       let hoveredDist = HOVER_RADIUS;
 
-      for (const c of computed) {
-        for (const nd of c.nodeData) {
-          if (!nd.isFront || !nd.node.interactive) continue;
-          const dx = mouse.x - nd.sx;
-          const dy = mouse.y - nd.sy;
-          const dist = Math.sqrt(dx * dx + dy * dy);
-          if (dist < hoveredDist) {
-            hoveredDist = dist;
-            hoveredNode = nd.node;
+      // Suppress hover detection while dragging to avoid tooltip flashes
+      if (!drag.didDrag) {
+        for (const c of computed) {
+          for (const nd of c.nodeData) {
+            if (!nd.isFront || !nd.node.interactive) continue;
+            const dx = mouse.x - nd.sx;
+            const dy = mouse.y - nd.sy;
+            const dist = Math.sqrt(dx * dx + dy * dy);
+            if (dist < hoveredDist) {
+              hoveredDist = dist;
+              hoveredNode = nd.node;
+            }
           }
         }
       }
@@ -428,6 +496,7 @@ export default function StarburstCanvas({ className }: StarburstCanvasProps) {
     return () => {
       cancelAnimationFrame(animRef.current);
       window.removeEventListener('resize', resize);
+      window.removeEventListener('mouseup', handleWindowMouseUp);
     };
   }, [resize]);
 
@@ -435,9 +504,10 @@ export default function StarburstCanvas({ className }: StarburstCanvasProps) {
     <div
       ref={containerRef}
       className={className}
+      onMouseDown={handleMouseDown}
       onMouseMove={handleMouseMove}
       onMouseLeave={handleMouseLeave}
-      style={{ position: 'relative' }}
+      style={{ position: 'relative', cursor: 'grab' }}
     >
       <canvas
         ref={canvasRef}
