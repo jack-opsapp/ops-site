@@ -82,14 +82,22 @@ function VisualSide({
   device,
   isTilted,
   isFlowing,
+  onMouseEnter,
+  onMouseLeave,
 }: {
   variant: Variant;
   device: DeviceType;
   isTilted: boolean;
   isFlowing: boolean;
+  onMouseEnter: () => void;
+  onMouseLeave: () => void;
 }) {
   return (
-    <div className="relative flex items-center justify-center overflow-visible">
+    <div
+      className="relative flex items-center justify-center overflow-visible"
+      onMouseEnter={onMouseEnter}
+      onMouseLeave={onMouseLeave}
+    >
       <div
         className="relative w-full overflow-visible"
         style={{ maxWidth: visualMaxWidth[device] }}
@@ -147,8 +155,6 @@ export default function DeviceShowcaseCard({
   return (
     <div
       className={`grid grid-cols-1 ${gridClass[device]} gap-12 md:gap-16 items-center`}
-      onMouseEnter={handleMouseEnter}
-      onMouseLeave={handleMouseLeave}
     >
       {direction === 'left' ? (
         <>
@@ -164,6 +170,8 @@ export default function DeviceShowcaseCard({
             device={device}
             isTilted={isTilted}
             isFlowing={isFlowing}
+            onMouseEnter={handleMouseEnter}
+            onMouseLeave={handleMouseLeave}
           />
         </>
       ) : (
@@ -174,6 +182,8 @@ export default function DeviceShowcaseCard({
               device={device}
               isTilted={isTilted}
               isFlowing={isFlowing}
+              onMouseEnter={handleMouseEnter}
+              onMouseLeave={handleMouseLeave}
             />
           </div>
           <div className="order-1 md:order-2">

@@ -88,23 +88,21 @@ function generateLanes(device: DeviceType, cw: number, ch: number): Lane[] {
     const tightBand = 0.04; // how tight the stream is through the screen
 
     for (let i = 0; i < LANE_COUNT; i++) {
-      const isBlue = i < LANE_COUNT / 2;
+      const isBlue = i % 2 === 0;
       const color = isBlue ? BLUE : ORANGE;
       const radius = 1.5 + rand() * 0.8;
 
-      // Entry: spread across full height (interleaved blue/orange)
-      const entryY = 0.06 + (i / (LANE_COUNT - 1)) * 0.88;
+      // Entry: evenly spread, both colors interleaved
+      const entryY = 0.08 + (i / (LANE_COUNT - 1)) * 0.84;
 
       // Through screen: tight center band
       const screenY = screenCY - tightBand + rand() * tightBand * 2;
 
-      // Exit: blue curves one way, orange the other — dramatic separation
-      const exitY = isBlue
-        ? 0.05 + rand() * 0.22
-        : 0.73 + rand() * 0.22;
-      const farY = isBlue
-        ? rand() * 0.12
-        : 0.88 + rand() * 0.12;
+      // Exit: symmetric about 0.5 center axis
+      const separation = 0.12 + rand() * 0.18;
+      const exitY = isBlue ? 0.5 - separation : 0.5 + separation;
+      const farSeparation = 0.25 + rand() * 0.2;
+      const farY = isBlue ? 0.5 - farSeparation : 0.5 + farSeparation;
 
       // Build waypoints (left→right for phone, right→left for tablet)
       const xStops = [0.0, 0.12, 0.26, 0.38, 0.50, 0.62, 0.74, 0.88, 1.0];
@@ -133,18 +131,16 @@ function generateLanes(device: DeviceType, cw: number, ch: number): Lane[] {
     const tightBand = 0.04;
 
     for (let i = 0; i < LANE_COUNT; i++) {
-      const isBlue = i < LANE_COUNT / 2;
+      const isBlue = i % 2 === 0;
       const color = isBlue ? BLUE : ORANGE;
       const radius = 1.5 + rand() * 0.8;
 
-      const entryX = 0.06 + (i / (LANE_COUNT - 1)) * 0.88;
+      const entryX = 0.08 + (i / (LANE_COUNT - 1)) * 0.84;
       const screenX = screenCX - tightBand + rand() * tightBand * 2;
-      const exitX = isBlue
-        ? 0.05 + rand() * 0.22
-        : 0.73 + rand() * 0.22;
-      const farX = isBlue
-        ? rand() * 0.12
-        : 0.88 + rand() * 0.12;
+      const separation = 0.12 + rand() * 0.18;
+      const exitX = isBlue ? 0.5 - separation : 0.5 + separation;
+      const farSeparation = 0.25 + rand() * 0.2;
+      const farX = isBlue ? 0.5 - farSeparation : 0.5 + farSeparation;
 
       const yStops = [0.0, 0.12, 0.26, 0.38, 0.50, 0.62, 0.74, 0.88, 1.0];
       const xStops = [
@@ -182,6 +178,7 @@ function edgeFade(t: number): number {
 interface Particle {
   laneIndex: number;
   progress: number;
+  alive: boolean;
 }
 
 function createParticles(laneCount: number): Particle[] {
@@ -191,6 +188,7 @@ function createParticles(laneCount: number): Particle[] {
       particles.push({
         laneIndex: l,
         progress: p / PARTICLES_PER_LANE,
+        alive: false,
       });
     }
   }
@@ -210,7 +208,7 @@ export default function DataFunnel({ device, isActive }: DataFunnelProps) {
   const containerRef = useRef<HTMLDivElement>(null);
   const rafRef = useRef<number>(0);
   const particlesRef = useRef<Particle[]>([]);
-  const opacityRef = useRef(0); // global opacity multiplier (0→1 fade in/out)
+  const wasActiveRef = useRef(false);
   const [reducedMotion, setReducedMotion] = useState(false);
   const [dims, setDims] = useState({ w: 1200, h: 800 });
   const isActiveRef = useRef(isActive);
@@ -277,53 +275,65 @@ export default function DataFunnel({ device, isActive }: DataFunnelProps) {
 
       ctx.clearRect(0, 0, w, h);
 
-      // Animate global opacity (smooth fade in/out over ~0.5s)
       const active = isActiveRef.current;
-      if (active && opacityRef.current < 1) {
-        opacityRef.current = Math.min(1, opacityRef.current + 0.033);
-      } else if (!active && opacityRef.current > 0) {
-        opacityRef.current = Math.max(0, opacityRef.current - 0.04);
+      const wasActive = wasActiveRef.current;
+      const particles = particlesRef.current;
+
+      // Activation edge: reset particles with natural stagger so stream fills in
+      if (active && !wasActive) {
+        for (let j = 0; j < particles.length; j++) {
+          const pt = particles[j];
+          const laneStagger = (pt.laneIndex / lanes.length) * 0.3;
+          const slotStagger = (j % PARTICLES_PER_LANE) / PARTICLES_PER_LANE;
+          pt.progress = -(laneStagger + slotStagger * 0.15);
+          pt.alive = true;
+        }
       }
+      wasActiveRef.current = active;
 
-      const globalAlpha = opacityRef.current;
+      for (let i = 0; i < particles.length; i++) {
+        const p = particles[i];
+        if (!p.alive) continue;
 
-      // Skip drawing when fully invisible
-      if (globalAlpha > 0.001) {
-        const particles = particlesRef.current;
+        p.progress += SPEED;
 
-        for (let i = 0; i < particles.length; i++) {
-          const p = particles[i];
-
-          // Advance at constant speed
-          p.progress += SPEED;
-          if (p.progress >= 1) p.progress -= 1;
-
-          const lane = lanes[p.laneIndex];
-          if (!lane) continue;
-
-          const pos = catmullRom(lane.waypoints, p.progress);
-          const fade = edgeFade(p.progress);
-          const alpha = fade * 0.55 * globalAlpha;
-
-          if (alpha < 0.005) continue;
-
-          // Glow
-          ctx.beginPath();
-          ctx.arc(pos.x, pos.y, lane.radius * 3, 0, Math.PI * 2);
-          ctx.fillStyle = lane.color;
-          ctx.globalAlpha = alpha * 0.15;
-          ctx.fill();
-
-          // Core
-          ctx.beginPath();
-          ctx.arc(pos.x, pos.y, lane.radius, 0, Math.PI * 2);
-          ctx.fillStyle = lane.color;
-          ctx.globalAlpha = alpha;
-          ctx.fill();
+        if (p.progress >= 1) {
+          if (active) {
+            p.progress -= 1; // continuous loop
+          } else {
+            p.alive = false; // drain out naturally
+            continue;
+          }
         }
 
-        ctx.globalAlpha = 1;
+        // Hasn't entered the path yet (staggered start)
+        if (p.progress < 0) continue;
+
+        const lane = lanes[p.laneIndex];
+        if (!lane) continue;
+
+        const pos = catmullRom(lane.waypoints, p.progress);
+        const fade = edgeFade(p.progress);
+        const alpha = fade * 0.55;
+
+        if (alpha < 0.005) continue;
+
+        // Glow
+        ctx.beginPath();
+        ctx.arc(pos.x, pos.y, lane.radius * 3, 0, Math.PI * 2);
+        ctx.fillStyle = lane.color;
+        ctx.globalAlpha = alpha * 0.15;
+        ctx.fill();
+
+        // Core
+        ctx.beginPath();
+        ctx.arc(pos.x, pos.y, lane.radius, 0, Math.PI * 2);
+        ctx.fillStyle = lane.color;
+        ctx.globalAlpha = alpha;
+        ctx.fill();
       }
+
+      ctx.globalAlpha = 1;
 
       rafRef.current = requestAnimationFrame(draw);
     }
