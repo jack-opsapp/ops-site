@@ -45,7 +45,7 @@ interface SLine {
   dy: number;
   dz: number;
   baseOpacity: number;
-  hasNodes: boolean;
+  hasNode: boolean;
   /** Furthest node distance, or decorative length for bare lines */
   endDistance: number;
   nodes: SNode[];
@@ -92,31 +92,37 @@ function generateScene(): SLine[] {
     const dy = Math.sin(phi) * Math.sin(theta);
     const dz = Math.cos(phi);
 
-    const baseOpacity = 0.12 + Math.random() * 0.14;
-    const hasNodes = Math.random() < 0.4;
+    const baseOpacity = 0.18 + Math.random() * 0.16;
+    const hasNode = Math.random() < 0.35;
     const nodes: SNode[] = [];
     let endDistance = 0;
 
-    if (hasNodes) {
-      const count = 1 + Math.floor(Math.random() * 3); // 1–3
-      for (let j = 0; j < count; j++) {
-        const d = 0.25 + Math.random() * 0.65;
-        if (d > endDistance) endDistance = d;
-        nodes.push({
-          dx, dy, dz,
-          distance: d,
-          size: 4 + Math.random() * 3,
-          text: QUOTES[Math.floor(Math.random() * QUOTES.length)],
-          screenX: 0,
-          screenY: 0,
-          depth: 0,
-        });
-      }
+    if (hasNode) {
+      const d = 0.3 + Math.random() * 0.6;
+      endDistance = d;
+      // Give node its own unique direction — small angular offset from parent line
+      const jitter = 0.08;
+      let ndx = dx + (Math.random() - 0.5) * jitter;
+      let ndy = dy + (Math.random() - 0.5) * jitter;
+      let ndz = dz + (Math.random() - 0.5) * jitter;
+      // Re-normalize to unit vector
+      const len = Math.sqrt(ndx * ndx + ndy * ndy + ndz * ndz);
+      ndx /= len; ndy /= len; ndz /= len;
+
+      nodes.push({
+        dx: ndx, dy: ndy, dz: ndz,
+        distance: d,
+        size: 4 + Math.random() * 3,
+        text: QUOTES[Math.floor(Math.random() * QUOTES.length)],
+        screenX: 0,
+        screenY: 0,
+        depth: 0,
+      });
     } else {
       endDistance = 0.3 + Math.random() * 0.2;
     }
 
-    lines.push({ dx, dy, dz, baseOpacity, hasNodes, endDistance, nodes });
+    lines.push({ dx, dy, dz, baseOpacity, hasNode, endDistance, nodes });
   }
 
   return lines;
@@ -241,7 +247,7 @@ export default function StarburstCanvas({ className }: StarburstCanvasProps) {
       const h = parseFloat(canvas.style.height) || canvas.height;
       const cx = w / 2;
       const cy = h / 2;
-      const radius = Math.min(w, h) * 0.42;
+      const radius = Math.min(w, h) * 0.48;
       const mouse = mouseRef.current;
 
       ctx.clearRect(0, 0, w, h);
@@ -327,7 +333,7 @@ export default function StarburstCanvas({ className }: StarburstCanvasProps) {
         c.depthNorm = (c.raw.z / maxZ + 1) / 2;
         c.lineColor = lerpColor(GREY, ACCENT, c.depthNorm);
         c.lineOpacity = c.line.baseOpacity * (0.5 + c.depthNorm * 0.5);
-        c.lineWidth = c.line.hasNodes
+        c.lineWidth = c.line.hasNode
           ? (0.5 + c.depthNorm * 0.8)
           : (0.3 + c.depthNorm * 0.4);
 
