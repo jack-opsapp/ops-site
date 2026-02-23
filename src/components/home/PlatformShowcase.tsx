@@ -1,10 +1,11 @@
 /**
- * PlatformShowcase — Section with 3 alternating PhoneWireframeCards
+ * PlatformShowcase — Section with 3 alternating DeviceShowcaseCards
+ * Phone (scheduling), Laptop (projects), Tablet (team)
  * Server component wrapper, delegates interactivity to client children
  */
 
 import { SectionLabel, FadeInUp } from '@/components/ui';
-import PhoneWireframeCard from '@/components/home/PhoneWireframeCard';
+import DeviceShowcaseCard from '@/components/home/DeviceShowcaseCard';
 
 const cards = [
   {
@@ -14,6 +15,7 @@ const cards = [
     ctaText: 'SEE SCHEDULING',
     ctaHref: '/platform',
     variant: 'scheduling' as const,
+    device: 'phone' as const,
     direction: 'left' as const,
   },
   {
@@ -23,6 +25,7 @@ const cards = [
     ctaText: 'SEE PROJECTS',
     ctaHref: '/platform',
     variant: 'projects' as const,
+    device: 'laptop' as const,
     direction: 'right' as const,
   },
   {
@@ -32,6 +35,7 @@ const cards = [
     ctaText: 'SEE TEAM',
     ctaHref: '/platform',
     variant: 'team' as const,
+    device: 'tablet' as const,
     direction: 'left' as const,
   },
 ] as const;
@@ -52,13 +56,14 @@ export default function PlatformShowcase() {
         <div className="mt-20 md:mt-28 space-y-24 md:space-y-32">
           {cards.map((card, i) => (
             <FadeInUp key={card.variant} delay={i * 0.15}>
-              <PhoneWireframeCard
+              <DeviceShowcaseCard
                 label={card.label}
                 heading={card.heading}
                 body={card.body}
                 ctaText={card.ctaText}
                 ctaHref={card.ctaHref}
                 variant={card.variant}
+                device={card.device}
                 direction={card.direction}
               />
             </FadeInUp>
