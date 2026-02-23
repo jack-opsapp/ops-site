@@ -26,7 +26,7 @@ interface DataFunnelProps {
 
 /* ─── Colors ─── */
 const BLUE = '#597794';
-const ORANGE = '#D4622B';
+const ORANGE = '#B8764A';
 const WHITE = '#F5F5F5';
 
 /* ─── Constants ─── */
@@ -377,14 +377,7 @@ export default function DataFunnel({ device, isActive }: DataFunnelProps) {
         const color = getColor(lane, p.progress);
         const r = lane.radius * p.radiusMul;
 
-        // Glow
-        ctx.beginPath();
-        ctx.arc(drawX, drawY, r * 3, 0, Math.PI * 2);
-        ctx.fillStyle = color;
-        ctx.globalAlpha = alpha * 0.15;
-        ctx.fill();
-
-        // Core
+        // Core (no glow)
         ctx.beginPath();
         ctx.arc(drawX, drawY, r, 0, Math.PI * 2);
         ctx.fillStyle = color;
