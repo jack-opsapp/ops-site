@@ -66,7 +66,7 @@ const QUOTES = [
   'RUN YOUR OPERATION',
 ];
 
-const LINE_COUNT = 42;
+const LINE_COUNT = 126;
 const ROTATION_PERIOD_S = 90;
 const HOVER_RADIUS = 22;
 const TILT_ANGLE = 0.30; // ~17 degrees fixed X-axis tilt
@@ -92,7 +92,7 @@ function generateScene(): SLine[] {
     const dy = Math.sin(phi) * Math.sin(theta);
     const dz = Math.cos(phi);
 
-    const baseOpacity = 0.06 + Math.random() * 0.08;
+    const baseOpacity = 0.12 + Math.random() * 0.14;
     const hasNodes = Math.random() < 0.4;
     const nodes: SNode[] = [];
     let endDistance = 0;
@@ -178,6 +178,7 @@ export default function StarburstCanvas({ className }: StarburstCanvasProps) {
   const sceneRef = useRef<SLine[] | null>(null);
   const animRef = useRef<number>(0);
   const mouseRef = useRef({ x: -9999, y: -9999 });
+  const hoveredRef = useRef(false);
 
   const [tooltip, setTooltip] = useState<{
     text: string;
@@ -219,12 +220,17 @@ export default function StarburstCanvas({ className }: StarburstCanvasProps) {
     resize();
     window.addEventListener('resize', resize);
     const lines = sceneRef.current!;
-    let startTime: number | null = null;
+    let prevTimestamp: number | null = null;
+    let yaw = 0;
+    const BASE_ANGULAR_SPEED = (Math.PI * 2) / ROTATION_PERIOD_S;
+    const HOVER_SPEED_FACTOR = 0.15;
 
     function draw(timestamp: number) {
-      if (startTime === null) startTime = timestamp;
-      const elapsed = (timestamp - startTime) / 1000;
-      const yaw = ((elapsed / ROTATION_PERIOD_S) * Math.PI * 2) % (Math.PI * 2);
+      if (prevTimestamp === null) prevTimestamp = timestamp;
+      const dt = (timestamp - prevTimestamp) / 1000;
+      prevTimestamp = timestamp;
+      const speedMul = hoveredRef.current ? HOVER_SPEED_FACTOR : 1;
+      yaw = (yaw + BASE_ANGULAR_SPEED * dt * speedMul) % (Math.PI * 2);
 
       const canvas = canvasRef.current;
       if (!canvas) { animRef.current = requestAnimationFrame(draw); return; }
@@ -320,7 +326,7 @@ export default function StarburstCanvas({ className }: StarburstCanvasProps) {
         c.endSY = p.sy;
         c.depthNorm = (c.raw.z / maxZ + 1) / 2;
         c.lineColor = lerpColor(GREY, ACCENT, c.depthNorm);
-        c.lineOpacity = c.line.baseOpacity * (0.4 + c.depthNorm * 0.6);
+        c.lineOpacity = c.line.baseOpacity * (0.5 + c.depthNorm * 0.5);
         c.lineWidth = c.line.hasNodes
           ? (0.5 + c.depthNorm * 0.8)
           : (0.3 + c.depthNorm * 0.4);
@@ -334,8 +340,8 @@ export default function StarburstCanvas({ className }: StarburstCanvasProps) {
           nd.isFront = nd.raw.z > 0;
           nd.color = lerpColor(GREY, ACCENT, nd.depthNorm);
           nd.opacity = nd.isFront
-            ? lerp(0.15, 0.55, nd.depthNorm)
-            : lerp(0.04, 0.15, nd.depthNorm);
+            ? lerp(0.25, 0.65, nd.depthNorm)
+            : lerp(0.10, 0.25, nd.depthNorm);
 
           nd.node.screenX = nd.sx;
           nd.node.screenY = nd.sy;
@@ -406,7 +412,8 @@ export default function StarburstCanvas({ className }: StarburstCanvasProps) {
         }
       }
 
-      /* ---- Tooltip state ---- */
+      /* ---- Tooltip + rotation slow state ---- */
+      hoveredRef.current = !!hoveredNode;
       if (hoveredNode) {
         setTooltip({
           text: hoveredNode.text,
