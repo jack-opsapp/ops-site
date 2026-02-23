@@ -32,7 +32,7 @@ const WHITE = '#F5F5F5';
 /* ─── Constants ─── */
 const LANE_COUNT = 14;
 const PARTICLES_PER_LANE = 6;
-const BASE_SPEED = 0.003;
+const BASE_SPEED = 0.006;
 const FADE_EDGE = 0.04;
 const SCREEN_START = 0.375;
 const SCREEN_END = 0.625;
@@ -322,15 +322,15 @@ export default function DataFunnel({ device, isActive }: DataFunnelProps) {
       const wasActive = wasActiveRef.current;
       const particles = particlesRef.current;
 
-      // Activation: particles at steady-state spacing, lanes stagger in
-      // Within each lane, particles are already evenly distributed so
-      // spacing is maintained forever (same speed per lane).
+      // Activation: ALL particles start hidden (negative progress).
+      // Spacing = 1/PARTICLES_PER_LANE so they're perfectly even once entered.
+      // Lane delay staggers which lanes fill first for trickle effect.
       if (active && !wasActive) {
         for (let j = 0; j < particles.length; j++) {
           const pt = particles[j];
           const slot = j % PARTICLES_PER_LANE;
-          const laneDelay = pt.laneIndex * 0.04;
-          pt.progress = (slot / PARTICLES_PER_LANE) - laneDelay;
+          const laneDelay = pt.laneIndex * 0.02;
+          pt.progress = -(slot / PARTICLES_PER_LANE) - laneDelay;
           pt.alive = true;
         }
       }
