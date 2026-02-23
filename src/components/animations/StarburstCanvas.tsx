@@ -1,8 +1,11 @@
 /**
  * StarburstCanvas — 3D rotating radial burst with depth-based styling
  *
- * Lines radiate from center with small square nodes. The entire structure
- * rotates in 3D around a tilted Y-axis, creating an orbital effect.
+ * Lines radiate from center in all 3D directions (Fibonacci sphere
+ * distribution) with small square nodes on ~40% of lines. The entire
+ * structure rotates around the Y-axis with a fixed X-axis tilt,
+ * creating a true 3D orbital effect.
+ *
  * Front-hemisphere nodes render in accent color and are hoverable.
  * Back-hemisphere nodes render in grey and are not interactive.
  *
@@ -22,7 +25,10 @@ interface StarburstCanvasProps {
 }
 
 interface SNode {
-  angle: number;
+  /** 3D direction (from parent line) */
+  dx: number;
+  dy: number;
+  dz: number;
   /** Distance from center as fraction of radius (0–1) */
   distance: number;
   size: number;
@@ -34,7 +40,10 @@ interface SNode {
 }
 
 interface SLine {
-  angle: number;
+  /** 3D direction (unit vector on Fibonacci sphere) */
+  dx: number;
+  dy: number;
+  dz: number;
   baseOpacity: number;
   hasNodes: boolean;
   /** Furthest node distance, or decorative length for bare lines */
@@ -72,11 +81,19 @@ const GREY = { r: 68, g: 68, b: 68 };     // #444
 
 function generateScene(): SLine[] {
   const lines: SLine[] = [];
+  const GOLDEN_ANGLE = Math.PI * (1 + Math.sqrt(5));
 
   for (let i = 0; i < LINE_COUNT; i++) {
-    const angle = (i / LINE_COUNT) * Math.PI * 2;
+    // Fibonacci sphere: evenly distributed 3D directions
+    const phi = Math.acos(1 - 2 * (i + 0.5) / LINE_COUNT);
+    const theta = GOLDEN_ANGLE * i;
+
+    const dx = Math.sin(phi) * Math.cos(theta);
+    const dy = Math.sin(phi) * Math.sin(theta);
+    const dz = Math.cos(phi);
+
     const baseOpacity = 0.06 + Math.random() * 0.08;
-    const hasNodes = Math.random() < 0.6;
+    const hasNodes = Math.random() < 0.4;
     const nodes: SNode[] = [];
     let endDistance = 0;
 
@@ -86,7 +103,7 @@ function generateScene(): SLine[] {
         const d = 0.25 + Math.random() * 0.65;
         if (d > endDistance) endDistance = d;
         nodes.push({
-          angle,
+          dx, dy, dz,
           distance: d,
           size: 4 + Math.random() * 3,
           text: QUOTES[Math.floor(Math.random() * QUOTES.length)],
@@ -99,7 +116,7 @@ function generateScene(): SLine[] {
       endDistance = 0.3 + Math.random() * 0.2;
     }
 
-    lines.push({ angle, baseOpacity, hasNodes, endDistance, nodes });
+    lines.push({ dx, dy, dz, baseOpacity, hasNodes, endDistance, nodes });
   }
 
   return lines;
@@ -109,16 +126,16 @@ function generateScene(): SLine[] {
 /*  3D helpers                                                         */
 /* ------------------------------------------------------------------ */
 
-/** Rotate point by yaw (Y-axis, time-varying) then tilt (X-axis, fixed). */
+/** Rotate 3D point by yaw (Y-axis, time-varying) then tilt (X-axis, fixed). */
 function rotate(
-  px: number, py: number,
+  px: number, py: number, pz: number,
   yaw: number, tilt: number,
 ): { x: number; y: number; z: number } {
-  // Y-axis rotation (spins the disc in XZ plane)
-  const x1 = px * Math.cos(yaw);
-  const z1 = -px * Math.sin(yaw);
+  // Y-axis rotation
+  const x1 = px * Math.cos(yaw) + pz * Math.sin(yaw);
+  const z1 = -px * Math.sin(yaw) + pz * Math.cos(yaw);
   const y1 = py;
-  // X-axis tilt (adds orbital wobble)
+  // X-axis tilt
   return {
     x: x1,
     y: y1 * Math.cos(tilt) - z1 * Math.sin(tilt),
@@ -142,7 +159,7 @@ function lerp(a: number, b: number, t: number): number {
 function lerpColor(
   back: { r: number; g: number; b: number },
   front: { r: number; g: number; b: number },
-  t: number, // 0 = back, 1 = front
+  t: number,
 ) {
   return {
     r: Math.round(lerp(back.r, front.r, t)),
@@ -252,20 +269,22 @@ export default function StarburstCanvas({ className }: StarburstCanvasProps) {
       }
 
       const computed: Computed[] = [];
-      // Track max |z| for normalization
       let maxZ = 1;
 
       for (const line of lines) {
-        const ex = Math.cos(line.angle) * radius * line.endDistance;
-        const ey = Math.sin(line.angle) * radius * line.endDistance;
-        const r3 = rotate(ex, ey, yaw, TILT_ANGLE);
+        // 3D endpoint from direction vector
+        const ex = line.dx * radius * line.endDistance;
+        const ey = line.dy * radius * line.endDistance;
+        const ez = line.dz * radius * line.endDistance;
+        const r3 = rotate(ex, ey, ez, yaw, TILT_ANGLE);
         if (Math.abs(r3.z) > maxZ) maxZ = Math.abs(r3.z);
 
         const nodeData: Computed['nodeData'] = [];
         for (const node of line.nodes) {
-          const nx = Math.cos(node.angle) * radius * node.distance;
-          const ny = Math.sin(node.angle) * radius * node.distance;
-          const nr = rotate(nx, ny, yaw, TILT_ANGLE);
+          const nx = node.dx * radius * node.distance;
+          const ny = node.dy * radius * node.distance;
+          const nz = node.dz * radius * node.distance;
+          const nr = rotate(nx, ny, nz, yaw, TILT_ANGLE);
           if (Math.abs(nr.z) > maxZ) maxZ = Math.abs(nr.z);
           nodeData.push({
             node,
@@ -299,7 +318,7 @@ export default function StarburstCanvas({ className }: StarburstCanvasProps) {
         const p = project(c.raw.x, c.raw.y, c.raw.z, cx, cy);
         c.endSX = p.sx;
         c.endSY = p.sy;
-        c.depthNorm = (c.raw.z / maxZ + 1) / 2; // 0 = fully back, 1 = fully front
+        c.depthNorm = (c.raw.z / maxZ + 1) / 2;
         c.lineColor = lerpColor(GREY, ACCENT, c.depthNorm);
         c.lineOpacity = c.line.baseOpacity * (0.4 + c.depthNorm * 0.6);
         c.lineWidth = c.line.hasNodes
@@ -318,7 +337,6 @@ export default function StarburstCanvas({ className }: StarburstCanvasProps) {
             ? lerp(0.15, 0.55, nd.depthNorm)
             : lerp(0.04, 0.15, nd.depthNorm);
 
-          // Update the SNode for tooltip positioning
           nd.node.screenX = nd.sx;
           nd.node.screenY = nd.sy;
           nd.node.depth = nd.raw.z;
@@ -350,7 +368,6 @@ export default function StarburstCanvas({ className }: StarburstCanvasProps) {
       for (const c of computed) {
         const { r, g, b } = c.lineColor;
 
-        // Draw line from center to endpoint
         ctx.beginPath();
         ctx.moveTo(cx, cy);
         ctx.lineTo(c.endSX, c.endSY);
@@ -358,7 +375,6 @@ export default function StarburstCanvas({ className }: StarburstCanvasProps) {
         ctx.lineWidth = c.lineWidth;
         ctx.stroke();
 
-        // Sort nodes on this line back-to-front too
         c.nodeData.sort((a, b) => a.depth - b.depth);
 
         for (const nd of c.nodeData) {
@@ -375,7 +391,6 @@ export default function StarburstCanvas({ className }: StarburstCanvasProps) {
             drawSize,
           );
 
-          // Subtle glow on hovered node
           if (isHovered) {
             ctx.shadowColor = `rgba(${ACCENT.r}, ${ACCENT.g}, ${ACCENT.b}, 0.4)`;
             ctx.shadowBlur = 12;
