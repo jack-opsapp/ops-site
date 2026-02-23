@@ -1,11 +1,14 @@
 /**
  * DataFunnel — Organized particle streams that converge through a device
- * screen and exit as two color-separated streams (blue + orange).
+ * screen and exit as two color-separated streams.
  *
- * Design: Lane-based flow at constant velocity. Particles travel in organized
- * channels that funnel tight through the screen, then diverge cleanly.
- * Blue and orange are mixed on entry, sorted on exit — metaphor for OPS
- * taking chaotic data and organizing it.
+ * Color transformations per device:
+ *   Phone (R→L):  blue+orange in → blue stays, orange→white through screen
+ *   Laptop (T→B): all white in → blue+orange out through screen
+ *   Tablet (R→L): blue+orange in → blue→white through screen, orange stays
+ *
+ * Particle variability: per-particle size, speed, and perpendicular offset
+ * create a layered "overlaid flows" effect.
  *
  * Canvas-based for 60fps. Retina-aware. Reduced motion support.
  */
@@ -24,12 +27,15 @@ interface DataFunnelProps {
 /* ─── Colors ─── */
 const BLUE = '#597794';
 const ORANGE = '#D4622B';
+const WHITE = '#F5F5F5';
 
 /* ─── Constants ─── */
 const LANE_COUNT = 14;
 const PARTICLES_PER_LANE = 6;
-const SPEED = 0.003; // progress per frame — full cycle ≈ 5.5s at 60fps
-const FADE_EDGE = 0.04; // fraction of path for edge fade
+const BASE_SPEED = 0.003;
+const FADE_EDGE = 0.04;
+const SCREEN_START = 0.375;
+const SCREEN_END = 0.625;
 
 /* ─── Seeded PRNG ─── */
 function seededRandom(seed: number) {
@@ -38,6 +44,12 @@ function seededRandom(seed: number) {
     s = (s * 16807 + 0) % 2147483647;
     return (s - 1) / 2147483646;
   };
+}
+
+/* ─── Color utilities ─── */
+function hexToRgb(hex: string): [number, number, number] {
+  const n = parseInt(hex.slice(1), 16);
+  return [(n >> 16) & 255, (n >> 8) & 255, n & 255];
 }
 
 /* ─── Catmull-Rom spline interpolation ─── */
@@ -67,45 +79,67 @@ function catmullRom(
 /* ─── Lane definition ─── */
 interface Lane {
   waypoints: { x: number; y: number }[];
-  color: string;
+  entryRgb: [number, number, number];
+  exitRgb: [number, number, number];
+  sameColor: boolean;
   radius: number;
 }
 
+/* ─── Get interpolated color at progress ─── */
+function getColor(lane: Lane, progress: number): string {
+  const [er, eg, eb] = lane.entryRgb;
+  if (lane.sameColor) return `rgb(${er},${eg},${eb})`;
+  if (progress <= SCREEN_START) return `rgb(${er},${eg},${eb})`;
+  const [xr, xg, xb] = lane.exitRgb;
+  if (progress >= SCREEN_END) return `rgb(${xr},${xg},${xb})`;
+  const t = (progress - SCREEN_START) / (SCREEN_END - SCREEN_START);
+  return `rgb(${Math.round(er + (xr - er) * t)},${Math.round(eg + (xg - eg) * t)},${Math.round(eb + (xb - eb) * t)})`;
+}
+
 /**
- * Generate organized lane paths in normalized [0,1] coordinates.
- * All lanes converge through the screen center, then diverge into
- * two color-separated streams.
+ * Generate lane paths. ~64% blue lanes (9/14), ~36% orange (5/14).
+ * Interleaved: every 3rd lane is orange.
  */
 function generateLanes(device: DeviceType, cw: number, ch: number): Lane[] {
   const seed = device === 'phone' ? 42 : device === 'laptop' ? 99 : 77;
   const rand = seededRandom(seed);
   const lanes: Lane[] = [];
 
+  const isBlue = (i: number) => i % 3 !== 1;
+
   if (device === 'phone' || device === 'tablet') {
-    // ── Horizontal flow ──
-    const reversed = device === 'tablet'; // tablet: right→left
+    // ── Horizontal flow: right → left ──
     const screenCY = 0.5;
-    const tightBand = 0.04; // how tight the stream is through the screen
+    const tightBand = 0.04;
 
     for (let i = 0; i < LANE_COUNT; i++) {
-      const isBlue = i % 2 === 0;
-      const color = isBlue ? BLUE : ORANGE;
+      const blue = isBlue(i);
       const radius = 1.5 + rand() * 0.8;
 
-      // Entry: evenly spread, both colors interleaved
+      // Color logic per device
+      let entryHex: string;
+      let exitHex: string;
+      if (device === 'phone') {
+        entryHex = blue ? BLUE : ORANGE;
+        exitHex = blue ? BLUE : WHITE;
+      } else {
+        entryHex = blue ? BLUE : ORANGE;
+        exitHex = blue ? WHITE : ORANGE;
+      }
+
+      const entryRgb = hexToRgb(entryHex);
+      const exitRgb = hexToRgb(exitHex);
+      const sameColor = entryHex === exitHex;
+
       const entryY = 0.08 + (i / (LANE_COUNT - 1)) * 0.84;
-
-      // Through screen: tight center band
       const screenY = screenCY - tightBand + rand() * tightBand * 2;
-
-      // Exit: symmetric about 0.5 center axis
       const separation = 0.12 + rand() * 0.18;
-      const exitY = isBlue ? 0.5 - separation : 0.5 + separation;
+      const exitY = blue ? 0.5 - separation : 0.5 + separation;
       const farSeparation = 0.25 + rand() * 0.2;
-      const farY = isBlue ? 0.5 - farSeparation : 0.5 + farSeparation;
+      const farY = blue ? 0.5 - farSeparation : 0.5 + farSeparation;
 
-      // Build waypoints (left→right for phone, right→left for tablet)
-      const xStops = [0.0, 0.12, 0.26, 0.38, 0.50, 0.62, 0.74, 0.88, 1.0];
+      // Right→left: x descends from 1 to 0
+      const xStops = [1.0, 0.88, 0.74, 0.62, 0.50, 0.38, 0.26, 0.12, 0.0];
       const yStops = [
         entryY,
         entryY * 0.75 + screenY * 0.25,
@@ -119,28 +153,31 @@ function generateLanes(device: DeviceType, cw: number, ch: number): Lane[] {
       ];
 
       const waypoints = xStops.map((x, j) => ({
-        x: (reversed ? 1 - x : x) * cw,
+        x: x * cw,
         y: yStops[j] * ch,
       }));
 
-      lanes.push({ waypoints, color, radius });
+      lanes.push({ waypoints, entryRgb, exitRgb, sameColor, radius });
     }
   } else {
-    // ── Laptop: vertical flow (top→bottom) ──
+    // ── Laptop: vertical flow (top → bottom) ──
+    // All white entry → blue/orange exit
     const screenCX = 0.5;
     const tightBand = 0.04;
 
     for (let i = 0; i < LANE_COUNT; i++) {
-      const isBlue = i % 2 === 0;
-      const color = isBlue ? BLUE : ORANGE;
+      const blue = isBlue(i);
       const radius = 1.5 + rand() * 0.8;
+
+      const entryRgb = hexToRgb(WHITE);
+      const exitRgb = hexToRgb(blue ? BLUE : ORANGE);
 
       const entryX = 0.08 + (i / (LANE_COUNT - 1)) * 0.84;
       const screenX = screenCX - tightBand + rand() * tightBand * 2;
       const separation = 0.12 + rand() * 0.18;
-      const exitX = isBlue ? 0.5 - separation : 0.5 + separation;
+      const exitX = blue ? 0.5 - separation : 0.5 + separation;
       const farSeparation = 0.25 + rand() * 0.2;
-      const farX = isBlue ? 0.5 - farSeparation : 0.5 + farSeparation;
+      const farX = blue ? 0.5 - farSeparation : 0.5 + farSeparation;
 
       const yStops = [0.0, 0.12, 0.26, 0.38, 0.50, 0.62, 0.74, 0.88, 1.0];
       const xStops = [
@@ -160,28 +197,32 @@ function generateLanes(device: DeviceType, cw: number, ch: number): Lane[] {
         y: y * ch,
       }));
 
-      lanes.push({ waypoints, color, radius });
+      lanes.push({ waypoints, entryRgb, exitRgb, sameColor: false, radius });
     }
   }
 
   return lanes;
 }
 
-/* ─── Edge fade: smooth fade in/out at path ends ─── */
+/* ─── Edge fade ─── */
 function edgeFade(t: number): number {
   if (t < FADE_EDGE) return t / FADE_EDGE;
   if (t > 1 - FADE_EDGE) return (1 - t) / FADE_EDGE;
   return 1.0;
 }
 
-/* ─── Pre-populated particle set ─── */
+/* ─── Particle with variability ─── */
 interface Particle {
   laneIndex: number;
   progress: number;
   alive: boolean;
+  radiusMul: number;
+  speedMul: number;
+  offset: number;
 }
 
-function createParticles(laneCount: number): Particle[] {
+function createParticles(laneCount: number, seed: number): Particle[] {
+  const rand = seededRandom(seed + 1000);
   const particles: Particle[] = [];
   for (let l = 0; l < laneCount; l++) {
     for (let p = 0; p < PARTICLES_PER_LANE; p++) {
@@ -189,13 +230,16 @@ function createParticles(laneCount: number): Particle[] {
         laneIndex: l,
         progress: p / PARTICLES_PER_LANE,
         alive: false,
+        radiusMul: 0.6 + rand() * 0.8,
+        speedMul: 0.75 + rand() * 0.5,
+        offset: (rand() - 0.5) * 10,
       });
     }
   }
   return particles;
 }
 
-/* ─── Inset config: how far canvas extends beyond device ─── */
+/* ─── Inset config ─── */
 const insetConfig: Record<DeviceType, string> = {
   phone: '-250px -500px',
   laptop: '-250px -400px',
@@ -214,7 +258,6 @@ export default function DataFunnel({ device, isActive }: DataFunnelProps) {
   const isActiveRef = useRef(isActive);
   isActiveRef.current = isActive;
 
-  // Reduced motion check
   useEffect(() => {
     const mq = window.matchMedia('(prefers-reduced-motion: reduce)');
     setReducedMotion(mq.matches);
@@ -223,7 +266,6 @@ export default function DataFunnel({ device, isActive }: DataFunnelProps) {
     return () => mq.removeEventListener('change', handler);
   }, []);
 
-  // ResizeObserver for container dimensions
   useEffect(() => {
     const el = containerRef.current;
     if (!el) return;
@@ -235,18 +277,16 @@ export default function DataFunnel({ device, isActive }: DataFunnelProps) {
     return () => ro.disconnect();
   }, []);
 
-  // Generate lanes
   const lanes = useMemo(
     () => generateLanes(device, dims.w, dims.h),
     [device, dims.w, dims.h],
   );
 
-  // Initialize particles
   useEffect(() => {
-    particlesRef.current = createParticles(lanes.length);
-  }, [lanes]);
+    const seed = device === 'phone' ? 42 : device === 'laptop' ? 99 : 77;
+    particlesRef.current = createParticles(lanes.length, seed);
+  }, [lanes, device]);
 
-  // Animation loop
   useEffect(() => {
     if (reducedMotion) return;
 
@@ -264,7 +304,6 @@ export default function DataFunnel({ device, isActive }: DataFunnelProps) {
       const w = dims.w;
       const h = dims.h;
 
-      // Ensure canvas buffer matches container
       const bw = Math.round(w * dpr);
       const bh = Math.round(h * dpr);
       if (canvas.width !== bw || canvas.height !== bh) {
@@ -279,14 +318,13 @@ export default function DataFunnel({ device, isActive }: DataFunnelProps) {
       const wasActive = wasActiveRef.current;
       const particles = particlesRef.current;
 
-      // Activation edge: place particles at steady-state positions instantly
-      // Per-lane phase offset (irrational fraction) prevents lanes from syncing
+      // Activation: trickle in with stagger + per-lane desync
       if (active && !wasActive) {
         for (let j = 0; j < particles.length; j++) {
           const pt = particles[j];
           const slot = j % PARTICLES_PER_LANE;
-          const lanePhase = pt.laneIndex * 0.0618; // golden-ratio-ish offset per lane
-          pt.progress = ((slot / PARTICLES_PER_LANE) + lanePhase) % 1;
+          const lanePhase = pt.laneIndex * 0.0618;
+          pt.progress = -((slot / PARTICLES_PER_LANE) * 0.15 + lanePhase * 0.2);
           pt.alive = true;
         }
       }
@@ -296,46 +334,54 @@ export default function DataFunnel({ device, isActive }: DataFunnelProps) {
         const p = particles[i];
         if (!p.alive) continue;
 
-        p.progress += SPEED;
+        p.progress += BASE_SPEED * p.speedMul;
 
         if (p.progress >= 1) {
           if (active) {
-            p.progress -= 1; // continuous loop
+            p.progress -= 1;
           } else {
-            p.alive = false; // drain out naturally
+            p.alive = false;
             continue;
           }
         }
 
-        // Hasn't entered the path yet (staggered start)
         if (p.progress < 0) continue;
 
         const lane = lanes[p.laneIndex];
         if (!lane) continue;
 
+        // Position on spline + perpendicular offset
         const pos = catmullRom(lane.waypoints, p.progress);
+        const nextPos = catmullRom(lane.waypoints, Math.min(0.999, p.progress + 0.02));
+        const dx = nextPos.x - pos.x;
+        const dy = nextPos.y - pos.y;
+        const len = Math.sqrt(dx * dx + dy * dy) || 1;
+        const drawX = pos.x + p.offset * (-dy / len);
+        const drawY = pos.y + p.offset * (dx / len);
+
         const fade = edgeFade(p.progress);
         const alpha = fade * 0.55;
-
         if (alpha < 0.005) continue;
+
+        const color = getColor(lane, p.progress);
+        const r = lane.radius * p.radiusMul;
 
         // Glow
         ctx.beginPath();
-        ctx.arc(pos.x, pos.y, lane.radius * 3, 0, Math.PI * 2);
-        ctx.fillStyle = lane.color;
+        ctx.arc(drawX, drawY, r * 3, 0, Math.PI * 2);
+        ctx.fillStyle = color;
         ctx.globalAlpha = alpha * 0.15;
         ctx.fill();
 
         // Core
         ctx.beginPath();
-        ctx.arc(pos.x, pos.y, lane.radius, 0, Math.PI * 2);
-        ctx.fillStyle = lane.color;
+        ctx.arc(drawX, drawY, r, 0, Math.PI * 2);
+        ctx.fillStyle = color;
         ctx.globalAlpha = alpha;
         ctx.fill();
       }
 
       ctx.globalAlpha = 1;
-
       rafRef.current = requestAnimationFrame(draw);
     }
 
