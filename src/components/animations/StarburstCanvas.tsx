@@ -66,7 +66,7 @@ const QUOTES = [
   'RUN YOUR OPERATION',
 ];
 
-const LINE_COUNT = 126;
+const LINE_COUNT = 220;
 const ROTATION_PERIOD_S = 90;
 const HOVER_RADIUS = 22;
 const TILT_ANGLE = 0.30; // ~17 degrees fixed X-axis tilt
