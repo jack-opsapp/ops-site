@@ -304,7 +304,7 @@ export default function SituationalGrid({
 
       const hoverIdx = getHoveredIndex(mousePos.x, mousePos.y, nodePositions);
       hoveredRef.current = hoverIdx;
-      canvas.style.cursor = (hoverIdx >= 0 && selected < 0) ? 'pointer' : 'default';
+      canvas.style.cursor = (hoverIdx >= 0) ? 'pointer' : 'default';
 
       /* ---- Update target angles based on hover (only if no selection) ---- */
 
@@ -360,8 +360,9 @@ export default function SituationalGrid({
       for (let i = 0; i < Math.min(4, options.length); i++) {
         const pos = nodePositions[i];
         const isSelected = selected === i;
-        const isHovered = hoverIdx === i && selected < 0;
+        const isHovered = hoverIdx === i;
         const hasSelection = selected >= 0;
+        const isHoveredWhileSelected = isHovered && hasSelection && !isSelected;
 
         let nodeSize: number;
         let nodeAlpha: number;
@@ -371,7 +372,12 @@ export default function SituationalGrid({
           nodeColor = ACCENT;
           nodeSize = 12;
           nodeAlpha = 0.9;
-        } else if (isHovered) {
+        } else if (isHoveredWhileSelected) {
+          // Hovered non-selected node while another is selected: subtle glow
+          nodeColor = ACCENT;
+          nodeSize = 6;
+          nodeAlpha = 0.35;
+        } else if (isHovered && !hasSelection) {
           nodeColor = ACCENT;
           nodeSize = 9;
           nodeAlpha = 0.65;
@@ -386,7 +392,7 @@ export default function SituationalGrid({
         }
 
         // Ray from center to node
-        const rayAlpha = isSelected ? 0.6 : isHovered ? 0.35 : hasSelection ? 0.06 : 0.25;
+        const rayAlpha = isSelected ? 0.6 : (isHovered && !hasSelection) ? 0.35 : isHoveredWhileSelected ? 0.12 : hasSelection ? 0.06 : 0.25;
 
         if (isSelected) {
           ctx.shadowColor = `rgba(${ACCENT.r}, ${ACCENT.g}, ${ACCENT.b}, 0.6)`;
@@ -409,9 +415,9 @@ export default function SituationalGrid({
         ctx.shadowBlur = 0;
 
         // Node glow
-        if (isSelected) {
-          ctx.shadowColor = `rgba(${ACCENT.r}, ${ACCENT.g}, ${ACCENT.b}, 0.5)`;
-          ctx.shadowBlur = 14;
+        if (isSelected || isHoveredWhileSelected) {
+          ctx.shadowColor = `rgba(${ACCENT.r}, ${ACCENT.g}, ${ACCENT.b}, ${isSelected ? 0.5 : 0.3})`;
+          ctx.shadowBlur = isSelected ? 14 : 8;
         }
 
         // Draw node square
@@ -423,7 +429,7 @@ export default function SituationalGrid({
           nodeSize,
         );
 
-        if (isSelected) {
+        if (isSelected || isHoveredWhileSelected) {
           ctx.shadowColor = 'transparent';
           ctx.shadowBlur = 0;
         }
@@ -434,7 +440,7 @@ export default function SituationalGrid({
         const sin = Math.sin(currentAngles[i]);
         const labelIsBlue = isSelected || isHovered;
 
-        const textAlpha = isSelected ? 0.85 : isHovered ? 0.60 : hasSelection ? 0.18 : 0.50;
+        const textAlpha = isSelected ? 0.85 : isHoveredWhileSelected ? 0.45 : (isHovered && !hasSelection) ? 0.60 : hasSelection ? 0.18 : 0.50;
         ctx.font = '400 11px "Kosugi", sans-serif';
         ctx.fillStyle = `rgba(${labelIsBlue ? ACCENT.r : 200}, ${labelIsBlue ? ACCENT.g : 200}, ${labelIsBlue ? ACCENT.b : 200}, ${textAlpha})`;
 
