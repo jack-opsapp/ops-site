@@ -41,6 +41,7 @@ const BG_LINE_COUNT = 60;
 const HIT_RADIUS = 28;
 const PROXIMITY_THRESHOLD = 0.2; // radians
 const PI2 = Math.PI * 2;
+const CANVAS_HEIGHT = 320;
 
 // Slightly organic cardinal positions
 const BASE_ANGLES = [
@@ -117,12 +118,11 @@ export default function SituationalGrid({
     if (!canvas || !container) return;
     const dpr = window.devicePixelRatio || 1;
     const rect = container.getBoundingClientRect();
-    // Canvas takes upper portion
-    const canvasHeight = rect.height;
+    // Only read width from container; height is fixed to prevent resize loop
     canvas.width = rect.width * dpr;
-    canvas.height = canvasHeight * dpr;
+    canvas.height = CANVAS_HEIGHT * dpr;
     canvas.style.width = `${rect.width}px`;
-    canvas.style.height = `${canvasHeight}px`;
+    canvas.style.height = `${CANVAS_HEIGHT}px`;
     const ctx = canvas.getContext('2d');
     if (ctx) ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
   }, []);
