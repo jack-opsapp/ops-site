@@ -101,6 +101,8 @@ export default function SituationalGrid({
   const currentAnglesRef = useRef<number[]>([...BASE_ANGLES]);
   // Target angles for each node
   const targetAnglesRef = useRef<number[]>([...BASE_ANGLES]);
+  // Animated per-node radius multipliers (selected elongates, others shrink)
+  const nodeRadiiRef = useRef<number[]>([1, 1, 1, 1]);
 
   const [selectedKey, setSelectedKey] = useState<string | null>(null);
 
@@ -207,9 +209,9 @@ export default function SituationalGrid({
           const isAdjacent = diff === 1 || diff === 3;
 
           if (isAdjacent) {
-            // Adjacent nodes compress toward selected at +/- PI/3
+            // Adjacent nodes pushed away to +/- 2PI/3
             const sign = wrapAngleDelta(BASE_ANGLES[i], selAngle) > 0 ? 1 : -1;
-            targets[i] = selAngle + sign * (Math.PI / 3);
+            targets[i] = selAngle + sign * (Math.PI * 2 / 3);
           } else if (isOpposite) {
             targets[i] = selAngle + Math.PI;
           }
@@ -272,7 +274,7 @@ export default function SituationalGrid({
 
           if (isAdjacent) {
             const sign = wrapAngleDelta(BASE_ANGLES[i], selAngle) > 0 ? 1 : -1;
-            targets[i] = selAngle + sign * (Math.PI / 3);
+            targets[i] = selAngle + sign * (Math.PI * 2 / 3);
           } else if (isOpposite) {
             targets[i] = selAngle + Math.PI;
           }
@@ -321,10 +323,19 @@ export default function SituationalGrid({
         currentAngles[i] += delta * 0.06;
       }
 
-      // Compute node screen positions from current angles
-      const nodePositions = currentAngles.map((angle) => ({
-        x: cx + Math.cos(angle) * radius,
-        y: cy + Math.sin(angle) * radius,
+      // Lerp per-node radii (selected elongates, others shrink slightly)
+      const radii = nodeRadiiRef.current;
+      for (let i = 0; i < 4; i++) {
+        const target = selected >= 0
+          ? (selected === i ? 1.15 : 0.92)
+          : 1.0;
+        radii[i] += (target - radii[i]) * 0.06;
+      }
+
+      // Compute node screen positions from current angles and radii
+      const nodePositions = currentAngles.map((angle, i) => ({
+        x: cx + Math.cos(angle) * radius * radii[i],
+        y: cy + Math.sin(angle) * radius * radii[i],
       }));
 
       // Mouse angle from center
@@ -433,13 +444,29 @@ export default function SituationalGrid({
         }
 
         // Ray from center to node
-        const rayAlpha = isSelected ? 0.5 : isHovered ? 0.3 : hasSelection ? 0.06 : 0.12;
+        const rayAlpha = isSelected ? 0.6 : isHovered ? 0.3 : hasSelection ? 0.06 : 0.12;
+
+        // Selected ray glow
+        if (isSelected) {
+          ctx.shadowColor = `rgba(${ACCENT.r}, ${ACCENT.g}, ${ACCENT.b}, 0.6)`;
+          ctx.shadowBlur = 18;
+        }
+
         ctx.beginPath();
         ctx.moveTo(cx, cy);
         ctx.lineTo(pos.x, pos.y);
         ctx.strokeStyle = `rgba(${nodeColor.r}, ${nodeColor.g}, ${nodeColor.b}, ${rayAlpha})`;
-        ctx.lineWidth = isSelected ? 1.2 : 0.6;
+        ctx.lineWidth = isSelected ? 1.5 : 0.6;
         ctx.stroke();
+
+        if (isSelected) {
+          // Double-stroke for stronger glow
+          ctx.stroke();
+        }
+
+        // Reset shadow before node draw, then re-apply for node glow
+        ctx.shadowColor = 'transparent';
+        ctx.shadowBlur = 0;
 
         // Selected node glow
         if (isSelected) {
@@ -460,18 +487,30 @@ export default function SituationalGrid({
           ctx.shadowBlur = 0;
         }
 
-        // Key label near node
-        const labelAlpha = isSelected ? 0.9 : isHovered ? 0.7 : hasSelection ? 0.15 : 0.5;
+        // Key label near node — always visible, glows blue when node is blue
+        const labelAlpha = isSelected ? 0.95 : isHovered ? 0.75 : hasSelection ? 0.40 : 0.55;
+        const labelIsBlue = isSelected || isHovered;
         ctx.font = '600 11px "Mohave", sans-serif';
         ctx.textAlign = 'center';
         ctx.textBaseline = 'middle';
-        ctx.fillStyle = `rgba(${isSelected || isHovered ? ACCENT.r : 255}, ${isSelected || isHovered ? ACCENT.g : 255}, ${isSelected || isHovered ? ACCENT.b : 255}, ${labelAlpha})`;
 
-        // Position label slightly beyond node
-        const labelDist = radius + 20;
+        if (isSelected) {
+          ctx.shadowColor = `rgba(${ACCENT.r}, ${ACCENT.g}, ${ACCENT.b}, 0.4)`;
+          ctx.shadowBlur = 10;
+        }
+
+        ctx.fillStyle = `rgba(${labelIsBlue ? ACCENT.r : 255}, ${labelIsBlue ? ACCENT.g : 255}, ${labelIsBlue ? ACCENT.b : 255}, ${labelAlpha})`;
+
+        // Position label slightly beyond node (using per-node radius)
+        const labelDist = radius * radii[i] + 20;
         const labelX = cx + Math.cos(currentAngles[i]) * labelDist;
         const labelY = cy + Math.sin(currentAngles[i]) * labelDist;
         ctx.fillText(options[i].key.toUpperCase(), labelX, labelY);
+
+        if (isSelected) {
+          ctx.shadowColor = 'transparent';
+          ctx.shadowBlur = 0;
+        }
       }
 
       /* ---- Center point ---- */
