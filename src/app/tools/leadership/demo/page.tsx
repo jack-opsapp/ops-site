@@ -15,7 +15,7 @@ import ForcedChoiceFork from '@/components/assessment/ForcedChoiceFork';
 import ChunkTransition from '@/components/assessment/ChunkTransition';
 import GeneratingState from '@/components/assessment/GeneratingState';
 import LeadershipSphere from '@/components/assessment/LeadershipSphere';
-import type { SimpleScores, DimensionSubScores } from '@/lib/assessment/types';
+import type { Dimension, SimpleScores, DimensionSubScores } from '@/lib/assessment/types';
 
 /* ------------------------------------------------------------------ */
 /*  Placeholder container for components not yet built                  */
@@ -90,6 +90,15 @@ const MOCK_SUB_SCORES: DimensionSubScores = {
     { label: 'Transparency', score: 85 },
     { label: 'Ethics', score: 89 },
   ],
+};
+
+const MOCK_DESCRIPTIONS: Record<Dimension, string> = {
+  drive: 'Your Drive score reflects strong initiative (82) and ambition (80), with a steady sense of urgency (71). You consistently push toward goals and take ownership of outcomes without waiting to be asked.',
+  resilience: 'Resilience shows room for growth. Your composure under pressure (70) is solid, but recovery from setbacks (60) could strengthen. Building deliberate recovery routines will help you bounce back faster.',
+  vision: 'Vision is a clear strength. Strategic thinking (85) and innovation (83) are both high, supported by strong foresight (78). You naturally see the bigger picture and connect emerging trends to long-term opportunity.',
+  connection: 'Connection scores show genuine empathy (75) balanced with developing trust-building skills (67). Deepening trust through consistent follow-through will amplify your natural ability to read and relate to others.',
+  adaptability: 'Adaptability is your most significant growth area. Both flexibility (55) and learning agility (61) suggest a preference for proven approaches. Experimenting with small, low-risk changes can build this muscle.',
+  integrity: 'Integrity is your highest dimension. Consistency (90), ethics (89), and transparency (85) are all exceptional. People around you know exactly what to expect, which is the foundation of lasting leadership influence.',
 };
 
 const SITUATIONAL_MOCK = [
@@ -286,14 +295,15 @@ function LeadershipSphereDemo() {
       <section className="py-[48px]">
         <SectionLabel label="LEADERSHIP SPHERE" className="mb-[16px]" />
         <p className="font-body text-ops-text-secondary text-sm mb-[24px]">
-          Interactive 3D sphere with 6 dimension vectors and sub-nodes. Draggable, hoverable, clickable.
-          Click a node to enter focus mode — camera orients to the dimension, sub-nodes expand with labels.
-          Drag to return to overview. Vector lengths correspond to scores.
+          Interactive 3D sphere with 6 dimension vectors in octahedral layout. Free rotation, zoom-to-focus,
+          colored sub-nodes with hover scores, and a description panel. Click a node to focus — sub-nodes
+          fan out with unique colors. Hover sub-nodes for score values. Drag to rotate freely.
         </p>
-        <div className="h-[500px] w-full border border-ops-border rounded-[3px] overflow-hidden">
+        <div className="h-[600px] w-full border border-ops-border rounded-[3px] overflow-hidden">
           <LeadershipSphere
             scores={MOCK_SCORES}
             subScores={MOCK_SUB_SCORES}
+            dimensionDescriptions={MOCK_DESCRIPTIONS}
             onDimensionClick={(dim) => setClickedDim(dim)}
             className="w-full h-full"
           />

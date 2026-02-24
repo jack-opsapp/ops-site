@@ -1,28 +1,25 @@
 /**
- * LeadershipSphere — Interactive 3D Canvas visualization for leadership dimension scores
+ * LeadershipSphere — Interactive 3D Canvas + DOM hybrid visualization
  *
- * 6 dimension vectors radiate from center in 3D space (roughly octahedral).
- * Each vector length corresponds to its score. Thin mesh lines connect adjacent
- * endpoint pairs, ~80 ambient fill lines add atmosphere.
+ * 6 dimension vectors radiate from center in 3D space (regular octahedron
+ * rotated ~12deg around Y). Each vector length corresponds to its score.
+ * Mesh lines connect all octahedral edges, ~80 ambient fill lines add atmosphere.
  *
- * Enhanced with sub-nodes that fan around parent dimensions, and focus mode
- * that orients the camera to a clicked dimension and reveals sub-node detail.
+ * Enhanced with:
+ * - Sub-nodes with unique colors that fan around parent dimensions
+ * - Focus mode with zoom animation and camera orientation
+ * - Sub-node hover detection with score display
+ * - DOM description panel with frosted glass styling
+ * - Free rotation (no snap-back on tilt)
+ * - Smooth continuous depth transitions
  *
- * Follows the StarburstCanvas.tsx pattern exactly:
- * - rotate(), project(), lerpColor() 3D math
- * - Fibonacci-based ambient line distribution
- * - Drag with spring decay (yaw offset + tilt spring-back)
- * - Hover detection on front-hemisphere nodes
- * - Click detection triggers onDimensionClick callback + focus mode
- * - DPI-aware canvas, prefers-reduced-motion, RAF cleanup
- * - SQUARE particles (fillRect), not circles
- *
- * Pure Canvas 2D API — no animation libraries.
+ * Canvas + DOM hybrid — description panel is a React element.
+ * Pure Canvas 2D API for the sphere — no animation libraries.
  */
 
 'use client';
 
-import { useRef, useEffect, useCallback } from 'react';
+import { useRef, useEffect, useCallback, useState } from 'react';
 import type { Dimension, SimpleScores, DimensionSubScores } from '@/lib/assessment/types';
 import { DIMENSIONS } from '@/lib/assessment/types';
 
@@ -36,33 +33,71 @@ const FOCAL_LENGTH = 2000;
 const ROTATION_PERIOD_S = 120;
 const TILT_ANGLE = 0.25;
 const DRAG_SENSITIVITY = 0.005;
-const SPRING_DECAY = 0.96;
 const DRAG_THRESHOLD = 3;
 const HOVER_RADIUS = 28;
+const SUB_HOVER_RADIUS = 22;
 const AMBIENT_LINE_COUNT = 80;
 const MIN_VECTOR_LENGTH = 0.3;
 const MAX_VECTOR_LENGTH = 0.9;
 
+const SUB_NODE_COLORS = [
+  { r: 200, g: 160, b: 80  },  // warm amber  #C8A050
+  { r: 160, g: 100, b: 130 },  // dusty rose   #A06482
+  { r: 80,  g: 170, b: 155 },  // teal          #50AA9B
+  { r: 140, g: 115, b: 185 },  // soft violet   #8C73B9
+  { r: 130, g: 170, b: 100 },  // sage          #82AA64
+];
+
 /* ------------------------------------------------------------------ */
-/*  Dimension geometry                                                 */
+/*  Vector helpers (used by both constants and runtime)                 */
+/* ------------------------------------------------------------------ */
+
+function normalize(v: { dx: number; dy: number; dz: number }) {
+  const len = Math.sqrt(v.dx * v.dx + v.dy * v.dy + v.dz * v.dz);
+  if (len === 0) return { dx: 0, dy: 1, dz: 0 };
+  return { dx: v.dx / len, dy: v.dy / len, dz: v.dz / len };
+}
+
+function cross(
+  a: { dx: number; dy: number; dz: number },
+  b: { dx: number; dy: number; dz: number },
+) {
+  return {
+    dx: a.dy * b.dz - a.dz * b.dy,
+    dy: a.dz * b.dx - a.dx * b.dz,
+    dz: a.dx * b.dy - a.dy * b.dx,
+  };
+}
+
+/* ------------------------------------------------------------------ */
+/*  Dimension geometry — regular octahedron rotated ~12deg around Y    */
 /* ------------------------------------------------------------------ */
 
 const DIMENSION_DIRS: Record<Dimension, { dx: number; dy: number; dz: number }> = {
-  drive:        { dx: 0.0,   dy: -0.85, dz: 0.53  },
-  resilience:   { dx: 0.75,  dy: -0.25, dz: 0.61  },
-  vision:       { dx: 0.75,  dy: 0.45,  dz: -0.49 },
-  connection:   { dx: -0.75, dy: 0.45,  dz: -0.49 },
-  adaptability: { dx: -0.75, dy: -0.25, dz: 0.61  },
-  integrity:    { dx: 0.0,   dy: 0.85,  dz: -0.53 },
+  drive:        normalize({ dx:  0.208, dy: -1.0,  dz:  0.0   }),  // top
+  resilience:   normalize({ dx:  0.978, dy:  0.0,  dz: -0.208 }),  // right
+  vision:       normalize({ dx:  0.208, dy:  0.0,  dz: -0.978 }),  // back
+  connection:   normalize({ dx: -0.978, dy:  0.0,  dz:  0.208 }),  // left
+  adaptability: normalize({ dx: -0.208, dy:  0.0,  dz:  0.978 }),  // front
+  integrity:    normalize({ dx: -0.208, dy:  1.0,  dz:  0.0   }),  // bottom
 };
 
 const MESH_PAIRS: [Dimension, Dimension][] = [
-  ['drive', 'resilience'],
+  // Equatorial ring
   ['resilience', 'vision'],
-  ['vision', 'integrity'],
+  ['vision', 'adaptability'],
+  ['adaptability', 'connection'],
+  ['connection', 'resilience'],
+  // Drive (top) to equatorial
+  ['drive', 'resilience'],
+  ['drive', 'vision'],
+  ['drive', 'adaptability'],
+  ['drive', 'connection'],
+  // Integrity (bottom) to equatorial
+  ['integrity', 'resilience'],
+  ['integrity', 'vision'],
+  ['integrity', 'adaptability'],
   ['integrity', 'connection'],
-  ['connection', 'adaptability'],
-  ['adaptability', 'drive'],
 ];
 
 const DIMENSION_LABELS: Record<Dimension, string> = {
@@ -81,6 +116,7 @@ const DIMENSION_LABELS: Record<Dimension, string> = {
 interface LeadershipSphereProps {
   scores: SimpleScores;
   subScores?: DimensionSubScores;
+  dimensionDescriptions?: Record<Dimension, string>;
   onDimensionClick?: (dimension: Dimension) => void;
   className?: string;
 }
@@ -100,7 +136,7 @@ interface Particle {
 }
 
 /* ------------------------------------------------------------------ */
-/*  3D helpers (same as StarburstCanvas)                               */
+/*  3D helpers                                                         */
 /* ------------------------------------------------------------------ */
 
 function rotate(
@@ -142,25 +178,8 @@ function lerpColor(
 }
 
 /* ------------------------------------------------------------------ */
-/*  Sub-node geometry helpers                                          */
+/*  Sub-node geometry                                                  */
 /* ------------------------------------------------------------------ */
-
-function normalize(v: { dx: number; dy: number; dz: number }) {
-  const len = Math.sqrt(v.dx * v.dx + v.dy * v.dy + v.dz * v.dz);
-  if (len === 0) return { dx: 0, dy: 1, dz: 0 };
-  return { dx: v.dx / len, dy: v.dy / len, dz: v.dz / len };
-}
-
-function cross(
-  a: { dx: number; dy: number; dz: number },
-  b: { dx: number; dy: number; dz: number },
-) {
-  return {
-    dx: a.dy * b.dz - a.dz * b.dy,
-    dy: a.dz * b.dx - a.dx * b.dz,
-    dz: a.dx * b.dy - a.dy * b.dx,
-  };
-}
 
 function computeSubNodeDirection(
   parentDir: { dx: number; dy: number; dz: number },
@@ -170,12 +189,10 @@ function computeSubNodeDirection(
 ): { dx: number; dy: number; dz: number } {
   const n = normalize(parentDir);
 
-  // Pick an arbitrary vector not parallel to parent for cross product
   const up = Math.abs(n.dy) < 0.9 ? { dx: 0, dy: 1, dz: 0 } : { dx: 1, dy: 0, dz: 0 };
   const tangent1 = normalize(cross(n, up));
   const tangent2 = normalize(cross(n, tangent1));
 
-  // Fan sub-nodes around parent direction
   const angleStep = total > 1 ? (2 * Math.PI) / total : 0;
   const theta = angleStep * index;
 
@@ -223,6 +240,7 @@ function generateAmbientLines(): AmbientLine[] {
 export default function LeadershipSphere({
   scores,
   subScores,
+  dimensionDescriptions,
   onDimensionClick,
   className,
 }: LeadershipSphereProps) {
@@ -233,6 +251,7 @@ export default function LeadershipSphere({
   const animRef = useRef<number>(0);
   const mouseRef = useRef({ x: -9999, y: -9999 });
   const hoveredRef = useRef<Dimension | null>(null);
+  const hoveredSubRef = useRef<{ dim: Dimension; index: number } | null>(null);
   const dragRef = useRef({
     active: false,
     didDrag: false,
@@ -251,6 +270,14 @@ export default function LeadershipSphere({
   const focusedDimRef = useRef<Dimension | null>(null);
   const focusTransitionRef = useRef(0);
   const focusTargetYawRef = useRef(0);
+  const prevFocusedDimRef = useRef<Dimension | null>(null);
+
+  // Zoom animation refs
+  const zoomRef = useRef(1.0);
+  const centerOffsetRef = useRef({ x: 0, y: 0 });
+
+  // React state for DOM description panel
+  const [focusedDimState, setFocusedDimState] = useState<Dimension | null>(null);
 
   // Keep refs in sync with props
   scoresRef.current = scores;
@@ -291,12 +318,11 @@ export default function LeadershipSphere({
     if (ctx) ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
   }, []);
 
-  /* ---- Mouse handlers (on container div, same as StarburstCanvas) ---- */
+  /* ---- Mouse handlers ---- */
 
   const handleMouseDown = useCallback((e: React.MouseEvent<HTMLDivElement>) => {
     const drag = dragRef.current;
 
-    // If in focus mode and user starts drag, exit focus mode
     if (focusedDimRef.current !== null) {
       focusedDimRef.current = null;
     }
@@ -341,19 +367,15 @@ export default function LeadershipSphere({
     if (!drag.didDrag && hoveredRef.current) {
       const clickedDim = hoveredRef.current;
 
-      // Focus mode logic
       if (focusedDimRef.current === null) {
-        // Overview mode: enter focus
         focusedDimRef.current = clickedDim;
         const dir = DIMENSION_DIRS[clickedDim];
         focusTargetYawRef.current = -Math.atan2(dir.dx, dir.dz);
       } else if (focusedDimRef.current !== clickedDim) {
-        // Focus on different dim: switch focus
         focusedDimRef.current = clickedDim;
         const dir = DIMENSION_DIRS[clickedDim];
         focusTargetYawRef.current = -Math.atan2(dir.dx, dir.dz);
       }
-      // Focus + click same node: no-op
 
       if (onClickRef.current) {
         onClickRef.current(clickedDim);
@@ -399,13 +421,12 @@ export default function LeadershipSphere({
     };
     window.addEventListener('mouseup', handleWindowMouseUp);
 
-    /* ---- Touch support for mobile drag ---- */
+    /* ---- Touch support ---- */
 
     const handleTouchStart = (e: TouchEvent) => {
       const t = e.touches[0];
       const drag = dragRef.current;
 
-      // If in focus mode and user starts drag, exit focus mode
       if (focusedDimRef.current !== null) {
         focusedDimRef.current = null;
       }
@@ -485,13 +506,55 @@ export default function LeadershipSphere({
       const h = parseFloat(canvas.style.height) || canvas.height;
       const cx = w / 2;
       const cy = h / 2;
-      const radius = Math.min(w, h) * 0.40;
+      const baseRadius = Math.min(w, h) * 0.48;
       const mouse = mouseRef.current;
       const drag = dragRef.current;
       const focusTransition = focusTransitionRef.current;
       const focusedDim = focusedDimRef.current;
 
+      /* ---- Zoom animation ---- */
+
+      const zoomTarget = focusedDim !== null ? 1.35 : 1.0;
+      zoomRef.current += (zoomTarget - zoomRef.current) * 0.04;
+      if (Math.abs(zoomRef.current - zoomTarget) < 0.001) zoomRef.current = zoomTarget;
+
+      const radius = baseRadius * zoomRef.current;
+
+      /* ---- Center offset animation ---- */
+
+      if (focusedDim !== null) {
+        const fDir = DIMENSION_DIRS[focusedDim];
+        const fScore = currentScores[focusedDim];
+        const fVecLen = MIN_VECTOR_LENGTH + (fScore / 100) * (MAX_VECTOR_LENGTH - MIN_VECTOR_LENGTH);
+        const fr3 = rotate(
+          fDir.dx * radius * fVecLen,
+          fDir.dy * radius * fVecLen,
+          fDir.dz * radius * fVecLen,
+          finalYaw, finalTilt,
+        );
+        const fp = project(fr3.x, fr3.y, fr3.z, cx, cy);
+        const targetX = (fp.sx - cx) * 0.15;
+        const targetY = (fp.sy - cy) * 0.15;
+        centerOffsetRef.current.x += (targetX - centerOffsetRef.current.x) * 0.04;
+        centerOffsetRef.current.y += (targetY - centerOffsetRef.current.y) * 0.04;
+      } else {
+        centerOffsetRef.current.x += (0 - centerOffsetRef.current.x) * 0.04;
+        centerOffsetRef.current.y += (0 - centerOffsetRef.current.y) * 0.04;
+        if (Math.abs(centerOffsetRef.current.x) < 0.01) centerOffsetRef.current.x = 0;
+        if (Math.abs(centerOffsetRef.current.y) < 0.01) centerOffsetRef.current.y = 0;
+      }
+
+      const ecx = cx + centerOffsetRef.current.x;
+      const ecy = cy + centerOffsetRef.current.y;
+
       ctx.clearRect(0, 0, w, h);
+
+      /* ---- Sync focusedDimState (only on change) ---- */
+
+      if (focusedDimRef.current !== prevFocusedDimRef.current) {
+        prevFocusedDimRef.current = focusedDimRef.current;
+        setFocusedDimState(focusedDimRef.current);
+      }
 
       /* ---- Phase 1: Compute ambient line positions ---- */
 
@@ -503,7 +566,6 @@ export default function LeadershipSphere({
         color: { r: number; g: number; b: number };
         opacity: number;
         lineWidth: number;
-        sortKey: number;
       }
 
       const ambientComputed: AmbientComputed[] = [];
@@ -567,10 +629,10 @@ export default function LeadershipSphere({
       for (let i = 0; i < ambientLines.length; i++) {
         const line = ambientLines[i];
         const r3 = ambientRotated[i];
-        const p = project(r3.x, r3.y, r3.z, cx, cy);
+        const p = project(r3.x, r3.y, r3.z, ecx, ecy);
         const depthNorm = (r3.z / maxZ + 1) / 2;
         const color = lerpColor(GREY, ACCENT, depthNorm * 0.5);
-        const opacity = line.baseOpacity * (0.3 + depthNorm * 0.7);
+        const opacity = line.baseOpacity * (0.5 + depthNorm * 0.5);
         const lineWidth = 0.3 + depthNorm * 0.3;
 
         ambientComputed.push({
@@ -581,12 +643,11 @@ export default function LeadershipSphere({
           color,
           opacity,
           lineWidth,
-          sortKey: r3.z,
         });
       }
 
       for (const dc of dimComputed.values()) {
-        const p = project(dc.raw.x, dc.raw.y, dc.raw.z, cx, cy);
+        const p = project(dc.raw.x, dc.raw.y, dc.raw.z, ecx, ecy);
         dc.sx = p.sx;
         dc.sy = p.sy;
         dc.scale = p.scale;
@@ -595,7 +656,65 @@ export default function LeadershipSphere({
         dc.color = lerpColor(GREY, ACCENT, dc.score / 100);
       }
 
-      /* ---- Phase 3: Hover detection ---- */
+      /* ---- Phase 2b: Compute sub-node positions ---- */
+
+      interface SubNodeComputed {
+        dim: Dimension;
+        index: number;
+        sx: number;
+        sy: number;
+        z: number;
+        isFront: boolean;
+        score: number;
+        label: string;
+        color: { r: number; g: number; b: number };
+      }
+
+      const subNodesComputed: SubNodeComputed[] = [];
+
+      if (currentSubScores) {
+        for (const dim of DIMENSIONS) {
+          const dimSubs = currentSubScores[dim];
+          if (!dimSubs) continue;
+          const dc = dimComputed.get(dim)!;
+          const dir = DIMENSION_DIRS[dim];
+          const isFocused = dim === focusedDim;
+
+          const spread = isFocused
+            ? lerp(0.15, 0.9, focusTransition)
+            : lerp(0.15, 0.15, focusTransition);
+
+          for (let si = 0; si < dimSubs.length; si++) {
+            const sub = dimSubs[si];
+            const subDir = computeSubNodeDirection(dir, si, dimSubs.length, spread);
+            const subLen = (sub.score / 100) * MAX_VECTOR_LENGTH * 0.6 * radius;
+
+            const sx3 = subDir.dx * subLen;
+            const sy3 = subDir.dy * subLen;
+            const sz3 = subDir.dz * subLen;
+            const r3 = rotate(sx3, sy3, sz3, finalYaw, finalTilt);
+            const p = project(r3.x, r3.y, r3.z, ecx, ecy);
+
+            const subColor = isFocused
+              ? SUB_NODE_COLORS[si % SUB_NODE_COLORS.length]
+              : dc.color;
+
+            subNodesComputed.push({
+              dim,
+              index: si,
+              sx: p.sx,
+              sy: p.sy,
+              z: r3.z,
+              isFront: r3.z > 0,
+              score: sub.score,
+              label: sub.label,
+              color: subColor,
+            });
+          }
+        }
+      }
+
+      /* ---- Phase 3: Hover detection (major nodes) ---- */
 
       let hoveredDim: Dimension | null = null;
       let hoveredDist = HOVER_RADIUS;
@@ -615,6 +734,27 @@ export default function LeadershipSphere({
 
       hoveredRef.current = hoveredDim;
 
+      /* ---- Phase 3b: Sub-node hover detection ---- */
+
+      let hoveredSub: { dim: Dimension; index: number } | null = null;
+
+      if (!drag.didDrag && focusedDim !== null) {
+        let bestDist = SUB_HOVER_RADIUS;
+        for (const sn of subNodesComputed) {
+          if (sn.dim !== focusedDim) continue;
+          if (!sn.isFront) continue;
+          const ddx = mouse.x - sn.sx;
+          const ddy = mouse.y - sn.sy;
+          const dist = Math.sqrt(ddx * ddx + ddy * ddy);
+          if (dist < bestDist) {
+            bestDist = dist;
+            hoveredSub = { dim: sn.dim, index: sn.index };
+          }
+        }
+      }
+
+      hoveredSubRef.current = hoveredSub;
+
       /* ---- Phase 4: Draw ambient lines (sorted back-to-front) ---- */
 
       const ambientIndices = ambientComputed.map((_, i) => i);
@@ -624,7 +764,7 @@ export default function LeadershipSphere({
         const c = ambientComputed[idx];
         const { r, g, b } = c.color;
         ctx.beginPath();
-        ctx.moveTo(cx, cy);
+        ctx.moveTo(ecx, ecy);
         ctx.lineTo(c.endSX, c.endSY);
         ctx.strokeStyle = `rgba(${r}, ${g}, ${b}, ${c.opacity})`;
         ctx.lineWidth = c.lineWidth;
@@ -650,29 +790,27 @@ export default function LeadershipSphere({
       }
       ctx.setLineDash([]);
 
-      /* ---- Phase 6: Sort dimension vectors back-to-front ---- */
+      /* ---- Phase 6: Sort dimensions back-to-front ---- */
 
       const dimsSorted = Array.from(dimComputed.values()).sort((a, b) => a.depth - b.depth);
 
-      /* ---- Phase 7: Draw dimension rays, nodes, sub-nodes, particles, labels ---- */
+      /* ---- Phase 7: Draw rays, nodes, sub-nodes, particles, labels ---- */
 
       for (const dc of dimsSorted) {
         const { r, g, b } = dc.color;
         const isHovered = dc.dim === hoveredDim;
         const isFocused = dc.dim === focusedDim;
 
-        // Compute opacity multiplier for focus mode
         const focusDimAlpha = isFocused || focusedDim === null
           ? 1.0
           : 1.0 - focusTransition * 0.7;
 
-        const rayOpacity = (dc.isFront
-          ? lerp(0.15, 0.40, dc.depthNorm)
-          : lerp(0.05, 0.15, dc.depthNorm)) * focusDimAlpha;
+        // Continuous depth-based ray opacity
+        const rayOpacity = lerp(0.10, 0.45, dc.depthNorm) * focusDimAlpha;
 
         // Draw ray from center to node
         ctx.beginPath();
-        ctx.moveTo(cx, cy);
+        ctx.moveTo(ecx, ecy);
         ctx.lineTo(dc.sx, dc.sy);
         ctx.strokeStyle = `rgba(${r}, ${g}, ${b}, ${rayOpacity})`;
         ctx.lineWidth = isHovered ? 1.5 : (0.5 + dc.depthNorm * 0.8);
@@ -682,9 +820,7 @@ export default function LeadershipSphere({
         const nodeSize = (isHovered ? 8 : 5) * dc.scale;
         const nodeAlpha = (isHovered
           ? 0.90
-          : dc.isFront
-            ? lerp(0.30, 0.70, dc.depthNorm)
-            : lerp(0.10, 0.25, dc.depthNorm)) * focusDimAlpha;
+          : lerp(0.18, 0.75, dc.depthNorm)) * focusDimAlpha;
 
         if (isHovered) {
           ctx.shadowColor = `rgba(${ACCENT.r}, ${ACCENT.g}, ${ACCENT.b}, 0.5)`;
@@ -710,70 +846,88 @@ export default function LeadershipSphere({
           ctx.shadowBlur = 0;
         }
 
-        /* ---- Sub-nodes ---- */
+        /* ---- Sub-nodes for this dimension ---- */
 
-        if (currentSubScores && currentSubScores[dc.dim]) {
-          const dimSubScores = currentSubScores[dc.dim];
-          const dir = DIMENSION_DIRS[dc.dim];
+        const dimSubNodes = subNodesComputed.filter(sn => sn.dim === dc.dim);
 
-          // Spread increases in focus mode
-          const spread = isFocused
-            ? lerp(0.15, 0.6, focusTransition)
-            : lerp(0.15, 0.15, focusTransition);
+        for (const sn of dimSubNodes) {
+          const isSubHovered = hoveredSub !== null
+            && hoveredSub.dim === sn.dim
+            && hoveredSub.index === sn.index;
 
-          for (let si = 0; si < dimSubScores.length; si++) {
-            const sub = dimSubScores[si];
-            const subDir = computeSubNodeDirection(dir, si, dimSubScores.length, spread);
-            const subLen = (sub.score / 100) * MAX_VECTOR_LENGTH * 0.6 * radius;
+          const snColor = sn.color;
 
-            const sx3 = subDir.dx * subLen;
-            const sy3 = subDir.dy * subLen;
-            const sz3 = subDir.dz * subLen;
-            const r3 = rotate(sx3, sy3, sz3, finalYaw, finalTilt);
-            const p = project(r3.x, r3.y, r3.z, cx, cy);
+          // Sub-node size
+          let subSize: number;
+          if (isFocused) {
+            subSize = lerp(3, 7, focusTransition) * dc.scale;
+            if (isSubHovered) subSize += 2;
+          } else {
+            subSize = 3 * dc.scale;
+          }
 
-            // Sub-node size: 3px (overview), 5px (focus)
-            const subSize = isFocused
-              ? lerp(3, 5, focusTransition) * dc.scale
-              : 3 * dc.scale;
+          // Sub-node opacity
+          const subAlphaFactor = isFocused
+            ? lerp(0.4, 0.8, focusTransition)
+            : 0.4;
+          const subAlpha = nodeAlpha * subAlphaFactor;
 
-            // Sub-node opacity: parentOpacity * 0.4 (overview), * 0.8 (focus)
-            const subAlphaFactor = isFocused
-              ? lerp(0.4, 0.8, focusTransition)
-              : 0.4;
-            const subAlpha = nodeAlpha * subAlphaFactor;
+          // Connector line (colored to match sub-node when focused)
+          const connLineWidth = isFocused
+            ? lerp(0.3, 1.2, focusTransition)
+            : 0.3;
+          const connOpacity = isFocused
+            ? subAlpha * lerp(0.4, 0.75, focusTransition)
+            : subAlpha * 0.4;
 
-            // Draw sub-node connector line
-            ctx.beginPath();
-            ctx.moveTo(dc.sx, dc.sy);
-            ctx.lineTo(p.sx, p.sy);
-            ctx.strokeStyle = `rgba(${r}, ${g}, ${b}, ${subAlpha * 0.4})`;
-            ctx.lineWidth = 0.3;
-            ctx.stroke();
+          ctx.beginPath();
+          ctx.moveTo(dc.sx, dc.sy);
+          ctx.lineTo(sn.sx, sn.sy);
+          ctx.strokeStyle = `rgba(${snColor.r}, ${snColor.g}, ${snColor.b}, ${connOpacity})`;
+          ctx.lineWidth = connLineWidth;
+          ctx.stroke();
 
-            // Draw sub-node square
-            ctx.fillStyle = `rgba(${r}, ${g}, ${b}, ${subAlpha})`;
-            ctx.fillRect(
-              p.sx - subSize / 2,
-              p.sy - subSize / 2,
-              subSize,
-              subSize,
-            );
+          // Sub-node hover glow
+          if (isSubHovered) {
+            ctx.shadowColor = `rgba(${snColor.r}, ${snColor.g}, ${snColor.b}, 0.6)`;
+            ctx.shadowBlur = 12;
+          }
 
-            // Draw sub-node label in focus mode
-            if (isFocused && focusTransition > 0.3) {
-              const labelAlpha = (focusTransition - 0.3) / 0.7 * subAlpha;
-              ctx.font = '400 8px "Kosugi", sans-serif';
-              ctx.textAlign = 'center';
-              ctx.textBaseline = 'top';
-              ctx.fillStyle = `rgba(${r}, ${g}, ${b}, ${labelAlpha})`;
-              ctx.fillText(sub.label.toUpperCase(), p.sx, p.sy + subSize / 2 + 4);
-            }
+          // Draw sub-node square
+          ctx.fillStyle = `rgba(${snColor.r}, ${snColor.g}, ${snColor.b}, ${subAlpha})`;
+          ctx.fillRect(
+            sn.sx - subSize / 2,
+            sn.sy - subSize / 2,
+            subSize,
+            subSize,
+          );
+
+          if (isSubHovered) {
+            ctx.shadowColor = 'transparent';
+            ctx.shadowBlur = 0;
+          }
+
+          // Sub-node label in focus mode
+          if (isFocused && focusTransition > 0.3) {
+            const labelAlpha = (focusTransition - 0.3) / 0.7 * subAlpha;
+            ctx.font = '400 8px "Kosugi", sans-serif';
+            ctx.textAlign = 'center';
+            ctx.textBaseline = 'top';
+            ctx.fillStyle = `rgba(${snColor.r}, ${snColor.g}, ${snColor.b}, ${labelAlpha})`;
+            ctx.fillText(sn.label.toUpperCase(), sn.sx, sn.sy + subSize / 2 + 4);
+          }
+
+          // Sub-node score on hover
+          if (isSubHovered) {
+            ctx.font = '600 12px "Mohave", sans-serif';
+            ctx.textAlign = 'center';
+            ctx.textBaseline = 'bottom';
+            ctx.fillStyle = `rgba(${snColor.r}, ${snColor.g}, ${snColor.b}, 0.95)`;
+            ctx.fillText(`${sn.score}`, sn.sx, sn.sy - subSize / 2 - 6);
           }
         }
 
-        // Draw particles along high-score vectors (score > 70)
-        // Particles stop for unfocused dims in focus mode
+        // Draw particles along high-score vectors
         const showParticles = !prefersReduced && dc.score > 70
           && (focusedDim === null || isFocused);
 
@@ -781,8 +935,8 @@ export default function LeadershipSphere({
           for (const particle of particles) {
             if (particle.dim !== dc.dim) continue;
             const pt = particle.t;
-            const px = cx + (dc.sx - cx) * pt;
-            const py = cy + (dc.sy - cy) * pt;
+            const px = ecx + (dc.sx - ecx) * pt;
+            const py = ecy + (dc.sy - ecy) * pt;
             const particleSize = 2 * dc.scale;
             const particleAlpha = nodeAlpha * 0.6 * (1 - Math.abs(pt - 0.5) * 2);
 
@@ -803,9 +957,7 @@ export default function LeadershipSphere({
         const labelY = dc.sy + labelOffsetY;
         const labelAlpha = (isHovered
           ? 0.90
-          : dc.isFront
-            ? lerp(0.20, 0.50, dc.depthNorm)
-            : lerp(0.05, 0.15, dc.depthNorm)) * focusDimAlpha;
+          : lerp(0.10, 0.55, dc.depthNorm)) * focusDimAlpha;
 
         ctx.font = '400 10px "Kosugi", sans-serif';
         ctx.textBaseline = dir.dy < 0 ? 'bottom' : 'top';
@@ -887,9 +1039,7 @@ export default function LeadershipSphere({
           yaw = (yaw + BASE_ANGULAR_SPEED * dt) % (Math.PI * 2);
         }
 
-        // Spring-back tilt
-        dragTiltOffsetRef.current *= SPRING_DECAY;
-        if (Math.abs(dragTiltOffsetRef.current) < 0.001) dragTiltOffsetRef.current = 0;
+        // Free rotation — tilt stays wherever the user left it (no spring-back)
       }
 
       const finalYaw = yaw + dragYawOffsetRef.current;
@@ -912,6 +1062,14 @@ export default function LeadershipSphere({
     };
   }, [resize]);
 
+  /* ---- Description panel data ---- */
+
+  const focusedScore = focusedDimState ? scores[focusedDimState] : 0;
+  const focusedSubScores = focusedDimState && subScores ? subScores[focusedDimState] : null;
+  const focusedDescription = focusedDimState && dimensionDescriptions
+    ? dimensionDescriptions[focusedDimState]
+    : null;
+
   return (
     <div
       ref={containerRef}
@@ -926,6 +1084,68 @@ export default function LeadershipSphere({
         ref={canvasRef}
         style={{ display: 'block', width: '100%', height: '100%' }}
       />
+
+      {/* Description panel */}
+      <div
+        className="absolute bottom-4 left-4 max-w-[320px] rounded-[3px] p-5 border border-ops-border"
+        onMouseDown={(e) => e.stopPropagation()}
+        style={{
+          background: 'rgba(10, 10, 10, 0.75)',
+          backdropFilter: 'blur(20px)',
+          WebkitBackdropFilter: 'blur(20px)',
+          opacity: focusedDimState ? 1 : 0,
+          transform: focusedDimState ? 'translateY(0)' : 'translateY(12px)',
+          transition: 'all 500ms ease',
+          pointerEvents: focusedDimState ? 'auto' : 'none',
+          cursor: 'default',
+        }}
+      >
+        {focusedDimState && (
+          <>
+            <p
+              className="font-heading font-semibold uppercase tracking-[0.15em] text-xs mb-1"
+              style={{ color: `rgb(${ACCENT.r}, ${ACCENT.g}, ${ACCENT.b})` }}
+            >
+              {DIMENSION_LABELS[focusedDimState]}
+            </p>
+            <p
+              className="font-heading font-semibold text-3xl mb-3"
+              style={{ color: `rgb(${ACCENT.r}, ${ACCENT.g}, ${ACCENT.b})` }}
+            >
+              {focusedScore}
+            </p>
+            {focusedDescription && (
+              <p className="font-body text-ops-text-secondary text-sm mb-4 leading-relaxed">
+                {focusedDescription}
+              </p>
+            )}
+            {focusedSubScores && focusedSubScores.length > 0 && (
+              <div className="space-y-1.5">
+                {focusedSubScores.map((sub, i) => {
+                  const c = SUB_NODE_COLORS[i % SUB_NODE_COLORS.length];
+                  return (
+                    <div key={sub.label} className="flex items-center gap-2 text-xs">
+                      <span
+                        className="inline-block w-2 h-2 rounded-[1px] flex-shrink-0"
+                        style={{ background: `rgb(${c.r}, ${c.g}, ${c.b})` }}
+                      />
+                      <span className="font-body text-ops-text-secondary">
+                        {sub.label}:
+                      </span>
+                      <span
+                        className="font-heading font-semibold"
+                        style={{ color: `rgb(${c.r}, ${c.g}, ${c.b})` }}
+                      >
+                        {sub.score}
+                      </span>
+                    </div>
+                  );
+                })}
+              </div>
+            )}
+          </>
+        )}
+      </div>
     </div>
   );
 }
