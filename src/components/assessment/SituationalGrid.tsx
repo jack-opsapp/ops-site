@@ -1,18 +1,17 @@
 /**
- * SituationalGrid — Hybrid Canvas starburst + DOM text panel
+ * SituationalGrid — Canvas-only radial selector
  *
- * A radial Canvas starburst with ~60 background lines and 4 major nodes
- * at organic cardinal positions. Selecting a node triggers angular
- * redistribution: the selected node stays put, adjacent nodes compress
- * toward it, and the opposite node swings away. DOM text panel with
- * frosted glass styling shows option text below.
+ * 4 rays from center to nodes at organic cardinal positions.
+ * Response text drawn directly at each node on canvas.
+ * Hover pushes other nodes ~PI/4 away.
+ * Selection triggers angular redistribution with glow.
  *
- * Pure Canvas 2D API + DOM overlay — no animation libraries.
+ * Pure Canvas 2D API — no animation libraries.
  */
 
 'use client';
 
-import { useRef, useEffect, useCallback, useState } from 'react';
+import { useRef, useEffect, useCallback } from 'react';
 
 /* ------------------------------------------------------------------ */
 /*  Types                                                              */
@@ -23,13 +22,6 @@ interface SituationalGridProps {
   onSelect: (key: string) => void;
 }
 
-interface BackgroundLine {
-  angle: number;
-  baseLength: number;    // 0.15-0.55
-  phaseOffset: number;
-  baseOpacity: number;   // 0.04-0.08
-}
-
 /* ------------------------------------------------------------------ */
 /*  Constants                                                          */
 /* ------------------------------------------------------------------ */
@@ -37,13 +29,11 @@ interface BackgroundLine {
 const ACCENT = { r: 89, g: 119, b: 148 };
 const GREY = { r: 100, g: 100, b: 100 };
 
-const BG_LINE_COUNT = 60;
-const HIT_RADIUS = 28;
-const PROXIMITY_THRESHOLD = 0.2; // radians
+const HIT_RADIUS = 60;
 const PI2 = Math.PI * 2;
-const CANVAS_HEIGHT = 320;
+const CANVAS_HEIGHT = 500;
 
-// Slightly organic cardinal positions
+// Slightly organic cardinal positions (~PI/2 apart)
 const BASE_ANGLES = [
   -Math.PI / 2 + 0.12,   // A: top (slightly clockwise)
   0 + 0.08,               // B: right (slightly clockwise)
@@ -52,31 +42,34 @@ const BASE_ANGLES = [
 ];
 
 /* ------------------------------------------------------------------ */
-/*  Background line generation                                         */
-/* ------------------------------------------------------------------ */
-
-function generateBackgroundLines(): BackgroundLine[] {
-  const lines: BackgroundLine[] = [];
-  for (let i = 0; i < BG_LINE_COUNT; i++) {
-    const angle = (PI2 / BG_LINE_COUNT) * i + (Math.random() - 0.5) * 0.06;
-    lines.push({
-      angle,
-      baseLength: 0.15 + Math.random() * 0.40,
-      phaseOffset: Math.random() * PI2,
-      baseOpacity: 0.04 + Math.random() * 0.04,
-    });
-  }
-  return lines;
-}
-
-/* ------------------------------------------------------------------ */
-/*  Angle wrapping helper                                              */
+/*  Helpers                                                            */
 /* ------------------------------------------------------------------ */
 
 function wrapAngleDelta(target: number, current: number): number {
   let delta = target - current;
   delta -= Math.round(delta / PI2) * PI2;
   return delta;
+}
+
+function wrapText(
+  ctx: CanvasRenderingContext2D,
+  text: string,
+  maxWidth: number,
+): string[] {
+  const words = text.split(' ');
+  const lines: string[] = [];
+  let current = '';
+  for (const word of words) {
+    const test = current ? `${current} ${word}` : word;
+    if (ctx.measureText(test).width > maxWidth) {
+      if (current) lines.push(current);
+      current = word;
+    } else {
+      current = test;
+    }
+  }
+  if (current) lines.push(current);
+  return lines;
 }
 
 /* ------------------------------------------------------------------ */
@@ -90,27 +83,16 @@ export default function SituationalGrid({
   const canvasRef = useRef<HTMLCanvasElement>(null);
   const containerRef = useRef<HTMLDivElement>(null);
   const animRef = useRef<number>(0);
-  const bgLinesRef = useRef<BackgroundLine[] | null>(null);
   const selectedRef = useRef<number>(-1);
   const hoveredRef = useRef<number>(-1);
   const onSelectRef = useRef(onSelect);
   const selectTimerRef = useRef<ReturnType<typeof setTimeout> | null>(null);
-  const timeRef = useRef(0);
 
-  // Current animated angles for each node
   const currentAnglesRef = useRef<number[]>([...BASE_ANGLES]);
-  // Target angles for each node
   const targetAnglesRef = useRef<number[]>([...BASE_ANGLES]);
-  // Animated per-node radius multipliers (selected elongates, others shrink)
   const nodeRadiiRef = useRef<number[]>([1, 1, 1, 1]);
 
-  const [selectedKey, setSelectedKey] = useState<string | null>(null);
-
   onSelectRef.current = onSelect;
-
-  if (!bgLinesRef.current) {
-    bgLinesRef.current = generateBackgroundLines();
-  }
 
   /* ---- DPI-aware resize ---- */
 
@@ -120,7 +102,6 @@ export default function SituationalGrid({
     if (!canvas || !container) return;
     const dpr = window.devicePixelRatio || 1;
     const rect = container.getBoundingClientRect();
-    // Only read width from container; height is fixed to prevent resize loop
     canvas.width = rect.width * dpr;
     canvas.height = CANVAS_HEIGHT * dpr;
     canvas.style.width = `${rect.width}px`;
@@ -162,7 +143,6 @@ export default function SituationalGrid({
       observer.observe(container);
     }
 
-    const bgLines = bgLinesRef.current!;
     const mousePos = { x: -9999, y: -9999 };
 
     /* ---- Mouse handlers ---- */
@@ -174,7 +154,7 @@ export default function SituationalGrid({
     };
 
     const handleClick = (e: MouseEvent) => {
-      if (selectedRef.current >= 0) return; // already selected
+      if (selectedRef.current >= 0) return;
       const rect = canvas.getBoundingClientRect();
       const mx = e.clientX - rect.left;
       const my = e.clientY - rect.top;
@@ -183,21 +163,20 @@ export default function SituationalGrid({
       const h = parseFloat(canvas.style.height) || canvas.height;
       const cx = w / 2;
       const cy = h / 2;
-      const radius = Math.min(w, h) * 0.35;
+      const radius = Math.min(w, h) * 0.32;
 
       const currentAngles = currentAnglesRef.current;
-      const nodePositions = currentAngles.map((angle) => ({
-        x: cx + Math.cos(angle) * radius,
-        y: cy + Math.sin(angle) * radius,
+      const radii = nodeRadiiRef.current;
+      const nodePositions = currentAngles.map((angle, i) => ({
+        x: cx + Math.cos(angle) * radius * radii[i],
+        y: cy + Math.sin(angle) * radius * radii[i],
       }));
 
       const idx = getHoveredIndex(mx, my, nodePositions);
 
       if (idx >= 0 && idx < options.length) {
         selectedRef.current = idx;
-        setSelectedKey(options[idx].key);
 
-        // Compute target angles for redistribution
         const selAngle = BASE_ANGLES[idx];
         const targets = [...BASE_ANGLES];
         targets[idx] = selAngle;
@@ -209,7 +188,6 @@ export default function SituationalGrid({
           const isAdjacent = diff === 1 || diff === 3;
 
           if (isAdjacent) {
-            // Adjacent nodes pushed away to +/- 2PI/3
             const sign = wrapAngleDelta(BASE_ANGLES[i], selAngle) > 0 ? 1 : -1;
             targets[i] = selAngle + sign * (Math.PI * 2 / 3);
           } else if (isOpposite) {
@@ -248,19 +226,19 @@ export default function SituationalGrid({
       const h = parseFloat(canvas.style.height) || canvas.height;
       const cx = w / 2;
       const cy = h / 2;
-      const radius = Math.min(w, h) * 0.35;
+      const radius = Math.min(w, h) * 0.32;
 
       const currentAngles = currentAnglesRef.current;
-      const nodePositions = currentAngles.map((angle) => ({
-        x: cx + Math.cos(angle) * radius,
-        y: cy + Math.sin(angle) * radius,
+      const radii = nodeRadiiRef.current;
+      const nodePositions = currentAngles.map((angle, i) => ({
+        x: cx + Math.cos(angle) * radius * radii[i],
+        y: cy + Math.sin(angle) * radius * radii[i],
       }));
 
       const idx = getHoveredIndex(mx, my, nodePositions);
 
       if (idx >= 0 && idx < options.length) {
         selectedRef.current = idx;
-        setSelectedKey(options[idx].key);
 
         const selAngle = BASE_ANGLES[idx];
         const targets = [...BASE_ANGLES];
@@ -296,9 +274,7 @@ export default function SituationalGrid({
 
     function draw(timestamp: number) {
       if (prevTimestamp === null) prevTimestamp = timestamp;
-      const dt = (timestamp - prevTimestamp) / 1000;
       prevTimestamp = timestamp;
-      timeRef.current += dt;
 
       const canvasEl = canvasRef.current;
       if (!canvasEl) { animRef.current = requestAnimationFrame(draw); return; }
@@ -309,111 +285,76 @@ export default function SituationalGrid({
       const h = parseFloat(canvasEl.style.height) || canvasEl.height;
       const cx = w / 2;
       const cy = h / 2;
-      const radius = Math.min(w, h) * 0.35;
-      const time = timeRef.current;
+      const radius = Math.min(w, h) * 0.32;
       const selected = selectedRef.current;
 
       ctx.clearRect(0, 0, w, h);
 
-      // Lerp current angles toward target angles with wrapping
+      // Hover detection (need positions first for hover targets)
       const currentAngles = currentAnglesRef.current;
       const targetAngles = targetAnglesRef.current;
-      for (let i = 0; i < 4; i++) {
-        const delta = wrapAngleDelta(targetAngles[i], currentAngles[i]);
-        currentAngles[i] += delta * 0.06;
-      }
-
-      // Lerp per-node radii (selected elongates, others shrink slightly)
       const radii = nodeRadiiRef.current;
-      for (let i = 0; i < 4; i++) {
-        const target = selected >= 0
-          ? (selected === i ? 1.15 : 0.92)
-          : 1.0;
-        radii[i] += (target - radii[i]) * 0.06;
-      }
 
-      // Compute node screen positions from current angles and radii
+      // Compute current node positions for hover detection
       const nodePositions = currentAngles.map((angle, i) => ({
         x: cx + Math.cos(angle) * radius * radii[i],
         y: cy + Math.sin(angle) * radius * radii[i],
       }));
 
-      // Mouse angle from center
-      let mouseAngle = -999;
-      if (mousePos.x > -9000) {
-        mouseAngle = Math.atan2(mousePos.y - cy, mousePos.x - cx);
-      }
-
-      // Hover detection
       const hoverIdx = getHoveredIndex(mousePos.x, mousePos.y, nodePositions);
       hoveredRef.current = hoverIdx;
       canvas.style.cursor = (hoverIdx >= 0 && selected < 0) ? 'pointer' : 'default';
 
-      /* ---- Draw background lines ---- */
+      /* ---- Update target angles based on hover (only if no selection) ---- */
 
-      for (const line of bgLines) {
-        const breathe = Math.sin(time * 0.5 + line.phaseOffset) * 0.03 * line.baseLength;
-        let rayLength = line.baseLength + breathe;
-        let opacity = line.baseOpacity;
-
-        // Check proximity to any node
-        let nearSelectedNode = false;
-        let nearUnselectedNode = false;
-        if (selected >= 0) {
+      if (selected < 0) {
+        if (hoverIdx >= 0) {
+          const hovAngle = BASE_ANGLES[hoverIdx];
           for (let i = 0; i < 4; i++) {
-            let angDist = Math.abs(wrapAngleDelta(currentAngles[i], line.angle));
-            if (angDist > Math.PI) angDist = PI2 - angDist;
-            if (angDist < 0.3) {
-              if (i === selected) nearSelectedNode = true;
-              else nearUnselectedNode = true;
+            if (i === hoverIdx) {
+              targetAngles[i] = BASE_ANGLES[i];
+            } else {
+              const diff = Math.abs(i - hoverIdx);
+              const isOpposite = diff === 2;
+              if (isOpposite) {
+                targetAngles[i] = hovAngle + Math.PI;
+              } else {
+                // Adjacent: push ~PI/4 further from hovered
+                const sign = wrapAngleDelta(BASE_ANGLES[i], hovAngle) > 0 ? 1 : -1;
+                targetAngles[i] = hovAngle + sign * (Math.PI / 2 + Math.PI / 4);
+              }
             }
           }
-        }
-
-        // Mouse proximity boost
-        if (mouseAngle > -900 && selected < 0) {
-          let angularDist = Math.abs(line.angle - mouseAngle);
-          if (angularDist > Math.PI) angularDist = PI2 - angularDist;
-          const proximityFactor = Math.max(0, 1 - angularDist / PROXIMITY_THRESHOLD);
-          if (proximityFactor > 0) {
-            opacity += proximityFactor * 0.06;
-            rayLength += proximityFactor * 0.08;
+        } else {
+          for (let i = 0; i < 4; i++) {
+            targetAngles[i] = BASE_ANGLES[i];
           }
         }
-
-        // Selection effects
-        if (selected >= 0) {
-          if (nearSelectedNode) {
-            // Lines near selected node glow ACCENT and extend
-            rayLength = Math.min(rayLength + 0.15, 0.7);
-            const endX = cx + Math.cos(line.angle) * radius * rayLength;
-            const endY = cy + Math.sin(line.angle) * radius * rayLength;
-            ctx.beginPath();
-            ctx.moveTo(cx, cy);
-            ctx.lineTo(endX, endY);
-            ctx.strokeStyle = `rgba(${ACCENT.r}, ${ACCENT.g}, ${ACCENT.b}, ${opacity * 2.5})`;
-            ctx.lineWidth = 0.6;
-            ctx.stroke();
-            continue;
-          } else if (nearUnselectedNode) {
-            opacity = 0.02;
-          } else {
-            opacity *= 0.5;
-          }
-        }
-
-        const endX = cx + Math.cos(line.angle) * radius * rayLength;
-        const endY = cy + Math.sin(line.angle) * radius * rayLength;
-
-        ctx.beginPath();
-        ctx.moveTo(cx, cy);
-        ctx.lineTo(endX, endY);
-        ctx.strokeStyle = `rgba(${GREY.r}, ${GREY.g}, ${GREY.b}, ${opacity})`;
-        ctx.lineWidth = 0.5;
-        ctx.stroke();
       }
 
-      /* ---- Draw nodes ---- */
+      /* ---- Lerp angles and radii ---- */
+
+      for (let i = 0; i < 4; i++) {
+        const delta = wrapAngleDelta(targetAngles[i], currentAngles[i]);
+        currentAngles[i] += delta * 0.06;
+      }
+
+      for (let i = 0; i < 4; i++) {
+        const target = selected >= 0
+          ? (selected === i ? 1.15 : 0.92)
+          : (hoverIdx === i ? 1.06 : 1.0);
+        radii[i] += (target - radii[i]) * 0.06;
+      }
+
+      // Recompute positions after lerp
+      for (let i = 0; i < 4; i++) {
+        nodePositions[i] = {
+          x: cx + Math.cos(currentAngles[i]) * radius * radii[i],
+          y: cy + Math.sin(currentAngles[i]) * radius * radii[i],
+        };
+      }
+
+      /* ---- Draw rays and nodes ---- */
 
       for (let i = 0; i < Math.min(4, options.length); i++) {
         const pos = nodePositions[i];
@@ -446,7 +387,6 @@ export default function SituationalGrid({
         // Ray from center to node
         const rayAlpha = isSelected ? 0.6 : isHovered ? 0.3 : hasSelection ? 0.06 : 0.12;
 
-        // Selected ray glow
         if (isSelected) {
           ctx.shadowColor = `rgba(${ACCENT.r}, ${ACCENT.g}, ${ACCENT.b}, 0.6)`;
           ctx.shadowBlur = 18;
@@ -460,20 +400,19 @@ export default function SituationalGrid({
         ctx.stroke();
 
         if (isSelected) {
-          // Double-stroke for stronger glow
-          ctx.stroke();
+          ctx.stroke(); // double-stroke for glow
         }
 
-        // Reset shadow before node draw, then re-apply for node glow
         ctx.shadowColor = 'transparent';
         ctx.shadowBlur = 0;
 
-        // Selected node glow
+        // Node glow
         if (isSelected) {
           ctx.shadowColor = `rgba(${ACCENT.r}, ${ACCENT.g}, ${ACCENT.b}, 0.5)`;
           ctx.shadowBlur = 14;
         }
 
+        // Draw node square
         ctx.fillStyle = `rgba(${nodeColor.r}, ${nodeColor.g}, ${nodeColor.b}, ${nodeAlpha})`;
         ctx.fillRect(
           pos.x - nodeSize / 2,
@@ -487,29 +426,91 @@ export default function SituationalGrid({
           ctx.shadowBlur = 0;
         }
 
-        // Key label near node — always visible, glows blue when node is blue
-        const labelAlpha = isSelected ? 0.95 : isHovered ? 0.75 : hasSelection ? 0.40 : 0.55;
+        /* ---- Key label at node ---- */
+
         const labelIsBlue = isSelected || isHovered;
-        ctx.font = '600 11px "Mohave", sans-serif';
-        ctx.textAlign = 'center';
-        ctx.textBaseline = 'middle';
+        const labelAlpha = isSelected ? 0.95 : isHovered ? 0.75 : hasSelection ? 0.40 : 0.55;
 
         if (isSelected) {
           ctx.shadowColor = `rgba(${ACCENT.r}, ${ACCENT.g}, ${ACCENT.b}, 0.4)`;
           ctx.shadowBlur = 10;
         }
 
+        ctx.font = '600 13px "Mohave", sans-serif';
         ctx.fillStyle = `rgba(${labelIsBlue ? ACCENT.r : 255}, ${labelIsBlue ? ACCENT.g : 255}, ${labelIsBlue ? ACCENT.b : 255}, ${labelAlpha})`;
 
-        // Position label slightly beyond node (using per-node radius)
-        const labelDist = radius * radii[i] + 20;
-        const labelX = cx + Math.cos(currentAngles[i]) * labelDist;
-        const labelY = cy + Math.sin(currentAngles[i]) * labelDist;
-        ctx.fillText(options[i].key.toUpperCase(), labelX, labelY);
+        // Position key label slightly outward from node
+        const cos = Math.cos(currentAngles[i]);
+        const sin = Math.sin(currentAngles[i]);
+        const keyDist = 16;
+        const keyX = pos.x + cos * keyDist;
+        const keyY = pos.y + sin * keyDist;
+
+        ctx.textAlign = 'center';
+        ctx.textBaseline = 'middle';
+        ctx.fillText(options[i].key.toUpperCase(), keyX, keyY);
 
         if (isSelected) {
           ctx.shadowColor = 'transparent';
           ctx.shadowBlur = 0;
+        }
+
+        /* ---- Response text near node ---- */
+
+        const textAlpha = isSelected ? 0.85 : isHovered ? 0.60 : hasSelection ? 0.18 : 0.40;
+        ctx.font = '400 11px "Kosugi", sans-serif';
+        ctx.fillStyle = `rgba(${labelIsBlue ? ACCENT.r : 200}, ${labelIsBlue ? ACCENT.g : 200}, ${labelIsBlue ? ACCENT.b : 200}, ${textAlpha})`;
+
+        // Determine text position and alignment based on angle quadrant
+        const absCos = Math.abs(cos);
+        const absSin = Math.abs(sin);
+        const lineHeight = 15;
+        let maxWidth: number;
+        let textX: number;
+        let textY: number;
+        let vertDir = 1; // 1 = lines go down, -1 = lines go up
+
+        if (absCos > absSin) {
+          // Mostly horizontal (right or left nodes)
+          maxWidth = 180;
+          if (cos > 0) {
+            ctx.textAlign = 'left';
+            textX = pos.x + 28;
+          } else {
+            ctx.textAlign = 'right';
+            textX = pos.x - 28;
+          }
+          textY = pos.y - 10;
+          vertDir = 1;
+        } else {
+          // Mostly vertical (top or bottom nodes)
+          maxWidth = 240;
+          ctx.textAlign = 'center';
+          textX = pos.x;
+          if (sin < 0) {
+            // Top node: text above
+            textY = pos.y - 30;
+            vertDir = -1;
+          } else {
+            // Bottom node: text below
+            textY = pos.y + 30;
+            vertDir = 1;
+          }
+        }
+
+        const lines = wrapText(ctx, options[i].text, maxWidth);
+
+        if (vertDir === -1) {
+          // Draw upward: first line closest to node, last line furthest
+          // But read top-to-bottom, so offset the block upward
+          const blockStartY = textY - (lines.length - 1) * lineHeight;
+          for (let li = 0; li < lines.length; li++) {
+            ctx.fillText(lines[li], textX, blockStartY + li * lineHeight);
+          }
+        } else {
+          for (let li = 0; li < lines.length; li++) {
+            ctx.fillText(lines[li], textX, textY + li * lineHeight);
+          }
         }
       }
 
@@ -538,38 +539,11 @@ export default function SituationalGrid({
 
   return (
     <div ref={containerRef} className="relative w-full">
-      {/* Canvas starburst */}
       <canvas
         ref={canvasRef}
         className="w-full"
-        style={{ display: 'block', height: '320px' }}
+        style={{ display: 'block', height: `${CANVAS_HEIGHT}px` }}
       />
-
-      {/* DOM text panel */}
-      <div className="relative -mt-4 z-10 bg-[rgba(10,10,10,0.70)] backdrop-blur-[20px] saturate-[1.2] rounded-[3px] border border-ops-border p-4 space-y-2">
-        {options.slice(0, 4).map((option) => {
-          const isSelected = selectedKey === option.key;
-          const isDimmed = selectedKey !== null && !isSelected;
-
-          return (
-            <div
-              key={option.key}
-              className={`
-                flex items-start gap-3 p-3 rounded-[3px] border transition-all duration-300
-                ${isSelected ? 'border-ops-accent bg-[rgba(89,119,148,0.08)]' : 'border-transparent'}
-                ${isDimmed ? 'opacity-40' : 'opacity-100'}
-              `}
-            >
-              <span className="font-caption uppercase text-xs tracking-[0.15em] text-ops-accent shrink-0 mt-0.5">
-                {option.key.toUpperCase()}
-              </span>
-              <span className="font-body text-sm text-ops-text-primary leading-relaxed">
-                {option.text}
-              </span>
-            </div>
-          );
-        })}
-      </div>
     </div>
   );
 }
