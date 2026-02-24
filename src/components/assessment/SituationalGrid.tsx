@@ -33,12 +33,13 @@ const HIT_RADIUS = 60;
 const PI2 = Math.PI * 2;
 const CANVAS_HEIGHT = 500;
 
-// Slightly organic cardinal positions (~PI/2 apart)
+// Offset by ~PI/6, slightly organic spacing
+const ROT = Math.PI / 6;
 const BASE_ANGLES = [
-  -Math.PI / 2 + 0.12,   // A: top (slightly clockwise)
-  0 + 0.08,               // B: right (slightly clockwise)
-  Math.PI / 2 - 0.12,     // C: bottom (slightly counterclockwise)
-  Math.PI + 0.05,          // D: left (slightly clockwise)
+  -Math.PI / 2 + 0.12 + ROT,   // top-ish
+  0 + 0.08 + ROT,               // right-ish
+  Math.PI / 2 - 0.12 + ROT,     // bottom-ish
+  Math.PI + 0.05 + ROT,          // left-ish
 ];
 
 /* ------------------------------------------------------------------ */
@@ -309,6 +310,7 @@ export default function SituationalGrid({
 
       if (selected < 0) {
         if (hoverIdx >= 0) {
+          // Hover: push others only slightly (~PI/8)
           const hovAngle = BASE_ANGLES[hoverIdx];
           for (let i = 0; i < 4; i++) {
             if (i === hoverIdx) {
@@ -319,9 +321,8 @@ export default function SituationalGrid({
               if (isOpposite) {
                 targetAngles[i] = hovAngle + Math.PI;
               } else {
-                // Adjacent: push ~PI/4 further from hovered
                 const sign = wrapAngleDelta(BASE_ANGLES[i], hovAngle) > 0 ? 1 : -1;
-                targetAngles[i] = hovAngle + sign * (Math.PI / 2 + Math.PI / 4);
+                targetAngles[i] = hovAngle + sign * (Math.PI / 2 + Math.PI / 8);
               }
             }
           }
@@ -379,13 +380,13 @@ export default function SituationalGrid({
           nodeSize = 5;
           nodeAlpha = 0.15;
         } else {
-          nodeColor = GREY;
+          nodeColor = { r: 160, g: 160, b: 160 };
           nodeSize = 7;
-          nodeAlpha = 0.35;
+          nodeAlpha = 0.50;
         }
 
         // Ray from center to node
-        const rayAlpha = isSelected ? 0.6 : isHovered ? 0.3 : hasSelection ? 0.06 : 0.12;
+        const rayAlpha = isSelected ? 0.6 : isHovered ? 0.35 : hasSelection ? 0.06 : 0.25;
 
         if (isSelected) {
           ctx.shadowColor = `rgba(${ACCENT.r}, ${ACCENT.g}, ${ACCENT.b}, 0.6)`;
@@ -395,7 +396,8 @@ export default function SituationalGrid({
         ctx.beginPath();
         ctx.moveTo(cx, cy);
         ctx.lineTo(pos.x, pos.y);
-        ctx.strokeStyle = `rgba(${nodeColor.r}, ${nodeColor.g}, ${nodeColor.b}, ${rayAlpha})`;
+        const rayColor = (!isSelected && !isHovered && !hasSelection) ? { r: 160, g: 160, b: 160 } : nodeColor;
+        ctx.strokeStyle = `rgba(${rayColor.r}, ${rayColor.g}, ${rayColor.b}, ${rayAlpha})`;
         ctx.lineWidth = isSelected ? 1.5 : 0.6;
         ctx.stroke();
 
@@ -426,76 +428,39 @@ export default function SituationalGrid({
           ctx.shadowBlur = 0;
         }
 
-        /* ---- Key label at node ---- */
-
-        const labelIsBlue = isSelected || isHovered;
-        const labelAlpha = isSelected ? 0.95 : isHovered ? 0.75 : hasSelection ? 0.40 : 0.55;
-
-        if (isSelected) {
-          ctx.shadowColor = `rgba(${ACCENT.r}, ${ACCENT.g}, ${ACCENT.b}, 0.4)`;
-          ctx.shadowBlur = 10;
-        }
-
-        ctx.font = '600 13px "Mohave", sans-serif';
-        ctx.fillStyle = `rgba(${labelIsBlue ? ACCENT.r : 255}, ${labelIsBlue ? ACCENT.g : 255}, ${labelIsBlue ? ACCENT.b : 255}, ${labelAlpha})`;
-
-        // Position key label slightly outward from node
-        const cos = Math.cos(currentAngles[i]);
-        const sin = Math.sin(currentAngles[i]);
-        const keyDist = 16;
-        const keyX = pos.x + cos * keyDist;
-        const keyY = pos.y + sin * keyDist;
-
-        ctx.textAlign = 'center';
-        ctx.textBaseline = 'middle';
-        ctx.fillText(options[i].key.toUpperCase(), keyX, keyY);
-
-        if (isSelected) {
-          ctx.shadowColor = 'transparent';
-          ctx.shadowBlur = 0;
-        }
-
         /* ---- Response text near node ---- */
 
-        const textAlpha = isSelected ? 0.85 : isHovered ? 0.60 : hasSelection ? 0.18 : 0.40;
+        const cos = Math.cos(currentAngles[i]);
+        const sin = Math.sin(currentAngles[i]);
+        const labelIsBlue = isSelected || isHovered;
+
+        const textAlpha = isSelected ? 0.85 : isHovered ? 0.60 : hasSelection ? 0.18 : 0.50;
         ctx.font = '400 11px "Kosugi", sans-serif';
         ctx.fillStyle = `rgba(${labelIsBlue ? ACCENT.r : 200}, ${labelIsBlue ? ACCENT.g : 200}, ${labelIsBlue ? ACCENT.b : 200}, ${textAlpha})`;
 
-        // Determine text position and alignment based on angle quadrant
-        const absCos = Math.abs(cos);
-        const absSin = Math.abs(sin);
+        // Determine text position and alignment
+        // Right-align for top and left nodes, left-align for bottom and right
         const lineHeight = 15;
         let maxWidth: number;
         let textX: number;
         let textY: number;
         let vertDir = 1; // 1 = lines go down, -1 = lines go up
 
-        if (absCos > absSin) {
-          // Mostly horizontal (right or left nodes)
-          maxWidth = 180;
-          if (cos > 0) {
-            ctx.textAlign = 'left';
-            textX = pos.x + 28;
-          } else {
-            ctx.textAlign = 'right';
-            textX = pos.x - 28;
-          }
-          textY = pos.y - 10;
-          vertDir = 1;
+        // Top or left → right-align; Bottom or right → left-align
+        const isTopOrLeft = (sin < -0.3) || (cos < -0.3 && Math.abs(sin) < 0.7);
+
+        if (isTopOrLeft) {
+          ctx.textAlign = 'right';
+          maxWidth = 200;
+          textX = pos.x - 20;
+          textY = sin < -0.3 ? pos.y - 26 : pos.y - 10;
+          vertDir = sin < -0.3 ? -1 : 1;
         } else {
-          // Mostly vertical (top or bottom nodes)
-          maxWidth = 240;
-          ctx.textAlign = 'center';
-          textX = pos.x;
-          if (sin < 0) {
-            // Top node: text above
-            textY = pos.y - 30;
-            vertDir = -1;
-          } else {
-            // Bottom node: text below
-            textY = pos.y + 30;
-            vertDir = 1;
-          }
+          ctx.textAlign = 'left';
+          maxWidth = 200;
+          textX = pos.x + 20;
+          textY = sin > 0.3 ? pos.y + 26 : pos.y - 10;
+          vertDir = 1;
         }
 
         const lines = wrapText(ctx, options[i].text, maxWidth);
