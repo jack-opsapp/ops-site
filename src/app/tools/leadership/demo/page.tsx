@@ -15,6 +15,8 @@ import SituationalGrid from '@/components/assessment/SituationalGrid';
 import ForcedChoiceFork from '@/components/assessment/ForcedChoiceFork';
 import ChunkTransition from '@/components/assessment/ChunkTransition';
 import GeneratingState from '@/components/assessment/GeneratingState';
+import LeadershipSphere from '@/components/assessment/LeadershipSphere';
+import type { SimpleScores } from '@/lib/assessment/types';
 
 /* ------------------------------------------------------------------ */
 /*  Placeholder container for components not yet built                  */
@@ -51,6 +53,15 @@ function PlaceholderContainer({
 /* ------------------------------------------------------------------ */
 /*  Live component demos                                               */
 /* ------------------------------------------------------------------ */
+
+const MOCK_SCORES: SimpleScores = {
+  drive: 78,
+  resilience: 65,
+  vision: 82,
+  connection: 71,
+  adaptability: 58,
+  integrity: 88,
+};
 
 const SITUATIONAL_MOCK = [
   { key: 'a', text: 'Stop the workaround immediately and retrain the team on the proper procedure' },
@@ -234,6 +245,34 @@ function GeneratingStateDemo() {
   );
 }
 
+function LeadershipSphereDemo() {
+  const [clickedDim, setClickedDim] = useState<string | null>(null);
+
+  return (
+    <FadeInUp>
+      <section className="py-[48px]">
+        <SectionLabel label="LEADERSHIP SPHERE" className="mb-[16px]" />
+        <p className="font-body text-ops-text-secondary text-sm mb-[24px]">
+          Interactive 3D sphere with 6 dimension vectors. Draggable, hoverable, clickable nodes.
+          Vector lengths correspond to scores. High-score vectors have particle streams.
+        </p>
+        <div className="h-[500px] w-full border border-ops-border rounded-[3px] overflow-hidden">
+          <LeadershipSphere
+            scores={MOCK_SCORES}
+            onDimensionClick={(dim) => setClickedDim(dim)}
+            className="w-full h-full"
+          />
+        </div>
+        {clickedDim && (
+          <p className="font-body text-ops-text-secondary text-sm mt-[16px]">
+            Clicked: <span className="text-ops-accent">{clickedDim.toUpperCase()}</span>
+          </p>
+        )}
+      </section>
+    </FadeInUp>
+  );
+}
+
 /* ------------------------------------------------------------------ */
 /*  Page                                                               */
 /* ------------------------------------------------------------------ */
@@ -295,12 +334,8 @@ export default function LeadershipDemoPage() {
 
       <Divider />
 
-      {/* Leadership Sphere — placeholder */}
-      <PlaceholderContainer
-        label="LEADERSHIP SPHERE"
-        description="Interactive 3D sphere visualization for leadership profile results. Rotatable, with labeled dimension axes."
-        height="h-[500px]"
-      />
+      {/* Leadership Sphere */}
+      <LeadershipSphereDemo />
     </main>
   );
 }
