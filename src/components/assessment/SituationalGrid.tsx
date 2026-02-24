@@ -446,42 +446,30 @@ export default function SituationalGrid({
 
         // Determine text position and alignment
         // Right-align for top and left nodes, left-align for bottom and right
+        // Always vertically centered on the node
         const lineHeight = 15;
-        let maxWidth: number;
+        const maxWidth = 200;
         let textX: number;
-        let textY: number;
-        let vertDir = 1; // 1 = lines go down, -1 = lines go up
 
         // Top or left → right-align; Bottom or right → left-align
         const isTopOrLeft = (sin < -0.3) || (cos < -0.3 && Math.abs(sin) < 0.7);
 
         if (isTopOrLeft) {
           ctx.textAlign = 'right';
-          maxWidth = 200;
           textX = pos.x - 20;
-          textY = sin < -0.3 ? pos.y - 26 : pos.y - 10;
-          vertDir = sin < -0.3 ? -1 : 1;
         } else {
           ctx.textAlign = 'left';
-          maxWidth = 200;
           textX = pos.x + 20;
-          textY = sin > 0.3 ? pos.y + 26 : pos.y - 10;
-          vertDir = 1;
         }
 
         const lines = wrapText(ctx, options[i].text, maxWidth);
 
-        if (vertDir === -1) {
-          // Draw upward: first line closest to node, last line furthest
-          // But read top-to-bottom, so offset the block upward
-          const blockStartY = textY - (lines.length - 1) * lineHeight;
-          for (let li = 0; li < lines.length; li++) {
-            ctx.fillText(lines[li], textX, blockStartY + li * lineHeight);
-          }
-        } else {
-          for (let li = 0; li < lines.length; li++) {
-            ctx.fillText(lines[li], textX, textY + li * lineHeight);
-          }
+        // Vertically center the text block on the node
+        const blockHeight = (lines.length - 1) * lineHeight;
+        const blockStartY = pos.y - blockHeight / 2;
+
+        for (let li = 0; li < lines.length; li++) {
+          ctx.fillText(lines[li], textX, blockStartY + li * lineHeight);
         }
       }
 
