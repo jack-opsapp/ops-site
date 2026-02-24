@@ -9,14 +9,13 @@
 
 import { useState } from 'react';
 import { SectionLabel, FadeInUp, Divider, Button } from '@/components/ui';
-import AmbientBurst from '@/components/assessment/AmbientBurst';
 import LikertRadialGauge from '@/components/assessment/LikertRadialGauge';
 import SituationalGrid from '@/components/assessment/SituationalGrid';
 import ForcedChoiceFork from '@/components/assessment/ForcedChoiceFork';
 import ChunkTransition from '@/components/assessment/ChunkTransition';
 import GeneratingState from '@/components/assessment/GeneratingState';
 import LeadershipSphere from '@/components/assessment/LeadershipSphere';
-import type { SimpleScores } from '@/lib/assessment/types';
+import type { SimpleScores, DimensionSubScores } from '@/lib/assessment/types';
 
 /* ------------------------------------------------------------------ */
 /*  Placeholder container for components not yet built                  */
@@ -63,6 +62,36 @@ const MOCK_SCORES: SimpleScores = {
   integrity: 88,
 };
 
+const MOCK_SUB_SCORES: DimensionSubScores = {
+  drive: [
+    { label: 'Initiative', score: 82 },
+    { label: 'Urgency', score: 71 },
+    { label: 'Ambition', score: 80 },
+  ],
+  resilience: [
+    { label: 'Recovery', score: 60 },
+    { label: 'Composure', score: 70 },
+  ],
+  vision: [
+    { label: 'Strategy', score: 85 },
+    { label: 'Foresight', score: 78 },
+    { label: 'Innovation', score: 83 },
+  ],
+  connection: [
+    { label: 'Empathy', score: 75 },
+    { label: 'Trust', score: 67 },
+  ],
+  adaptability: [
+    { label: 'Flexibility', score: 55 },
+    { label: 'Learning', score: 61 },
+  ],
+  integrity: [
+    { label: 'Consistency', score: 90 },
+    { label: 'Transparency', score: 85 },
+    { label: 'Ethics', score: 89 },
+  ],
+};
+
 const SITUATIONAL_MOCK = [
   { key: 'a', text: 'Stop the workaround immediately and retrain the team on the proper procedure' },
   { key: 'b', text: 'Report the issue to leadership and propose a compliant alternative that still saves time' },
@@ -84,7 +113,9 @@ function SituationalGridDemo() {
       <section className="py-[48px]">
         <SectionLabel label="SITUATIONAL GRID" className="mb-[16px]" />
         <p className="font-body text-ops-text-secondary text-sm mb-[24px]">
-          2x2 frosted glass grid for situational judgment questions. Tap to select; unselected options dim.
+          Radial Canvas starburst with 4 interactive nodes at organic cardinal positions.
+          Selecting a node triggers angular redistribution — adjacent nodes compress toward the selection.
+          DOM text panel below with frosted glass styling.
         </p>
         <SituationalGrid
           key={resetKey}
@@ -158,8 +189,9 @@ function LikertRadialGaugeDemo() {
       <section className="py-[48px]">
         <SectionLabel label="LIKERT RADIAL GAUGE" className="mb-[16px]" />
         <p className="font-body text-ops-text-secondary text-sm mb-[24px]">
-          Radial gauge for Likert-scale responses. Semicircular arc with 5 interactive square nodes.
-          Hover highlights, click selects with particle animation along the ray.
+          Semicircular arc with 5 interactive nodes, ~40 atmospheric background rays with breathing
+          animation and mouse proximity effects. Selection triggers a meter fill effect with animated
+          fill angle lerp and particle stream along the selected ray.
         </p>
         <div className="w-full border border-ops-border rounded-[3px] overflow-hidden">
           <LikertRadialGauge
@@ -235,7 +267,8 @@ function GeneratingStateDemo() {
       <section className="py-[48px]">
         <SectionLabel label="GENERATING STATE" className="mb-[16px]" />
         <p className="font-body text-ops-text-secondary text-sm mb-[24px]">
-          Loading/processing state shown while AI generates analysis. Building hexagonal radar animation.
+          Loading state shown while AI generates analysis. 3D rotating radial burst with ~60 Fibonacci-sphere
+          lines, depth-based color gradient, and overlaid status text.
         </p>
         <div className="h-[400px] w-full border border-ops-border rounded-[3px] overflow-hidden">
           <GeneratingState />
@@ -253,12 +286,14 @@ function LeadershipSphereDemo() {
       <section className="py-[48px]">
         <SectionLabel label="LEADERSHIP SPHERE" className="mb-[16px]" />
         <p className="font-body text-ops-text-secondary text-sm mb-[24px]">
-          Interactive 3D sphere with 6 dimension vectors. Draggable, hoverable, clickable nodes.
-          Vector lengths correspond to scores. High-score vectors have particle streams.
+          Interactive 3D sphere with 6 dimension vectors and sub-nodes. Draggable, hoverable, clickable.
+          Click a node to enter focus mode — camera orients to the dimension, sub-nodes expand with labels.
+          Drag to return to overview. Vector lengths correspond to scores.
         </p>
         <div className="h-[500px] w-full border border-ops-border rounded-[3px] overflow-hidden">
           <LeadershipSphere
             scores={MOCK_SCORES}
+            subScores={MOCK_SUB_SCORES}
             onDimensionClick={(dim) => setClickedDim(dim)}
             className="w-full h-full"
           />
@@ -289,22 +324,6 @@ export default function LeadershipDemoPage() {
         <p className="font-body text-ops-text-secondary text-base mb-[48px]">
           Interactive element testbed for refinement
         </p>
-      </FadeInUp>
-
-      <Divider />
-
-      {/* Ambient Burst */}
-      <FadeInUp>
-        <section className="py-[48px]">
-          <SectionLabel label="AMBIENT BURST" className="mb-[16px]" />
-          <p className="font-body text-ops-text-secondary text-sm mb-[24px]">
-            Simplified 3D radial burst for atmospheric background. ~60 lines,
-            Fibonacci sphere distribution, depth-based color, slow rotation.
-          </p>
-          <div className="h-[500px] w-full border border-ops-border rounded-[3px] overflow-hidden">
-            <AmbientBurst className="w-full h-full" />
-          </div>
-        </section>
       </FadeInUp>
 
       <Divider />
