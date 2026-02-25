@@ -6,12 +6,32 @@
     "type": "likert",
     "text": "In the last month, when a plan fell apart, I found myself replaying what went wrong for days afterward.",
     "options": null,
-    "scoring_weights": { "1": { "resilience": 100 }, "2": { "resilience": 75 }, "3": { "resilience": 50 }, "4": { "resilience": 25 }, "5": { "resilience": 0 } },
-    "difficulty": 0.35,
+    "scoring_weights": {
+      "1": {
+        "resilience": 100
+      },
+      "2": {
+        "resilience": 65
+      },
+      "3": {
+        "resilience": 30
+      },
+      "4": {
+        "resilience": 10
+      },
+      "5": {
+        "resilience": 0
+      }
+    },
+    "difficulty": 0.77,
     "reverse_scored": true,
     "validity_pair_id": null,
     "is_impression_management": false,
-    "version_availability": ["quick", "deep"]
+    "version_availability": [
+      "quick",
+      "deep"
+    ],
+    "sub_dimension": "recovery"
   },
   {
     "id": "resilience_likert_02",
@@ -20,12 +40,32 @@
     "type": "likert",
     "text": "When I get blindsided by bad news at work, I can usually think clearly about next steps within an hour.",
     "options": null,
-    "scoring_weights": { "1": { "resilience": 0 }, "2": { "resilience": 25 }, "3": { "resilience": 50 }, "4": { "resilience": 75 }, "5": { "resilience": 100 } },
-    "difficulty": 0.5,
+    "scoring_weights": {
+      "1": {
+        "resilience": 0
+      },
+      "2": {
+        "resilience": 35
+      },
+      "3": {
+        "resilience": 65
+      },
+      "4": {
+        "resilience": 85
+      },
+      "5": {
+        "resilience": 100
+      }
+    },
+    "difficulty": 0.2,
     "reverse_scored": false,
     "validity_pair_id": null,
     "is_impression_management": false,
-    "version_availability": ["quick", "deep"]
+    "version_availability": [
+      "quick",
+      "deep"
+    ],
+    "sub_dimension": "recovery"
   },
   {
     "id": "resilience_likert_03",
@@ -34,12 +74,37 @@
     "type": "likert",
     "text": "After a major setback, I start working on the recovery plan before most people have finished processing what happened.",
     "options": null,
-    "scoring_weights": { "1": { "resilience": 0, "drive": 0 }, "2": { "resilience": 18, "drive": 7 }, "3": { "resilience": 35, "drive": 15 }, "4": { "resilience": 53, "drive": 22 }, "5": { "resilience": 70, "drive": 30 } },
-    "difficulty": 0.55,
+    "scoring_weights": {
+      "1": {
+        "resilience": 0,
+        "drive": 0
+      },
+      "2": {
+        "resilience": 18,
+        "drive": 7
+      },
+      "3": {
+        "resilience": 35,
+        "drive": 15
+      },
+      "4": {
+        "resilience": 53,
+        "drive": 22
+      },
+      "5": {
+        "resilience": 70,
+        "drive": 30
+      }
+    },
+    "difficulty": 0.24,
     "reverse_scored": false,
     "validity_pair_id": null,
     "is_impression_management": false,
-    "version_availability": ["quick", "deep"]
+    "version_availability": [
+      "quick",
+      "deep"
+    ],
+    "sub_dimension": "recovery"
   },
   {
     "id": "resilience_likert_04",
@@ -48,12 +113,32 @@
     "type": "likert",
     "text": "When someone criticizes my work sharply, the sting usually fades within a day rather than lingering for weeks.",
     "options": null,
-    "scoring_weights": { "1": { "resilience": 0 }, "2": { "resilience": 25 }, "3": { "resilience": 50 }, "4": { "resilience": 75 }, "5": { "resilience": 100 } },
-    "difficulty": 0.45,
+    "scoring_weights": {
+      "1": {
+        "resilience": 0
+      },
+      "2": {
+        "resilience": 10
+      },
+      "3": {
+        "resilience": 25
+      },
+      "4": {
+        "resilience": 55
+      },
+      "5": {
+        "resilience": 100
+      }
+    },
+    "difficulty": 0.28,
     "reverse_scored": false,
     "validity_pair_id": null,
     "is_impression_management": false,
-    "version_availability": ["quick", "deep"]
+    "version_availability": [
+      "quick",
+      "deep"
+    ],
+    "sub_dimension": "recovery"
   },
   {
     "id": "resilience_likert_05",
@@ -62,12 +147,32 @@
     "type": "likert",
     "text": "In heated moments, I've said things I regret because my emotions moved faster than my judgment.",
     "options": null,
-    "scoring_weights": { "1": { "resilience": 100 }, "2": { "resilience": 75 }, "3": { "resilience": 50 }, "4": { "resilience": 25 }, "5": { "resilience": 0 } },
-    "difficulty": 0.4,
+    "scoring_weights": {
+      "1": {
+        "resilience": 100
+      },
+      "2": {
+        "resilience": 65
+      },
+      "3": {
+        "resilience": 30
+      },
+      "4": {
+        "resilience": 10
+      },
+      "5": {
+        "resilience": 0
+      }
+    },
+    "difficulty": 0.77,
     "reverse_scored": true,
     "validity_pair_id": null,
     "is_impression_management": false,
-    "version_availability": ["quick", "deep"]
+    "version_availability": [
+      "quick",
+      "deep"
+    ],
+    "sub_dimension": "composure"
   },
   {
     "id": "resilience_likert_06",
@@ -76,12 +181,37 @@
     "type": "likert",
     "text": "When I'm under heavy stress, I reach out to someone I trust to talk through what I'm feeling before deciding what to do.",
     "options": null,
-    "scoring_weights": { "1": { "resilience": 0, "connection": 0 }, "2": { "resilience": 18, "connection": 7 }, "3": { "resilience": 35, "connection": 15 }, "4": { "resilience": 53, "connection": 22 }, "5": { "resilience": 70, "connection": 30 } },
-    "difficulty": 0.5,
+    "scoring_weights": {
+      "1": {
+        "resilience": 0,
+        "connection": 0
+      },
+      "2": {
+        "resilience": 18,
+        "connection": 7
+      },
+      "3": {
+        "resilience": 35,
+        "connection": 15
+      },
+      "4": {
+        "resilience": 53,
+        "connection": 22
+      },
+      "5": {
+        "resilience": 70,
+        "connection": 30
+      }
+    },
+    "difficulty": 0.23,
     "reverse_scored": false,
     "validity_pair_id": null,
     "is_impression_management": false,
-    "version_availability": ["quick", "deep"]
+    "version_availability": [
+      "quick",
+      "deep"
+    ],
+    "sub_dimension": "composure"
   },
   {
     "id": "resilience_likert_07",
@@ -90,12 +220,32 @@
     "type": "likert",
     "text": "I never feel stressed or overwhelmed, regardless of the circumstances.",
     "options": null,
-    "scoring_weights": { "1": { "resilience": 0 }, "2": { "resilience": 25 }, "3": { "resilience": 50 }, "4": { "resilience": 75 }, "5": { "resilience": 100 } },
-    "difficulty": 0.25,
-    "reverse_scored": false,
+    "scoring_weights": {
+      "1": {
+        "resilience": 85
+      },
+      "2": {
+        "resilience": 70
+      },
+      "3": {
+        "resilience": 50
+      },
+      "4": {
+        "resilience": 30
+      },
+      "5": {
+        "resilience": 15
+      }
+    },
+    "difficulty": 0.87,
+    "reverse_scored": true,
     "validity_pair_id": null,
     "is_impression_management": true,
-    "version_availability": ["quick", "deep"]
+    "version_availability": [
+      "quick",
+      "deep"
+    ],
+    "sub_dimension": "composure"
   },
   {
     "id": "resilience_likert_08",
@@ -104,12 +254,32 @@
     "type": "likert",
     "text": "When a project I poured months into gets killed, the frustration takes over and I struggle to focus on anything else that day.",
     "options": null,
-    "scoring_weights": { "1": { "resilience": 100 }, "2": { "resilience": 75 }, "3": { "resilience": 50 }, "4": { "resilience": 25 }, "5": { "resilience": 0 } },
-    "difficulty": 0.45,
+    "scoring_weights": {
+      "1": {
+        "resilience": 100
+      },
+      "2": {
+        "resilience": 65
+      },
+      "3": {
+        "resilience": 30
+      },
+      "4": {
+        "resilience": 10
+      },
+      "5": {
+        "resilience": 0
+      }
+    },
+    "difficulty": 0.63,
     "reverse_scored": true,
     "validity_pair_id": "resilience_vp_01",
     "is_impression_management": false,
-    "version_availability": ["quick", "deep"]
+    "version_availability": [
+      "quick",
+      "deep"
+    ],
+    "sub_dimension": "recovery"
   },
   {
     "id": "resilience_likert_09",
@@ -118,26 +288,71 @@
     "type": "likert",
     "text": "When a long-term project I cared about gets cancelled, I can usually redirect my energy toward something new within a couple of days.",
     "options": null,
-    "scoring_weights": { "1": { "resilience": 0 }, "2": { "resilience": 25 }, "3": { "resilience": 50 }, "4": { "resilience": 75 }, "5": { "resilience": 100 } },
-    "difficulty": 0.5,
+    "scoring_weights": {
+      "1": {
+        "resilience": 0
+      },
+      "2": {
+        "resilience": 10
+      },
+      "3": {
+        "resilience": 30
+      },
+      "4": {
+        "resilience": 65
+      },
+      "5": {
+        "resilience": 100
+      }
+    },
+    "difficulty": 0.52,
     "reverse_scored": false,
     "validity_pair_id": "resilience_vp_01",
     "is_impression_management": false,
-    "version_availability": ["quick", "deep"]
+    "version_availability": [
+      "quick",
+      "deep"
+    ],
+    "sub_dimension": "recovery"
   },
   {
     "id": "resilience_likert_10",
     "dimension": "resilience",
     "secondary_dimension": "integrity",
     "type": "likert",
-    "text": "When I make a mistake that costs my team, I own it publicly and move to fix it rather than dwelling on the guilt.",
+    "text": "When I make a mistake that costs my team, I own it publicly rather than deflecting or minimizing.",
     "options": null,
-    "scoring_weights": { "1": { "resilience": 0, "integrity": 0 }, "2": { "resilience": 18, "integrity": 7 }, "3": { "resilience": 35, "integrity": 15 }, "4": { "resilience": 53, "integrity": 22 }, "5": { "resilience": 70, "integrity": 30 } },
-    "difficulty": 0.55,
+    "scoring_weights": {
+      "1": {
+        "resilience": 0,
+        "integrity": 0
+      },
+      "2": {
+        "resilience": 18,
+        "integrity": 7
+      },
+      "3": {
+        "resilience": 35,
+        "integrity": 15
+      },
+      "4": {
+        "resilience": 53,
+        "integrity": 22
+      },
+      "5": {
+        "resilience": 70,
+        "integrity": 30
+      }
+    },
+    "difficulty": 0.52,
     "reverse_scored": false,
     "validity_pair_id": null,
     "is_impression_management": false,
-    "version_availability": ["quick", "deep"]
+    "version_availability": [
+      "quick",
+      "deep"
+    ],
+    "sub_dimension": "recovery"
   },
   {
     "id": "resilience_likert_11",
@@ -146,12 +361,32 @@
     "type": "likert",
     "text": "When multiple things go wrong in the same week, I notice my patience with people drops sharply.",
     "options": null,
-    "scoring_weights": { "1": { "resilience": 100 }, "2": { "resilience": 75 }, "3": { "resilience": 50 }, "4": { "resilience": 25 }, "5": { "resilience": 0 } },
-    "difficulty": 0.4,
+    "scoring_weights": {
+      "1": {
+        "resilience": 100
+      },
+      "2": {
+        "resilience": 85
+      },
+      "3": {
+        "resilience": 70
+      },
+      "4": {
+        "resilience": 45
+      },
+      "5": {
+        "resilience": 0
+      }
+    },
+    "difficulty": 0.75,
     "reverse_scored": true,
     "validity_pair_id": null,
     "is_impression_management": false,
-    "version_availability": ["quick", "deep"]
+    "version_availability": [
+      "quick",
+      "deep"
+    ],
+    "sub_dimension": "composure"
   },
   {
     "id": "resilience_likert_12",
@@ -160,12 +395,37 @@
     "type": "likert",
     "text": "When a strategy I believed in fails, I treat the post-mortem as genuinely useful rather than something to endure.",
     "options": null,
-    "scoring_weights": { "1": { "resilience": 0, "adaptability": 0 }, "2": { "resilience": 18, "adaptability": 7 }, "3": { "resilience": 35, "adaptability": 15 }, "4": { "resilience": 53, "adaptability": 22 }, "5": { "resilience": 70, "adaptability": 30 } },
-    "difficulty": 0.6,
+    "scoring_weights": {
+      "1": {
+        "resilience": 0,
+        "adaptability": 0
+      },
+      "2": {
+        "resilience": 18,
+        "adaptability": 7
+      },
+      "3": {
+        "resilience": 35,
+        "adaptability": 15
+      },
+      "4": {
+        "resilience": 53,
+        "adaptability": 22
+      },
+      "5": {
+        "resilience": 70,
+        "adaptability": 30
+      }
+    },
+    "difficulty": 0.58,
     "reverse_scored": false,
     "validity_pair_id": null,
     "is_impression_management": false,
-    "version_availability": ["quick", "deep"]
+    "version_availability": [
+      "quick",
+      "deep"
+    ],
+    "sub_dimension": "recovery"
   },
   {
     "id": "resilience_likert_13",
@@ -174,12 +434,32 @@
     "type": "likert",
     "text": "In the last month, when pressure spiked, I caught myself snapping at someone and had to walk it back.",
     "options": null,
-    "scoring_weights": { "1": { "resilience": 100 }, "2": { "resilience": 75 }, "3": { "resilience": 50 }, "4": { "resilience": 25 }, "5": { "resilience": 0 } },
-    "difficulty": 0.35,
+    "scoring_weights": {
+      "1": {
+        "resilience": 100
+      },
+      "2": {
+        "resilience": 85
+      },
+      "3": {
+        "resilience": 65
+      },
+      "4": {
+        "resilience": 35
+      },
+      "5": {
+        "resilience": 0
+      }
+    },
+    "difficulty": 0.78,
     "reverse_scored": true,
     "validity_pair_id": null,
     "is_impression_management": false,
-    "version_availability": ["quick", "deep"]
+    "version_availability": [
+      "quick",
+      "deep"
+    ],
+    "sub_dimension": "composure"
   },
   {
     "id": "resilience_likert_14",
@@ -188,12 +468,31 @@
     "type": "likert",
     "text": "When I lose something I worked hard for, the first emotion I can name is usually curiosity about what comes next rather than anger about what was lost.",
     "options": null,
-    "scoring_weights": { "1": { "resilience": 0 }, "2": { "resilience": 25 }, "3": { "resilience": 50 }, "4": { "resilience": 75 }, "5": { "resilience": 100 } },
-    "difficulty": 0.7,
+    "scoring_weights": {
+      "1": {
+        "resilience": 0
+      },
+      "2": {
+        "resilience": 35
+      },
+      "3": {
+        "resilience": 65
+      },
+      "4": {
+        "resilience": 85
+      },
+      "5": {
+        "resilience": 100
+      }
+    },
+    "difficulty": 0.53,
     "reverse_scored": false,
     "validity_pair_id": null,
     "is_impression_management": false,
-    "version_availability": ["deep"]
+    "version_availability": [
+      "deep"
+    ],
+    "sub_dimension": "recovery"
   },
   {
     "id": "resilience_likert_15",
@@ -202,12 +501,37 @@
     "type": "likert",
     "text": "After a failure, I find myself naturally thinking about the bigger picture of where I'm headed rather than fixating on this one loss.",
     "options": null,
-    "scoring_weights": { "1": { "resilience": 0, "vision": 0 }, "2": { "resilience": 18, "vision": 7 }, "3": { "resilience": 35, "vision": 15 }, "4": { "resilience": 53, "vision": 22 }, "5": { "resilience": 70, "vision": 30 } },
-    "difficulty": 0.6,
+    "scoring_weights": {
+      "1": {
+        "resilience": 0,
+        "vision": 0
+      },
+      "2": {
+        "resilience": 18,
+        "vision": 7
+      },
+      "3": {
+        "resilience": 35,
+        "vision": 15
+      },
+      "4": {
+        "resilience": 53,
+        "vision": 22
+      },
+      "5": {
+        "resilience": 70,
+        "vision": 30
+      }
+    },
+    "difficulty": 0.15,
     "reverse_scored": false,
     "validity_pair_id": null,
     "is_impression_management": false,
-    "version_availability": ["quick", "deep"]
+    "version_availability": [
+      "quick",
+      "deep"
+    ],
+    "sub_dimension": "recovery"
   },
   {
     "id": "resilience_likert_16",
@@ -216,12 +540,32 @@
     "type": "likert",
     "text": "When someone on my team panics, their anxiety is contagious and pulls me off center too.",
     "options": null,
-    "scoring_weights": { "1": { "resilience": 100 }, "2": { "resilience": 75 }, "3": { "resilience": 50 }, "4": { "resilience": 25 }, "5": { "resilience": 0 } },
-    "difficulty": 0.45,
+    "scoring_weights": {
+      "1": {
+        "resilience": 100
+      },
+      "2": {
+        "resilience": 85
+      },
+      "3": {
+        "resilience": 65
+      },
+      "4": {
+        "resilience": 35
+      },
+      "5": {
+        "resilience": 0
+      }
+    },
+    "difficulty": 0.85,
     "reverse_scored": true,
     "validity_pair_id": null,
     "is_impression_management": false,
-    "version_availability": ["quick", "deep"]
+    "version_availability": [
+      "quick",
+      "deep"
+    ],
+    "sub_dimension": "composure"
   },
   {
     "id": "resilience_likert_17",
@@ -230,12 +574,32 @@
     "type": "likert",
     "text": "When I'm in the middle of a crisis, I can separate what I'm feeling from what needs to happen next.",
     "options": null,
-    "scoring_weights": { "1": { "resilience": 0 }, "2": { "resilience": 25 }, "3": { "resilience": 50 }, "4": { "resilience": 75 }, "5": { "resilience": 100 } },
-    "difficulty": 0.5,
+    "scoring_weights": {
+      "1": {
+        "resilience": 0
+      },
+      "2": {
+        "resilience": 25
+      },
+      "3": {
+        "resilience": 50
+      },
+      "4": {
+        "resilience": 75
+      },
+      "5": {
+        "resilience": 100
+      }
+    },
+    "difficulty": 0.6,
     "reverse_scored": false,
     "validity_pair_id": null,
     "is_impression_management": false,
-    "version_availability": ["quick", "deep"]
+    "version_availability": [
+      "quick",
+      "deep"
+    ],
+    "sub_dimension": "composure"
   },
   {
     "id": "resilience_likert_18",
@@ -244,12 +608,37 @@
     "type": "likert",
     "text": "When I fail at something publicly, the embarrassment fuels me to come back harder rather than retreat.",
     "options": null,
-    "scoring_weights": { "1": { "resilience": 0, "drive": 0 }, "2": { "resilience": 18, "drive": 7 }, "3": { "resilience": 35, "drive": 15 }, "4": { "resilience": 53, "drive": 22 }, "5": { "resilience": 70, "drive": 30 } },
-    "difficulty": 0.55,
+    "scoring_weights": {
+      "1": {
+        "resilience": 0,
+        "drive": 0
+      },
+      "2": {
+        "resilience": 18,
+        "drive": 7
+      },
+      "3": {
+        "resilience": 35,
+        "drive": 15
+      },
+      "4": {
+        "resilience": 53,
+        "drive": 22
+      },
+      "5": {
+        "resilience": 70,
+        "drive": 30
+      }
+    },
+    "difficulty": 0.76,
     "reverse_scored": false,
     "validity_pair_id": null,
     "is_impression_management": false,
-    "version_availability": ["quick", "deep"]
+    "version_availability": [
+      "quick",
+      "deep"
+    ],
+    "sub_dimension": "recovery"
   },
   {
     "id": "resilience_likert_19",
@@ -258,12 +647,32 @@
     "type": "likert",
     "text": "When deadlines pile up and I feel the pressure building, I have specific ways I reset myself before it spills over onto others.",
     "options": null,
-    "scoring_weights": { "1": { "resilience": 0 }, "2": { "resilience": 25 }, "3": { "resilience": 50 }, "4": { "resilience": 75 }, "5": { "resilience": 100 } },
-    "difficulty": 0.5,
+    "scoring_weights": {
+      "1": {
+        "resilience": 0
+      },
+      "2": {
+        "resilience": 35
+      },
+      "3": {
+        "resilience": 65
+      },
+      "4": {
+        "resilience": 85
+      },
+      "5": {
+        "resilience": 100
+      }
+    },
+    "difficulty": 0.79,
     "reverse_scored": false,
     "validity_pair_id": null,
     "is_impression_management": false,
-    "version_availability": ["quick", "deep"]
+    "version_availability": [
+      "quick",
+      "deep"
+    ],
+    "sub_dimension": "composure"
   },
   {
     "id": "resilience_likert_20",
@@ -272,12 +681,31 @@
     "type": "likert",
     "text": "When things go sideways, I tell people I'm fine even when I'm not, because showing stress feels like weakness.",
     "options": null,
-    "scoring_weights": { "1": { "resilience": 100 }, "2": { "resilience": 75 }, "3": { "resilience": 50 }, "4": { "resilience": 25 }, "5": { "resilience": 0 } },
-    "difficulty": 0.65,
+    "scoring_weights": {
+      "1": {
+        "resilience": 100
+      },
+      "2": {
+        "resilience": 85
+      },
+      "3": {
+        "resilience": 50
+      },
+      "4": {
+        "resilience": 15
+      },
+      "5": {
+        "resilience": 0
+      }
+    },
+    "difficulty": 0.86,
     "reverse_scored": true,
     "validity_pair_id": null,
     "is_impression_management": false,
-    "version_availability": ["deep"]
+    "version_availability": [
+      "deep"
+    ],
+    "sub_dimension": "composure"
   },
   {
     "id": "resilience_likert_21",
@@ -286,12 +714,36 @@
     "type": "likert",
     "text": "After a tough loss, I let my team see that I'm affected while still keeping us moving forward.",
     "options": null,
-    "scoring_weights": { "1": { "resilience": 0, "connection": 0 }, "2": { "resilience": 18, "connection": 7 }, "3": { "resilience": 35, "connection": 15 }, "4": { "resilience": 53, "connection": 22 }, "5": { "resilience": 70, "connection": 30 } },
-    "difficulty": 0.7,
+    "scoring_weights": {
+      "1": {
+        "resilience": 0,
+        "connection": 0
+      },
+      "2": {
+        "resilience": 18,
+        "connection": 7
+      },
+      "3": {
+        "resilience": 35,
+        "connection": 15
+      },
+      "4": {
+        "resilience": 53,
+        "connection": 22
+      },
+      "5": {
+        "resilience": 70,
+        "connection": 30
+      }
+    },
+    "difficulty": 0.6,
     "reverse_scored": false,
     "validity_pair_id": null,
     "is_impression_management": false,
-    "version_availability": ["deep"]
+    "version_availability": [
+      "deep"
+    ],
+    "sub_dimension": "recovery"
   },
   {
     "id": "resilience_likert_22",
@@ -300,12 +752,31 @@
     "type": "likert",
     "text": "When a colleague is upset about a setback, my instinct is to tell them to toughen up rather than let them process it.",
     "options": null,
-    "scoring_weights": { "1": { "resilience": 100 }, "2": { "resilience": 75 }, "3": { "resilience": 50 }, "4": { "resilience": 25 }, "5": { "resilience": 0 } },
-    "difficulty": 0.6,
+    "scoring_weights": {
+      "1": {
+        "resilience": 100
+      },
+      "2": {
+        "resilience": 85
+      },
+      "3": {
+        "resilience": 65
+      },
+      "4": {
+        "resilience": 35
+      },
+      "5": {
+        "resilience": 0
+      }
+    },
+    "difficulty": 0.64,
     "reverse_scored": true,
     "validity_pair_id": null,
     "is_impression_management": false,
-    "version_availability": ["deep"]
+    "version_availability": [
+      "deep"
+    ],
+    "sub_dimension": "recovery"
   },
   {
     "id": "resilience_likert_23",
@@ -314,12 +785,37 @@
     "type": "likert",
     "text": "When a method I've relied on stops working, I feel energized by having to figure out a new approach rather than frustrated that the old one broke.",
     "options": null,
-    "scoring_weights": { "1": { "resilience": 0, "adaptability": 0 }, "2": { "resilience": 18, "adaptability": 7 }, "3": { "resilience": 35, "adaptability": 15 }, "4": { "resilience": 53, "adaptability": 22 }, "5": { "resilience": 70, "adaptability": 30 } },
-    "difficulty": 0.65,
+    "scoring_weights": {
+      "1": {
+        "resilience": 0,
+        "adaptability": 0
+      },
+      "2": {
+        "resilience": 18,
+        "adaptability": 7
+      },
+      "3": {
+        "resilience": 35,
+        "adaptability": 15
+      },
+      "4": {
+        "resilience": 53,
+        "adaptability": 22
+      },
+      "5": {
+        "resilience": 70,
+        "adaptability": 30
+      }
+    },
+    "difficulty": 0.85,
     "reverse_scored": false,
     "validity_pair_id": null,
     "is_impression_management": false,
-    "version_availability": ["quick", "deep"]
+    "version_availability": [
+      "quick",
+      "deep"
+    ],
+    "sub_dimension": "composure"
   },
   {
     "id": "resilience_likert_24",
@@ -328,12 +824,32 @@
     "type": "likert",
     "text": "When I receive negative feedback I wasn't expecting, my body reacts before my brain catches up -- racing heart, tight chest, clenched jaw.",
     "options": null,
-    "scoring_weights": { "1": { "resilience": 100 }, "2": { "resilience": 75 }, "3": { "resilience": 50 }, "4": { "resilience": 25 }, "5": { "resilience": 0 } },
-    "difficulty": 0.4,
+    "scoring_weights": {
+      "1": {
+        "resilience": 100
+      },
+      "2": {
+        "resilience": 70
+      },
+      "3": {
+        "resilience": 45
+      },
+      "4": {
+        "resilience": 20
+      },
+      "5": {
+        "resilience": 0
+      }
+    },
+    "difficulty": 0.66,
     "reverse_scored": true,
     "validity_pair_id": null,
     "is_impression_management": false,
-    "version_availability": ["quick", "deep"]
+    "version_availability": [
+      "quick",
+      "deep"
+    ],
+    "sub_dimension": "composure"
   },
   {
     "id": "resilience_likert_25",
@@ -342,504 +858,1823 @@
     "type": "likert",
     "text": "In the last month, after something went wrong, I was able to sleep normally that same night without the situation looping in my head.",
     "options": null,
-    "scoring_weights": { "1": { "resilience": 0 }, "2": { "resilience": 25 }, "3": { "resilience": 50 }, "4": { "resilience": 75 }, "5": { "resilience": 100 } },
-    "difficulty": 0.5,
+    "scoring_weights": {
+      "1": {
+        "resilience": 0
+      },
+      "2": {
+        "resilience": 20
+      },
+      "3": {
+        "resilience": 45
+      },
+      "4": {
+        "resilience": 70
+      },
+      "5": {
+        "resilience": 100
+      }
+    },
+    "difficulty": 0.87,
     "reverse_scored": false,
     "validity_pair_id": null,
     "is_impression_management": false,
-    "version_availability": ["quick", "deep"]
+    "version_availability": [
+      "quick",
+      "deep"
+    ],
+    "sub_dimension": "recovery"
   },
   {
     "id": "resilience_situational_01",
     "dimension": "resilience",
     "secondary_dimension": null,
     "type": "situational",
-    "text": "You've just been told that a product launch you led for six months is being shelved indefinitely. Your team is watching to see how you react. You:",
+    "text": "I've just been told that a product launch I led for six months is being shelved indefinitely. My team is watching to see how I react. I:",
     "options": [
-      { "key": "a", "text": "Call a team meeting within the hour, acknowledge the disappointment, and start mapping what's salvageable.", "scores": { "resilience": 90, "drive": 45 } },
-      { "key": "b", "text": "Take 30 minutes alone to process, then reach out to each team member individually to check how they're doing.", "scores": { "resilience": 75, "connection": 70 } },
-      { "key": "c", "text": "Immediately shift your energy to the next opportunity -- dwelling on it won't change anything.", "scores": { "resilience": 40, "drive": 80 } },
-      { "key": "d", "text": "Spend the rest of the day analyzing what went wrong so you can build a case for why the decision should be reversed.", "scores": { "resilience": 30, "integrity": 55 } }
+      {
+        "key": "a",
+        "text": "Call a team meeting within the hour, acknowledge the disappointment, and start mapping what's salvageable.",
+        "scores": {
+          "resilience": 90,
+          "drive": 45
+        }
+      },
+      {
+        "key": "b",
+        "text": "Take 30 minutes alone to process, then reach out to each team member individually to check how they're doing.",
+        "scores": {
+          "resilience": 75,
+          "connection": 70
+        }
+      },
+      {
+        "key": "c",
+        "text": "Immediately shift your energy to the next opportunity -- dwelling on it won't change anything.",
+        "scores": {
+          "resilience": 40,
+          "drive": 80
+        }
+      },
+      {
+        "key": "d",
+        "text": "Spend the rest of the day analyzing what went wrong so you can build a case for why the decision should be reversed.",
+        "scores": {
+          "resilience": 30,
+          "integrity": 55
+        }
+      }
     ],
-    "scoring_weights": { "a": { "resilience": 90, "drive": 45 }, "b": { "resilience": 75, "connection": 70 }, "c": { "resilience": 40, "drive": 80 }, "d": { "resilience": 30, "integrity": 55 } },
-    "difficulty": 0.5,
+    "scoring_weights": {
+      "a": {
+        "resilience": 90,
+        "drive": 45
+      },
+      "b": {
+        "resilience": 75,
+        "connection": 70
+      },
+      "c": {
+        "resilience": 40,
+        "drive": 80
+      },
+      "d": {
+        "resilience": 30,
+        "integrity": 55
+      }
+    },
+    "difficulty": 0.27,
     "reverse_scored": false,
     "validity_pair_id": null,
     "is_impression_management": false,
-    "version_availability": ["quick", "deep"]
+    "version_availability": [
+      "quick",
+      "deep"
+    ],
+    "sub_dimension": "composure"
   },
   {
     "id": "resilience_situational_02",
     "dimension": "resilience",
     "secondary_dimension": null,
     "type": "situational",
-    "text": "A client publicly blames your team for a problem that was actually caused by their own miscommunication. Your VP asks you to 'just handle it.' You:",
+    "text": "A client publicly blames my team for a problem that was actually caused by their own miscommunication. My VP asks me to 'just handle it.' I:",
     "options": [
-      { "key": "a", "text": "Take the hit publicly, fix the issue, and address the truth privately with your VP later.", "scores": { "resilience": 80, "integrity": 60 } },
-      { "key": "b", "text": "Feel the anger rise but park it -- respond professionally to the client and document everything for the record.", "scores": { "resilience": 85, "adaptability": 40 } },
-      { "key": "c", "text": "Push back immediately -- you won't let your team take blame for something that isn't their fault.", "scores": { "resilience": 35, "integrity": 85 } },
-      { "key": "d", "text": "Absorb it without complaint. Getting upset about unfairness is a waste of energy.", "scores": { "resilience": 30, "drive": 50 } }
+      {
+        "key": "a",
+        "text": "Take the hit publicly, fix the issue, and address the truth privately with your VP later.",
+        "scores": {
+          "resilience": 80,
+          "integrity": 60
+        }
+      },
+      {
+        "key": "b",
+        "text": "Feel the anger rise but park it -- respond professionally to the client and document everything for the record.",
+        "scores": {
+          "resilience": 85,
+          "adaptability": 40
+        }
+      },
+      {
+        "key": "c",
+        "text": "Push back immediately -- you won't let your team take blame for something that isn't their fault.",
+        "scores": {
+          "resilience": 35,
+          "integrity": 85
+        }
+      },
+      {
+        "key": "d",
+        "text": "Absorb it without complaint. Getting upset about unfairness is a waste of energy.",
+        "scores": {
+          "resilience": 30,
+          "drive": 50
+        }
+      }
     ],
-    "scoring_weights": { "a": { "resilience": 80, "integrity": 60 }, "b": { "resilience": 85, "adaptability": 40 }, "c": { "resilience": 35, "integrity": 85 }, "d": { "resilience": 30, "drive": 50 } },
-    "difficulty": 0.6,
+    "scoring_weights": {
+      "a": {
+        "resilience": 80,
+        "integrity": 60
+      },
+      "b": {
+        "resilience": 85,
+        "adaptability": 40
+      },
+      "c": {
+        "resilience": 35,
+        "integrity": 85
+      },
+      "d": {
+        "resilience": 30,
+        "drive": 50
+      }
+    },
+    "difficulty": 0.32,
     "reverse_scored": false,
     "validity_pair_id": null,
     "is_impression_management": false,
-    "version_availability": ["quick", "deep"]
+    "version_availability": [
+      "quick",
+      "deep"
+    ],
+    "sub_dimension": "recovery"
   },
   {
     "id": "resilience_situational_03",
     "dimension": "resilience",
     "secondary_dimension": null,
     "type": "situational",
-    "text": "You receive your annual review and it's significantly worse than expected. Your manager cites specific incidents you thought went well. That evening, you:",
+    "text": "I receive my annual review and it's significantly worse than expected. My manager cites specific incidents I thought went well. That evening, I:",
     "options": [
-      { "key": "a", "text": "Go for a run or do something physical to burn off the frustration, then sit down with the feedback the next morning.", "scores": { "resilience": 85, "drive": 35 } },
-      { "key": "b", "text": "Call a trusted friend outside work and talk through it honestly -- you need to vent before you can think clearly.", "scores": { "resilience": 70, "connection": 65 } },
-      { "key": "c", "text": "Start drafting a point-by-point response to each piece of feedback, determined to set the record straight.", "scores": { "resilience": 30, "integrity": 60 } },
-      { "key": "d", "text": "Shrug it off. One review doesn't define you. You barely think about it by bedtime.", "scores": { "resilience": 25, "vision": 50 } }
+      {
+        "key": "a",
+        "text": "Go for a run or do something physical to burn off the frustration, then sit down with the feedback the next morning.",
+        "scores": {
+          "resilience": 85,
+          "drive": 35
+        }
+      },
+      {
+        "key": "b",
+        "text": "Call a trusted friend outside work and talk through it honestly -- you need to vent before you can think clearly.",
+        "scores": {
+          "resilience": 70,
+          "connection": 65
+        }
+      },
+      {
+        "key": "c",
+        "text": "Start drafting a point-by-point response to each piece of feedback, determined to set the record straight.",
+        "scores": {
+          "resilience": 30,
+          "integrity": 60
+        }
+      },
+      {
+        "key": "d",
+        "text": "Shrug it off. One review doesn't define you. You barely think about it by bedtime.",
+        "scores": {
+          "resilience": 25,
+          "vision": 50
+        }
+      }
     ],
-    "scoring_weights": { "a": { "resilience": 85, "drive": 35 }, "b": { "resilience": 70, "connection": 65 }, "c": { "resilience": 30, "integrity": 60 }, "d": { "resilience": 25, "vision": 50 } },
-    "difficulty": 0.5,
+    "scoring_weights": {
+      "a": {
+        "resilience": 85,
+        "drive": 35
+      },
+      "b": {
+        "resilience": 70,
+        "connection": 65
+      },
+      "c": {
+        "resilience": 30,
+        "integrity": 60
+      },
+      "d": {
+        "resilience": 25,
+        "vision": 50
+      }
+    },
+    "difficulty": 0.37,
     "reverse_scored": false,
     "validity_pair_id": null,
     "is_impression_management": false,
-    "version_availability": ["quick", "deep"]
+    "version_availability": [
+      "quick",
+      "deep"
+    ],
+    "sub_dimension": "recovery"
   },
   {
     "id": "resilience_situational_04",
     "dimension": "resilience",
     "secondary_dimension": null,
     "type": "situational",
-    "text": "It's Wednesday, and everything that could go wrong this week has gone wrong -- a deal fell through, a key hire declined, and your laptop crashed losing unsaved work. A team member comes to you with yet another problem. You:",
+    "text": "It's Wednesday, and everything that could go wrong this week has gone wrong -- a deal fell through, a key hire declined, and my laptop crashed losing unsaved work. A team member comes to me with yet another problem. I:",
     "options": [
-      { "key": "a", "text": "Take a breath, acknowledge to yourself that this week is brutal, and give them your full attention anyway.", "scores": { "resilience": 90, "connection": 55 } },
-      { "key": "b", "text": "Tell them honestly that you're at capacity and ask if it can wait until tomorrow morning.", "scores": { "resilience": 70, "integrity": 50 } },
-      { "key": "c", "text": "Handle it efficiently but notice later that you were shorter with them than you should have been.", "scores": { "resilience": 45, "drive": 55 } },
-      { "key": "d", "text": "Feel a wave of frustration and tell them they need to solve some things on their own.", "scores": { "resilience": 20, "adaptability": 40 } }
+      {
+        "key": "a",
+        "text": "Take a breath, acknowledge to yourself that this week is brutal, and give them your full attention anyway.",
+        "scores": {
+          "resilience": 90,
+          "connection": 55
+        }
+      },
+      {
+        "key": "b",
+        "text": "Tell them honestly that you're at capacity and ask if it can wait until tomorrow morning.",
+        "scores": {
+          "resilience": 70,
+          "integrity": 50
+        }
+      },
+      {
+        "key": "c",
+        "text": "Handle it efficiently but notice later that you were shorter with them than you should have been.",
+        "scores": {
+          "resilience": 45,
+          "drive": 55
+        }
+      },
+      {
+        "key": "d",
+        "text": "Feel a wave of frustration and tell them they need to solve some things on their own.",
+        "scores": {
+          "resilience": 20,
+          "adaptability": 40
+        }
+      }
     ],
-    "scoring_weights": { "a": { "resilience": 90, "connection": 55 }, "b": { "resilience": 70, "integrity": 50 }, "c": { "resilience": 45, "drive": 55 }, "d": { "resilience": 20, "adaptability": 40 } },
-    "difficulty": 0.45,
+    "scoring_weights": {
+      "a": {
+        "resilience": 90,
+        "connection": 55
+      },
+      "b": {
+        "resilience": 70,
+        "integrity": 50
+      },
+      "c": {
+        "resilience": 45,
+        "drive": 55
+      },
+      "d": {
+        "resilience": 20,
+        "adaptability": 40
+      }
+    },
+    "difficulty": 0.38,
     "reverse_scored": false,
     "validity_pair_id": null,
     "is_impression_management": false,
-    "version_availability": ["quick", "deep"]
+    "version_availability": [
+      "quick",
+      "deep"
+    ],
+    "sub_dimension": "recovery"
   },
   {
     "id": "resilience_situational_05",
     "dimension": "resilience",
     "secondary_dimension": null,
     "type": "situational",
-    "text": "You bet big on a strategic direction and it didn't work. Three months and significant budget wasted. Your board wants an explanation. You:",
+    "text": "I bet big on a strategic direction and it didn't work. Three months and significant budget wasted. My board wants an explanation. I:",
     "options": [
-      { "key": "a", "text": "Present a clear-eyed account of what happened, what you learned, and what you'd do differently -- without sugarcoating or self-flagellating.", "scores": { "resilience": 85, "integrity": 70 } },
-      { "key": "b", "text": "Focus the presentation on the forward plan -- what happened matters less than what happens next.", "scores": { "resilience": 65, "vision": 75 } },
-      { "key": "c", "text": "Prepare obsessively, anticipating every hard question, because the thought of being caught off-guard again makes you sick.", "scores": { "resilience": 35, "drive": 60 } },
-      { "key": "d", "text": "Reframe the narrative -- it wasn't a failure, it was a necessary experiment that gave you market data you couldn't have gotten otherwise.", "scores": { "resilience": 40, "adaptability": 65 } }
+      {
+        "key": "a",
+        "text": "Present a clear-eyed account of what happened, what you learned, and what you'd do differently -- without sugarcoating or self-flagellating.",
+        "scores": {
+          "resilience": 85,
+          "integrity": 70
+        }
+      },
+      {
+        "key": "b",
+        "text": "Focus the presentation on the forward plan -- what happened matters less than what happens next.",
+        "scores": {
+          "resilience": 65,
+          "vision": 75
+        }
+      },
+      {
+        "key": "c",
+        "text": "Prepare obsessively, anticipating every hard question, because the thought of being caught off-guard again makes you sick.",
+        "scores": {
+          "resilience": 35,
+          "drive": 60
+        }
+      },
+      {
+        "key": "d",
+        "text": "Reframe the narrative -- it wasn't a failure, it was a necessary experiment that gave you market data you couldn't have gotten otherwise.",
+        "scores": {
+          "resilience": 40,
+          "adaptability": 65
+        }
+      }
     ],
-    "scoring_weights": { "a": { "resilience": 85, "integrity": 70 }, "b": { "resilience": 65, "vision": 75 }, "c": { "resilience": 35, "drive": 60 }, "d": { "resilience": 40, "adaptability": 65 } },
-    "difficulty": 0.75,
+    "scoring_weights": {
+      "a": {
+        "resilience": 85,
+        "integrity": 70
+      },
+      "b": {
+        "resilience": 65,
+        "vision": 75
+      },
+      "c": {
+        "resilience": 35,
+        "drive": 60
+      },
+      "d": {
+        "resilience": 40,
+        "adaptability": 65
+      }
+    },
+    "difficulty": 0.53,
     "reverse_scored": false,
     "validity_pair_id": null,
     "is_impression_management": false,
-    "version_availability": ["quick", "deep"]
+    "version_availability": [
+      "quick",
+      "deep"
+    ],
+    "sub_dimension": "recovery"
   },
   {
     "id": "resilience_situational_06",
     "dimension": "resilience",
     "secondary_dimension": null,
     "type": "situational",
-    "text": "Your best performer just resigned to join a competitor. You found out five minutes before an all-hands meeting. You:",
+    "text": "My best performer just resigned to join a competitor. I found out five minutes before an all-hands meeting. I:",
     "options": [
-      { "key": "a", "text": "Compartmentalize -- run the meeting as planned and deal with the resignation afterward. You can hold two things at once.", "scores": { "resilience": 80, "drive": 50 } },
-      { "key": "b", "text": "Ask a colleague to kick off the meeting while you take five minutes to steady yourself.", "scores": { "resilience": 75, "connection": 45 } },
-      { "key": "c", "text": "Walk into the meeting but your mind keeps drifting back to the resignation -- you're physically present but mentally elsewhere.", "scores": { "resilience": 30, "vision": 35 } },
-      { "key": "d", "text": "Briefly address it in the meeting with a genuine 'tough news today' acknowledgment, then proceed with the agenda.", "scores": { "resilience": 85, "integrity": 55 } }
+      {
+        "key": "a",
+        "text": "Compartmentalize -- run the meeting as planned and deal with the resignation afterward. You can hold two things at once.",
+        "scores": {
+          "resilience": 80,
+          "drive": 50
+        }
+      },
+      {
+        "key": "b",
+        "text": "Ask a colleague to kick off the meeting while you take five minutes to steady yourself.",
+        "scores": {
+          "resilience": 75,
+          "connection": 45
+        }
+      },
+      {
+        "key": "c",
+        "text": "Walk into the meeting but your mind keeps drifting back to the resignation -- you're physically present but mentally elsewhere.",
+        "scores": {
+          "resilience": 30,
+          "vision": 35
+        }
+      },
+      {
+        "key": "d",
+        "text": "Briefly address it in the meeting with a genuine 'tough news today' acknowledgment, then proceed with the agenda.",
+        "scores": {
+          "resilience": 85,
+          "integrity": 55
+        }
+      }
     ],
-    "scoring_weights": { "a": { "resilience": 80, "drive": 50 }, "b": { "resilience": 75, "connection": 45 }, "c": { "resilience": 30, "vision": 35 }, "d": { "resilience": 85, "integrity": 55 } },
-    "difficulty": 0.55,
+    "scoring_weights": {
+      "a": {
+        "resilience": 80,
+        "drive": 50
+      },
+      "b": {
+        "resilience": 75,
+        "connection": 45
+      },
+      "c": {
+        "resilience": 30,
+        "vision": 35
+      },
+      "d": {
+        "resilience": 85,
+        "integrity": 55
+      }
+    },
+    "difficulty": 0.35,
     "reverse_scored": false,
     "validity_pair_id": null,
     "is_impression_management": false,
-    "version_availability": ["quick", "deep"]
+    "version_availability": [
+      "quick",
+      "deep"
+    ],
+    "sub_dimension": "recovery"
   },
   {
     "id": "resilience_situational_07",
     "dimension": "resilience",
     "secondary_dimension": null,
     "type": "situational",
-    "text": "You're in a meeting and a senior leader dismisses your idea with a condescending tone in front of the room. Your face gets hot. You:",
+    "text": "I'm in a meeting and a senior leader dismisses my idea with a condescending tone in front of the room. My face gets hot. I:",
     "options": [
-      { "key": "a", "text": "Pause, let the flush pass, then calmly ask them to elaborate on their concerns.", "scores": { "resilience": 90, "adaptability": 40 } },
-      { "key": "b", "text": "Smile and move on in the meeting, but bring it up directly with them afterward in private.", "scores": { "resilience": 70, "integrity": 65 } },
-      { "key": "c", "text": "Fire back -- you're not going to let someone talk to you like that, especially in front of others.", "scores": { "resilience": 20, "drive": 55 } },
-      { "key": "d", "text": "Stay quiet for the rest of the meeting. The sting takes the wind out of your sails for the day.", "scores": { "resilience": 25, "connection": 40 } }
+      {
+        "key": "a",
+        "text": "Pause, let the flush pass, then calmly ask them to elaborate on their concerns.",
+        "scores": {
+          "resilience": 90,
+          "adaptability": 40
+        }
+      },
+      {
+        "key": "b",
+        "text": "Smile and move on in the meeting, but bring it up directly with them afterward in private.",
+        "scores": {
+          "resilience": 70,
+          "integrity": 65
+        }
+      },
+      {
+        "key": "c",
+        "text": "Fire back -- you're not going to let someone talk to you like that, especially in front of others.",
+        "scores": {
+          "resilience": 20,
+          "drive": 55
+        }
+      },
+      {
+        "key": "d",
+        "text": "Stay quiet for the rest of the meeting. The sting takes the wind out of your sails for the day.",
+        "scores": {
+          "resilience": 25,
+          "connection": 40
+        }
+      }
     ],
-    "scoring_weights": { "a": { "resilience": 90, "adaptability": 40 }, "b": { "resilience": 70, "integrity": 65 }, "c": { "resilience": 20, "drive": 55 }, "d": { "resilience": 25, "connection": 40 } },
-    "difficulty": 0.45,
+    "scoring_weights": {
+      "a": {
+        "resilience": 90,
+        "adaptability": 40
+      },
+      "b": {
+        "resilience": 70,
+        "integrity": 65
+      },
+      "c": {
+        "resilience": 20,
+        "drive": 55
+      },
+      "d": {
+        "resilience": 25,
+        "connection": 40
+      }
+    },
+    "difficulty": 0.63,
     "reverse_scored": false,
     "validity_pair_id": null,
     "is_impression_management": false,
-    "version_availability": ["quick", "deep"]
+    "version_availability": [
+      "quick",
+      "deep"
+    ],
+    "sub_dimension": "recovery"
   },
   {
     "id": "resilience_situational_08",
     "dimension": "resilience",
     "secondary_dimension": null,
     "type": "situational",
-    "text": "You've been passed over for a promotion you were sure you'd get. A colleague who got it asks you to grab lunch to celebrate. You:",
+    "text": "I've been passed over for a promotion I was sure I'd get. A colleague who got it asks me to grab lunch to celebrate. I:",
     "options": [
-      { "key": "a", "text": "Go to lunch, genuinely congratulate them, and privately process your disappointment on your own time.", "scores": { "resilience": 85, "connection": 60 } },
-      { "key": "b", "text": "Decline lunch politely -- you need space to deal with what you're feeling before you can be authentic around them.", "scores": { "resilience": 65, "integrity": 70 } },
-      { "key": "c", "text": "Go to lunch but can't hide that you're upset. The conversation is awkward and forced.", "scores": { "resilience": 30, "connection": 35 } },
-      { "key": "d", "text": "Skip lunch, open your laptop, and start building a case for why you should be next in line. Channel the energy forward.", "scores": { "resilience": 55, "drive": 80 } }
+      {
+        "key": "a",
+        "text": "Go to lunch, genuinely congratulate them, and privately process your disappointment on your own time.",
+        "scores": {
+          "resilience": 85,
+          "connection": 60
+        }
+      },
+      {
+        "key": "b",
+        "text": "Decline lunch politely -- you need space to deal with what you're feeling before you can be authentic around them.",
+        "scores": {
+          "resilience": 65,
+          "integrity": 70
+        }
+      },
+      {
+        "key": "c",
+        "text": "Go to lunch but can't hide that you're upset. The conversation is awkward and forced.",
+        "scores": {
+          "resilience": 30,
+          "connection": 35
+        }
+      },
+      {
+        "key": "d",
+        "text": "Skip lunch, open your laptop, and start building a case for why you should be next in line. Channel the energy forward.",
+        "scores": {
+          "resilience": 55,
+          "drive": 80
+        }
+      }
     ],
-    "scoring_weights": { "a": { "resilience": 85, "connection": 60 }, "b": { "resilience": 65, "integrity": 70 }, "c": { "resilience": 30, "connection": 35 }, "d": { "resilience": 55, "drive": 80 } },
-    "difficulty": 0.55,
+    "scoring_weights": {
+      "a": {
+        "resilience": 85,
+        "connection": 60
+      },
+      "b": {
+        "resilience": 65,
+        "integrity": 70
+      },
+      "c": {
+        "resilience": 30,
+        "connection": 35
+      },
+      "d": {
+        "resilience": 55,
+        "drive": 80
+      }
+    },
+    "difficulty": 0.83,
     "reverse_scored": false,
     "validity_pair_id": null,
     "is_impression_management": false,
-    "version_availability": ["quick", "deep"]
+    "version_availability": [
+      "quick",
+      "deep"
+    ],
+    "sub_dimension": "recovery"
   },
   {
     "id": "resilience_situational_09",
     "dimension": "resilience",
     "secondary_dimension": null,
     "type": "situational",
-    "text": "During a high-stakes presentation, your demo crashes live in front of the client. The room goes silent. You:",
+    "text": "During a high-stakes presentation, my demo crashes live in front of the client. The room goes silent. I:",
     "options": [
-      { "key": "a", "text": "Make a light comment about it, pivot to talking through the demo verbally, and offer to send a recording later. Your tone stays steady.", "scores": { "resilience": 90, "adaptability": 65 } },
-      { "key": "b", "text": "Apologize professionally, ask for a five-minute break to troubleshoot, and use that time to reset your nerves too.", "scores": { "resilience": 70, "drive": 50 } },
-      { "key": "c", "text": "Feel your confidence drain. You power through the rest but your energy and conviction are visibly shaken.", "scores": { "resilience": 30, "integrity": 40 } },
-      { "key": "d", "text": "Laugh it off and move on quickly -- you refuse to let anyone see that it rattled you.", "scores": { "resilience": 40, "vision": 45 } }
+      {
+        "key": "a",
+        "text": "Make a light comment about it, pivot to talking through the demo verbally, and offer to send a recording later. Your tone stays steady.",
+        "scores": {
+          "resilience": 90,
+          "adaptability": 65
+        }
+      },
+      {
+        "key": "b",
+        "text": "Apologize professionally, ask for a five-minute break to troubleshoot, and use that time to reset your nerves too.",
+        "scores": {
+          "resilience": 70,
+          "drive": 50
+        }
+      },
+      {
+        "key": "c",
+        "text": "Feel your confidence drain. You power through the rest but your energy and conviction are visibly shaken.",
+        "scores": {
+          "resilience": 30,
+          "integrity": 40
+        }
+      },
+      {
+        "key": "d",
+        "text": "Laugh it off and move on quickly -- you refuse to let anyone see that it rattled you.",
+        "scores": {
+          "resilience": 40,
+          "vision": 45
+        }
+      }
     ],
-    "scoring_weights": { "a": { "resilience": 90, "adaptability": 65 }, "b": { "resilience": 70, "drive": 50 }, "c": { "resilience": 30, "integrity": 40 }, "d": { "resilience": 40, "vision": 45 } },
-    "difficulty": 0.5,
+    "scoring_weights": {
+      "a": {
+        "resilience": 90,
+        "adaptability": 65
+      },
+      "b": {
+        "resilience": 70,
+        "drive": 50
+      },
+      "c": {
+        "resilience": 30,
+        "integrity": 40
+      },
+      "d": {
+        "resilience": 40,
+        "vision": 45
+      }
+    },
+    "difficulty": 0.8,
     "reverse_scored": false,
     "validity_pair_id": null,
     "is_impression_management": false,
-    "version_availability": ["quick", "deep"]
+    "version_availability": [
+      "quick",
+      "deep"
+    ],
+    "sub_dimension": "composure"
   },
   {
     "id": "resilience_situational_10",
     "dimension": "resilience",
     "secondary_dimension": null,
     "type": "situational",
-    "text": "A team member you mentored for two years leaves and publicly credits someone else for their growth. You feel a sharp pang of hurt. You:",
+    "text": "A team member I mentored for two years leaves and publicly credits someone else for their growth. I feel a sharp pang of hurt. I:",
     "options": [
-      { "key": "a", "text": "Notice the hurt, name it to yourself as 'disappointment,' and let it pass without acting on it.", "scores": { "resilience": 85, "integrity": 50 } },
-      { "key": "b", "text": "Reach out to the person warmly, wish them well, and privately reflect on whether your mentoring was as visible as you assumed.", "scores": { "resilience": 75, "connection": 70 } },
-      { "key": "c", "text": "Feel resentful for days. You gave a lot to that relationship and the lack of recognition stings.", "scores": { "resilience": 25, "drive": 35 } },
-      { "key": "d", "text": "Immediately reframe it -- credit doesn't matter, the work does. You move on within minutes.", "scores": { "resilience": 40, "vision": 55 } }
+      {
+        "key": "a",
+        "text": "Notice the hurt, name it to yourself as 'disappointment,' and let it pass without acting on it.",
+        "scores": {
+          "resilience": 85,
+          "integrity": 50
+        }
+      },
+      {
+        "key": "b",
+        "text": "Reach out to the person warmly, wish them well, and privately reflect on whether your mentoring was as visible as you assumed.",
+        "scores": {
+          "resilience": 75,
+          "connection": 70
+        }
+      },
+      {
+        "key": "c",
+        "text": "Feel resentful for days. You gave a lot to that relationship and the lack of recognition stings.",
+        "scores": {
+          "resilience": 25,
+          "drive": 35
+        }
+      },
+      {
+        "key": "d",
+        "text": "Immediately reframe it -- credit doesn't matter, the work does. You move on within minutes.",
+        "scores": {
+          "resilience": 40,
+          "vision": 55
+        }
+      }
     ],
-    "scoring_weights": { "a": { "resilience": 85, "integrity": 50 }, "b": { "resilience": 75, "connection": 70 }, "c": { "resilience": 25, "drive": 35 }, "d": { "resilience": 40, "vision": 55 } },
-    "difficulty": 0.65,
+    "scoring_weights": {
+      "a": {
+        "resilience": 85,
+        "integrity": 50
+      },
+      "b": {
+        "resilience": 75,
+        "connection": 70
+      },
+      "c": {
+        "resilience": 25,
+        "drive": 35
+      },
+      "d": {
+        "resilience": 40,
+        "vision": 55
+      }
+    },
+    "difficulty": 0.79,
     "reverse_scored": false,
     "validity_pair_id": null,
     "is_impression_management": false,
-    "version_availability": ["deep"]
+    "version_availability": [
+      "deep"
+    ],
+    "sub_dimension": "recovery"
   },
   {
     "id": "resilience_situational_11",
     "dimension": "resilience",
     "secondary_dimension": null,
     "type": "situational",
-    "text": "Your company just went through layoffs. You survived but two close colleagues didn't. The next morning you're expected to lead a team standup. You:",
+    "text": "My company just went through layoffs. I survived but two close colleagues didn't. The next morning I'm expected to lead a team standup. I:",
     "options": [
-      { "key": "a", "text": "Acknowledge the heaviness in the room honestly, give people space to name what they're feeling, then gently move to what needs to happen today.", "scores": { "resilience": 85, "connection": 75 } },
-      { "key": "b", "text": "Keep the standup focused and professional. People need stability right now, not more emotion.", "scores": { "resilience": 50, "drive": 65 } },
-      { "key": "c", "text": "Share that you're struggling too, and suggest the team take the morning to regroup before diving back in.", "scores": { "resilience": 60, "integrity": 60 } },
-      { "key": "d", "text": "Reframe it as an opportunity -- smaller team, more ownership for everyone. Try to rally the group around what's ahead.", "scores": { "resilience": 30, "vision": 70 } }
+      {
+        "key": "a",
+        "text": "Acknowledge the heaviness in the room honestly, give people space to name what they're feeling, then gently move to what needs to happen today.",
+        "scores": {
+          "resilience": 85,
+          "connection": 75
+        }
+      },
+      {
+        "key": "b",
+        "text": "Keep the standup focused and professional. People need stability right now, not more emotion.",
+        "scores": {
+          "resilience": 50,
+          "drive": 65
+        }
+      },
+      {
+        "key": "c",
+        "text": "Share that you're struggling too, and suggest the team take the morning to regroup before diving back in.",
+        "scores": {
+          "resilience": 60,
+          "integrity": 60
+        }
+      },
+      {
+        "key": "d",
+        "text": "Reframe it as an opportunity -- smaller team, more ownership for everyone. Try to rally the group around what's ahead.",
+        "scores": {
+          "resilience": 30,
+          "vision": 70
+        }
+      }
     ],
-    "scoring_weights": { "a": { "resilience": 85, "connection": 75 }, "b": { "resilience": 50, "drive": 65 }, "c": { "resilience": 60, "integrity": 60 }, "d": { "resilience": 30, "vision": 70 } },
-    "difficulty": 0.75,
+    "scoring_weights": {
+      "a": {
+        "resilience": 85,
+        "connection": 75
+      },
+      "b": {
+        "resilience": 50,
+        "drive": 65
+      },
+      "c": {
+        "resilience": 60,
+        "integrity": 60
+      },
+      "d": {
+        "resilience": 30,
+        "vision": 70
+      }
+    },
+    "difficulty": 0.51,
     "reverse_scored": false,
     "validity_pair_id": null,
     "is_impression_management": false,
-    "version_availability": ["quick", "deep"]
+    "version_availability": [
+      "quick",
+      "deep"
+    ],
+    "sub_dimension": "recovery"
   },
   {
     "id": "resilience_situational_12",
     "dimension": "resilience",
     "secondary_dimension": null,
     "type": "situational",
-    "text": "You've had three consecutive initiatives fail over six months. A new opportunity comes up that requires you to pitch leadership again. Your honest reaction is:",
+    "text": "I've had three consecutive initiatives fail over six months. A new opportunity comes up that requires I to pitch leadership again. My honest reaction is:",
     "options": [
-      { "key": "a", "text": "You feel the hesitation in your gut, acknowledge the pattern, and pitch anyway because you still believe in your judgment.", "scores": { "resilience": 85, "drive": 60 } },
-      { "key": "b", "text": "You bring in a co-lead this time -- not because you doubt yourself, but because a partner strengthens the pitch and shares the risk.", "scores": { "resilience": 70, "connection": 55 } },
-      { "key": "c", "text": "You let someone else take this one. Three strikes feels like a pattern you need to understand before stepping up again.", "scores": { "resilience": 40, "adaptability": 65 } },
-      { "key": "d", "text": "You pitch it with extra conviction, determined to prove the last three were flukes. Failure is not an option this time.", "scores": { "resilience": 30, "drive": 80 } }
+      {
+        "key": "a",
+        "text": "You feel the hesitation in your gut, acknowledge the pattern, and pitch anyway because you still believe in your judgment.",
+        "scores": {
+          "resilience": 85,
+          "drive": 60
+        }
+      },
+      {
+        "key": "b",
+        "text": "You bring in a co-lead this time -- not because you doubt yourself, but because a partner strengthens the pitch and shares the risk.",
+        "scores": {
+          "resilience": 70,
+          "connection": 55
+        }
+      },
+      {
+        "key": "c",
+        "text": "You let someone else take this one. Three strikes feels like a pattern you need to understand before stepping up again.",
+        "scores": {
+          "resilience": 40,
+          "adaptability": 65
+        }
+      },
+      {
+        "key": "d",
+        "text": "You pitch it with extra conviction, determined to prove the last three were flukes. Failure is not an option this time.",
+        "scores": {
+          "resilience": 30,
+          "drive": 80
+        }
+      }
     ],
-    "scoring_weights": { "a": { "resilience": 85, "drive": 60 }, "b": { "resilience": 70, "connection": 55 }, "c": { "resilience": 40, "adaptability": 65 }, "d": { "resilience": 30, "drive": 80 } },
-    "difficulty": 0.8,
+    "scoring_weights": {
+      "a": {
+        "resilience": 85,
+        "drive": 60
+      },
+      "b": {
+        "resilience": 70,
+        "connection": 55
+      },
+      "c": {
+        "resilience": 40,
+        "adaptability": 65
+      },
+      "d": {
+        "resilience": 30,
+        "drive": 80
+      }
+    },
+    "difficulty": 0.37,
     "reverse_scored": false,
     "validity_pair_id": null,
     "is_impression_management": false,
-    "version_availability": ["quick", "deep"]
+    "version_availability": [
+      "quick",
+      "deep"
+    ],
+    "sub_dimension": "recovery"
   },
   {
     "id": "resilience_situational_13",
     "dimension": "resilience",
     "secondary_dimension": null,
     "type": "situational",
-    "text": "You discover on a Friday afternoon that a deliverable due Monday has a major error that will take the whole weekend to fix. You:",
+    "text": "I discover on a Friday afternoon that a deliverable due Monday has a major error that will take the whole weekend to fix. I:",
     "options": [
-      { "key": "a", "text": "Feel a flash of dread, take ten minutes to plan the weekend work, then call your partner to explain and start.", "scores": { "resilience": 80, "integrity": 55 } },
-      { "key": "b", "text": "Immediately start fixing it. You'll deal with the frustration after it's done -- right now, you're in execution mode.", "scores": { "resilience": 60, "drive": 75 } },
-      { "key": "c", "text": "Rally the team to split the work so nobody loses their whole weekend. This is a group fix.", "scores": { "resilience": 70, "connection": 65 } },
-      { "key": "d", "text": "Feel a wave of anxiety that doesn't fully leave you until Monday. The weekend is spent half-working, half-dreading.", "scores": { "resilience": 25, "adaptability": 30 } }
+      {
+        "key": "a",
+        "text": "Feel a flash of dread, take ten minutes to plan the weekend work, then call your partner to explain and start.",
+        "scores": {
+          "resilience": 80,
+          "integrity": 55
+        }
+      },
+      {
+        "key": "b",
+        "text": "Immediately start fixing it. You'll deal with the frustration after it's done -- right now, you're in execution mode.",
+        "scores": {
+          "resilience": 60,
+          "drive": 75
+        }
+      },
+      {
+        "key": "c",
+        "text": "Rally the team to split the work so nobody loses their whole weekend. This is a group fix.",
+        "scores": {
+          "resilience": 70,
+          "connection": 65
+        }
+      },
+      {
+        "key": "d",
+        "text": "Feel a wave of anxiety that doesn't fully leave you until Monday. The weekend is spent half-working, half-dreading.",
+        "scores": {
+          "resilience": 25,
+          "adaptability": 30
+        }
+      }
     ],
-    "scoring_weights": { "a": { "resilience": 80, "integrity": 55 }, "b": { "resilience": 60, "drive": 75 }, "c": { "resilience": 70, "connection": 65 }, "d": { "resilience": 25, "adaptability": 30 } },
-    "difficulty": 0.45,
+    "scoring_weights": {
+      "a": {
+        "resilience": 80,
+        "integrity": 55
+      },
+      "b": {
+        "resilience": 60,
+        "drive": 75
+      },
+      "c": {
+        "resilience": 70,
+        "connection": 65
+      },
+      "d": {
+        "resilience": 25,
+        "adaptability": 30
+      }
+    },
+    "difficulty": 0.75,
     "reverse_scored": false,
     "validity_pair_id": null,
     "is_impression_management": false,
-    "version_availability": ["quick", "deep"]
+    "version_availability": [
+      "quick",
+      "deep"
+    ],
+    "sub_dimension": "recovery"
   },
   {
     "id": "resilience_situational_14",
     "dimension": "resilience",
     "secondary_dimension": null,
     "type": "situational",
-    "text": "You trusted a colleague's data and used it in a major decision that turned out badly. They insist the data was accurate. You're carrying the blame. You:",
+    "text": "I trusted a colleague's data and used it in a major decision that turned out badly. They insist the data was accurate. I'm carrying the blame. I:",
     "options": [
-      { "key": "a", "text": "Accept the outcome without resentment -- you made the call, you own it. Then privately rebuild your own verification process.", "scores": { "resilience": 85, "integrity": 70 } },
-      { "key": "b", "text": "Have a direct conversation with the colleague about what happened. You need clarity, even if it's uncomfortable.", "scores": { "resilience": 65, "connection": 60 } },
-      { "key": "c", "text": "Feel betrayed and find it hard to trust their input going forward. The resentment lingers.", "scores": { "resilience": 25, "adaptability": 35 } },
-      { "key": "d", "text": "Document everything and make sure the record shows the data source. You need to protect yourself.", "scores": { "resilience": 40, "drive": 50 } }
+      {
+        "key": "a",
+        "text": "Accept the outcome without resentment -- you made the call, you own it. Then privately rebuild your own verification process.",
+        "scores": {
+          "resilience": 85,
+          "integrity": 70
+        }
+      },
+      {
+        "key": "b",
+        "text": "Have a direct conversation with the colleague about what happened. You need clarity, even if it's uncomfortable.",
+        "scores": {
+          "resilience": 65,
+          "connection": 60
+        }
+      },
+      {
+        "key": "c",
+        "text": "Feel betrayed and find it hard to trust their input going forward. The resentment lingers.",
+        "scores": {
+          "resilience": 25,
+          "adaptability": 35
+        }
+      },
+      {
+        "key": "d",
+        "text": "Document everything and make sure the record shows the data source. You need to protect yourself.",
+        "scores": {
+          "resilience": 40,
+          "drive": 50
+        }
+      }
     ],
-    "scoring_weights": { "a": { "resilience": 85, "integrity": 70 }, "b": { "resilience": 65, "connection": 60 }, "c": { "resilience": 25, "adaptability": 35 }, "d": { "resilience": 40, "drive": 50 } },
-    "difficulty": 0.7,
+    "scoring_weights": {
+      "a": {
+        "resilience": 85,
+        "integrity": 70
+      },
+      "b": {
+        "resilience": 65,
+        "connection": 60
+      },
+      "c": {
+        "resilience": 25,
+        "adaptability": 35
+      },
+      "d": {
+        "resilience": 40,
+        "drive": 50
+      }
+    },
+    "difficulty": 0.55,
     "reverse_scored": false,
     "validity_pair_id": null,
     "is_impression_management": false,
-    "version_availability": ["deep"]
+    "version_availability": [
+      "deep"
+    ],
+    "sub_dimension": "recovery"
   },
   {
     "id": "resilience_situational_15",
     "dimension": "resilience",
     "secondary_dimension": null,
     "type": "situational",
-    "text": "You're going through a rough personal stretch and it's starting to affect your work. Your manager notices and asks if everything is okay. You:",
+    "text": "I'm going through a rough personal stretch and it's starting to affect my work. My manager notices and asks if everything is okay. I:",
     "options": [
-      { "key": "a", "text": "Share enough context so they understand, ask for specific accommodations, and commit to a timeline for getting back to full capacity.", "scores": { "resilience": 85, "connection": 55 } },
-      { "key": "b", "text": "Say you're handling it and redirect to work topics. You don't want personal struggles changing how you're perceived.", "scores": { "resilience": 35, "drive": 60 } },
-      { "key": "c", "text": "Appreciate the check-in, admit it's been hard, and ask if there's flexibility in your deadlines this month.", "scores": { "resilience": 70, "integrity": 65 } },
-      { "key": "d", "text": "Open up more than intended. Once you start talking, the emotion catches you off guard and you feel exposed.", "scores": { "resilience": 30, "connection": 50 } }
+      {
+        "key": "a",
+        "text": "Share enough context so they understand, ask for specific accommodations, and commit to a timeline for getting back to full capacity.",
+        "scores": {
+          "resilience": 85,
+          "connection": 55
+        }
+      },
+      {
+        "key": "b",
+        "text": "Say you're handling it and redirect to work topics. You don't want personal struggles changing how you're perceived.",
+        "scores": {
+          "resilience": 35,
+          "drive": 60
+        }
+      },
+      {
+        "key": "c",
+        "text": "Appreciate the check-in, admit it's been hard, and ask if there's flexibility in your deadlines this month.",
+        "scores": {
+          "resilience": 70,
+          "integrity": 65
+        }
+      },
+      {
+        "key": "d",
+        "text": "Open up more than intended. Once you start talking, the emotion catches you off guard and you feel exposed.",
+        "scores": {
+          "resilience": 30,
+          "connection": 50
+        }
+      }
     ],
-    "scoring_weights": { "a": { "resilience": 85, "connection": 55 }, "b": { "resilience": 35, "drive": 60 }, "c": { "resilience": 70, "integrity": 65 }, "d": { "resilience": 30, "connection": 50 } },
-    "difficulty": 0.6,
+    "scoring_weights": {
+      "a": {
+        "resilience": 85,
+        "connection": 55
+      },
+      "b": {
+        "resilience": 35,
+        "drive": 60
+      },
+      "c": {
+        "resilience": 70,
+        "integrity": 65
+      },
+      "d": {
+        "resilience": 30,
+        "connection": 50
+      }
+    },
+    "difficulty": 0.81,
     "reverse_scored": false,
     "validity_pair_id": null,
     "is_impression_management": false,
-    "version_availability": ["quick", "deep"]
+    "version_availability": [
+      "quick",
+      "deep"
+    ],
+    "sub_dimension": "composure"
   },
   {
     "id": "resilience_situational_16",
     "dimension": "resilience",
     "secondary_dimension": null,
     "type": "situational",
-    "text": "You've just watched a competitor launch something strikingly similar to what your team has been building for months. They beat you to market. In the team debrief, you:",
+    "text": "I've just watched a competitor launch something strikingly similar to what my team has been building for months. They beat I to market. In the team debrief, I:",
     "options": [
-      { "key": "a", "text": "Name the disappointment honestly, then shift the conversation to 'what do we know now that they don't?' and explore differentiation.", "scores": { "resilience": 85, "vision": 65 } },
-      { "key": "b", "text": "Focus on what can be accelerated or pivoted. Every minute spent on frustration is a minute the competitor gains.", "scores": { "resilience": 60, "drive": 80 } },
-      { "key": "c", "text": "Let the team vent first. People need to get the frustration out before they can think strategically.", "scores": { "resilience": 70, "connection": 60 } },
-      { "key": "d", "text": "Dig into what happened in your process that was too slow. You need to understand the systemic problem.", "scores": { "resilience": 45, "adaptability": 70 } }
+      {
+        "key": "a",
+        "text": "Name the disappointment honestly, then shift the conversation to 'what do we know now that they don't?' and explore differentiation.",
+        "scores": {
+          "resilience": 85,
+          "vision": 65
+        }
+      },
+      {
+        "key": "b",
+        "text": "Focus on what can be accelerated or pivoted. Every minute spent on frustration is a minute the competitor gains.",
+        "scores": {
+          "resilience": 60,
+          "drive": 80
+        }
+      },
+      {
+        "key": "c",
+        "text": "Let the team vent first. People need to get the frustration out before they can think strategically.",
+        "scores": {
+          "resilience": 70,
+          "connection": 60
+        }
+      },
+      {
+        "key": "d",
+        "text": "Dig into what happened in your process that was too slow. You need to understand the systemic problem.",
+        "scores": {
+          "resilience": 45,
+          "adaptability": 70
+        }
+      }
     ],
-    "scoring_weights": { "a": { "resilience": 85, "vision": 65 }, "b": { "resilience": 60, "drive": 80 }, "c": { "resilience": 70, "connection": 60 }, "d": { "resilience": 45, "adaptability": 70 } },
-    "difficulty": 0.55,
+    "scoring_weights": {
+      "a": {
+        "resilience": 85,
+        "vision": 65
+      },
+      "b": {
+        "resilience": 60,
+        "drive": 80
+      },
+      "c": {
+        "resilience": 70,
+        "connection": 60
+      },
+      "d": {
+        "resilience": 45,
+        "adaptability": 70
+      }
+    },
+    "difficulty": 0.46,
     "reverse_scored": false,
     "validity_pair_id": null,
     "is_impression_management": false,
-    "version_availability": ["quick", "deep"]
+    "version_availability": [
+      "quick",
+      "deep"
+    ],
+    "sub_dimension": "recovery"
   },
   {
     "id": "resilience_situational_17",
     "dimension": "resilience",
     "secondary_dimension": null,
     "type": "situational",
-    "text": "Your direct report breaks down in tears during a one-on-one, overwhelmed by the workload. You feel your own stress level spike in response. You:",
+    "text": "My direct report breaks down in tears during a one-on-one, overwhelmed by the workload. I feel my own stress level spike in response. I:",
     "options": [
-      { "key": "a", "text": "Stay present with them, keep your own rising stress separate, and work together on what can be deprioritized right now.", "scores": { "resilience": 90, "connection": 70 } },
-      { "key": "b", "text": "Give them space to feel it, then gently shift to problem-solving mode. You know staying in the emotion too long doesn't help either of you.", "scores": { "resilience": 75, "drive": 45 } },
-      { "key": "c", "text": "Feel uncomfortable and default to reassurance -- 'It'll be okay, we'll figure it out' -- even though you're not sure that's true.", "scores": { "resilience": 35, "integrity": 40 } },
-      { "key": "d", "text": "Suggest they take the afternoon off, which buys you time to figure out what to do. Their emotion is hard for you to sit with.", "scores": { "resilience": 30, "adaptability": 50 } }
+      {
+        "key": "a",
+        "text": "Stay present with them, keep your own rising stress separate, and work together on what can be deprioritized right now.",
+        "scores": {
+          "resilience": 90,
+          "connection": 70
+        }
+      },
+      {
+        "key": "b",
+        "text": "Give them space to feel it, then gently shift to problem-solving mode. You know staying in the emotion too long doesn't help either of you.",
+        "scores": {
+          "resilience": 75,
+          "drive": 45
+        }
+      },
+      {
+        "key": "c",
+        "text": "Feel uncomfortable and default to reassurance -- 'It'll be okay, we'll figure it out' -- even though you're not sure that's true.",
+        "scores": {
+          "resilience": 35,
+          "integrity": 40
+        }
+      },
+      {
+        "key": "d",
+        "text": "Suggest they take the afternoon off, which buys you time to figure out what to do. Their emotion is hard for you to sit with.",
+        "scores": {
+          "resilience": 30,
+          "adaptability": 50
+        }
+      }
     ],
-    "scoring_weights": { "a": { "resilience": 90, "connection": 70 }, "b": { "resilience": 75, "drive": 45 }, "c": { "resilience": 35, "integrity": 40 }, "d": { "resilience": 30, "adaptability": 50 } },
-    "difficulty": 0.6,
+    "scoring_weights": {
+      "a": {
+        "resilience": 90,
+        "connection": 70
+      },
+      "b": {
+        "resilience": 75,
+        "drive": 45
+      },
+      "c": {
+        "resilience": 35,
+        "integrity": 40
+      },
+      "d": {
+        "resilience": 30,
+        "adaptability": 50
+      }
+    },
+    "difficulty": 0.72,
     "reverse_scored": false,
     "validity_pair_id": null,
     "is_impression_management": false,
-    "version_availability": ["deep"]
+    "version_availability": [
+      "deep"
+    ],
+    "sub_dimension": "composure"
   },
   {
     "id": "resilience_forced_01",
     "dimension": "resilience",
     "secondary_dimension": null,
     "type": "forced_choice",
-    "text": "After receiving harsh criticism, your first move is:",
+    "text": "After receiving harsh criticism, my first move is:",
     "options": [
-      { "key": "a", "text": "Go somewhere quiet, sit with the sting for a bit, then come back with a clear head.", "scores": { "resilience": 80, "integrity": 45 } },
-      { "key": "b", "text": "Call someone you trust and talk it out -- you process best when you think out loud.", "scores": { "resilience": 40, "connection": 80 } }
+      {
+        "key": "a",
+        "text": "Go somewhere quiet, sit with the sting for a bit, then come back with a clear head.",
+        "scores": {
+          "resilience": 80,
+          "integrity": 45
+        }
+      },
+      {
+        "key": "b",
+        "text": "Call someone you trust and talk it out -- you process best when you think out loud.",
+        "scores": {
+          "resilience": 40,
+          "connection": 80
+        }
+      }
     ],
-    "scoring_weights": { "a": { "resilience": 80, "integrity": 45 }, "b": { "resilience": 40, "connection": 80 } },
-    "difficulty": 0.45,
+    "scoring_weights": {
+      "a": {
+        "resilience": 80,
+        "integrity": 45
+      },
+      "b": {
+        "resilience": 40,
+        "connection": 80
+      }
+    },
+    "difficulty": 0.71,
     "reverse_scored": false,
     "validity_pair_id": null,
     "is_impression_management": false,
-    "version_availability": ["quick", "deep"]
+    "version_availability": [
+      "quick",
+      "deep"
+    ],
+    "sub_dimension": "recovery"
   },
   {
     "id": "resilience_forced_02",
     "dimension": "resilience",
     "secondary_dimension": null,
     "type": "forced_choice",
-    "text": "You just lost your biggest client. That night, you:",
+    "text": "I just lost my biggest client. That night, I:",
     "options": [
-      { "key": "a", "text": "Already have three ideas for how to replace the revenue. Your brain shifts to solutions fast.", "scores": { "resilience": 70, "drive": 75 } },
-      { "key": "b", "text": "Feel genuinely gutted and let yourself sit with the loss before thinking about what's next.", "scores": { "resilience": 75, "integrity": 55 } }
+      {
+        "key": "a",
+        "text": "Already have three ideas for how to replace the revenue. Your brain shifts to solutions fast.",
+        "scores": {
+          "resilience": 85,
+          "drive": 40
+        }
+      },
+      {
+        "key": "b",
+        "text": "Feel genuinely gutted and let yourself sit with the loss before thinking about what's next.",
+        "scores": {
+          "resilience": 30,
+          "connection": 70
+        }
+      }
     ],
-    "scoring_weights": { "a": { "resilience": 70, "drive": 75 }, "b": { "resilience": 75, "integrity": 55 } },
-    "difficulty": 0.65,
+    "scoring_weights": {
+      "a": {
+        "resilience": 85,
+        "drive": 40
+      },
+      "b": {
+        "resilience": 30,
+        "connection": 70
+      }
+    },
+    "difficulty": 0.45,
     "reverse_scored": false,
     "validity_pair_id": null,
     "is_impression_management": false,
-    "version_availability": ["quick", "deep"]
+    "version_availability": [
+      "quick",
+      "deep"
+    ],
+    "sub_dimension": "recovery"
   },
   {
     "id": "resilience_forced_03",
     "dimension": "resilience",
     "secondary_dimension": null,
     "type": "forced_choice",
-    "text": "A crisis hits at 5 PM on Friday. Honestly, you:",
+    "text": "A crisis hits at 5 PM on Friday. Honestly, I:",
     "options": [
-      { "key": "a", "text": "Feel a surge of clarity -- pressure focuses you and you work best when the stakes are real.", "scores": { "resilience": 85, "drive": 50 } },
-      { "key": "b", "text": "Feel dread first, then resignation, then slowly shift into problem-solving mode. It takes you a minute.", "scores": { "resilience": 55, "adaptability": 45 } }
+      {
+        "key": "a",
+        "text": "Feel a surge of clarity -- pressure focuses you and you work best when the stakes are real.",
+        "scores": {
+          "resilience": 85,
+          "drive": 50
+        }
+      },
+      {
+        "key": "b",
+        "text": "Feel dread first, then resignation, then slowly shift into problem-solving mode. It takes you a minute.",
+        "scores": {
+          "resilience": 55,
+          "adaptability": 45
+        }
+      }
     ],
-    "scoring_weights": { "a": { "resilience": 85, "drive": 50 }, "b": { "resilience": 55, "adaptability": 45 } },
-    "difficulty": 0.5,
+    "scoring_weights": {
+      "a": {
+        "resilience": 85,
+        "drive": 50
+      },
+      "b": {
+        "resilience": 55,
+        "adaptability": 45
+      }
+    },
+    "difficulty": 0.4,
     "reverse_scored": false,
     "validity_pair_id": null,
     "is_impression_management": false,
-    "version_availability": ["quick", "deep"]
+    "version_availability": [
+      "quick",
+      "deep"
+    ],
+    "sub_dimension": "composure"
   },
   {
     "id": "resilience_forced_04",
     "dimension": "resilience",
     "secondary_dimension": null,
     "type": "forced_choice",
-    "text": "When your stress level hits a 9 out of 10, the people around you:",
+    "text": "When my stress level hits a 9 out of 10, the people around me:",
     "options": [
-      { "key": "a", "text": "Probably can't tell. You keep your composure tight even when you're breaking inside.", "scores": { "resilience": 35, "drive": 55 } },
-      { "key": "b", "text": "Can see it on you, but you've learned how to stay functional and honest about it at the same time.", "scores": { "resilience": 80, "connection": 60 } }
+      {
+        "key": "a",
+        "text": "Probably can't tell. You keep your composure tight even when you're breaking inside.",
+        "scores": {
+          "resilience": 35,
+          "drive": 55
+        }
+      },
+      {
+        "key": "b",
+        "text": "Can see it on you, but you've learned how to stay functional and honest about it at the same time.",
+        "scores": {
+          "resilience": 80,
+          "connection": 60
+        }
+      }
     ],
-    "scoring_weights": { "a": { "resilience": 35, "drive": 55 }, "b": { "resilience": 80, "connection": 60 } },
-    "difficulty": 0.75,
+    "scoring_weights": {
+      "a": {
+        "resilience": 35,
+        "drive": 55
+      },
+      "b": {
+        "resilience": 80,
+        "connection": 60
+      }
+    },
+    "difficulty": 0.84,
     "reverse_scored": false,
     "validity_pair_id": null,
     "is_impression_management": false,
-    "version_availability": ["quick", "deep"]
+    "version_availability": [
+      "quick",
+      "deep"
+    ],
+    "sub_dimension": "composure"
   },
   {
     "id": "resilience_forced_05",
     "dimension": "resilience",
     "secondary_dimension": null,
     "type": "forced_choice",
-    "text": "The morning after a professional failure, you wake up and your first thought is:",
+    "text": "The morning after a professional failure, I wake up and my first thought is:",
     "options": [
-      { "key": "a", "text": "'What can I salvage?' -- your mind goes straight to the next move.", "scores": { "resilience": 65, "vision": 70 } },
-      { "key": "b", "text": "'That hurt.' -- you let yourself feel the weight of it before you plan anything.", "scores": { "resilience": 75, "integrity": 50 } }
+      {
+        "key": "a",
+        "text": "'What can I salvage?' -- your mind goes straight to the next move.",
+        "scores": {
+          "resilience": 80,
+          "drive": 35
+        }
+      },
+      {
+        "key": "b",
+        "text": "'That hurt.' -- you let yourself feel the weight of it before you plan anything.",
+        "scores": {
+          "resilience": 30,
+          "connection": 75
+        }
+      }
     ],
-    "scoring_weights": { "a": { "resilience": 65, "vision": 70 }, "b": { "resilience": 75, "integrity": 50 } },
-    "difficulty": 0.85,
+    "scoring_weights": {
+      "a": {
+        "resilience": 80,
+        "drive": 35
+      },
+      "b": {
+        "resilience": 30,
+        "connection": 75
+      }
+    },
+    "difficulty": 0.57,
     "reverse_scored": false,
     "validity_pair_id": null,
     "is_impression_management": false,
-    "version_availability": ["quick", "deep"]
+    "version_availability": [
+      "quick",
+      "deep"
+    ],
+    "sub_dimension": "recovery"
   },
   {
     "id": "resilience_forced_06",
     "dimension": "resilience",
     "secondary_dimension": null,
     "type": "forced_choice",
-    "text": "Someone on your team made an error that cost the group a big win. You're frustrated. What you do next:",
+    "text": "Someone on my team made an error that cost the group a big win. I'm frustrated. What I do next:",
     "options": [
-      { "key": "a", "text": "Take a walk first. You know your frustration would come out sideways if you addressed it right now.", "scores": { "resilience": 85, "adaptability": 40 } },
-      { "key": "b", "text": "Address it directly but fairly. You can be disappointed and constructive at the same time.", "scores": { "resilience": 65, "integrity": 75 } }
+      {
+        "key": "a",
+        "text": "Take a walk first. You know your frustration would come out sideways if you addressed it right now.",
+        "scores": {
+          "resilience": 90,
+          "integrity": 30
+        }
+      },
+      {
+        "key": "b",
+        "text": "Address it directly but fairly. You can be disappointed and constructive at the same time.",
+        "scores": {
+          "resilience": 35,
+          "adaptability": 70
+        }
+      }
     ],
-    "scoring_weights": { "a": { "resilience": 85, "adaptability": 40 }, "b": { "resilience": 65, "integrity": 75 } },
-    "difficulty": 0.5,
+    "scoring_weights": {
+      "a": {
+        "resilience": 90,
+        "integrity": 30
+      },
+      "b": {
+        "resilience": 35,
+        "adaptability": 70
+      }
+    },
+    "difficulty": 0.74,
     "reverse_scored": false,
     "validity_pair_id": null,
     "is_impression_management": false,
-    "version_availability": ["quick", "deep"]
+    "version_availability": [
+      "quick",
+      "deep"
+    ],
+    "sub_dimension": "recovery"
   },
   {
     "id": "resilience_forced_07",
     "dimension": "resilience",
     "secondary_dimension": null,
     "type": "forced_choice",
-    "text": "You've been grinding for months with nothing to show for it. Your honest self-talk sounds more like:",
+    "text": "I've been grinding for months with nothing to show for it. My honest self-talk sounds more like:",
     "options": [
-      { "key": "a", "text": "'This is a rough stretch but it's not the whole story. I've been here before and found my way through.'", "scores": { "resilience": 80, "vision": 55 } },
-      { "key": "b", "text": "'Something needs to change because this isn't working. I need to rethink my approach entirely.'", "scores": { "resilience": 50, "adaptability": 75 } }
+      {
+        "key": "a",
+        "text": "'This is a rough stretch but it's not the whole story. I've been here before and found my way through.'",
+        "scores": {
+          "resilience": 80,
+          "vision": 55
+        }
+      },
+      {
+        "key": "b",
+        "text": "'Something needs to change because this isn't working. I need to rethink my approach entirely.'",
+        "scores": {
+          "resilience": 50,
+          "adaptability": 75
+        }
+      }
     ],
-    "scoring_weights": { "a": { "resilience": 80, "vision": 55 }, "b": { "resilience": 50, "adaptability": 75 } },
-    "difficulty": 0.6,
+    "scoring_weights": {
+      "a": {
+        "resilience": 80,
+        "vision": 55
+      },
+      "b": {
+        "resilience": 50,
+        "adaptability": 75
+      }
+    },
+    "difficulty": 0.75,
     "reverse_scored": false,
     "validity_pair_id": null,
     "is_impression_management": false,
-    "version_availability": ["deep"]
+    "version_availability": [
+      "deep"
+    ],
+    "sub_dimension": "composure"
   },
   {
     "id": "resilience_forced_08",
     "dimension": "resilience",
     "secondary_dimension": null,
     "type": "forced_choice",
-    "text": "You find out a decision you fought hard for was quietly reversed while you were out. Your gut reaction:",
+    "text": "I find out a decision I fought hard for was quietly reversed while I was out. My gut reaction:",
     "options": [
-      { "key": "a", "text": "Anger, sharp and immediate. You feel disrespected and it takes real effort not to fire off a message.", "scores": { "resilience": 25, "drive": 65 } },
-      { "key": "b", "text": "Disappointment, but tempered. You note the feeling, decide who to talk to, and wait until you're calm.", "scores": { "resilience": 85, "integrity": 55 } }
+      {
+        "key": "a",
+        "text": "Anger, sharp and immediate. You feel disrespected and it takes real effort not to fire off a message.",
+        "scores": {
+          "resilience": 25,
+          "drive": 65
+        }
+      },
+      {
+        "key": "b",
+        "text": "Disappointment, but tempered. You note the feeling, decide who to talk to, and wait until you're calm.",
+        "scores": {
+          "resilience": 85,
+          "integrity": 55
+        }
+      }
     ],
-    "scoring_weights": { "a": { "resilience": 25, "drive": 65 }, "b": { "resilience": 85, "integrity": 55 } },
-    "difficulty": 0.45,
+    "scoring_weights": {
+      "a": {
+        "resilience": 25,
+        "drive": 65
+      },
+      "b": {
+        "resilience": 85,
+        "integrity": 55
+      }
+    },
+    "difficulty": 0.69,
     "reverse_scored": false,
     "validity_pair_id": null,
     "is_impression_management": false,
-    "version_availability": ["quick", "deep"]
+    "version_availability": [
+      "quick",
+      "deep"
+    ],
+    "sub_dimension": "composure"
   },
   {
     "id": "resilience_forced_09",
     "dimension": "resilience",
     "secondary_dimension": null,
     "type": "forced_choice",
-    "text": "Two weeks after a painful professional loss, an honest check-in with yourself reveals:",
+    "text": "Two weeks after a painful professional loss, an honest check-in with myself reveals:",
     "options": [
-      { "key": "a", "text": "You've mostly moved on. There's a dull ache when you think about it, but it doesn't run your day.", "scores": { "resilience": 80, "drive": 40 } },
-      { "key": "b", "text": "You've learned from it, but the disappointment still colors how you feel about similar situations.", "scores": { "resilience": 45, "connection": 55 } }
+      {
+        "key": "a",
+        "text": "You've mostly moved on. There's a dull ache when you think about it, but it doesn't run your day.",
+        "scores": {
+          "resilience": 80,
+          "drive": 40
+        }
+      },
+      {
+        "key": "b",
+        "text": "You've learned from it, but the disappointment still colors how you feel about similar situations.",
+        "scores": {
+          "resilience": 45,
+          "connection": 55
+        }
+      }
     ],
-    "scoring_weights": { "a": { "resilience": 80, "drive": 40 }, "b": { "resilience": 45, "connection": 55 } },
-    "difficulty": 0.55,
+    "scoring_weights": {
+      "a": {
+        "resilience": 80,
+        "drive": 40
+      },
+      "b": {
+        "resilience": 45,
+        "connection": 55
+      }
+    },
+    "difficulty": 0.8,
     "reverse_scored": false,
     "validity_pair_id": null,
     "is_impression_management": false,
-    "version_availability": ["quick", "deep"]
+    "version_availability": [
+      "quick",
+      "deep"
+    ],
+    "sub_dimension": "recovery"
   },
   {
     "id": "resilience_forced_10",
     "dimension": "resilience",
     "secondary_dimension": null,
     "type": "forced_choice",
-    "text": "When everything falls apart at once and people are looking to you for direction, what keeps you steady is:",
+    "text": "When everything falls apart at once and people are looking to me for direction, what keeps I steady is:",
     "options": [
-      { "key": "a", "text": "A clear picture of where you're heading. The destination doesn't change just because the road got harder.", "scores": { "resilience": 75, "vision": 70 } },
-      { "key": "b", "text": "The people around you. Knowing you're not carrying it alone makes the weight manageable.", "scores": { "resilience": 70, "connection": 80 } }
+      {
+        "key": "a",
+        "text": "A clear picture of where you're heading. The destination doesn't change just because the road got harder.",
+        "scores": {
+          "resilience": 85,
+          "vision": 35
+        }
+      },
+      {
+        "key": "b",
+        "text": "The people around you. Knowing you're not carrying it alone makes the weight manageable.",
+        "scores": {
+          "resilience": 30,
+          "drive": 75
+        }
+      }
     ],
-    "scoring_weights": { "a": { "resilience": 75, "vision": 70 }, "b": { "resilience": 70, "connection": 80 } },
-    "difficulty": 0.55,
+    "scoring_weights": {
+      "a": {
+        "resilience": 85,
+        "vision": 35
+      },
+      "b": {
+        "resilience": 30,
+        "drive": 75
+      }
+    },
+    "difficulty": 0.56,
     "reverse_scored": false,
     "validity_pair_id": null,
     "is_impression_management": false,
-    "version_availability": ["deep"]
+    "version_availability": [
+      "deep"
+    ],
+    "sub_dimension": "composure"
+  },
+  {
+    "id": "resilience_likert_26",
+    "dimension": "resilience",
+    "secondary_dimension": null,
+    "sub_dimension": "composure",
+    "type": "likert",
+    "text": "Criticism never affects my mood or confidence, not even for a moment.",
+    "options": null,
+    "scoring_weights": {
+      "1": {
+        "resilience": 85
+      },
+      "2": {
+        "resilience": 70
+      },
+      "3": {
+        "resilience": 50
+      },
+      "4": {
+        "resilience": 30
+      },
+      "5": {
+        "resilience": 15
+      }
+    },
+    "difficulty": 0.87,
+    "reverse_scored": true,
+    "validity_pair_id": null,
+    "is_impression_management": true,
+    "version_availability": [
+      "quick",
+      "deep"
+    ]
+  },
+  {
+    "id": "resilience_likert_27",
+    "dimension": "resilience",
+    "secondary_dimension": null,
+    "sub_dimension": "recovery",
+    "type": "likert",
+    "text": "I have never had a setback that took me more than a day to fully recover from.",
+    "options": null,
+    "scoring_weights": {
+      "1": {
+        "resilience": 85
+      },
+      "2": {
+        "resilience": 70
+      },
+      "3": {
+        "resilience": 50
+      },
+      "4": {
+        "resilience": 30
+      },
+      "5": {
+        "resilience": 15
+      }
+    },
+    "difficulty": 0.86,
+    "reverse_scored": true,
+    "validity_pair_id": null,
+    "is_impression_management": true,
+    "version_availability": [
+      "deep"
+    ]
+  },
+  {
+    "id": "resilience_likert_28",
+    "dimension": "resilience",
+    "secondary_dimension": null,
+    "sub_dimension": "composure",
+    "type": "likert",
+    "text": "When tensions rise in a meeting, I can stay focused on the issue without getting pulled into the emotion.",
+    "options": null,
+    "scoring_weights": {
+      "1": {
+        "resilience": 0
+      },
+      "2": {
+        "resilience": 15
+      },
+      "3": {
+        "resilience": 50
+      },
+      "4": {
+        "resilience": 85
+      },
+      "5": {
+        "resilience": 100
+      }
+    },
+    "difficulty": 0.5,
+    "reverse_scored": false,
+    "validity_pair_id": "resilience_vp_02",
+    "is_impression_management": false,
+    "version_availability": [
+      "quick",
+      "deep"
+    ]
+  },
+  {
+    "id": "resilience_likert_29",
+    "dimension": "resilience",
+    "secondary_dimension": null,
+    "sub_dimension": "composure",
+    "type": "likert",
+    "text": "In heated discussions, I catch myself reacting emotionally before I have time to think it through.",
+    "options": null,
+    "scoring_weights": {
+      "1": {
+        "resilience": 100
+      },
+      "2": {
+        "resilience": 85
+      },
+      "3": {
+        "resilience": 50
+      },
+      "4": {
+        "resilience": 15
+      },
+      "5": {
+        "resilience": 0
+      }
+    },
+    "difficulty": 0.45,
+    "reverse_scored": true,
+    "validity_pair_id": "resilience_vp_02",
+    "is_impression_management": false,
+    "version_availability": [
+      "quick",
+      "deep"
+    ]
+  },
+  {
+    "id": "resilience_likert_30",
+    "dimension": "resilience",
+    "secondary_dimension": null,
+    "sub_dimension": "recovery",
+    "type": "likert",
+    "text": "After a significant professional disappointment, I can usually refocus within a day or two.",
+    "options": null,
+    "scoring_weights": {
+      "1": {
+        "resilience": 0
+      },
+      "2": {
+        "resilience": 10
+      },
+      "3": {
+        "resilience": 30
+      },
+      "4": {
+        "resilience": 65
+      },
+      "5": {
+        "resilience": 100
+      }
+    },
+    "difficulty": 0.52,
+    "reverse_scored": false,
+    "validity_pair_id": "resilience_vp_03",
+    "is_impression_management": false,
+    "version_availability": [
+      "deep"
+    ]
+  },
+  {
+    "id": "resilience_likert_31",
+    "dimension": "resilience",
+    "secondary_dimension": null,
+    "sub_dimension": "recovery",
+    "type": "likert",
+    "text": "When something goes badly wrong at work, it affects my sleep and energy for more than a few days.",
+    "options": null,
+    "scoring_weights": {
+      "1": {
+        "resilience": 100
+      },
+      "2": {
+        "resilience": 65
+      },
+      "3": {
+        "resilience": 30
+      },
+      "4": {
+        "resilience": 10
+      },
+      "5": {
+        "resilience": 0
+      }
+    },
+    "difficulty": 0.48,
+    "reverse_scored": true,
+    "validity_pair_id": "resilience_vp_03",
+    "is_impression_management": false,
+    "version_availability": [
+      "deep"
+    ]
   }
 ]

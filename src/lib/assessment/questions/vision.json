@@ -4,73 +4,75 @@
     "dimension": "vision",
     "secondary_dimension": null,
     "type": "likert",
-    "text": "When you start a new project, you mentally map out how each piece connects to the final outcome before diving into tasks.",
+    "text": "When I start a new project, I mentally map out how each piece connects to the final outcome before diving into the details.",
     "options": null,
     "scoring_weights": {
       "1": {
         "vision": 0
       },
       "2": {
-        "vision": 25
+        "vision": 45
       },
       "3": {
-        "vision": 50
+        "vision": 70
       },
       "4": {
-        "vision": 75
+        "vision": 85
       },
       "5": {
         "vision": 100
       }
     },
-    "difficulty": 0.3,
+    "difficulty": 0.16,
     "reverse_scored": false,
     "validity_pair_id": null,
     "is_impression_management": false,
     "version_availability": [
       "quick",
       "deep"
-    ]
+    ],
+    "sub_dimension": "strategy"
   },
   {
     "id": "vision_likert_02",
     "dimension": "vision",
     "secondary_dimension": null,
     "type": "likert",
-    "text": "In the last month, you caught yourself thinking about what your team or organization will need six months from now, even when nobody asked you to.",
+    "text": "In the last month, I caught myself thinking about what my team or organization will need six months from now, even when few people asked me to.",
     "options": null,
     "scoring_weights": {
       "1": {
         "vision": 0
       },
       "2": {
-        "vision": 25
+        "vision": 45
       },
       "3": {
-        "vision": 50
+        "vision": 70
       },
       "4": {
-        "vision": 75
+        "vision": 85
       },
       "5": {
         "vision": 100
       }
     },
-    "difficulty": 0.35,
+    "difficulty": 0.2,
     "reverse_scored": false,
     "validity_pair_id": null,
     "is_impression_management": false,
     "version_availability": [
       "quick",
       "deep"
-    ]
+    ],
+    "sub_dimension": "innovation"
   },
   {
     "id": "vision_likert_03",
     "dimension": "vision",
     "secondary_dimension": "drive",
     "type": "likert",
-    "text": "When a process has worked fine for a year, you still find yourself questioning whether there is a fundamentally better way to do it.",
+    "text": "When a process has worked fine for a year, I still find myself questioning whether there is a fundamentally better approach.",
     "options": null,
     "scoring_weights": {
       "1": {
@@ -94,54 +96,56 @@
         "drive": 30
       }
     },
-    "difficulty": 0.4,
+    "difficulty": 0.24,
     "reverse_scored": false,
     "validity_pair_id": null,
     "is_impression_management": false,
     "version_availability": [
       "quick",
       "deep"
-    ]
+    ],
+    "sub_dimension": "innovation"
   },
   {
     "id": "vision_likert_04",
     "dimension": "vision",
     "secondary_dimension": null,
     "type": "likert",
-    "text": "You usually deal with problems one at a time as they come up, rather than looking at how they might be related.",
+    "text": "I usually deal with problems one at a time as they come up, rather than looking at how they might be connected.",
     "options": null,
     "scoring_weights": {
       "1": {
         "vision": 100
       },
       "2": {
-        "vision": 75
+        "vision": 85
       },
       "3": {
         "vision": 50
       },
       "4": {
-        "vision": 25
+        "vision": 15
       },
       "5": {
         "vision": 0
       }
     },
-    "difficulty": 0.35,
+    "difficulty": 0.79,
     "reverse_scored": true,
     "validity_pair_id": null,
     "is_impression_management": false,
     "version_availability": [
       "quick",
       "deep"
-    ]
+    ],
+    "sub_dimension": "strategy"
   },
   {
     "id": "vision_likert_05",
     "dimension": "vision",
     "secondary_dimension": "drive",
     "type": "likert",
-    "text": "When you have limited resources, you instinctively know which two or three things to focus on that will create the biggest ripple effect.",
+    "text": "When I have limited resources, I instinctively know which two or three things to focus on that will create the most downstream impact.",
     "options": null,
     "scoring_weights": {
       "1": {
@@ -165,86 +169,89 @@
         "drive": 30
       }
     },
-    "difficulty": 0.5,
+    "difficulty": 0.33,
     "reverse_scored": false,
     "validity_pair_id": null,
     "is_impression_management": false,
     "version_availability": [
       "quick",
       "deep"
-    ]
+    ],
+    "sub_dimension": "strategy"
   },
   {
     "id": "vision_likert_06",
     "dimension": "vision",
     "secondary_dimension": null,
     "type": "likert",
-    "text": "When you hear about a change in your industry, your mind immediately runs through three or four downstream consequences.",
+    "text": "When I hear about a change in my industry, my mind immediately runs through three or four downstream effects before most people notice the first one.",
     "options": null,
     "scoring_weights": {
       "1": {
         "vision": 0
       },
       "2": {
-        "vision": 25
+        "vision": 10
       },
       "3": {
-        "vision": 50
+        "vision": 25
       },
       "4": {
-        "vision": 75
+        "vision": 55
       },
       "5": {
         "vision": 100
       }
     },
-    "difficulty": 0.45,
+    "difficulty": 0.38,
     "reverse_scored": false,
     "validity_pair_id": null,
     "is_impression_management": false,
     "version_availability": [
       "quick",
       "deep"
-    ]
+    ],
+    "sub_dimension": "foresight"
   },
   {
     "id": "vision_likert_07",
     "dimension": "vision",
     "secondary_dimension": null,
     "type": "likert",
-    "text": "You spend so much time planning for future scenarios that you sometimes miss deadlines on current work.",
+    "text": "I spend so much time planning for future scenarios that I sometimes miss deadlines on current work.",
     "options": null,
     "scoring_weights": {
       "1": {
         "vision": 100
       },
       "2": {
-        "vision": 75
+        "vision": 85
       },
       "3": {
-        "vision": 50
+        "vision": 65
       },
       "4": {
-        "vision": 25
+        "vision": 35
       },
       "5": {
         "vision": 0
       }
     },
-    "difficulty": 0.6,
+    "difficulty": 0.71,
     "reverse_scored": true,
     "validity_pair_id": null,
     "is_impression_management": false,
     "version_availability": [
       "deep"
-    ]
+    ],
+    "sub_dimension": "foresight"
   },
   {
     "id": "vision_likert_08",
     "dimension": "vision",
     "secondary_dimension": "resilience",
     "type": "likert",
-    "text": "When your first approach to a problem fails, you tend to look for a completely different angle rather than just tweaking the original plan.",
+    "text": "When my first approach to a problem fails, I tend to look for a completely different angle rather than refining what I already tried.",
     "options": null,
     "scoring_weights": {
       "1": {
@@ -268,120 +275,124 @@
         "resilience": 30
       }
     },
-    "difficulty": 0.45,
+    "difficulty": 0.21,
     "reverse_scored": false,
     "validity_pair_id": null,
     "is_impression_management": false,
     "version_availability": [
       "quick",
       "deep"
-    ]
+    ],
+    "sub_dimension": "innovation"
   },
   {
     "id": "vision_likert_09",
     "dimension": "vision",
     "secondary_dimension": null,
     "type": "likert",
-    "text": "When you look at your team's current priorities, you can clearly explain how each one connects to where you need to be in a year.",
+    "text": "When I look at my team's current priorities, I can clearly explain how each one connects to where we need to be in two years.",
     "options": null,
     "scoring_weights": {
       "1": {
         "vision": 0
       },
       "2": {
-        "vision": 25
+        "vision": 15
       },
       "3": {
         "vision": 50
       },
       "4": {
-        "vision": 75
+        "vision": 85
       },
       "5": {
         "vision": 100
       }
     },
-    "difficulty": 0.5,
+    "difficulty": 0.25,
     "reverse_scored": false,
     "validity_pair_id": "vision_vp_01",
     "is_impression_management": false,
     "version_availability": [
       "quick",
       "deep"
-    ]
+    ],
+    "sub_dimension": "strategy"
   },
   {
     "id": "vision_likert_10",
     "dimension": "vision",
     "secondary_dimension": null,
     "type": "likert",
-    "text": "In the last month, you made a decision primarily based on what would pay off in six-plus months, even though it created short-term friction.",
+    "text": "In the last month, I made a decision primarily based on what would pay off in six-plus months, even though it created short-term friction.",
     "options": null,
     "scoring_weights": {
       "1": {
-        "vision": 0
+        "vision": 100
       },
       "2": {
-        "vision": 25
+        "vision": 85
       },
       "3": {
-        "vision": 50
+        "vision": 65
       },
       "4": {
-        "vision": 75
+        "vision": 35
       },
       "5": {
-        "vision": 100
+        "vision": 0
       }
     },
-    "difficulty": 0.55,
-    "reverse_scored": false,
+    "difficulty": 0.6,
+    "reverse_scored": true,
     "validity_pair_id": "vision_vp_01",
     "is_impression_management": false,
     "version_availability": [
       "quick",
       "deep"
-    ]
+    ],
+    "sub_dimension": "strategy"
   },
   {
     "id": "vision_likert_11",
     "dimension": "vision",
     "secondary_dimension": null,
     "type": "likert",
-    "text": "You rarely question the assumptions behind a plan that is already working.",
+    "text": "I rarely question the assumptions behind a plan that is already working.",
     "options": null,
     "scoring_weights": {
       "1": {
         "vision": 100
       },
       "2": {
-        "vision": 75
+        "vision": 85
       },
       "3": {
-        "vision": 50
+        "vision": 65
       },
       "4": {
-        "vision": 25
+        "vision": 35
       },
       "5": {
         "vision": 0
       }
     },
-    "difficulty": 0.4,
+    "difficulty": 0.55,
     "reverse_scored": true,
     "validity_pair_id": null,
     "is_impression_management": false,
     "version_availability": [
       "quick",
       "deep"
-    ]
+    ],
+    "sub_dimension": "strategy"
   },
   {
     "id": "vision_likert_12",
     "dimension": "vision",
     "secondary_dimension": "connection",
     "type": "likert",
-    "text": "When you see a risk that others have not noticed, you bring it up even if it makes the conversation uncomfortable.",
+    "text": "When I see a risk that others have not noticed, I bring it up even if it makes the conversation uncomfortable.",
     "options": null,
     "scoring_weights": {
       "1": {
@@ -405,87 +416,90 @@
         "connection": 30
       }
     },
-    "difficulty": 0.5,
+    "difficulty": 0.19,
     "reverse_scored": false,
     "validity_pair_id": null,
     "is_impression_management": false,
     "version_availability": [
       "quick",
       "deep"
-    ]
+    ],
+    "sub_dimension": "strategy"
   },
   {
     "id": "vision_likert_13",
     "dimension": "vision",
     "secondary_dimension": null,
     "type": "likert",
-    "text": "You tend to focus on what is right in front of you and let the long-term sort itself out.",
+    "text": "I tend to focus on what is right in front of me and let the long-term sort itself out.",
     "options": null,
     "scoring_weights": {
       "1": {
         "vision": 100
       },
       "2": {
-        "vision": 75
+        "vision": 85
       },
       "3": {
         "vision": 50
       },
       "4": {
-        "vision": 25
+        "vision": 15
       },
       "5": {
         "vision": 0
       }
     },
-    "difficulty": 0.3,
+    "difficulty": 0.65,
     "reverse_scored": true,
     "validity_pair_id": null,
     "is_impression_management": false,
     "version_availability": [
       "quick",
       "deep"
-    ]
+    ],
+    "sub_dimension": "foresight"
   },
   {
     "id": "vision_likert_14",
     "dimension": "vision",
     "secondary_dimension": null,
     "type": "likert",
-    "text": "In the last month, you borrowed an idea from a completely different field and applied it to your own work.",
+    "text": "In the last month, I borrowed an idea from a completely different field and applied it to my own work.",
     "options": null,
     "scoring_weights": {
       "1": {
         "vision": 0
       },
       "2": {
-        "vision": 25
+        "vision": 45
       },
       "3": {
-        "vision": 50
+        "vision": 70
       },
       "4": {
-        "vision": 75
+        "vision": 85
       },
       "5": {
         "vision": 100
       }
     },
-    "difficulty": 0.55,
+    "difficulty": 0.15,
     "reverse_scored": false,
     "validity_pair_id": null,
     "is_impression_management": false,
     "version_availability": [
       "quick",
       "deep"
-    ]
+    ],
+    "sub_dimension": "innovation"
   },
   {
     "id": "vision_likert_15",
     "dimension": "vision",
     "secondary_dimension": "integrity",
     "type": "likert",
-    "text": "When you spot a shortcut that would save time now but create problems later, you flag it and push for the longer path.",
+    "text": "When I spot a shortcut that would save time now but create problems later, I push for the right approach even when it's unpopular.",
     "options": null,
     "scoring_weights": {
       "1": {
@@ -509,53 +523,55 @@
         "integrity": 30
       }
     },
-    "difficulty": 0.45,
+    "difficulty": 0.57,
     "reverse_scored": false,
     "validity_pair_id": null,
     "is_impression_management": false,
     "version_availability": [
       "quick",
       "deep"
-    ]
+    ],
+    "sub_dimension": "strategy"
   },
   {
     "id": "vision_likert_16",
     "dimension": "vision",
     "secondary_dimension": null,
     "type": "likert",
-    "text": "You find it hard to explain to others why something that seems unimportant now will matter later.",
+    "text": "I find it hard to explain to others why something that seems unimportant now will matter later.",
     "options": null,
     "scoring_weights": {
       "1": {
         "vision": 100
       },
       "2": {
-        "vision": 75
+        "vision": 85
       },
       "3": {
-        "vision": 50
+        "vision": 65
       },
       "4": {
-        "vision": 25
+        "vision": 35
       },
       "5": {
         "vision": 0
       }
     },
-    "difficulty": 0.5,
+    "difficulty": 0.71,
     "reverse_scored": true,
     "validity_pair_id": null,
     "is_impression_management": false,
     "version_availability": [
       "deep"
-    ]
+    ],
+    "sub_dimension": "foresight"
   },
   {
     "id": "vision_likert_17",
     "dimension": "vision",
     "secondary_dimension": "drive",
     "type": "likert",
-    "text": "When you come up with a new approach, you test it on a small scale before proposing a full rollout.",
+    "text": "When I come up with a new approach, I test it on a small scale before proposing a full rollout.",
     "options": null,
     "scoring_weights": {
       "1": {
@@ -579,86 +595,89 @@
         "drive": 30
       }
     },
-    "difficulty": 0.4,
+    "difficulty": 0.53,
     "reverse_scored": false,
     "validity_pair_id": null,
     "is_impression_management": false,
     "version_availability": [
       "quick",
       "deep"
-    ]
+    ],
+    "sub_dimension": "innovation"
   },
   {
     "id": "vision_likert_18",
     "dimension": "vision",
     "secondary_dimension": null,
     "type": "likert",
-    "text": "When someone asks you why you made a specific decision, you can trace it back to a larger goal without hesitating.",
+    "text": "When someone asks me why I made a specific decision, I can trace it back to a larger goal without having to think about it.",
     "options": null,
     "scoring_weights": {
       "1": {
         "vision": 0
       },
       "2": {
-        "vision": 25
+        "vision": 15
       },
       "3": {
         "vision": 50
       },
       "4": {
-        "vision": 75
+        "vision": 85
       },
       "5": {
         "vision": 100
       }
     },
-    "difficulty": 0.45,
+    "difficulty": 0.85,
     "reverse_scored": false,
     "validity_pair_id": null,
     "is_impression_management": false,
     "version_availability": [
       "quick",
       "deep"
-    ]
+    ],
+    "sub_dimension": "strategy"
   },
   {
     "id": "vision_likert_19",
     "dimension": "vision",
     "secondary_dimension": null,
     "type": "likert",
-    "text": "You often get so deep into analyzing possibilities that you delay making a decision until the window has nearly closed.",
+    "text": "I often get so deep into analyzing possibilities that I delay making a decision until the window has nearly closed.",
     "options": null,
     "scoring_weights": {
       "1": {
         "vision": 100
       },
       "2": {
-        "vision": 75
+        "vision": 85
       },
       "3": {
-        "vision": 50
+        "vision": 70
       },
       "4": {
-        "vision": 25
+        "vision": 45
       },
       "5": {
         "vision": 0
       }
     },
-    "difficulty": 0.75,
+    "difficulty": 0.82,
     "reverse_scored": true,
     "validity_pair_id": null,
     "is_impression_management": false,
     "version_availability": [
       "deep"
-    ]
+    ],
+    "sub_dimension": "foresight"
   },
   {
     "id": "vision_likert_20",
     "dimension": "vision",
     "secondary_dimension": "connection",
     "type": "likert",
-    "text": "When you see how different people's work fits together toward a bigger outcome, you make sure they see it too.",
+    "text": "When I see how different people's work fits together toward a bigger outcome, I make sure they see it too.",
     "options": null,
     "scoring_weights": {
       "1": {
@@ -682,87 +701,90 @@
         "connection": 30
       }
     },
-    "difficulty": 0.45,
+    "difficulty": 0.69,
     "reverse_scored": false,
     "validity_pair_id": null,
     "is_impression_management": false,
     "version_availability": [
       "quick",
       "deep"
-    ]
+    ],
+    "sub_dimension": "innovation"
   },
   {
     "id": "vision_likert_21",
     "dimension": "vision",
     "secondary_dimension": null,
     "type": "likert",
-    "text": "When your team hits a wall, you tend to keep trying harder with the current approach rather than rethinking the problem entirely.",
+    "text": "When my team hits a wall, I tend to keep trying harder with the current approach rather than rethinking the strategy entirely.",
     "options": null,
     "scoring_weights": {
       "1": {
         "vision": 100
       },
       "2": {
-        "vision": 75
+        "vision": 85
       },
       "3": {
-        "vision": 50
+        "vision": 70
       },
       "4": {
-        "vision": 25
+        "vision": 45
       },
       "5": {
         "vision": 0
       }
     },
-    "difficulty": 0.45,
+    "difficulty": 0.82,
     "reverse_scored": true,
     "validity_pair_id": null,
     "is_impression_management": false,
     "version_availability": [
       "quick",
       "deep"
-    ]
+    ],
+    "sub_dimension": "innovation"
   },
   {
     "id": "vision_likert_22",
     "dimension": "vision",
     "secondary_dimension": null,
     "type": "likert",
-    "text": "In the last month, you identified a trend early enough that your team had time to prepare before it hit.",
+    "text": "In the last month, I identified a trend early enough that my team had time to prepare before it hit.",
     "options": null,
     "scoring_weights": {
       "1": {
         "vision": 0
       },
       "2": {
-        "vision": 25
+        "vision": 45
       },
       "3": {
-        "vision": 50
+        "vision": 70
       },
       "4": {
-        "vision": 75
+        "vision": 85
       },
       "5": {
         "vision": 100
       }
     },
-    "difficulty": 0.6,
+    "difficulty": 0.51,
     "reverse_scored": false,
     "validity_pair_id": null,
     "is_impression_management": false,
     "version_availability": [
       "quick",
       "deep"
-    ]
+    ],
+    "sub_dimension": "foresight"
   },
   {
     "id": "vision_likert_23",
     "dimension": "vision",
     "secondary_dimension": "resilience",
     "type": "likert",
-    "text": "When an assumption you have relied on turns out to be wrong, you find it energizing rather than unsettling to rebuild your mental model.",
+    "text": "When an assumption I have relied on turns out to be wrong, I find it energizing rather than unsettling.",
     "options": null,
     "scoring_weights": {
       "1": {
@@ -786,47 +808,49 @@
         "resilience": 30
       }
     },
-    "difficulty": 0.55,
+    "difficulty": 0.88,
     "reverse_scored": false,
     "validity_pair_id": null,
     "is_impression_management": false,
     "version_availability": [
       "quick",
       "deep"
-    ]
+    ],
+    "sub_dimension": "innovation"
   },
   {
     "id": "vision_likert_24",
     "dimension": "vision",
     "secondary_dimension": null,
     "type": "likert",
-    "text": "You prefer to take things as they come rather than work from a plan you mapped out in advance.",
+    "text": "I prefer to take things as they come rather than work from a plan I mapped out in advance.",
     "options": null,
     "scoring_weights": {
       "1": {
         "vision": 100
       },
       "2": {
-        "vision": 75
+        "vision": 65
       },
       "3": {
-        "vision": 50
+        "vision": 30
       },
       "4": {
-        "vision": 25
+        "vision": 10
       },
       "5": {
         "vision": 0
       }
     },
-    "difficulty": 0.3,
+    "difficulty": 0.77,
     "reverse_scored": true,
     "validity_pair_id": null,
     "is_impression_management": false,
     "version_availability": [
       "quick",
       "deep"
-    ]
+    ],
+    "sub_dimension": "strategy"
   },
   {
     "id": "vision_likert_25",
@@ -837,36 +861,37 @@
     "options": null,
     "scoring_weights": {
       "1": {
-        "vision": 0
+        "vision": 85
       },
       "2": {
-        "vision": 25
+        "vision": 70
       },
       "3": {
         "vision": 50
       },
       "4": {
-        "vision": 75
+        "vision": 30
       },
       "5": {
-        "vision": 100
+        "vision": 15
       }
     },
-    "difficulty": 0.25,
-    "reverse_scored": false,
+    "difficulty": 0.87,
+    "reverse_scored": true,
     "validity_pair_id": null,
     "is_impression_management": true,
     "version_availability": [
       "quick",
       "deep"
-    ]
+    ],
+    "sub_dimension": "foresight"
   },
   {
     "id": "vision_situational_01",
     "dimension": "vision",
     "secondary_dimension": null,
     "type": "situational",
-    "text": "Your company has budget to invest in one area this quarter. Sales wants more headcount, engineering wants to rebuild a core system, and marketing wants to launch in a new channel. Each team has strong data supporting their case. You have to recommend one.",
+    "text": "I have budget left this quarter. Do I invest in fixing a current bottleneck or fund research into a method that could transform next year's results?",
     "options": [
       {
         "key": "a",
@@ -919,21 +944,22 @@
         "connection": 55
       }
     },
-    "difficulty": 0.5,
+    "difficulty": 0.27,
     "reverse_scored": false,
     "validity_pair_id": null,
     "is_impression_management": false,
     "version_availability": [
       "quick",
       "deep"
-    ]
+    ],
+    "sub_dimension": "strategy"
   },
   {
     "id": "vision_situational_02",
     "dimension": "vision",
     "secondary_dimension": null,
     "type": "situational",
-    "text": "A regulation change is being discussed that could affect your industry in 12 to 18 months. Nothing is finalized yet. Your peers are ignoring it because it may not pass.",
+    "text": "A regulation change is being discussed that could affect my industry in 12 to 18 months. Nothing is finalized yet. My peers are ignoring it because it may not pass.",
     "options": [
       {
         "key": "a",
@@ -986,21 +1012,22 @@
         "drive": 40
       }
     },
-    "difficulty": 0.45,
+    "difficulty": 0.32,
     "reverse_scored": false,
     "validity_pair_id": null,
     "is_impression_management": false,
     "version_availability": [
       "quick",
       "deep"
-    ]
+    ],
+    "sub_dimension": "strategy"
   },
   {
     "id": "vision_situational_03",
     "dimension": "vision",
     "secondary_dimension": null,
     "type": "situational",
-    "text": "Your team's main product has been successful for three years, but growth is slowing. A junior team member suggests a radical redesign. The rest of the team thinks it is too risky.",
+    "text": "My team's main product has been successful for three years, but growth is slowing. A junior team member suggests a radical redesign. The rest of the team thinks it is too risky.",
     "options": [
       {
         "key": "a",
@@ -1053,21 +1080,22 @@
         "connection": 40
       }
     },
-    "difficulty": 0.5,
+    "difficulty": 0.37,
     "reverse_scored": false,
     "validity_pair_id": null,
     "is_impression_management": false,
     "version_availability": [
       "quick",
       "deep"
-    ]
+    ],
+    "sub_dimension": "foresight"
   },
   {
     "id": "vision_situational_04",
     "dimension": "vision",
     "secondary_dimension": null,
     "type": "situational",
-    "text": "You are halfway through a six-month project when new information suggests the original goal may no longer be the right target. Your team has already invested significant effort.",
+    "text": "I am halfway through a six-month project when new information suggests the original goal may no longer be the right target. My team has already invested significant effort.",
     "options": [
       {
         "key": "a",
@@ -1120,21 +1148,22 @@
         "connection": 75
       }
     },
-    "difficulty": 0.55,
+    "difficulty": 0.47,
     "reverse_scored": false,
     "validity_pair_id": null,
     "is_impression_management": false,
     "version_availability": [
       "quick",
       "deep"
-    ]
+    ],
+    "sub_dimension": "innovation"
   },
   {
     "id": "vision_situational_05",
     "dimension": "vision",
     "secondary_dimension": null,
     "type": "situational",
-    "text": "A key supplier raises their prices 20%. Your competitors are scrambling to find alternatives. You have enough margin to absorb the increase for now.",
+    "text": "A key supplier raises their prices 20%. My competitors are scrambling to find alternatives. I have enough margin to absorb the increase for now.",
     "options": [
       {
         "key": "a",
@@ -1187,21 +1216,22 @@
         "integrity": 70
       }
     },
-    "difficulty": 0.5,
+    "difficulty": 0.62,
     "reverse_scored": false,
     "validity_pair_id": null,
     "is_impression_management": false,
     "version_availability": [
       "quick",
       "deep"
-    ]
+    ],
+    "sub_dimension": "foresight"
   },
   {
     "id": "vision_situational_06",
     "dimension": "vision",
     "secondary_dimension": null,
     "type": "situational",
-    "text": "You notice that two departments are solving similar problems with completely different tools and processes. Neither knows what the other is doing.",
+    "text": "I notice that two departments are solving similar problems with completely different tools and processes. Neither knows what the other is doing.",
     "options": [
       {
         "key": "a",
@@ -1261,14 +1291,15 @@
     "version_availability": [
       "quick",
       "deep"
-    ]
+    ],
+    "sub_dimension": "strategy"
   },
   {
     "id": "vision_situational_07",
     "dimension": "vision",
     "secondary_dimension": null,
     "type": "situational",
-    "text": "Your team hits their quarterly targets, but you notice the wins came from a few lucky breaks rather than a repeatable system. Everyone else is celebrating.",
+    "text": "My team hits their quarterly targets, but I notice the wins came from a few lucky breaks rather than a repeatable system. Most people else is celebrating.",
     "options": [
       {
         "key": "a",
@@ -1321,21 +1352,22 @@
         "drive": 75
       }
     },
-    "difficulty": 0.6,
+    "difficulty": 0.73,
     "reverse_scored": false,
     "validity_pair_id": null,
     "is_impression_management": false,
     "version_availability": [
       "quick",
       "deep"
-    ]
+    ],
+    "sub_dimension": "strategy"
   },
   {
     "id": "vision_situational_08",
     "dimension": "vision",
     "secondary_dimension": null,
     "type": "situational",
-    "text": "A new technology is getting a lot of buzz in your industry. Some companies are investing heavily. Others are calling it overhyped. You need to advise your leadership team.",
+    "text": "A new technology is getting a lot of buzz in my industry. Some companies are investing heavily. Others are calling it overhyped. I need to advise my leadership team.",
     "options": [
       {
         "key": "a",
@@ -1388,21 +1420,22 @@
         "connection": 60
       }
     },
-    "difficulty": 0.55,
+    "difficulty": 0.77,
     "reverse_scored": false,
     "validity_pair_id": null,
     "is_impression_management": false,
     "version_availability": [
       "quick",
       "deep"
-    ]
+    ],
+    "sub_dimension": "innovation"
   },
   {
     "id": "vision_situational_09",
     "dimension": "vision",
     "secondary_dimension": null,
     "type": "situational",
-    "text": "Your biggest client wants a custom feature that would take your product in a direction you had not planned. The revenue is significant, but it would pull engineering off the roadmap for two months.",
+    "text": "My biggest client wants a custom feature that would take my product in a direction I had not planned. The revenue is significant, but it would pull engineering off the roadmap for two months.",
     "options": [
       {
         "key": "a",
@@ -1455,20 +1488,21 @@
         "integrity": 75
       }
     },
-    "difficulty": 0.6,
+    "difficulty": 0.79,
     "reverse_scored": false,
     "validity_pair_id": null,
     "is_impression_management": false,
     "version_availability": [
       "deep"
-    ]
+    ],
+    "sub_dimension": "strategy"
   },
   {
     "id": "vision_situational_10",
     "dimension": "vision",
     "secondary_dimension": null,
     "type": "situational",
-    "text": "You are asked to present your three-year vision to the board. Your honest assessment is that the market is too volatile to predict beyond 12 months with any confidence.",
+    "text": "I am asked to present my three-year vision to the board. My honest assessment is that the market is too volatile to predict beyond 12 months with any confidence.",
     "options": [
       {
         "key": "a",
@@ -1521,20 +1555,21 @@
         "connection": 65
       }
     },
-    "difficulty": 0.8,
+    "difficulty": 0.32,
     "reverse_scored": false,
     "validity_pair_id": null,
     "is_impression_management": false,
     "version_availability": [
       "deep"
-    ]
+    ],
+    "sub_dimension": "foresight"
   },
   {
     "id": "vision_situational_11",
     "dimension": "vision",
     "secondary_dimension": null,
     "type": "situational",
-    "text": "Your team's workload has been manageable, but you see three separate projects converging in the same month six weeks from now. Nobody else has flagged it yet.",
+    "text": "My team's workload has been manageable, but I see three separate projects converging in the same month six weeks from now. Few people else has flagged it yet.",
     "options": [
       {
         "key": "a",
@@ -1587,21 +1622,22 @@
         "integrity": 60
       }
     },
-    "difficulty": 0.4,
+    "difficulty": 0.7,
     "reverse_scored": false,
     "validity_pair_id": null,
     "is_impression_management": false,
     "version_availability": [
       "quick",
       "deep"
-    ]
+    ],
+    "sub_dimension": "foresight"
   },
   {
     "id": "vision_situational_12",
     "dimension": "vision",
     "secondary_dimension": null,
     "type": "situational",
-    "text": "A competitor launches a product that copies your core feature but offers it for free. Your sales team is panicking.",
+    "text": "A competitor launches a product that copies my core feature but offers it for free. My sales team is panicking.",
     "options": [
       {
         "key": "a",
@@ -1654,21 +1690,22 @@
         "integrity": 45
       }
     },
-    "difficulty": 0.5,
+    "difficulty": 0.78,
     "reverse_scored": false,
     "validity_pair_id": null,
     "is_impression_management": false,
     "version_availability": [
       "quick",
       "deep"
-    ]
+    ],
+    "sub_dimension": "strategy"
   },
   {
     "id": "vision_situational_13",
     "dimension": "vision",
     "secondary_dimension": null,
     "type": "situational",
-    "text": "You have been promoted and now oversee three teams that historically have not collaborated well. Each has its own goals and metrics that sometimes conflict.",
+    "text": "I have been promoted and now oversee three teams that historically have not collaborated well. Each has its own goals and metrics that sometimes conflict.",
     "options": [
       {
         "key": "a",
@@ -1721,21 +1758,22 @@
         "resilience": 50
       }
     },
-    "difficulty": 0.55,
+    "difficulty": 0.63,
     "reverse_scored": false,
     "validity_pair_id": null,
     "is_impression_management": false,
     "version_availability": [
       "quick",
       "deep"
-    ]
+    ],
+    "sub_dimension": "foresight"
   },
   {
     "id": "vision_situational_14",
     "dimension": "vision",
     "secondary_dimension": null,
     "type": "situational",
-    "text": "Your company is growing fast. You can see that the processes that work at your current size will break at double the headcount, but everyone is focused on hiring.",
+    "text": "My company is growing fast. I can see that the processes that work at my current size will break at double the headcount, but most people is focused on hiring.",
     "options": [
       {
         "key": "a",
@@ -1788,21 +1826,22 @@
         "resilience": 55
       }
     },
-    "difficulty": 0.5,
+    "difficulty": 0.67,
     "reverse_scored": false,
     "validity_pair_id": null,
     "is_impression_management": false,
     "version_availability": [
       "quick",
       "deep"
-    ]
+    ],
+    "sub_dimension": "strategy"
   },
   {
     "id": "vision_situational_15",
     "dimension": "vision",
     "secondary_dimension": null,
     "type": "situational",
-    "text": "During a routine review, you realize your team has been solving the wrong problem for two weeks. The work is high quality, but pointed in the wrong direction.",
+    "text": "During a routine review, I realize my team has been solving the wrong problem for two weeks. The work is high quality, but pointed in the wrong direction.",
     "options": [
       {
         "key": "a",
@@ -1855,21 +1894,22 @@
         "drive": 50
       }
     },
-    "difficulty": 0.5,
+    "difficulty": 0.36,
     "reverse_scored": false,
     "validity_pair_id": null,
     "is_impression_management": false,
     "version_availability": [
       "quick",
       "deep"
-    ]
+    ],
+    "sub_dimension": "strategy"
   },
   {
     "id": "vision_situational_16",
     "dimension": "vision",
     "secondary_dimension": null,
     "type": "situational",
-    "text": "You have a strategic idea that you believe in strongly, but your data is incomplete and your team is skeptical. You need their buy-in to move forward.",
+    "text": "I have a strategic idea that I believe in strongly, but my data is incomplete and my team is skeptical. I need their buy-in to move forward.",
     "options": [
       {
         "key": "a",
@@ -1922,20 +1962,21 @@
         "connection": 70
       }
     },
-    "difficulty": 0.55,
+    "difficulty": 0.56,
     "reverse_scored": false,
     "validity_pair_id": null,
     "is_impression_management": false,
     "version_availability": [
       "deep"
-    ]
+    ],
+    "sub_dimension": "foresight"
   },
   {
     "id": "vision_situational_17",
     "dimension": "vision",
     "secondary_dimension": null,
     "type": "situational",
-    "text": "Your industry is stable now, but you read an analysis suggesting a major disruption could happen within five years. The analysis is from a credible source, but the timing is uncertain.",
+    "text": "My industry is stable now, but I read an analysis suggesting a major disruption could happen within five years. The analysis is from a credible source, but the timing is uncertain.",
     "options": [
       {
         "key": "a",
@@ -1988,20 +2029,21 @@
         "connection": 75
       }
     },
-    "difficulty": 0.85,
+    "difficulty": 0.65,
     "reverse_scored": false,
     "validity_pair_id": null,
     "is_impression_management": false,
     "version_availability": [
       "deep"
-    ]
+    ],
+    "sub_dimension": "foresight"
   },
   {
     "id": "vision_forced_01",
     "dimension": "vision",
     "secondary_dimension": null,
     "type": "forced_choice",
-    "text": "Your business is profitable but plateauing. Your gut says:",
+    "text": "My business is profitable but plateauing. My gut says:",
     "options": [
       {
         "key": "a",
@@ -2030,21 +2072,22 @@
         "drive": 80
       }
     },
-    "difficulty": 0.5,
+    "difficulty": 0.75,
     "reverse_scored": false,
     "validity_pair_id": null,
     "is_impression_management": false,
     "version_availability": [
       "quick",
       "deep"
-    ]
+    ],
+    "sub_dimension": "innovation"
   },
   {
     "id": "vision_forced_02",
     "dimension": "vision",
     "secondary_dimension": null,
     "type": "forced_choice",
-    "text": "A competitor makes a surprising move. Your first thought is:",
+    "text": "A competitor makes a surprising move. My first thought is:",
     "options": [
       {
         "key": "a",
@@ -2073,21 +2116,22 @@
         "drive": 75
       }
     },
-    "difficulty": 0.45,
+    "difficulty": 0.42,
     "reverse_scored": false,
     "validity_pair_id": null,
     "is_impression_management": false,
     "version_availability": [
       "quick",
       "deep"
-    ]
+    ],
+    "sub_dimension": "foresight"
   },
   {
     "id": "vision_forced_03",
     "dimension": "vision",
     "secondary_dimension": null,
     "type": "forced_choice",
-    "text": "When someone brings you a problem, you tend to:",
+    "text": "When someone brings me a problem, I tend to:",
     "options": [
       {
         "key": "a",
@@ -2116,21 +2160,22 @@
         "drive": 75
       }
     },
-    "difficulty": 0.4,
+    "difficulty": 0.6,
     "reverse_scored": false,
     "validity_pair_id": null,
     "is_impression_management": false,
     "version_availability": [
       "quick",
       "deep"
-    ]
+    ],
+    "sub_dimension": "strategy"
   },
   {
     "id": "vision_forced_04",
     "dimension": "vision",
     "secondary_dimension": null,
     "type": "forced_choice",
-    "text": "You are building next year's plan. You open with:",
+    "text": "I am building next year's plan. I open with:",
     "options": [
       {
         "key": "a",
@@ -2159,21 +2204,22 @@
         "resilience": 70
       }
     },
-    "difficulty": 0.45,
+    "difficulty": 0.77,
     "reverse_scored": false,
     "validity_pair_id": null,
     "is_impression_management": false,
     "version_availability": [
       "quick",
       "deep"
-    ]
+    ],
+    "sub_dimension": "foresight"
   },
   {
     "id": "vision_forced_05",
     "dimension": "vision",
     "secondary_dimension": null,
     "type": "forced_choice",
-    "text": "A decision needs to be made by Friday. You have 70% of the information you want. You:",
+    "text": "A decision needs to be made by Friday. I have 70% of the information I want. I:",
     "options": [
       {
         "key": "a",
@@ -2202,21 +2248,22 @@
         "integrity": 50
       }
     },
-    "difficulty": 0.7,
+    "difficulty": 0.83,
     "reverse_scored": false,
     "validity_pair_id": null,
     "is_impression_management": false,
     "version_availability": [
       "quick",
       "deep"
-    ]
+    ],
+    "sub_dimension": "innovation"
   },
   {
     "id": "vision_forced_06",
     "dimension": "vision",
     "secondary_dimension": null,
     "type": "forced_choice",
-    "text": "You read something fascinating from a completely unrelated industry. Your instinct is:",
+    "text": "I read something fascinating from a completely unrelated industry. My instinct is:",
     "options": [
       {
         "key": "a",
@@ -2245,21 +2292,22 @@
         "connection": 35
       }
     },
-    "difficulty": 0.35,
+    "difficulty": 0.43,
     "reverse_scored": false,
     "validity_pair_id": null,
     "is_impression_management": false,
     "version_availability": [
       "quick",
       "deep"
-    ]
+    ],
+    "sub_dimension": "strategy"
   },
   {
     "id": "vision_forced_07",
     "dimension": "vision",
     "secondary_dimension": null,
     "type": "forced_choice",
-    "text": "Two people on your team disagree about priorities. You step in and:",
+    "text": "Two people on my team disagree about priorities. I step in and:",
     "options": [
       {
         "key": "a",
@@ -2288,21 +2336,22 @@
         "connection": 80
       }
     },
-    "difficulty": 0.5,
+    "difficulty": 0.76,
     "reverse_scored": false,
     "validity_pair_id": null,
     "is_impression_management": false,
     "version_availability": [
       "quick",
       "deep"
-    ]
+    ],
+    "sub_dimension": "strategy"
   },
   {
     "id": "vision_forced_08",
     "dimension": "vision",
     "secondary_dimension": null,
     "type": "forced_choice",
-    "text": "You notice a small inefficiency that costs the company $500 a month. Everyone else ignores it. You:",
+    "text": "I notice a small inefficiency that costs the company $500 a month. Everyone else ignores it. I:",
     "options": [
       {
         "key": "a",
@@ -2331,20 +2380,21 @@
         "drive": 65
       }
     },
-    "difficulty": 0.5,
+    "difficulty": 0.69,
     "reverse_scored": false,
     "validity_pair_id": null,
     "is_impression_management": false,
     "version_availability": [
       "deep"
-    ]
+    ],
+    "sub_dimension": "innovation"
   },
   {
     "id": "vision_forced_09",
     "dimension": "vision",
     "secondary_dimension": null,
     "type": "forced_choice",
-    "text": "You encounter a complex problem. You naturally start by:",
+    "text": "I encounter a complex problem. I naturally start by:",
     "options": [
       {
         "key": "a",
@@ -2373,21 +2423,22 @@
         "drive": 75
       }
     },
-    "difficulty": 0.4,
+    "difficulty": 0.48,
     "reverse_scored": false,
     "validity_pair_id": null,
     "is_impression_management": false,
     "version_availability": [
       "quick",
       "deep"
-    ]
+    ],
+    "sub_dimension": "strategy"
   },
   {
     "id": "vision_forced_10",
     "dimension": "vision",
     "secondary_dimension": null,
     "type": "forced_choice",
-    "text": "Your team just finished a project. Before starting the next one, you want to:",
+    "text": "My team just finished a project. Before starting the next one, I want to:",
     "options": [
       {
         "key": "a",
@@ -2416,9 +2467,211 @@
         "drive": 80
       }
     },
-    "difficulty": 0.35,
+    "difficulty": 0.49,
     "reverse_scored": false,
     "validity_pair_id": null,
+    "is_impression_management": false,
+    "version_availability": [
+      "deep"
+    ],
+    "sub_dimension": "foresight"
+  },
+  {
+    "id": "vision_likert_26",
+    "dimension": "vision",
+    "secondary_dimension": null,
+    "sub_dimension": "foresight",
+    "type": "likert",
+    "text": "I can always predict the outcome of my decisions before I make them.",
+    "options": null,
+    "scoring_weights": {
+      "1": {
+        "vision": 85
+      },
+      "2": {
+        "vision": 70
+      },
+      "3": {
+        "vision": 50
+      },
+      "4": {
+        "vision": 30
+      },
+      "5": {
+        "vision": 15
+      }
+    },
+    "difficulty": 0.89,
+    "reverse_scored": true,
+    "validity_pair_id": null,
+    "is_impression_management": true,
+    "version_availability": [
+      "quick",
+      "deep"
+    ]
+  },
+  {
+    "id": "vision_likert_27",
+    "dimension": "vision",
+    "secondary_dimension": null,
+    "sub_dimension": "strategy",
+    "type": "likert",
+    "text": "Every plan I create works out exactly as I envisioned it.",
+    "options": null,
+    "scoring_weights": {
+      "1": {
+        "vision": 85
+      },
+      "2": {
+        "vision": 70
+      },
+      "3": {
+        "vision": 50
+      },
+      "4": {
+        "vision": 30
+      },
+      "5": {
+        "vision": 15
+      }
+    },
+    "difficulty": 0.9,
+    "reverse_scored": true,
+    "validity_pair_id": null,
+    "is_impression_management": true,
+    "version_availability": [
+      "deep"
+    ]
+  },
+  {
+    "id": "vision_likert_28",
+    "dimension": "vision",
+    "secondary_dimension": null,
+    "sub_dimension": "foresight",
+    "type": "likert",
+    "text": "Before making a significant decision, I think through at least two or three possible consequences.",
+    "options": null,
+    "scoring_weights": {
+      "1": {
+        "vision": 0
+      },
+      "2": {
+        "vision": 20
+      },
+      "3": {
+        "vision": 45
+      },
+      "4": {
+        "vision": 70
+      },
+      "5": {
+        "vision": 100
+      }
+    },
+    "difficulty": 0.28,
+    "reverse_scored": false,
+    "validity_pair_id": "vision_vp_02",
+    "is_impression_management": false,
+    "version_availability": [
+      "quick",
+      "deep"
+    ]
+  },
+  {
+    "id": "vision_likert_29",
+    "dimension": "vision",
+    "secondary_dimension": null,
+    "sub_dimension": "foresight",
+    "type": "likert",
+    "text": "I tend to make decisions quickly based on what feels right, without spending much time on what could go wrong.",
+    "options": null,
+    "scoring_weights": {
+      "1": {
+        "vision": 100
+      },
+      "2": {
+        "vision": 70
+      },
+      "3": {
+        "vision": 45
+      },
+      "4": {
+        "vision": 20
+      },
+      "5": {
+        "vision": 0
+      }
+    },
+    "difficulty": 0.35,
+    "reverse_scored": true,
+    "validity_pair_id": "vision_vp_02",
+    "is_impression_management": false,
+    "version_availability": [
+      "quick",
+      "deep"
+    ]
+  },
+  {
+    "id": "vision_likert_30",
+    "dimension": "vision",
+    "secondary_dimension": null,
+    "sub_dimension": "strategy",
+    "type": "likert",
+    "text": "When I look at my team's workload, I can clearly see which tasks drive the most value and which are busywork.",
+    "options": null,
+    "scoring_weights": {
+      "1": {
+        "vision": 0
+      },
+      "2": {
+        "vision": 10
+      },
+      "3": {
+        "vision": 30
+      },
+      "4": {
+        "vision": 65
+      },
+      "5": {
+        "vision": 100
+      }
+    },
+    "difficulty": 0.21,
+    "reverse_scored": false,
+    "validity_pair_id": "vision_vp_03",
+    "is_impression_management": false,
+    "version_availability": [
+      "deep"
+    ]
+  },
+  {
+    "id": "vision_likert_31",
+    "dimension": "vision",
+    "secondary_dimension": null,
+    "sub_dimension": "strategy",
+    "type": "likert",
+    "text": "I sometimes struggle to explain why certain tasks should be prioritized over others.",
+    "options": null,
+    "scoring_weights": {
+      "1": {
+        "vision": 100
+      },
+      "2": {
+        "vision": 65
+      },
+      "3": {
+        "vision": 30
+      },
+      "4": {
+        "vision": 10
+      },
+      "5": {
+        "vision": 0
+      }
+    },
+    "difficulty": 0.44,
+    "reverse_scored": true,
+    "validity_pair_id": "vision_vp_03",
     "is_impression_management": false,
     "version_availability": [
       "deep"

@@ -37,10 +37,28 @@ export interface QuestionOption {
   scores: { [dim in Dimension]?: number };
 }
 
+export type SubDimension =
+  | 'initiative' | 'urgency' | 'ambition'           // drive
+  | 'recovery' | 'composure'                         // resilience
+  | 'strategy' | 'foresight' | 'innovation'          // vision
+  | 'empathy' | 'trust'                              // connection
+  | 'flexibility' | 'learning'                       // adaptability
+  | 'consistency' | 'transparency' | 'ethics';       // integrity
+
+export const SUB_DIMENSIONS: Record<Dimension, SubDimension[]> = {
+  drive: ['initiative', 'urgency', 'ambition'],
+  resilience: ['recovery', 'composure'],
+  vision: ['strategy', 'foresight', 'innovation'],
+  connection: ['empathy', 'trust'],
+  adaptability: ['flexibility', 'learning'],
+  integrity: ['consistency', 'transparency', 'ethics'],
+};
+
 export interface PoolQuestion {
   id: string;
   dimension: Dimension;
   secondary_dimension: Dimension | null;
+  sub_dimension: SubDimension | null;
   type: QuestionType;
   text: string;
   options: QuestionOption[] | null;

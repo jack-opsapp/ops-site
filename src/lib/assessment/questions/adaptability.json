@@ -11,26 +11,27 @@
         "adaptability": 0
       },
       "2": {
-        "adaptability": 25
+        "adaptability": 10
       },
       "3": {
-        "adaptability": 50
+        "adaptability": 30
       },
       "4": {
-        "adaptability": 75
+        "adaptability": 65
       },
       "5": {
         "adaptability": 100
       }
     },
-    "difficulty": 0.35,
+    "difficulty": 0.16,
     "reverse_scored": false,
     "validity_pair_id": null,
     "is_impression_management": false,
     "version_availability": [
       "quick",
       "deep"
-    ]
+    ],
+    "sub_dimension": "flexibility"
   },
   {
     "id": "adaptability_likert_02",
@@ -44,26 +45,27 @@
         "adaptability": 0
       },
       "2": {
-        "adaptability": 25
+        "adaptability": 45
       },
       "3": {
-        "adaptability": 50
+        "adaptability": 70
       },
       "4": {
-        "adaptability": 75
+        "adaptability": 85
       },
       "5": {
         "adaptability": 100
       }
     },
-    "difficulty": 0.25,
+    "difficulty": 0.2,
     "reverse_scored": false,
     "validity_pair_id": null,
     "is_impression_management": false,
     "version_availability": [
       "quick",
       "deep"
-    ]
+    ],
+    "sub_dimension": "flexibility"
   },
   {
     "id": "adaptability_likert_03",
@@ -77,26 +79,27 @@
         "adaptability": 100
       },
       "2": {
-        "adaptability": 75
+        "adaptability": 85
       },
       "3": {
-        "adaptability": 50
+        "adaptability": 65
       },
       "4": {
-        "adaptability": 25
+        "adaptability": 35
       },
       "5": {
         "adaptability": 0
       }
     },
-    "difficulty": 0.35,
+    "difficulty": 0.55,
     "reverse_scored": true,
     "validity_pair_id": null,
     "is_impression_management": false,
     "version_availability": [
       "quick",
       "deep"
-    ]
+    ],
+    "sub_dimension": "learning"
   },
   {
     "id": "adaptability_likert_04",
@@ -111,30 +114,31 @@
         "resilience": 0
       },
       "2": {
-        "adaptability": 25,
-        "resilience": 8
+        "adaptability": 45,
+        "resilience": 14
       },
       "3": {
-        "adaptability": 50,
-        "resilience": 15
+        "adaptability": 70,
+        "resilience": 21
       },
       "4": {
-        "adaptability": 75,
-        "resilience": 22
+        "adaptability": 85,
+        "resilience": 25
       },
       "5": {
         "adaptability": 100,
         "resilience": 30
       }
     },
-    "difficulty": 0.4,
+    "difficulty": 0.28,
     "reverse_scored": false,
     "validity_pair_id": null,
     "is_impression_management": false,
     "version_availability": [
       "quick",
       "deep"
-    ]
+    ],
+    "sub_dimension": "learning"
   },
   {
     "id": "adaptability_likert_05",
@@ -148,26 +152,27 @@
         "adaptability": 100
       },
       "2": {
-        "adaptability": 75
+        "adaptability": 85
       },
       "3": {
-        "adaptability": 50
+        "adaptability": 65
       },
       "4": {
-        "adaptability": 25
+        "adaptability": 35
       },
       "5": {
         "adaptability": 0
       }
     },
-    "difficulty": 0.3,
+    "difficulty": 0.71,
     "reverse_scored": true,
     "validity_pair_id": null,
     "is_impression_management": false,
     "version_availability": [
       "quick",
       "deep"
-    ]
+    ],
+    "sub_dimension": "flexibility"
   },
   {
     "id": "adaptability_likert_06",
@@ -181,26 +186,27 @@
         "adaptability": 0
       },
       "2": {
-        "adaptability": 25
+        "adaptability": 15
       },
       "3": {
         "adaptability": 50
       },
       "4": {
-        "adaptability": 75
+        "adaptability": 85
       },
       "5": {
         "adaptability": 100
       }
     },
-    "difficulty": 0.55,
+    "difficulty": 0.19,
     "reverse_scored": false,
     "validity_pair_id": null,
     "is_impression_management": false,
     "version_availability": [
       "quick",
       "deep"
-    ]
+    ],
+    "sub_dimension": "learning"
   },
   {
     "id": "adaptability_likert_07",
@@ -215,30 +221,31 @@
         "drive": 0
       },
       "2": {
+        "adaptability": 10,
+        "drive": 3
+      },
+      "3": {
         "adaptability": 25,
         "drive": 8
       },
-      "3": {
-        "adaptability": 50,
-        "drive": 15
-      },
       "4": {
-        "adaptability": 75,
-        "drive": 22
+        "adaptability": 55,
+        "drive": 16
       },
       "5": {
         "adaptability": 100,
         "drive": 30
       }
     },
-    "difficulty": 0.45,
+    "difficulty": 0.23,
     "reverse_scored": false,
     "validity_pair_id": null,
     "is_impression_management": false,
     "version_availability": [
       "quick",
       "deep"
-    ]
+    ],
+    "sub_dimension": "learning"
   },
   {
     "id": "adaptability_likert_08",
@@ -252,26 +259,27 @@
         "adaptability": 100
       },
       "2": {
-        "adaptability": 75
+        "adaptability": 65
       },
       "3": {
-        "adaptability": 50
+        "adaptability": 30
       },
       "4": {
-        "adaptability": 25
+        "adaptability": 10
       },
       "5": {
         "adaptability": 0
       }
     },
-    "difficulty": 0.5,
+    "difficulty": 0.63,
     "reverse_scored": true,
     "validity_pair_id": null,
     "is_impression_management": false,
     "version_availability": [
       "quick",
       "deep"
-    ]
+    ],
+    "sub_dimension": "flexibility"
   },
   {
     "id": "adaptability_likert_09",
@@ -282,29 +290,30 @@
     "options": null,
     "scoring_weights": {
       "1": {
-        "adaptability": 50
+        "adaptability": 85
       },
       "2": {
-        "adaptability": 50
+        "adaptability": 70
       },
       "3": {
         "adaptability": 50
       },
       "4": {
-        "adaptability": 50
+        "adaptability": 30
       },
       "5": {
-        "adaptability": 50
+        "adaptability": 15
       }
     },
-    "difficulty": 0.5,
-    "reverse_scored": false,
+    "difficulty": 0.86,
+    "reverse_scored": true,
     "validity_pair_id": null,
     "is_impression_management": true,
     "version_availability": [
       "quick",
       "deep"
-    ]
+    ],
+    "sub_dimension": "flexibility"
   },
   {
     "id": "adaptability_likert_10",
@@ -318,25 +327,26 @@
         "adaptability": 100
       },
       "2": {
-        "adaptability": 75
+        "adaptability": 85
       },
       "3": {
-        "adaptability": 50
+        "adaptability": 70
       },
       "4": {
-        "adaptability": 25
+        "adaptability": 45
       },
       "5": {
         "adaptability": 0
       }
     },
-    "difficulty": 0.85,
+    "difficulty": 0.68,
     "reverse_scored": true,
     "validity_pair_id": null,
     "is_impression_management": false,
     "version_availability": [
       "deep"
-    ]
+    ],
+    "sub_dimension": "learning"
   },
   {
     "id": "adaptability_likert_11",
@@ -351,30 +361,31 @@
         "integrity": 0
       },
       "2": {
-        "adaptability": 25,
-        "integrity": 8
+        "adaptability": 20,
+        "integrity": 6
       },
       "3": {
-        "adaptability": 50,
-        "integrity": 15
+        "adaptability": 45,
+        "integrity": 14
       },
       "4": {
-        "adaptability": 75,
-        "integrity": 22
+        "adaptability": 70,
+        "integrity": 21
       },
       "5": {
         "adaptability": 100,
         "integrity": 30
       }
     },
-    "difficulty": 0.4,
+    "difficulty": 0.19,
     "reverse_scored": false,
     "validity_pair_id": null,
     "is_impression_management": false,
     "version_availability": [
       "quick",
       "deep"
-    ]
+    ],
+    "sub_dimension": "learning"
   },
   {
     "id": "adaptability_likert_12",
@@ -388,26 +399,27 @@
         "adaptability": 0
       },
       "2": {
-        "adaptability": 25
+        "adaptability": 15
       },
       "3": {
         "adaptability": 50
       },
       "4": {
-        "adaptability": 75
+        "adaptability": 85
       },
       "5": {
         "adaptability": 100
       }
     },
-    "difficulty": 0.35,
+    "difficulty": 0.23,
     "reverse_scored": false,
     "validity_pair_id": "adaptability_vp_01",
     "is_impression_management": false,
     "version_availability": [
       "quick",
       "deep"
-    ]
+    ],
+    "sub_dimension": "learning"
   },
   {
     "id": "adaptability_likert_13",
@@ -433,14 +445,15 @@
         "adaptability": 0
       }
     },
-    "difficulty": 0.35,
+    "difficulty": 0.83,
     "reverse_scored": true,
     "validity_pair_id": "adaptability_vp_01",
     "is_impression_management": false,
     "version_availability": [
       "quick",
       "deep"
-    ]
+    ],
+    "sub_dimension": "learning"
   },
   {
     "id": "adaptability_likert_14",
@@ -455,30 +468,31 @@
         "connection": 0
       },
       "2": {
+        "adaptability": 10,
+        "connection": 3
+      },
+      "3": {
         "adaptability": 25,
         "connection": 8
       },
-      "3": {
-        "adaptability": 50,
-        "connection": 15
-      },
       "4": {
-        "adaptability": 75,
-        "connection": 22
+        "adaptability": 55,
+        "connection": 16
       },
       "5": {
         "adaptability": 100,
         "connection": 30
       }
     },
-    "difficulty": 0.4,
+    "difficulty": 0.56,
     "reverse_scored": false,
     "validity_pair_id": null,
     "is_impression_management": false,
     "version_availability": [
       "quick",
       "deep"
-    ]
+    ],
+    "sub_dimension": "flexibility"
   },
   {
     "id": "adaptability_likert_15",
@@ -493,30 +507,31 @@
         "vision": 0
       },
       "2": {
-        "adaptability": 25,
-        "vision": 8
+        "adaptability": 10,
+        "vision": 3
       },
       "3": {
-        "adaptability": 50,
-        "vision": 15
+        "adaptability": 30,
+        "vision": 9
       },
       "4": {
-        "adaptability": 75,
-        "vision": 22
+        "adaptability": 65,
+        "vision": 19
       },
       "5": {
         "adaptability": 100,
         "vision": 30
       }
     },
-    "difficulty": 0.45,
+    "difficulty": 0.21,
     "reverse_scored": false,
     "validity_pair_id": null,
     "is_impression_management": false,
     "version_availability": [
       "quick",
       "deep"
-    ]
+    ],
+    "sub_dimension": "learning"
   },
   {
     "id": "adaptability_likert_16",
@@ -530,26 +545,27 @@
         "adaptability": 100
       },
       "2": {
-        "adaptability": 75
+        "adaptability": 85
       },
       "3": {
-        "adaptability": 50
+        "adaptability": 65
       },
       "4": {
-        "adaptability": 25
+        "adaptability": 35
       },
       "5": {
         "adaptability": 0
       }
     },
-    "difficulty": 0.5,
+    "difficulty": 0.78,
     "reverse_scored": true,
     "validity_pair_id": null,
     "is_impression_management": false,
     "version_availability": [
       "quick",
       "deep"
-    ]
+    ],
+    "sub_dimension": "learning"
   },
   {
     "id": "adaptability_likert_17",
@@ -563,26 +579,27 @@
         "adaptability": 0
       },
       "2": {
-        "adaptability": 25
+        "adaptability": 15
       },
       "3": {
         "adaptability": 50
       },
       "4": {
-        "adaptability": 75
+        "adaptability": 85
       },
       "5": {
         "adaptability": 100
       }
     },
-    "difficulty": 0.5,
+    "difficulty": 0.52,
     "reverse_scored": false,
     "validity_pair_id": null,
     "is_impression_management": false,
     "version_availability": [
       "quick",
       "deep"
-    ]
+    ],
+    "sub_dimension": "learning"
   },
   {
     "id": "adaptability_likert_18",
@@ -597,30 +614,31 @@
         "connection": 0
       },
       "2": {
-        "adaptability": 25,
-        "connection": 8
+        "adaptability": 20,
+        "connection": 6
       },
       "3": {
-        "adaptability": 50,
-        "connection": 15
+        "adaptability": 45,
+        "connection": 14
       },
       "4": {
-        "adaptability": 75,
-        "connection": 22
+        "adaptability": 70,
+        "connection": 21
       },
       "5": {
         "adaptability": 100,
         "connection": 30
       }
     },
-    "difficulty": 0.45,
+    "difficulty": 0.85,
     "reverse_scored": false,
     "validity_pair_id": null,
     "is_impression_management": false,
     "version_availability": [
       "quick",
       "deep"
-    ]
+    ],
+    "sub_dimension": "flexibility"
   },
   {
     "id": "adaptability_likert_19",
@@ -634,26 +652,27 @@
         "adaptability": 100
       },
       "2": {
-        "adaptability": 75
+        "adaptability": 85
       },
       "3": {
-        "adaptability": 50
+        "adaptability": 70
       },
       "4": {
-        "adaptability": 25
+        "adaptability": 45
       },
       "5": {
         "adaptability": 0
       }
     },
-    "difficulty": 0.3,
+    "difficulty": 0.89,
     "reverse_scored": true,
     "validity_pair_id": null,
     "is_impression_management": false,
     "version_availability": [
       "quick",
       "deep"
-    ]
+    ],
+    "sub_dimension": "flexibility"
   },
   {
     "id": "adaptability_likert_20",
@@ -667,25 +686,26 @@
         "adaptability": 0
       },
       "2": {
-        "adaptability": 25
+        "adaptability": 45
       },
       "3": {
-        "adaptability": 50
+        "adaptability": 70
       },
       "4": {
-        "adaptability": 75
+        "adaptability": 85
       },
       "5": {
         "adaptability": 100
       }
     },
-    "difficulty": 0.7,
+    "difficulty": 0.51,
     "reverse_scored": false,
     "validity_pair_id": null,
     "is_impression_management": false,
     "version_availability": [
       "deep"
-    ]
+    ],
+    "sub_dimension": "learning"
   },
   {
     "id": "adaptability_likert_21",
@@ -700,30 +720,31 @@
         "drive": 0
       },
       "2": {
-        "adaptability": 25,
-        "drive": 8
+        "adaptability": 15,
+        "drive": 5
       },
       "3": {
         "adaptability": 50,
         "drive": 15
       },
       "4": {
-        "adaptability": 75,
-        "drive": 22
+        "adaptability": 85,
+        "drive": 25
       },
       "5": {
         "adaptability": 100,
         "drive": 30
       }
     },
-    "difficulty": 0.55,
+    "difficulty": 0.67,
     "reverse_scored": false,
     "validity_pair_id": null,
     "is_impression_management": false,
     "version_availability": [
       "quick",
       "deep"
-    ]
+    ],
+    "sub_dimension": "learning"
   },
   {
     "id": "adaptability_likert_22",
@@ -737,26 +758,27 @@
         "adaptability": 0
       },
       "2": {
-        "adaptability": 25
+        "adaptability": 20
       },
       "3": {
-        "adaptability": 50
+        "adaptability": 45
       },
       "4": {
-        "adaptability": 75
+        "adaptability": 70
       },
       "5": {
         "adaptability": 100
       }
     },
-    "difficulty": 0.6,
+    "difficulty": 0.82,
     "reverse_scored": false,
     "validity_pair_id": null,
     "is_impression_management": false,
     "version_availability": [
       "quick",
       "deep"
-    ]
+    ],
+    "sub_dimension": "learning"
   },
   {
     "id": "adaptability_likert_23",
@@ -782,13 +804,14 @@
         "adaptability": 0
       }
     },
-    "difficulty": 0.6,
+    "difficulty": 0.83,
     "reverse_scored": true,
     "validity_pair_id": null,
     "is_impression_management": false,
     "version_availability": [
       "deep"
-    ]
+    ],
+    "sub_dimension": "flexibility"
   },
   {
     "id": "adaptability_likert_24",
@@ -803,30 +826,31 @@
         "resilience": 0
       },
       "2": {
-        "adaptability": 25,
-        "resilience": 8
+        "adaptability": 10,
+        "resilience": 3
       },
       "3": {
-        "adaptability": 50,
-        "resilience": 15
+        "adaptability": 30,
+        "resilience": 9
       },
       "4": {
-        "adaptability": 75,
-        "resilience": 22
+        "adaptability": 65,
+        "resilience": 19
       },
       "5": {
         "adaptability": 100,
         "resilience": 30
       }
     },
-    "difficulty": 0.55,
+    "difficulty": 0.89,
     "reverse_scored": false,
     "validity_pair_id": null,
     "is_impression_management": false,
     "version_availability": [
       "quick",
       "deep"
-    ]
+    ],
+    "sub_dimension": "flexibility"
   },
   {
     "id": "adaptability_likert_25",
@@ -840,32 +864,33 @@
         "adaptability": 100
       },
       "2": {
-        "adaptability": 75
+        "adaptability": 55
       },
       "3": {
-        "adaptability": 50
+        "adaptability": 25
       },
       "4": {
-        "adaptability": 25
+        "adaptability": 10
       },
       "5": {
         "adaptability": 0
       }
     },
-    "difficulty": 0.65,
+    "difficulty": 0.62,
     "reverse_scored": true,
     "validity_pair_id": null,
     "is_impression_management": false,
     "version_availability": [
       "deep"
-    ]
+    ],
+    "sub_dimension": "learning"
   },
   {
     "id": "adaptability_situational_01",
     "dimension": "adaptability",
     "secondary_dimension": null,
     "type": "situational",
-    "text": "You've spent three weeks building a detailed project plan. On the day you're about to present it, leadership announces a major strategic pivot that makes half your plan irrelevant. You:",
+    "text": "I've spent three weeks building a detailed project plan. On the day I'm about to present it, leadership announces a major strategic pivot that makes half my plan irrelevant. I:",
     "options": [
       {
         "key": "a",
@@ -918,21 +943,22 @@
         "vision": 30
       }
     },
-    "difficulty": 0.45,
+    "difficulty": 0.27,
     "reverse_scored": false,
     "validity_pair_id": null,
     "is_impression_management": false,
     "version_availability": [
       "quick",
       "deep"
-    ]
+    ],
+    "sub_dimension": "flexibility"
   },
   {
     "id": "adaptability_situational_02",
     "dimension": "adaptability",
     "secondary_dimension": null,
     "type": "situational",
-    "text": "A new technology tool is rolled out across your organization. You've heard mixed reviews. Your current workflow is efficient and you're one of the top performers using the old system. You:",
+    "text": "A new technology tool is rolled out across my organization. I've heard mixed reviews. My current workflow is efficient and I'm one of the top performers using the old system. I:",
     "options": [
       {
         "key": "a",
@@ -985,21 +1011,22 @@
         "vision": 40
       }
     },
-    "difficulty": 0.35,
+    "difficulty": 0.32,
     "reverse_scored": false,
     "validity_pair_id": null,
     "is_impression_management": false,
     "version_availability": [
       "quick",
       "deep"
-    ]
+    ],
+    "sub_dimension": "learning"
   },
   {
     "id": "adaptability_situational_03",
     "dimension": "adaptability",
     "secondary_dimension": null,
     "type": "situational",
-    "text": "You're managing a team that just went through its third reorganization in eighteen months. Morale is low. People are saying, 'Here we go again.' You:",
+    "text": "I'm managing a team that just went through its third reorganization in eighteen months. Morale is low. People are saying, 'Here we go again.' I:",
     "options": [
       {
         "key": "a",
@@ -1052,21 +1079,22 @@
         "resilience": 55
       }
     },
-    "difficulty": 0.55,
+    "difficulty": 0.37,
     "reverse_scored": false,
     "validity_pair_id": null,
     "is_impression_management": false,
     "version_availability": [
       "quick",
       "deep"
-    ]
+    ],
+    "sub_dimension": "flexibility"
   },
   {
     "id": "adaptability_situational_04",
     "dimension": "adaptability",
     "secondary_dimension": null,
     "type": "situational",
-    "text": "You've been the go-to expert on a specific process for five years. A junior colleague proposes a fundamentally different approach that, on the surface, looks promising but would make your expertise less relevant. You:",
+    "text": "I've been the go-to expert on a specific process for five years. A junior colleague proposes a fundamentally different approach that, on the surface, looks promising but would make my expertise less relevant. I:",
     "options": [
       {
         "key": "a",
@@ -1119,21 +1147,22 @@
         "drive": 45
       }
     },
-    "difficulty": 0.7,
+    "difficulty": 0.48,
     "reverse_scored": false,
     "validity_pair_id": null,
     "is_impression_management": false,
     "version_availability": [
       "quick",
       "deep"
-    ]
+    ],
+    "sub_dimension": "learning"
   },
   {
     "id": "adaptability_situational_05",
     "dimension": "adaptability",
     "secondary_dimension": null,
     "type": "situational",
-    "text": "You just moved from a large corporation to a scrappy startup. There's no playbook, no established processes, and people wear multiple hats. In your first week, you:",
+    "text": "I just moved from a large corporation to a scrappy startup. There's no playbook, no established processes, and people wear multiple hats. In my first week, I:",
     "options": [
       {
         "key": "a",
@@ -1186,21 +1215,22 @@
         "connection": 55
       }
     },
-    "difficulty": 0.4,
+    "difficulty": 0.34,
     "reverse_scored": false,
     "validity_pair_id": null,
     "is_impression_management": false,
     "version_availability": [
       "quick",
       "deep"
-    ]
+    ],
+    "sub_dimension": "learning"
   },
   {
     "id": "adaptability_situational_06",
     "dimension": "adaptability",
     "secondary_dimension": null,
     "type": "situational",
-    "text": "Your industry is being disrupted by AI and automation. Tasks that used to take your team a week now take a day. Some of your team members are anxious about their relevance. You:",
+    "text": "My industry is being disrupted by AI and automation. Tasks that used to take my team a week now take a day. Some of my team members are anxious about their relevance. I:",
     "options": [
       {
         "key": "a",
@@ -1253,21 +1283,22 @@
         "resilience": 40
       }
     },
-    "difficulty": 0.45,
+    "difficulty": 0.39,
     "reverse_scored": false,
     "validity_pair_id": null,
     "is_impression_management": false,
     "version_availability": [
       "quick",
       "deep"
-    ]
+    ],
+    "sub_dimension": "flexibility"
   },
   {
     "id": "adaptability_situational_07",
     "dimension": "adaptability",
     "secondary_dimension": null,
     "type": "situational",
-    "text": "You're in a meeting and realize you've been operating on an incorrect assumption for weeks. Correcting it now will mean admitting a mistake in front of peers and reworking a deliverable. You:",
+    "text": "I'm in a meeting and realize I've been operating on an incorrect assumption for weeks. Correcting it now will mean admitting a mistake in front of peers and reworking a deliverable. I:",
     "options": [
       {
         "key": "a",
@@ -1320,21 +1351,22 @@
         "drive": 55
       }
     },
-    "difficulty": 0.5,
+    "difficulty": 0.32,
     "reverse_scored": false,
     "validity_pair_id": null,
     "is_impression_management": false,
     "version_availability": [
       "quick",
       "deep"
-    ]
+    ],
+    "sub_dimension": "flexibility"
   },
   {
     "id": "adaptability_situational_08",
     "dimension": "adaptability",
     "secondary_dimension": null,
     "type": "situational",
-    "text": "You're leading a project using a methodology you've successfully used many times before. Halfway through, a team member presents evidence that a completely different methodology would yield better results for this specific project. You:",
+    "text": "I'm leading a project using a methodology I've successfully used many times before. Halfway through, a team member presents evidence that a completely different methodology would yield better results for this specific project. I:",
     "options": [
       {
         "key": "a",
@@ -1387,21 +1419,22 @@
         "vision": 50
       }
     },
-    "difficulty": 0.55,
+    "difficulty": 0.6,
     "reverse_scored": false,
     "validity_pair_id": null,
     "is_impression_management": false,
     "version_availability": [
       "quick",
       "deep"
-    ]
+    ],
+    "sub_dimension": "flexibility"
   },
   {
     "id": "adaptability_situational_09",
     "dimension": "adaptability",
     "secondary_dimension": null,
     "type": "situational",
-    "text": "You've been promoted to lead a department you have no background in. You're surrounded by people who know far more about the work than you do. In your first month, you:",
+    "text": "I've been promoted to lead a department I have no background in. I'm surrounded by people who know far more about the work than me do. In my first month, I:",
     "options": [
       {
         "key": "a",
@@ -1454,21 +1487,22 @@
         "drive": 40
       }
     },
-    "difficulty": 0.5,
+    "difficulty": 0.62,
     "reverse_scored": false,
     "validity_pair_id": null,
     "is_impression_management": false,
     "version_availability": [
       "quick",
       "deep"
-    ]
+    ],
+    "sub_dimension": "learning"
   },
   {
     "id": "adaptability_situational_10",
     "dimension": "adaptability",
     "secondary_dimension": null,
     "type": "situational",
-    "text": "A client abruptly changes the scope of a project two days before the deadline. The new scope is doable but requires a completely different approach than what you've built. You:",
+    "text": "A client abruptly changes the scope of a project two days before the deadline. The new scope is doable but requires a completely different approach than what I've built. I:",
     "options": [
       {
         "key": "a",
@@ -1521,21 +1555,22 @@
         "vision": 55
       }
     },
-    "difficulty": 0.45,
+    "difficulty": 0.72,
     "reverse_scored": false,
     "validity_pair_id": null,
     "is_impression_management": false,
     "version_availability": [
       "quick",
       "deep"
-    ]
+    ],
+    "sub_dimension": "flexibility"
   },
   {
     "id": "adaptability_situational_11",
     "dimension": "adaptability",
     "secondary_dimension": null,
     "type": "situational",
-    "text": "You discover that a belief you've held about effective leadership for years is contradicted by strong evidence. Specifically, a practice you've been coaching others on turns out to be counterproductive. You:",
+    "text": "I discover that a belief I've held about effective leadership for years is contradicted by strong evidence. Specifically, a practice I've been coaching others on turns out to be counterproductive. I:",
     "options": [
       {
         "key": "a",
@@ -1588,20 +1623,21 @@
         "vision": 50
       }
     },
-    "difficulty": 0.75,
+    "difficulty": 0.76,
     "reverse_scored": false,
     "validity_pair_id": null,
     "is_impression_management": false,
     "version_availability": [
       "deep"
-    ]
+    ],
+    "sub_dimension": "learning"
   },
   {
     "id": "adaptability_situational_12",
     "dimension": "adaptability",
     "secondary_dimension": null,
     "type": "situational",
-    "text": "You're running a team meeting and someone raises a concern that completely contradicts the direction you just proposed. The room goes quiet. You:",
+    "text": "I'm running a team meeting and someone raises a concern that completely contradicts the direction I just proposed. The room goes quiet. I:",
     "options": [
       {
         "key": "a",
@@ -1654,21 +1690,22 @@
         "integrity": 50
       }
     },
-    "difficulty": 0.45,
+    "difficulty": 0.39,
     "reverse_scored": false,
     "validity_pair_id": null,
     "is_impression_management": false,
     "version_availability": [
       "quick",
       "deep"
-    ]
+    ],
+    "sub_dimension": "flexibility"
   },
   {
     "id": "adaptability_situational_13",
     "dimension": "adaptability",
     "secondary_dimension": null,
     "type": "situational",
-    "text": "You've been asked to take on a role that requires skills you don't currently have. You'll be visibly learning on the job, and mistakes will be public. You:",
+    "text": "I've been asked to take on a role that requires skills I don't currently have. I'll be visibly learning on the job, and mistakes will be public. I:",
     "options": [
       {
         "key": "a",
@@ -1721,21 +1758,22 @@
         "connection": 60
       }
     },
-    "difficulty": 0.5,
+    "difficulty": 0.65,
     "reverse_scored": false,
     "validity_pair_id": null,
     "is_impression_management": false,
     "version_availability": [
       "quick",
       "deep"
-    ]
+    ],
+    "sub_dimension": "learning"
   },
   {
     "id": "adaptability_situational_14",
     "dimension": "adaptability",
     "secondary_dimension": null,
     "type": "situational",
-    "text": "Your team has been doing something the same way for three years. It works fine, but you suspect it could be significantly better. There's no pressure to change. You:",
+    "text": "My team has been doing something the same way for three years. It works fine, but I suspect it could be significantly better. There's no pressure to change. I:",
     "options": [
       {
         "key": "a",
@@ -1788,21 +1826,22 @@
         "vision": 50
       }
     },
-    "difficulty": 0.4,
+    "difficulty": 0.33,
     "reverse_scored": false,
     "validity_pair_id": null,
     "is_impression_management": false,
     "version_availability": [
       "quick",
       "deep"
-    ]
+    ],
+    "sub_dimension": "flexibility"
   },
   {
     "id": "adaptability_situational_15",
     "dimension": "adaptability",
     "secondary_dimension": null,
     "type": "situational",
-    "text": "You receive a performance review that gives you high marks on results but low marks on collaboration. You've always believed your direct, efficient style was a strength. You:",
+    "text": "I receive a performance review that gives me high marks on results but low marks on collaboration. I've consistently believed my direct, efficient style was a strength. I:",
     "options": [
       {
         "key": "a",
@@ -1855,20 +1894,21 @@
         "integrity": 60
       }
     },
-    "difficulty": 0.6,
+    "difficulty": 0.34,
     "reverse_scored": false,
     "validity_pair_id": null,
     "is_impression_management": false,
     "version_availability": [
       "deep"
-    ]
+    ],
+    "sub_dimension": "flexibility"
   },
   {
     "id": "adaptability_situational_16",
     "dimension": "adaptability",
     "secondary_dimension": null,
     "type": "situational",
-    "text": "You've recently failed at a high-visibility initiative. It was your idea, your plan, and your execution. The failure is unambiguous. In the week after, you:",
+    "text": "I've recently failed at a high-visibility initiative. It was my idea, my plan, and my execution. The failure is unambiguous. In the week after, I:",
     "options": [
       {
         "key": "a",
@@ -1921,21 +1961,22 @@
         "vision": 45
       }
     },
-    "difficulty": 0.6,
+    "difficulty": 0.71,
     "reverse_scored": false,
     "validity_pair_id": null,
     "is_impression_management": false,
     "version_availability": [
       "quick",
       "deep"
-    ]
+    ],
+    "sub_dimension": "learning"
   },
   {
     "id": "adaptability_situational_17",
     "dimension": "adaptability",
     "secondary_dimension": null,
     "type": "situational",
-    "text": "You're working with a team from a different culture where the communication norms are very different from yours. Decisions happen slower, feedback is indirect, and hierarchy matters more than you're used to. You:",
+    "text": "I'm working with a team from a different culture where the communication norms are very different from mine. Decisions happen slower, feedback is indirect, and hierarchy matters more than I'm used to. I:",
     "options": [
       {
         "key": "a",
@@ -1988,21 +2029,22 @@
         "drive": 55
       }
     },
-    "difficulty": 0.5,
+    "difficulty": 0.43,
     "reverse_scored": false,
     "validity_pair_id": null,
     "is_impression_management": false,
     "version_availability": [
       "quick",
       "deep"
-    ]
+    ],
+    "sub_dimension": "learning"
   },
   {
     "id": "adaptability_forced_01",
     "dimension": "adaptability",
     "secondary_dimension": null,
     "type": "forced_choice",
-    "text": "Your proven method just stopped working. Your first thought:",
+    "text": "My proven method just stopped working. My first thought:",
     "options": [
       {
         "key": "a",
@@ -2031,21 +2073,22 @@
         "integrity": 70
       }
     },
-    "difficulty": 0.4,
+    "difficulty": 0.47,
     "reverse_scored": false,
     "validity_pair_id": null,
     "is_impression_management": false,
     "version_availability": [
       "quick",
       "deep"
-    ]
+    ],
+    "sub_dimension": "learning"
   },
   {
     "id": "adaptability_forced_02",
     "dimension": "adaptability",
     "secondary_dimension": null,
     "type": "forced_choice",
-    "text": "A new hire suggests completely rethinking your core process. You feel:",
+    "text": "A new hire suggests completely rethinking my core process. I feel:",
     "options": [
       {
         "key": "a",
@@ -2074,21 +2117,22 @@
         "vision": 55
       }
     },
-    "difficulty": 0.35,
+    "difficulty": 0.52,
     "reverse_scored": false,
     "validity_pair_id": null,
     "is_impression_management": false,
     "version_availability": [
       "quick",
       "deep"
-    ]
+    ],
+    "sub_dimension": "learning"
   },
   {
     "id": "adaptability_forced_03",
     "dimension": "adaptability",
     "secondary_dimension": null,
     "type": "forced_choice",
-    "text": "You realize you've been wrong about something for years. Your reaction:",
+    "text": "I realize I've been wrong about something for years. My reaction:",
     "options": [
       {
         "key": "a",
@@ -2117,21 +2161,22 @@
         "resilience": 40
       }
     },
-    "difficulty": 0.55,
+    "difficulty": 0.72,
     "reverse_scored": false,
     "validity_pair_id": null,
     "is_impression_management": false,
     "version_availability": [
       "quick",
       "deep"
-    ]
+    ],
+    "sub_dimension": "learning"
   },
   {
     "id": "adaptability_forced_04",
     "dimension": "adaptability",
     "secondary_dimension": null,
     "type": "forced_choice",
-    "text": "The industry you've built your career in is being completely transformed. Honestly, your gut says:",
+    "text": "The industry I've built my career in is being completely transformed. Honestly, my gut says:",
     "options": [
       {
         "key": "a",
@@ -2160,21 +2205,22 @@
         "vision": 65
       }
     },
-    "difficulty": 0.5,
+    "difficulty": 0.75,
     "reverse_scored": false,
     "validity_pair_id": null,
     "is_impression_management": false,
     "version_availability": [
       "quick",
       "deep"
-    ]
+    ],
+    "sub_dimension": "flexibility"
   },
   {
     "id": "adaptability_forced_05",
     "dimension": "adaptability",
     "secondary_dimension": null,
     "type": "forced_choice",
-    "text": "You're dropped into a situation where nothing you know applies. The feeling that hits you first:",
+    "text": "I'm dropped into a situation where nothing I know applies. The feeling that hits me first:",
     "options": [
       {
         "key": "a",
@@ -2203,21 +2249,22 @@
         "drive": 55
       }
     },
-    "difficulty": 0.45,
+    "difficulty": 0.69,
     "reverse_scored": false,
     "validity_pair_id": null,
     "is_impression_management": false,
     "version_availability": [
       "quick",
       "deep"
-    ]
+    ],
+    "sub_dimension": "learning"
   },
   {
     "id": "adaptability_forced_06",
     "dimension": "adaptability",
     "secondary_dimension": null,
     "type": "forced_choice",
-    "text": "Someone gives you feedback that completely contradicts your self-image. You're most likely to:",
+    "text": "Someone gives me feedback that completely contradicts my self-image. I'm most likely to:",
     "options": [
       {
         "key": "a",
@@ -2246,20 +2293,21 @@
         "drive": 50
       }
     },
-    "difficulty": 0.65,
+    "difficulty": 0.45,
     "reverse_scored": false,
     "validity_pair_id": null,
     "is_impression_management": false,
     "version_availability": [
       "deep"
-    ]
+    ],
+    "sub_dimension": "learning"
   },
   {
     "id": "adaptability_forced_07",
     "dimension": "adaptability",
     "secondary_dimension": null,
     "type": "forced_choice",
-    "text": "Your team's direction changed three times this quarter. When someone asks how you're handling it, the honest answer is:",
+    "text": "My team's direction changed three times this quarter. When someone asks how I'm handling it, the honest answer is:",
     "options": [
       {
         "key": "a",
@@ -2288,21 +2336,22 @@
         "integrity": 70
       }
     },
-    "difficulty": 0.4,
+    "difficulty": 0.59,
     "reverse_scored": false,
     "validity_pair_id": null,
     "is_impression_management": false,
     "version_availability": [
       "quick",
       "deep"
-    ]
+    ],
+    "sub_dimension": "flexibility"
   },
   {
     "id": "adaptability_forced_08",
     "dimension": "adaptability",
     "secondary_dimension": null,
     "type": "forced_choice",
-    "text": "If you had to choose between these two career paths for the next five years:",
+    "text": "If I had to choose between these two career paths for the next five years:",
     "options": [
       {
         "key": "a",
@@ -2331,21 +2380,22 @@
         "drive": 70
       }
     },
-    "difficulty": 0.5,
+    "difficulty": 0.61,
     "reverse_scored": false,
     "validity_pair_id": null,
     "is_impression_management": false,
     "version_availability": [
       "quick",
       "deep"
-    ]
+    ],
+    "sub_dimension": "learning"
   },
   {
     "id": "adaptability_forced_09",
     "dimension": "adaptability",
     "secondary_dimension": null,
     "type": "forced_choice",
-    "text": "The last time you were completely out of your depth, you noticed yourself:",
+    "text": "The last time I was completely out of my depth, I noticed myself:",
     "options": [
       {
         "key": "a",
@@ -2374,21 +2424,22 @@
         "drive": 65
       }
     },
-    "difficulty": 0.55,
+    "difficulty": 0.5,
     "reverse_scored": false,
     "validity_pair_id": null,
     "is_impression_management": false,
     "version_availability": [
       "quick",
       "deep"
-    ]
+    ],
+    "sub_dimension": "learning"
   },
   {
     "id": "adaptability_forced_10",
     "dimension": "adaptability",
     "secondary_dimension": null,
     "type": "forced_choice",
-    "text": "When you think about who you are as a leader, the thing that feels most true:",
+    "text": "When I think about who I am as a leader, the thing that feels most true:",
     "options": [
       {
         "key": "a",
@@ -2417,9 +2468,211 @@
         "integrity": 80
       }
     },
-    "difficulty": 0.75,
+    "difficulty": 0.67,
     "reverse_scored": false,
     "validity_pair_id": null,
+    "is_impression_management": false,
+    "version_availability": [
+      "deep"
+    ],
+    "sub_dimension": "flexibility"
+  },
+  {
+    "id": "adaptability_likert_26",
+    "dimension": "adaptability",
+    "secondary_dimension": null,
+    "sub_dimension": "flexibility",
+    "type": "likert",
+    "text": "I have never resisted a change that turned out to be necessary.",
+    "options": null,
+    "scoring_weights": {
+      "1": {
+        "adaptability": 85
+      },
+      "2": {
+        "adaptability": 70
+      },
+      "3": {
+        "adaptability": 50
+      },
+      "4": {
+        "adaptability": 30
+      },
+      "5": {
+        "adaptability": 15
+      }
+    },
+    "difficulty": 0.86,
+    "reverse_scored": true,
+    "validity_pair_id": null,
+    "is_impression_management": true,
+    "version_availability": [
+      "quick",
+      "deep"
+    ]
+  },
+  {
+    "id": "adaptability_likert_27",
+    "dimension": "adaptability",
+    "secondary_dimension": null,
+    "sub_dimension": "learning",
+    "type": "likert",
+    "text": "I pick up new skills faster than anyone I have worked with.",
+    "options": null,
+    "scoring_weights": {
+      "1": {
+        "adaptability": 85
+      },
+      "2": {
+        "adaptability": 70
+      },
+      "3": {
+        "adaptability": 50
+      },
+      "4": {
+        "adaptability": 30
+      },
+      "5": {
+        "adaptability": 15
+      }
+    },
+    "difficulty": 0.85,
+    "reverse_scored": true,
+    "validity_pair_id": null,
+    "is_impression_management": true,
+    "version_availability": [
+      "deep"
+    ]
+  },
+  {
+    "id": "adaptability_likert_28",
+    "dimension": "adaptability",
+    "secondary_dimension": null,
+    "sub_dimension": "learning",
+    "type": "likert",
+    "text": "In the last three months, I have actively tried to learn something outside my area of expertise.",
+    "options": null,
+    "scoring_weights": {
+      "1": {
+        "adaptability": 0
+      },
+      "2": {
+        "adaptability": 15
+      },
+      "3": {
+        "adaptability": 50
+      },
+      "4": {
+        "adaptability": 85
+      },
+      "5": {
+        "adaptability": 100
+      }
+    },
+    "difficulty": 0.32,
+    "reverse_scored": false,
+    "validity_pair_id": "adaptability_vp_02",
+    "is_impression_management": false,
+    "version_availability": [
+      "quick",
+      "deep"
+    ]
+  },
+  {
+    "id": "adaptability_likert_29",
+    "dimension": "adaptability",
+    "secondary_dimension": null,
+    "sub_dimension": "learning",
+    "type": "likert",
+    "text": "I have not made a serious effort to develop a new skill in the past six months.",
+    "options": null,
+    "scoring_weights": {
+      "1": {
+        "adaptability": 100
+      },
+      "2": {
+        "adaptability": 85
+      },
+      "3": {
+        "adaptability": 50
+      },
+      "4": {
+        "adaptability": 15
+      },
+      "5": {
+        "adaptability": 0
+      }
+    },
+    "difficulty": 0.38,
+    "reverse_scored": true,
+    "validity_pair_id": "adaptability_vp_02",
+    "is_impression_management": false,
+    "version_availability": [
+      "quick",
+      "deep"
+    ]
+  },
+  {
+    "id": "adaptability_likert_30",
+    "dimension": "adaptability",
+    "secondary_dimension": null,
+    "sub_dimension": "flexibility",
+    "type": "likert",
+    "text": "When the plan changes, I can shift gears without losing much momentum.",
+    "options": null,
+    "scoring_weights": {
+      "1": {
+        "adaptability": 0
+      },
+      "2": {
+        "adaptability": 20
+      },
+      "3": {
+        "adaptability": 45
+      },
+      "4": {
+        "adaptability": 70
+      },
+      "5": {
+        "adaptability": 100
+      }
+    },
+    "difficulty": 0.35,
+    "reverse_scored": false,
+    "validity_pair_id": "adaptability_vp_03",
+    "is_impression_management": false,
+    "version_availability": [
+      "deep"
+    ]
+  },
+  {
+    "id": "adaptability_likert_31",
+    "dimension": "adaptability",
+    "secondary_dimension": null,
+    "sub_dimension": "flexibility",
+    "type": "likert",
+    "text": "When priorities shift unexpectedly, it takes me a while to regain my focus and productivity.",
+    "options": null,
+    "scoring_weights": {
+      "1": {
+        "adaptability": 100
+      },
+      "2": {
+        "adaptability": 70
+      },
+      "3": {
+        "adaptability": 45
+      },
+      "4": {
+        "adaptability": 20
+      },
+      "5": {
+        "adaptability": 0
+      }
+    },
+    "difficulty": 0.4,
+    "reverse_scored": true,
+    "validity_pair_id": "adaptability_vp_03",
     "is_impression_management": false,
     "version_availability": [
       "deep"

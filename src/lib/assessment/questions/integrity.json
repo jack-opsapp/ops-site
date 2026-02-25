@@ -6,12 +6,32 @@
     "type": "likert",
     "text": "When I commit to a deadline, I deliver on it even when it means working through discomfort or inconvenience.",
     "options": null,
-    "scoring_weights": { "1": { "integrity": 0 }, "2": { "integrity": 25 }, "3": { "integrity": 50 }, "4": { "integrity": 75 }, "5": { "integrity": 100 } },
-    "difficulty": 0.3,
+    "scoring_weights": {
+      "1": {
+        "integrity": 0
+      },
+      "2": {
+        "integrity": 15
+      },
+      "3": {
+        "integrity": 50
+      },
+      "4": {
+        "integrity": 85
+      },
+      "5": {
+        "integrity": 100
+      }
+    },
+    "difficulty": 0.16,
     "reverse_scored": false,
     "validity_pair_id": null,
     "is_impression_management": false,
-    "version_availability": ["quick", "deep"]
+    "version_availability": [
+      "quick",
+      "deep"
+    ],
+    "sub_dimension": "transparency"
   },
   {
     "id": "integrity_likert_02",
@@ -20,12 +40,32 @@
     "type": "likert",
     "text": "In the last month, I told someone bad news directly rather than letting them find out on their own.",
     "options": null,
-    "scoring_weights": { "1": { "integrity": 0 }, "2": { "integrity": 25 }, "3": { "integrity": 50 }, "4": { "integrity": 75 }, "5": { "integrity": 100 } },
-    "difficulty": 0.4,
+    "scoring_weights": {
+      "1": {
+        "integrity": 0
+      },
+      "2": {
+        "integrity": 15
+      },
+      "3": {
+        "integrity": 50
+      },
+      "4": {
+        "integrity": 85
+      },
+      "5": {
+        "integrity": 100
+      }
+    },
+    "difficulty": 0.2,
     "reverse_scored": false,
     "validity_pair_id": null,
     "is_impression_management": false,
-    "version_availability": ["quick", "deep"]
+    "version_availability": [
+      "quick",
+      "deep"
+    ],
+    "sub_dimension": "transparency"
   },
   {
     "id": "integrity_likert_03",
@@ -34,12 +74,32 @@
     "type": "likert",
     "text": "I find it acceptable to adjust the facts slightly if it avoids unnecessary conflict.",
     "options": null,
-    "scoring_weights": { "1": { "integrity": 100 }, "2": { "integrity": 75 }, "3": { "integrity": 50 }, "4": { "integrity": 25 }, "5": { "integrity": 0 } },
-    "difficulty": 0.5,
+    "scoring_weights": {
+      "1": {
+        "integrity": 100
+      },
+      "2": {
+        "integrity": 85
+      },
+      "3": {
+        "integrity": 65
+      },
+      "4": {
+        "integrity": 35
+      },
+      "5": {
+        "integrity": 0
+      }
+    },
+    "difficulty": 0.71,
     "reverse_scored": true,
     "validity_pair_id": null,
     "is_impression_management": false,
-    "version_availability": ["quick", "deep"]
+    "version_availability": [
+      "quick",
+      "deep"
+    ],
+    "sub_dimension": "consistency"
   },
   {
     "id": "integrity_likert_04",
@@ -48,12 +108,37 @@
     "type": "likert",
     "text": "When a project is falling behind, I resist the urge to cut corners on quality or process.",
     "options": null,
-    "scoring_weights": { "1": { "integrity": 0, "drive": 70 }, "2": { "integrity": 25, "drive": 52 }, "3": { "integrity": 50, "drive": 35 }, "4": { "integrity": 75, "drive": 17 }, "5": { "integrity": 100, "drive": 0 } },
-    "difficulty": 0.55,
+    "scoring_weights": {
+      "1": {
+        "integrity": 0,
+        "drive": 70
+      },
+      "2": {
+        "integrity": 35,
+        "drive": 73
+      },
+      "3": {
+        "integrity": 65,
+        "drive": 46
+      },
+      "4": {
+        "integrity": 85,
+        "drive": 19
+      },
+      "5": {
+        "integrity": 100,
+        "drive": 0
+      }
+    },
+    "difficulty": 0.28,
     "reverse_scored": false,
     "validity_pair_id": null,
     "is_impression_management": false,
-    "version_availability": ["quick", "deep"]
+    "version_availability": [
+      "quick",
+      "deep"
+    ],
+    "sub_dimension": "ethics"
   },
   {
     "id": "integrity_likert_05",
@@ -62,12 +147,32 @@
     "type": "likert",
     "text": "People who know me in different settings would describe me as the same person.",
     "options": null,
-    "scoring_weights": { "1": { "integrity": 0 }, "2": { "integrity": 25 }, "3": { "integrity": 50 }, "4": { "integrity": 75 }, "5": { "integrity": 100 } },
-    "difficulty": 0.35,
+    "scoring_weights": {
+      "1": {
+        "integrity": 0
+      },
+      "2": {
+        "integrity": 45
+      },
+      "3": {
+        "integrity": 70
+      },
+      "4": {
+        "integrity": 85
+      },
+      "5": {
+        "integrity": 100
+      }
+    },
+    "difficulty": 0.21,
     "reverse_scored": false,
     "validity_pair_id": null,
     "is_impression_management": false,
-    "version_availability": ["quick", "deep"]
+    "version_availability": [
+      "quick",
+      "deep"
+    ],
+    "sub_dimension": "consistency"
   },
   {
     "id": "integrity_likert_06",
@@ -76,12 +181,32 @@
     "type": "likert",
     "text": "When I make a mistake that no one noticed, I point it out anyway.",
     "options": null,
-    "scoring_weights": { "1": { "integrity": 0 }, "2": { "integrity": 25 }, "3": { "integrity": 50 }, "4": { "integrity": 75 }, "5": { "integrity": 100 } },
-    "difficulty": 0.6,
+    "scoring_weights": {
+      "1": {
+        "integrity": 0
+      },
+      "2": {
+        "integrity": 15
+      },
+      "3": {
+        "integrity": 50
+      },
+      "4": {
+        "integrity": 85
+      },
+      "5": {
+        "integrity": 100
+      }
+    },
+    "difficulty": 0.27,
     "reverse_scored": false,
     "validity_pair_id": "integrity_vp_01",
     "is_impression_management": false,
-    "version_availability": ["quick", "deep"]
+    "version_availability": [
+      "quick",
+      "deep"
+    ],
+    "sub_dimension": "consistency"
   },
   {
     "id": "integrity_likert_07",
@@ -90,12 +215,32 @@
     "type": "likert",
     "text": "If a mistake I made goes unnoticed, I usually let it go rather than bring it up.",
     "options": null,
-    "scoring_weights": { "1": { "integrity": 100 }, "2": { "integrity": 75 }, "3": { "integrity": 50 }, "4": { "integrity": 25 }, "5": { "integrity": 0 } },
-    "difficulty": 0.6,
+    "scoring_weights": {
+      "1": {
+        "integrity": 100
+      },
+      "2": {
+        "integrity": 65
+      },
+      "3": {
+        "integrity": 30
+      },
+      "4": {
+        "integrity": 10
+      },
+      "5": {
+        "integrity": 0
+      }
+    },
+    "difficulty": 0.84,
     "reverse_scored": true,
     "validity_pair_id": "integrity_vp_01",
     "is_impression_management": false,
-    "version_availability": ["quick", "deep"]
+    "version_availability": [
+      "quick",
+      "deep"
+    ],
+    "sub_dimension": "consistency"
   },
   {
     "id": "integrity_likert_08",
@@ -104,12 +249,37 @@
     "type": "likert",
     "text": "I give people honest feedback even when I know it will be uncomfortable for both of us.",
     "options": null,
-    "scoring_weights": { "1": { "integrity": 0, "connection": 70 }, "2": { "integrity": 25, "connection": 52 }, "3": { "integrity": 50, "connection": 35 }, "4": { "integrity": 75, "connection": 17 }, "5": { "integrity": 100, "connection": 0 } },
-    "difficulty": 0.5,
+    "scoring_weights": {
+      "1": {
+        "integrity": 0,
+        "connection": 70
+      },
+      "2": {
+        "integrity": 15,
+        "connection": 31
+      },
+      "3": {
+        "integrity": 50,
+        "connection": 35
+      },
+      "4": {
+        "integrity": 85,
+        "connection": 19
+      },
+      "5": {
+        "integrity": 100,
+        "connection": 0
+      }
+    },
+    "difficulty": 0.25,
     "reverse_scored": false,
     "validity_pair_id": null,
     "is_impression_management": false,
-    "version_availability": ["quick", "deep"]
+    "version_availability": [
+      "quick",
+      "deep"
+    ],
+    "sub_dimension": "transparency"
   },
   {
     "id": "integrity_likert_09",
@@ -118,12 +288,32 @@
     "type": "likert",
     "text": "My team would say my behavior is predictable -- they know what to expect from me regardless of the situation.",
     "options": null,
-    "scoring_weights": { "1": { "integrity": 0 }, "2": { "integrity": 25 }, "3": { "integrity": 50 }, "4": { "integrity": 75 }, "5": { "integrity": 100 } },
-    "difficulty": 0.35,
+    "scoring_weights": {
+      "1": {
+        "integrity": 0
+      },
+      "2": {
+        "integrity": 45
+      },
+      "3": {
+        "integrity": 70
+      },
+      "4": {
+        "integrity": 85
+      },
+      "5": {
+        "integrity": 100
+      }
+    },
+    "difficulty": 0.15,
     "reverse_scored": false,
     "validity_pair_id": null,
     "is_impression_management": false,
-    "version_availability": ["quick", "deep"]
+    "version_availability": [
+      "quick",
+      "deep"
+    ],
+    "sub_dimension": "consistency"
   },
   {
     "id": "integrity_likert_10",
@@ -132,12 +322,32 @@
     "type": "likert",
     "text": "I sometimes present information selectively to make my position look stronger.",
     "options": null,
-    "scoring_weights": { "1": { "integrity": 100 }, "2": { "integrity": 75 }, "3": { "integrity": 50 }, "4": { "integrity": 25 }, "5": { "integrity": 0 } },
-    "difficulty": 0.55,
+    "scoring_weights": {
+      "1": {
+        "integrity": 100
+      },
+      "2": {
+        "integrity": 85
+      },
+      "3": {
+        "integrity": 65
+      },
+      "4": {
+        "integrity": 35
+      },
+      "5": {
+        "integrity": 0
+      }
+    },
+    "difficulty": 0.78,
     "reverse_scored": true,
     "validity_pair_id": null,
     "is_impression_management": false,
-    "version_availability": ["quick", "deep"]
+    "version_availability": [
+      "quick",
+      "deep"
+    ],
+    "sub_dimension": "transparency"
   },
   {
     "id": "integrity_likert_11",
@@ -146,12 +356,37 @@
     "type": "likert",
     "text": "I stick to the agreed-upon process even when someone suggests a faster workaround.",
     "options": null,
-    "scoring_weights": { "1": { "integrity": 0, "adaptability": 70 }, "2": { "integrity": 25, "adaptability": 52 }, "3": { "integrity": 50, "adaptability": 35 }, "4": { "integrity": 75, "adaptability": 17 }, "5": { "integrity": 100, "adaptability": 0 } },
-    "difficulty": 0.5,
+    "scoring_weights": {
+      "1": {
+        "integrity": 0,
+        "adaptability": 70
+      },
+      "2": {
+        "integrity": 10,
+        "adaptability": 21
+      },
+      "3": {
+        "integrity": 25,
+        "adaptability": 18
+      },
+      "4": {
+        "integrity": 55,
+        "adaptability": 12
+      },
+      "5": {
+        "integrity": 100,
+        "adaptability": 0
+      }
+    },
+    "difficulty": 0.56,
     "reverse_scored": false,
     "validity_pair_id": null,
     "is_impression_management": false,
-    "version_availability": ["quick", "deep"]
+    "version_availability": [
+      "quick",
+      "deep"
+    ],
+    "sub_dimension": "ethics"
   },
   {
     "id": "integrity_likert_12",
@@ -160,12 +395,31 @@
     "type": "likert",
     "text": "When I disagree with a decision my boss made, I say so directly to them rather than complaining to others.",
     "options": null,
-    "scoring_weights": { "1": { "integrity": 0 }, "2": { "integrity": 25 }, "3": { "integrity": 50 }, "4": { "integrity": 75 }, "5": { "integrity": 100 } },
-    "difficulty": 0.6,
+    "scoring_weights": {
+      "1": {
+        "integrity": 0
+      },
+      "2": {
+        "integrity": 10
+      },
+      "3": {
+        "integrity": 25
+      },
+      "4": {
+        "integrity": 55
+      },
+      "5": {
+        "integrity": 100
+      }
+    },
+    "difficulty": 0.42,
     "reverse_scored": false,
     "validity_pair_id": null,
     "is_impression_management": false,
-    "version_availability": ["deep"]
+    "version_availability": [
+      "deep"
+    ],
+    "sub_dimension": "consistency"
   },
   {
     "id": "integrity_likert_13",
@@ -174,12 +428,32 @@
     "type": "likert",
     "text": "I naturally put more effort into relationships with people who can help my career.",
     "options": null,
-    "scoring_weights": { "1": { "integrity": 100 }, "2": { "integrity": 75 }, "3": { "integrity": 50 }, "4": { "integrity": 25 }, "5": { "integrity": 0 } },
-    "difficulty": 0.45,
+    "scoring_weights": {
+      "1": {
+        "integrity": 100
+      },
+      "2": {
+        "integrity": 85
+      },
+      "3": {
+        "integrity": 50
+      },
+      "4": {
+        "integrity": 15
+      },
+      "5": {
+        "integrity": 0
+      }
+    },
+    "difficulty": 0.65,
     "reverse_scored": true,
     "validity_pair_id": null,
     "is_impression_management": false,
-    "version_availability": ["quick", "deep"]
+    "version_availability": [
+      "quick",
+      "deep"
+    ],
+    "sub_dimension": "transparency"
   },
   {
     "id": "integrity_likert_14",
@@ -188,12 +462,32 @@
     "type": "likert",
     "text": "I have never made a decision I later regretted.",
     "options": null,
-    "scoring_weights": { "1": { "integrity": 0 }, "2": { "integrity": 25 }, "3": { "integrity": 50 }, "4": { "integrity": 75 }, "5": { "integrity": 100 } },
-    "difficulty": 0.25,
-    "reverse_scored": false,
+    "scoring_weights": {
+      "1": {
+        "integrity": 85
+      },
+      "2": {
+        "integrity": 70
+      },
+      "3": {
+        "integrity": 50
+      },
+      "4": {
+        "integrity": 30
+      },
+      "5": {
+        "integrity": 15
+      }
+    },
+    "difficulty": 0.82,
+    "reverse_scored": true,
     "validity_pair_id": null,
     "is_impression_management": true,
-    "version_availability": ["quick", "deep"]
+    "version_availability": [
+      "quick",
+      "deep"
+    ],
+    "sub_dimension": "ethics"
   },
   {
     "id": "integrity_likert_15",
@@ -202,12 +496,37 @@
     "type": "likert",
     "text": "I would rather miss a target than hit it by doing something I'm not proud of.",
     "options": null,
-    "scoring_weights": { "1": { "integrity": 0, "drive": 70 }, "2": { "integrity": 25, "drive": 52 }, "3": { "integrity": 50, "drive": 35 }, "4": { "integrity": 75, "drive": 17 }, "5": { "integrity": 100, "drive": 0 } },
-    "difficulty": 0.65,
+    "scoring_weights": {
+      "1": {
+        "integrity": 0,
+        "drive": 70
+      },
+      "2": {
+        "integrity": 20,
+        "drive": 42
+      },
+      "3": {
+        "integrity": 45,
+        "drive": 31
+      },
+      "4": {
+        "integrity": 70,
+        "drive": 16
+      },
+      "5": {
+        "integrity": 100,
+        "drive": 0
+      }
+    },
+    "difficulty": 0.19,
     "reverse_scored": false,
     "validity_pair_id": null,
     "is_impression_management": false,
-    "version_availability": ["quick", "deep"]
+    "version_availability": [
+      "quick",
+      "deep"
+    ],
+    "sub_dimension": "consistency"
   },
   {
     "id": "integrity_likert_16",
@@ -216,12 +535,32 @@
     "type": "likert",
     "text": "When I promise to follow up, the other person can count on hearing from me within the timeframe I gave.",
     "options": null,
-    "scoring_weights": { "1": { "integrity": 0 }, "2": { "integrity": 25 }, "3": { "integrity": 50 }, "4": { "integrity": 75 }, "5": { "integrity": 100 } },
-    "difficulty": 0.3,
+    "scoring_weights": {
+      "1": {
+        "integrity": 0
+      },
+      "2": {
+        "integrity": 45
+      },
+      "3": {
+        "integrity": 70
+      },
+      "4": {
+        "integrity": 85
+      },
+      "5": {
+        "integrity": 100
+      }
+    },
+    "difficulty": 0.6,
     "reverse_scored": false,
     "validity_pair_id": null,
     "is_impression_management": false,
-    "version_availability": ["quick", "deep"]
+    "version_availability": [
+      "quick",
+      "deep"
+    ],
+    "sub_dimension": "transparency"
   },
   {
     "id": "integrity_likert_17",
@@ -230,12 +569,32 @@
     "type": "likert",
     "text": "I change how I act depending on who's in the room.",
     "options": null,
-    "scoring_weights": { "1": { "integrity": 100 }, "2": { "integrity": 75 }, "3": { "integrity": 50 }, "4": { "integrity": 25 }, "5": { "integrity": 0 } },
-    "difficulty": 0.45,
+    "scoring_weights": {
+      "1": {
+        "integrity": 100
+      },
+      "2": {
+        "integrity": 70
+      },
+      "3": {
+        "integrity": 45
+      },
+      "4": {
+        "integrity": 20
+      },
+      "5": {
+        "integrity": 0
+      }
+    },
+    "difficulty": 0.59,
     "reverse_scored": true,
     "validity_pair_id": null,
     "is_impression_management": false,
-    "version_availability": ["quick", "deep"]
+    "version_availability": [
+      "quick",
+      "deep"
+    ],
+    "sub_dimension": "ethics"
   },
   {
     "id": "integrity_likert_18",
@@ -244,12 +603,37 @@
     "type": "likert",
     "text": "I share project risks and problems with stakeholders early, even when I don't yet have a solution.",
     "options": null,
-    "scoring_weights": { "1": { "integrity": 0, "connection": 70 }, "2": { "integrity": 25, "connection": 52 }, "3": { "integrity": 50, "connection": 35 }, "4": { "integrity": 75, "connection": 17 }, "5": { "integrity": 100, "connection": 0 } },
-    "difficulty": 0.55,
+    "scoring_weights": {
+      "1": {
+        "integrity": 0,
+        "connection": 70
+      },
+      "2": {
+        "integrity": 25,
+        "connection": 52
+      },
+      "3": {
+        "integrity": 50,
+        "connection": 35
+      },
+      "4": {
+        "integrity": 75,
+        "connection": 17
+      },
+      "5": {
+        "integrity": 100,
+        "connection": 0
+      }
+    },
+    "difficulty": 0.77,
     "reverse_scored": false,
     "validity_pair_id": null,
     "is_impression_management": false,
-    "version_availability": ["quick", "deep"]
+    "version_availability": [
+      "quick",
+      "deep"
+    ],
+    "sub_dimension": "transparency"
   },
   {
     "id": "integrity_likert_19",
@@ -258,12 +642,31 @@
     "type": "likert",
     "text": "When the rules don't make sense for the situation, I feel comfortable ignoring them.",
     "options": null,
-    "scoring_weights": { "1": { "integrity": 100 }, "2": { "integrity": 75 }, "3": { "integrity": 50 }, "4": { "integrity": 25 }, "5": { "integrity": 0 } },
-    "difficulty": 0.6,
+    "scoring_weights": {
+      "1": {
+        "integrity": 100
+      },
+      "2": {
+        "integrity": 85
+      },
+      "3": {
+        "integrity": 65
+      },
+      "4": {
+        "integrity": 35
+      },
+      "5": {
+        "integrity": 0
+      }
+    },
+    "difficulty": 0.64,
     "reverse_scored": true,
     "validity_pair_id": null,
     "is_impression_management": false,
-    "version_availability": ["deep"]
+    "version_availability": [
+      "deep"
+    ],
+    "sub_dimension": "ethics"
   },
   {
     "id": "integrity_likert_20",
@@ -272,12 +675,37 @@
     "type": "likert",
     "text": "I hold myself to the same standard I hold others to, even when no one is checking.",
     "options": null,
-    "scoring_weights": { "1": { "integrity": 0, "adaptability": 30 }, "2": { "integrity": 25, "adaptability": 22 }, "3": { "integrity": 50, "adaptability": 15 }, "4": { "integrity": 75, "adaptability": 7 }, "5": { "integrity": 100, "adaptability": 0 } },
-    "difficulty": 0.4,
+    "scoring_weights": {
+      "1": {
+        "integrity": 0,
+        "adaptability": 30
+      },
+      "2": {
+        "integrity": 10,
+        "adaptability": 9
+      },
+      "3": {
+        "integrity": 30,
+        "adaptability": 9
+      },
+      "4": {
+        "integrity": 65,
+        "adaptability": 6
+      },
+      "5": {
+        "integrity": 100,
+        "adaptability": 0
+      }
+    },
+    "difficulty": 0.85,
     "reverse_scored": false,
     "validity_pair_id": null,
     "is_impression_management": false,
-    "version_availability": ["quick", "deep"]
+    "version_availability": [
+      "quick",
+      "deep"
+    ],
+    "sub_dimension": "consistency"
   },
   {
     "id": "integrity_likert_21",
@@ -286,12 +714,32 @@
     "type": "likert",
     "text": "When I look back at the last year, there are commitments I made and didn't keep.",
     "options": null,
-    "scoring_weights": { "1": { "integrity": 100 }, "2": { "integrity": 75 }, "3": { "integrity": 50 }, "4": { "integrity": 25 }, "5": { "integrity": 0 } },
-    "difficulty": 0.45,
+    "scoring_weights": {
+      "1": {
+        "integrity": 100
+      },
+      "2": {
+        "integrity": 85
+      },
+      "3": {
+        "integrity": 65
+      },
+      "4": {
+        "integrity": 35
+      },
+      "5": {
+        "integrity": 0
+      }
+    },
+    "difficulty": 0.64,
     "reverse_scored": true,
     "validity_pair_id": null,
     "is_impression_management": false,
-    "version_availability": ["quick", "deep"]
+    "version_availability": [
+      "quick",
+      "deep"
+    ],
+    "sub_dimension": "consistency"
   },
   {
     "id": "integrity_likert_22",
@@ -300,12 +748,37 @@
     "type": "likert",
     "text": "I openly share the reasoning behind my decisions, including the tradeoffs I considered.",
     "options": null,
-    "scoring_weights": { "1": { "integrity": 0, "connection": 70 }, "2": { "integrity": 25, "connection": 52 }, "3": { "integrity": 50, "connection": 35 }, "4": { "integrity": 75, "connection": 17 }, "5": { "integrity": 100, "connection": 0 } },
-    "difficulty": 0.4,
+    "scoring_weights": {
+      "1": {
+        "integrity": 0,
+        "connection": 70
+      },
+      "2": {
+        "integrity": 10,
+        "connection": 21
+      },
+      "3": {
+        "integrity": 30,
+        "connection": 21
+      },
+      "4": {
+        "integrity": 65,
+        "connection": 15
+      },
+      "5": {
+        "integrity": 100,
+        "connection": 0
+      }
+    },
+    "difficulty": 0.78,
     "reverse_scored": false,
     "validity_pair_id": null,
     "is_impression_management": false,
-    "version_availability": ["quick", "deep"]
+    "version_availability": [
+      "quick",
+      "deep"
+    ],
+    "sub_dimension": "transparency"
   },
   {
     "id": "integrity_likert_23",
@@ -314,12 +787,31 @@
     "type": "likert",
     "text": "When someone on my team takes a shortcut, I address it directly even if the outcome turned out fine.",
     "options": null,
-    "scoring_weights": { "1": { "integrity": 0 }, "2": { "integrity": 25 }, "3": { "integrity": 50 }, "4": { "integrity": 75 }, "5": { "integrity": 100 } },
-    "difficulty": 0.65,
+    "scoring_weights": {
+      "1": {
+        "integrity": 0
+      },
+      "2": {
+        "integrity": 25
+      },
+      "3": {
+        "integrity": 50
+      },
+      "4": {
+        "integrity": 75
+      },
+      "5": {
+        "integrity": 100
+      }
+    },
+    "difficulty": 0.67,
     "reverse_scored": false,
     "validity_pair_id": null,
     "is_impression_management": false,
-    "version_availability": ["deep"]
+    "version_availability": [
+      "deep"
+    ],
+    "sub_dimension": "ethics"
   },
   {
     "id": "integrity_likert_24",
@@ -328,12 +820,32 @@
     "type": "likert",
     "text": "I sometimes agree to things in meetings that I have no intention of following through on.",
     "options": null,
-    "scoring_weights": { "1": { "integrity": 100 }, "2": { "integrity": 75 }, "3": { "integrity": 50 }, "4": { "integrity": 25 }, "5": { "integrity": 0 } },
-    "difficulty": 0.5,
+    "scoring_weights": {
+      "1": {
+        "integrity": 100
+      },
+      "2": {
+        "integrity": 85
+      },
+      "3": {
+        "integrity": 50
+      },
+      "4": {
+        "integrity": 15
+      },
+      "5": {
+        "integrity": 0
+      }
+    },
+    "difficulty": 0.58,
     "reverse_scored": true,
     "validity_pair_id": null,
     "is_impression_management": false,
-    "version_availability": ["quick", "deep"]
+    "version_availability": [
+      "quick",
+      "deep"
+    ],
+    "sub_dimension": "consistency"
   },
   {
     "id": "integrity_likert_25",
@@ -342,619 +854,1827 @@
     "type": "likert",
     "text": "When I realize I can't deliver what I promised, I tell the other person immediately rather than waiting to see if things improve.",
     "options": null,
-    "scoring_weights": { "1": { "integrity": 0, "drive": 50 }, "2": { "integrity": 25, "drive": 37 }, "3": { "integrity": 50, "drive": 25 }, "4": { "integrity": 75, "drive": 12 }, "5": { "integrity": 100, "drive": 0 } },
-    "difficulty": 0.55,
+    "scoring_weights": {
+      "1": {
+        "integrity": 0,
+        "drive": 50
+      },
+      "2": {
+        "integrity": 10,
+        "drive": 15
+      },
+      "3": {
+        "integrity": 30,
+        "drive": 15
+      },
+      "4": {
+        "integrity": 65,
+        "drive": 10
+      },
+      "5": {
+        "integrity": 100,
+        "drive": 0
+      }
+    },
+    "difficulty": 0.69,
     "reverse_scored": false,
     "validity_pair_id": null,
     "is_impression_management": false,
-    "version_availability": ["quick", "deep"]
+    "version_availability": [
+      "quick",
+      "deep"
+    ],
+    "sub_dimension": "transparency"
   },
   {
     "id": "integrity_situational_01",
     "dimension": "integrity",
     "secondary_dimension": null,
     "type": "situational",
-    "text": "You're reviewing your team's client proposal and realize the projected timeline is unrealistically optimistic. The client meeting is tomorrow morning. Your team worked late to finish it.",
+    "text": "I'm reviewing my team's client proposal and realize the projected timeline is unrealistically optimistic. The client meeting is tomorrow morning. My team worked late to finish it.",
     "options": [
-      { "key": "a", "text": "Push back the meeting and rework the timeline with realistic estimates, even though the client is expecting it tomorrow.", "scores": { "integrity": 85, "drive": 30 } },
-      { "key": "b", "text": "Present it as-is but verbally flag the timeline risk during the meeting, giving the client a heads-up without embarrassing your team.", "scores": { "integrity": 65, "connection": 55 } },
-      { "key": "c", "text": "Present it as-is. Timelines always slip and you can manage expectations later once you've won the work.", "scores": { "integrity": 20, "drive": 70 } },
-      { "key": "d", "text": "Call an emergency huddle with your team tonight to fix it, even though they've already gone home.", "scores": { "integrity": 60, "drive": 80 } }
+      {
+        "key": "a",
+        "text": "Push back the meeting and rework the timeline with realistic estimates, even though the client is expecting it tomorrow.",
+        "scores": {
+          "integrity": 85,
+          "drive": 30
+        }
+      },
+      {
+        "key": "b",
+        "text": "Present it as-is but verbally flag the timeline risk during the meeting, giving the client a heads-up without embarrassing your team.",
+        "scores": {
+          "integrity": 65,
+          "connection": 55
+        }
+      },
+      {
+        "key": "c",
+        "text": "Present it as-is. Timelines always slip and you can manage expectations later once you've won the work.",
+        "scores": {
+          "integrity": 20,
+          "drive": 70
+        }
+      },
+      {
+        "key": "d",
+        "text": "Call an emergency huddle with your team tonight to fix it, even though they've already gone home.",
+        "scores": {
+          "integrity": 60,
+          "drive": 80
+        }
+      }
     ],
     "scoring_weights": {
-      "a": { "integrity": 85, "drive": 30 },
-      "b": { "integrity": 65, "connection": 55 },
-      "c": { "integrity": 20, "drive": 70 },
-      "d": { "integrity": 60, "drive": 80 }
+      "a": {
+        "integrity": 85,
+        "drive": 30
+      },
+      "b": {
+        "integrity": 65,
+        "connection": 55
+      },
+      "c": {
+        "integrity": 20,
+        "drive": 70
+      },
+      "d": {
+        "integrity": 60,
+        "drive": 80
+      }
     },
-    "difficulty": 0.55,
+    "difficulty": 0.27,
     "reverse_scored": false,
     "validity_pair_id": null,
     "is_impression_management": false,
-    "version_availability": ["quick", "deep"]
+    "version_availability": [
+      "quick",
+      "deep"
+    ],
+    "sub_dimension": "transparency"
   },
   {
     "id": "integrity_situational_02",
     "dimension": "integrity",
     "secondary_dimension": null,
     "type": "situational",
-    "text": "A vendor you've worked with for years accidentally undercharges you by $15,000 on an invoice. No one on their side has noticed, and your budget is tight this quarter.",
+    "text": "A vendor I've worked with for years accidentally undercharges me by $15,000 on an invoice. No one on their side has noticed, and my budget is tight this quarter.",
     "options": [
-      { "key": "a", "text": "Flag the error immediately. You'd want them to do the same for you.", "scores": { "integrity": 90, "drive": 20 } },
-      { "key": "b", "text": "Pay the invoice as-is. It's their responsibility to get their own invoices right.", "scores": { "integrity": 15, "drive": 65 } },
-      { "key": "c", "text": "Mention it casually next time you talk, giving them a chance to catch it without making it a big deal.", "scores": { "integrity": 60, "connection": 50 } },
-      { "key": "d", "text": "Flag it to your finance team and let them decide how to handle it.", "scores": { "integrity": 50, "adaptability": 45 } }
+      {
+        "key": "a",
+        "text": "Flag the error immediately. You'd want them to do the same for you.",
+        "scores": {
+          "integrity": 90,
+          "drive": 20
+        }
+      },
+      {
+        "key": "b",
+        "text": "Pay the invoice as-is. It's their responsibility to get their own invoices right.",
+        "scores": {
+          "integrity": 15,
+          "drive": 65
+        }
+      },
+      {
+        "key": "c",
+        "text": "Mention it casually next time you talk, giving them a chance to catch it without making it a big deal.",
+        "scores": {
+          "integrity": 60,
+          "connection": 50
+        }
+      },
+      {
+        "key": "d",
+        "text": "Flag it to your finance team and let them decide how to handle it.",
+        "scores": {
+          "integrity": 50,
+          "adaptability": 45
+        }
+      }
     ],
     "scoring_weights": {
-      "a": { "integrity": 90, "drive": 20 },
-      "b": { "integrity": 15, "drive": 65 },
-      "c": { "integrity": 60, "connection": 50 },
-      "d": { "integrity": 50, "adaptability": 45 }
+      "a": {
+        "integrity": 90,
+        "drive": 20
+      },
+      "b": {
+        "integrity": 15,
+        "drive": 65
+      },
+      "c": {
+        "integrity": 60,
+        "connection": 50
+      },
+      "d": {
+        "integrity": 50,
+        "adaptability": 45
+      }
     },
-    "difficulty": 0.45,
+    "difficulty": 0.32,
     "reverse_scored": false,
     "validity_pair_id": null,
     "is_impression_management": false,
-    "version_availability": ["quick", "deep"]
+    "version_availability": [
+      "quick",
+      "deep"
+    ],
+    "sub_dimension": "consistency"
   },
   {
     "id": "integrity_situational_03",
     "dimension": "integrity",
     "secondary_dimension": null,
     "type": "situational",
-    "text": "You overhear a senior leader take credit for an idea that clearly came from a junior team member during an all-hands meeting. The junior person is sitting right there and looks uncomfortable.",
+    "text": "I overhear a senior leader take credit for an idea that clearly came from a junior team member during an all-hands meeting. The junior person is sitting right there and looks uncomfortable.",
     "options": [
-      { "key": "a", "text": "Speak up in the meeting: 'I remember Sarah presenting that idea last month -- great to see it getting traction.'", "scores": { "integrity": 85, "connection": 60 } },
-      { "key": "b", "text": "Talk to the senior leader privately afterward and point out what happened.", "scores": { "integrity": 70, "connection": 45 } },
-      { "key": "c", "text": "Check in with the junior person after the meeting and encourage them to speak up for themselves.", "scores": { "integrity": 40, "connection": 65 } },
-      { "key": "d", "text": "Let it go. Office politics are complicated and it's not worth the fallout.", "scores": { "integrity": 15, "adaptability": 50 } }
+      {
+        "key": "a",
+        "text": "Speak up in the meeting: 'I remember Sarah presenting that idea last month -- great to see it getting traction.'",
+        "scores": {
+          "integrity": 85,
+          "connection": 60
+        }
+      },
+      {
+        "key": "b",
+        "text": "Talk to the senior leader privately afterward and point out what happened.",
+        "scores": {
+          "integrity": 70,
+          "connection": 45
+        }
+      },
+      {
+        "key": "c",
+        "text": "Check in with the junior person after the meeting and encourage them to speak up for themselves.",
+        "scores": {
+          "integrity": 40,
+          "connection": 65
+        }
+      },
+      {
+        "key": "d",
+        "text": "Let it go. Office politics are complicated and it's not worth the fallout.",
+        "scores": {
+          "integrity": 15,
+          "adaptability": 50
+        }
+      }
     ],
     "scoring_weights": {
-      "a": { "integrity": 85, "connection": 60 },
-      "b": { "integrity": 70, "connection": 45 },
-      "c": { "integrity": 40, "connection": 65 },
-      "d": { "integrity": 15, "adaptability": 50 }
+      "a": {
+        "integrity": 85,
+        "connection": 60
+      },
+      "b": {
+        "integrity": 70,
+        "connection": 45
+      },
+      "c": {
+        "integrity": 40,
+        "connection": 65
+      },
+      "d": {
+        "integrity": 15,
+        "adaptability": 50
+      }
     },
-    "difficulty": 0.6,
+    "difficulty": 0.37,
     "reverse_scored": false,
     "validity_pair_id": null,
     "is_impression_management": false,
-    "version_availability": ["quick", "deep"]
+    "version_availability": [
+      "quick",
+      "deep"
+    ],
+    "sub_dimension": "consistency"
   },
   {
     "id": "integrity_situational_04",
     "dimension": "integrity",
     "secondary_dimension": null,
     "type": "situational",
-    "text": "You can hit your quarterly revenue target by upselling a long-term client on services they don't really need. They trust your recommendation and would say yes if you pushed it.",
+    "text": "I can hit my quarterly revenue target by upselling a long-term client on services they don't really need. They trust my recommendation and would say yes if I pushed it.",
     "options": [
-      { "key": "a", "text": "Recommend only what they actually need. You'll find another way to close the gap.", "scores": { "integrity": 90, "drive": 25 } },
-      { "key": "b", "text": "Present the full menu of services and let them decide. You're not lying -- just showing options.", "scores": { "integrity": 55, "drive": 60 } },
-      { "key": "c", "text": "Recommend the upsell but genuinely try to make it valuable for them, even if the fit isn't perfect.", "scores": { "integrity": 40, "drive": 70 } },
-      { "key": "d", "text": "Have an honest conversation about the gap and ask if they know anyone who might need your services.", "scores": { "integrity": 80, "connection": 65 } }
+      {
+        "key": "a",
+        "text": "Recommend only what they actually need. You'll find another way to close the gap.",
+        "scores": {
+          "integrity": 90,
+          "drive": 25
+        }
+      },
+      {
+        "key": "b",
+        "text": "Present the full menu of services and let them decide. You're not lying -- just showing options.",
+        "scores": {
+          "integrity": 55,
+          "drive": 60
+        }
+      },
+      {
+        "key": "c",
+        "text": "Recommend the upsell but genuinely try to make it valuable for them, even if the fit isn't perfect.",
+        "scores": {
+          "integrity": 40,
+          "drive": 70
+        }
+      },
+      {
+        "key": "d",
+        "text": "Have an honest conversation about the gap and ask if they know anyone who might need your services.",
+        "scores": {
+          "integrity": 80,
+          "connection": 65
+        }
+      }
     ],
     "scoring_weights": {
-      "a": { "integrity": 90, "drive": 25 },
-      "b": { "integrity": 55, "drive": 60 },
-      "c": { "integrity": 40, "drive": 70 },
-      "d": { "integrity": 80, "connection": 65 }
+      "a": {
+        "integrity": 90,
+        "drive": 25
+      },
+      "b": {
+        "integrity": 55,
+        "drive": 60
+      },
+      "c": {
+        "integrity": 40,
+        "drive": 70
+      },
+      "d": {
+        "integrity": 80,
+        "connection": 65
+      }
     },
-    "difficulty": 0.65,
+    "difficulty": 0.51,
     "reverse_scored": false,
     "validity_pair_id": null,
     "is_impression_management": false,
-    "version_availability": ["quick", "deep"]
+    "version_availability": [
+      "quick",
+      "deep"
+    ],
+    "sub_dimension": "transparency"
   },
   {
     "id": "integrity_situational_05",
     "dimension": "integrity",
     "secondary_dimension": null,
     "type": "situational",
-    "text": "Your direct report makes a significant error on a client deliverable. Your boss asks you in a group setting what happened. Saying it was your report's mistake would be accurate but would embarrass them in front of peers.",
+    "text": "My direct report makes a significant error on a client deliverable. My boss asks me in a group setting what happened. Saying it was my report's mistake would be accurate but would embarrass them in front of peers.",
     "options": [
-      { "key": "a", "text": "Take responsibility as the team lead. 'It happened on my watch -- I should have caught it.' Deal with your report privately.", "scores": { "integrity": 70, "connection": 80 } },
-      { "key": "b", "text": "State the facts without blame. 'There was an error in the review process. Here's how we're fixing it.'", "scores": { "integrity": 75, "adaptability": 55 } },
-      { "key": "c", "text": "Be direct about who made the error. The team needs to know what happened to prevent it again.", "scores": { "integrity": 60, "drive": 50 } },
-      { "key": "d", "text": "Redirect: 'I'd rather focus on the fix than the blame. Can we take this offline?'", "scores": { "integrity": 45, "connection": 60 } }
+      {
+        "key": "a",
+        "text": "Take responsibility as the team lead. 'It happened on my watch -- I should have caught it.' Deal with your report privately.",
+        "scores": {
+          "integrity": 70,
+          "connection": 80
+        }
+      },
+      {
+        "key": "b",
+        "text": "State the facts without blame. 'There was an error in the review process. Here's how we're fixing it.'",
+        "scores": {
+          "integrity": 75,
+          "adaptability": 55
+        }
+      },
+      {
+        "key": "c",
+        "text": "Be direct about who made the error. The team needs to know what happened to prevent it again.",
+        "scores": {
+          "integrity": 60,
+          "drive": 50
+        }
+      },
+      {
+        "key": "d",
+        "text": "Redirect: 'I'd rather focus on the fix than the blame. Can we take this offline?'",
+        "scores": {
+          "integrity": 45,
+          "connection": 60
+        }
+      }
     ],
     "scoring_weights": {
-      "a": { "integrity": 70, "connection": 80 },
-      "b": { "integrity": 75, "adaptability": 55 },
-      "c": { "integrity": 60, "drive": 50 },
-      "d": { "integrity": 45, "connection": 60 }
+      "a": {
+        "integrity": 70,
+        "connection": 80
+      },
+      "b": {
+        "integrity": 75,
+        "adaptability": 55
+      },
+      "c": {
+        "integrity": 60,
+        "drive": 50
+      },
+      "d": {
+        "integrity": 45,
+        "connection": 60
+      }
     },
-    "difficulty": 0.7,
+    "difficulty": 0.36,
     "reverse_scored": false,
     "validity_pair_id": null,
     "is_impression_management": false,
-    "version_availability": ["quick", "deep"]
+    "version_availability": [
+      "quick",
+      "deep"
+    ],
+    "sub_dimension": "ethics"
   },
   {
     "id": "integrity_situational_06",
     "dimension": "integrity",
     "secondary_dimension": null,
     "type": "situational",
-    "text": "You promised your team you'd fight for their budget increase in the leadership meeting. During the meeting, you realize the CFO is in a hostile mood and pushing back hard. Raising the topic will likely fail and could cost you political capital.",
+    "text": "I promised my team I'd fight for their budget increase in the leadership meeting. During the meeting, I realize the CFO is in a hostile mood and pushing back hard. Raising the topic will likely fail and could cost I political capital.",
     "options": [
-      { "key": "a", "text": "Raise it anyway. You made a commitment and your team is counting on you.", "scores": { "integrity": 85, "adaptability": 20 } },
-      { "key": "b", "text": "Skip it today but tell your team exactly what happened and when you'll try again.", "scores": { "integrity": 65, "adaptability": 60 } },
-      { "key": "c", "text": "Skip it and tell your team leadership wasn't open to budget discussions this quarter, without mentioning you chose not to raise it.", "scores": { "integrity": 25, "adaptability": 55 } },
-      { "key": "d", "text": "Raise a smaller version of the ask to test the waters, then come back for the full amount later.", "scores": { "integrity": 50, "vision": 65 } }
+      {
+        "key": "a",
+        "text": "Raise it anyway. You made a commitment and your team is counting on you.",
+        "scores": {
+          "integrity": 85,
+          "adaptability": 20
+        }
+      },
+      {
+        "key": "b",
+        "text": "Skip it today but tell your team exactly what happened and when you'll try again.",
+        "scores": {
+          "integrity": 65,
+          "adaptability": 60
+        }
+      },
+      {
+        "key": "c",
+        "text": "Skip it and tell your team leadership wasn't open to budget discussions this quarter, without mentioning you chose not to raise it.",
+        "scores": {
+          "integrity": 25,
+          "adaptability": 55
+        }
+      },
+      {
+        "key": "d",
+        "text": "Raise a smaller version of the ask to test the waters, then come back for the full amount later.",
+        "scores": {
+          "integrity": 50,
+          "vision": 65
+        }
+      }
     ],
     "scoring_weights": {
-      "a": { "integrity": 85, "adaptability": 20 },
-      "b": { "integrity": 65, "adaptability": 60 },
-      "c": { "integrity": 25, "adaptability": 55 },
-      "d": { "integrity": 50, "vision": 65 }
+      "a": {
+        "integrity": 85,
+        "adaptability": 20
+      },
+      "b": {
+        "integrity": 65,
+        "adaptability": 60
+      },
+      "c": {
+        "integrity": 25,
+        "adaptability": 55
+      },
+      "d": {
+        "integrity": 50,
+        "vision": 65
+      }
     },
-    "difficulty": 0.7,
+    "difficulty": 0.46,
     "reverse_scored": false,
     "validity_pair_id": null,
     "is_impression_management": false,
-    "version_availability": ["quick", "deep"]
+    "version_availability": [
+      "quick",
+      "deep"
+    ],
+    "sub_dimension": "transparency"
   },
   {
     "id": "integrity_situational_07",
     "dimension": "integrity",
     "secondary_dimension": null,
     "type": "situational",
-    "text": "You discover that your company's product has a flaw that affects about 5% of users. Fixing it would delay the next release by three weeks. No users have complained yet.",
+    "text": "I discover that my company's product has a flaw that affects about 5% of users. Fixing it would delay the next release by three weeks. No users have complained yet.",
     "options": [
-      { "key": "a", "text": "Delay the release and fix it. Shipping something you know is broken is wrong, regardless of whether users have noticed.", "scores": { "integrity": 85, "drive": 20 } },
-      { "key": "b", "text": "Ship on schedule and push the fix into the next release cycle, with a note in known issues.", "scores": { "integrity": 45, "drive": 75 } },
-      { "key": "c", "text": "Escalate the decision to leadership with a clear recommendation to fix it, and let them make the call.", "scores": { "integrity": 70, "adaptability": 50 } },
-      { "key": "d", "text": "Ship it but proactively reach out to the affected 5% of users to let them know a fix is coming.", "scores": { "integrity": 60, "connection": 65 } }
+      {
+        "key": "a",
+        "text": "Delay the release and fix it. Shipping something you know is broken is wrong, regardless of whether users have noticed.",
+        "scores": {
+          "integrity": 85,
+          "drive": 20
+        }
+      },
+      {
+        "key": "b",
+        "text": "Ship on schedule and push the fix into the next release cycle, with a note in known issues.",
+        "scores": {
+          "integrity": 45,
+          "drive": 75
+        }
+      },
+      {
+        "key": "c",
+        "text": "Escalate the decision to leadership with a clear recommendation to fix it, and let them make the call.",
+        "scores": {
+          "integrity": 70,
+          "adaptability": 50
+        }
+      },
+      {
+        "key": "d",
+        "text": "Ship it but proactively reach out to the affected 5% of users to let them know a fix is coming.",
+        "scores": {
+          "integrity": 60,
+          "connection": 65
+        }
+      }
     ],
     "scoring_weights": {
-      "a": { "integrity": 85, "drive": 20 },
-      "b": { "integrity": 45, "drive": 75 },
-      "c": { "integrity": 70, "adaptability": 50 },
-      "d": { "integrity": 60, "connection": 65 }
+      "a": {
+        "integrity": 85,
+        "drive": 20
+      },
+      "b": {
+        "integrity": 45,
+        "drive": 75
+      },
+      "c": {
+        "integrity": 70,
+        "adaptability": 50
+      },
+      "d": {
+        "integrity": 60,
+        "connection": 65
+      }
     },
-    "difficulty": 0.6,
+    "difficulty": 0.75,
     "reverse_scored": false,
     "validity_pair_id": null,
     "is_impression_management": false,
-    "version_availability": ["quick", "deep"]
+    "version_availability": [
+      "quick",
+      "deep"
+    ],
+    "sub_dimension": "consistency"
   },
   {
     "id": "integrity_situational_08",
     "dimension": "integrity",
     "secondary_dimension": null,
     "type": "situational",
-    "text": "You applied the same performance standard to two team members. One of them -- who you personally like more -- failed to meet it. The other -- who you find difficult to work with -- exceeded it.",
+    "text": "I applied the same performance standard to two team members. One of them -- who I personally like more -- failed to meet it. The other -- who I find difficult to work with -- exceeded it.",
     "options": [
-      { "key": "a", "text": "Rate them exactly according to the standard. Personal feelings don't enter performance reviews.", "scores": { "integrity": 90, "connection": 20 } },
-      { "key": "b", "text": "Rate them fairly but soften the language for the person you like, emphasizing their potential.", "scores": { "integrity": 50, "connection": 60 } },
-      { "key": "c", "text": "Acknowledge the bias risk and ask a peer to review both evaluations before you submit them.", "scores": { "integrity": 80, "adaptability": 55 } },
-      { "key": "d", "text": "Factor in qualities beyond the standard -- attitude, teamwork, cultural fit -- to get a more complete picture.", "scores": { "integrity": 35, "connection": 50 } }
+      {
+        "key": "a",
+        "text": "Rate them exactly according to the standard. Personal feelings don't enter performance reviews.",
+        "scores": {
+          "integrity": 90,
+          "connection": 20
+        }
+      },
+      {
+        "key": "b",
+        "text": "Rate them fairly but soften the language for the person you like, emphasizing their potential.",
+        "scores": {
+          "integrity": 50,
+          "connection": 60
+        }
+      },
+      {
+        "key": "c",
+        "text": "Acknowledge the bias risk and ask a peer to review both evaluations before you submit them.",
+        "scores": {
+          "integrity": 80,
+          "adaptability": 55
+        }
+      },
+      {
+        "key": "d",
+        "text": "Factor in qualities beyond the standard -- attitude, teamwork, cultural fit -- to get a more complete picture.",
+        "scores": {
+          "integrity": 35,
+          "connection": 50
+        }
+      }
     ],
     "scoring_weights": {
-      "a": { "integrity": 90, "connection": 20 },
-      "b": { "integrity": 50, "connection": 60 },
-      "c": { "integrity": 80, "adaptability": 55 },
-      "d": { "integrity": 35, "connection": 50 }
+      "a": {
+        "integrity": 90,
+        "connection": 20
+      },
+      "b": {
+        "integrity": 50,
+        "connection": 60
+      },
+      "c": {
+        "integrity": 80,
+        "adaptability": 55
+      },
+      "d": {
+        "integrity": 35,
+        "connection": 50
+      }
     },
-    "difficulty": 0.65,
+    "difficulty": 0.61,
     "reverse_scored": false,
     "validity_pair_id": null,
     "is_impression_management": false,
-    "version_availability": ["quick", "deep"]
+    "version_availability": [
+      "quick",
+      "deep"
+    ],
+    "sub_dimension": "consistency"
   },
   {
     "id": "integrity_situational_09",
     "dimension": "integrity",
     "secondary_dimension": null,
     "type": "situational",
-    "text": "A colleague confides that they're planning to leave the company in three months. Your boss asks you directly if you've heard anything about this person leaving.",
+    "text": "A colleague confides that they're planning to leave the company in three months. My boss asks me directly if I've heard anything about this person leaving.",
     "options": [
-      { "key": "a", "text": "Tell your boss what you know. You owe your organization honesty, and this information affects planning.", "scores": { "integrity": 55, "drive": 50 } },
-      { "key": "b", "text": "Say 'I'd encourage you to talk to them directly' without confirming or denying.", "scores": { "integrity": 70, "connection": 55 } },
-      { "key": "c", "text": "Say you haven't heard anything. Protecting a confidence matters more.", "scores": { "integrity": 30, "connection": 70 } },
-      { "key": "d", "text": "Tell your colleague their boss is asking, and let them decide how to handle it.", "scores": { "integrity": 75, "connection": 60 } }
+      {
+        "key": "a",
+        "text": "Tell your boss what you know. You owe your organization honesty, and this information affects planning.",
+        "scores": {
+          "integrity": 55,
+          "drive": 50
+        }
+      },
+      {
+        "key": "b",
+        "text": "Say 'I'd encourage you to talk to them directly' without confirming or denying.",
+        "scores": {
+          "integrity": 70,
+          "connection": 55
+        }
+      },
+      {
+        "key": "c",
+        "text": "Say you haven't heard anything. Protecting a confidence matters more.",
+        "scores": {
+          "integrity": 30,
+          "connection": 70
+        }
+      },
+      {
+        "key": "d",
+        "text": "Tell your colleague their boss is asking, and let them decide how to handle it.",
+        "scores": {
+          "integrity": 75,
+          "connection": 60
+        }
+      }
     ],
     "scoring_weights": {
-      "a": { "integrity": 55, "drive": 50 },
-      "b": { "integrity": 70, "connection": 55 },
-      "c": { "integrity": 30, "connection": 70 },
-      "d": { "integrity": 75, "connection": 60 }
+      "a": {
+        "integrity": 55,
+        "drive": 50
+      },
+      "b": {
+        "integrity": 70,
+        "connection": 55
+      },
+      "c": {
+        "integrity": 30,
+        "connection": 70
+      },
+      "d": {
+        "integrity": 75,
+        "connection": 60
+      }
     },
-    "difficulty": 0.85,
+    "difficulty": 0.57,
     "reverse_scored": false,
     "validity_pair_id": null,
     "is_impression_management": false,
-    "version_availability": ["deep"]
+    "version_availability": [
+      "deep"
+    ],
+    "sub_dimension": "transparency"
   },
   {
     "id": "integrity_situational_10",
     "dimension": "integrity",
     "secondary_dimension": null,
     "type": "situational",
-    "text": "You made a strategic call six months ago that turned out to be wrong. It cost the team time and money. In a retrospective meeting, someone asks what went wrong.",
+    "text": "I made a strategic call six months ago that turned out to be wrong. It cost the team time and money. In a retrospective meeting, someone asks what went wrong.",
     "options": [
-      { "key": "a", "text": "Own it fully. 'I made that call and it was wrong. Here's what I've learned from it.'", "scores": { "integrity": 90, "drive": 35 } },
-      { "key": "b", "text": "Explain the reasoning that led to the decision, focusing on what was unknowable at the time.", "scores": { "integrity": 55, "vision": 60 } },
-      { "key": "c", "text": "Acknowledge the outcome but frame it as a team decision rather than yours alone.", "scores": { "integrity": 30, "connection": 45 } },
-      { "key": "d", "text": "Own the mistake but pivot quickly to the corrective plan so the team doesn't dwell on blame.", "scores": { "integrity": 70, "drive": 65 } }
+      {
+        "key": "a",
+        "text": "Own it fully. 'I made that call and it was wrong. Here's what I've learned from it.'",
+        "scores": {
+          "integrity": 90,
+          "drive": 35
+        }
+      },
+      {
+        "key": "b",
+        "text": "Explain the reasoning that led to the decision, focusing on what was unknowable at the time.",
+        "scores": {
+          "integrity": 55,
+          "vision": 60
+        }
+      },
+      {
+        "key": "c",
+        "text": "Acknowledge the outcome but frame it as a team decision rather than yours alone.",
+        "scores": {
+          "integrity": 30,
+          "connection": 45
+        }
+      },
+      {
+        "key": "d",
+        "text": "Own the mistake but pivot quickly to the corrective plan so the team doesn't dwell on blame.",
+        "scores": {
+          "integrity": 70,
+          "drive": 65
+        }
+      }
     ],
     "scoring_weights": {
-      "a": { "integrity": 90, "drive": 35 },
-      "b": { "integrity": 55, "vision": 60 },
-      "c": { "integrity": 30, "connection": 45 },
-      "d": { "integrity": 70, "drive": 65 }
+      "a": {
+        "integrity": 90,
+        "drive": 35
+      },
+      "b": {
+        "integrity": 55,
+        "vision": 60
+      },
+      "c": {
+        "integrity": 30,
+        "connection": 45
+      },
+      "d": {
+        "integrity": 70,
+        "drive": 65
+      }
     },
-    "difficulty": 0.5,
+    "difficulty": 0.73,
     "reverse_scored": false,
     "validity_pair_id": null,
     "is_impression_management": false,
-    "version_availability": ["quick", "deep"]
+    "version_availability": [
+      "quick",
+      "deep"
+    ],
+    "sub_dimension": "transparency"
   },
   {
     "id": "integrity_situational_11",
     "dimension": "integrity",
     "secondary_dimension": null,
     "type": "situational",
-    "text": "You're interviewing candidates for a role. Your top candidate is someone you went to college with. They're qualified, but you know three other people on the shortlist might be equally strong. Your boss doesn't know about the personal connection.",
+    "text": "I'm interviewing candidates for a role. My top candidate is someone I went to college with. They're qualified, but I know three other people on the shortlist might be equally strong. My boss doesn't know about the personal connection.",
     "options": [
-      { "key": "a", "text": "Disclose the relationship to your boss and offer to recuse yourself from the decision.", "scores": { "integrity": 85, "adaptability": 40 } },
-      { "key": "b", "text": "Disclose the relationship but stay involved, since your firsthand knowledge of this person is actually useful.", "scores": { "integrity": 70, "drive": 55 } },
-      { "key": "c", "text": "Don't mention it. It's a professional context and you can be objective.", "scores": { "integrity": 20, "drive": 45 } },
-      { "key": "d", "text": "Advocate for a structured interview process where all candidates are scored on the same rubric, reducing the chance your bias affects the outcome.", "scores": { "integrity": 75, "vision": 60 } }
+      {
+        "key": "a",
+        "text": "Disclose the relationship to your boss and offer to recuse yourself from the decision.",
+        "scores": {
+          "integrity": 85,
+          "adaptability": 40
+        }
+      },
+      {
+        "key": "b",
+        "text": "Disclose the relationship but stay involved, since your firsthand knowledge of this person is actually useful.",
+        "scores": {
+          "integrity": 70,
+          "drive": 55
+        }
+      },
+      {
+        "key": "c",
+        "text": "Don't mention it. It's a professional context and you can be objective.",
+        "scores": {
+          "integrity": 20,
+          "drive": 45
+        }
+      },
+      {
+        "key": "d",
+        "text": "Advocate for a structured interview process where all candidates are scored on the same rubric, reducing the chance your bias affects the outcome.",
+        "scores": {
+          "integrity": 75,
+          "vision": 60
+        }
+      }
     ],
     "scoring_weights": {
-      "a": { "integrity": 85, "adaptability": 40 },
-      "b": { "integrity": 70, "drive": 55 },
-      "c": { "integrity": 20, "drive": 45 },
-      "d": { "integrity": 75, "vision": 60 }
+      "a": {
+        "integrity": 85,
+        "adaptability": 40
+      },
+      "b": {
+        "integrity": 70,
+        "drive": 55
+      },
+      "c": {
+        "integrity": 20,
+        "drive": 45
+      },
+      "d": {
+        "integrity": 75,
+        "vision": 60
+      }
     },
-    "difficulty": 0.5,
+    "difficulty": 0.69,
     "reverse_scored": false,
     "validity_pair_id": null,
     "is_impression_management": false,
-    "version_availability": ["quick", "deep"]
+    "version_availability": [
+      "quick",
+      "deep"
+    ],
+    "sub_dimension": "consistency"
   },
   {
     "id": "integrity_situational_12",
     "dimension": "integrity",
     "secondary_dimension": null,
     "type": "situational",
-    "text": "Your team's monthly report has always included a metric that makes your department look good but doesn't actually reflect real performance. No one has questioned it. You've just taken over the report.",
+    "text": "My team's monthly report has consistently included a metric that makes my department look good but doesn't actually reflect real performance. Few people has questioned it. I've just taken over the report.",
     "options": [
-      { "key": "a", "text": "Replace the vanity metric with one that reflects actual performance, even if it makes the department look worse initially.", "scores": { "integrity": 85, "vision": 55 } },
-      { "key": "b", "text": "Keep the current metric but add the more accurate one alongside it, letting people draw their own conclusions.", "scores": { "integrity": 60, "adaptability": 50 } },
-      { "key": "c", "text": "Keep it as-is. You just started and changing the reporting will create unnecessary friction.", "scores": { "integrity": 20, "adaptability": 60 } },
-      { "key": "d", "text": "Raise the concern with your leadership and let them decide whether to change the metric.", "scores": { "integrity": 65, "connection": 40 } }
+      {
+        "key": "a",
+        "text": "Replace the vanity metric with one that reflects actual performance, even if it makes the department look worse initially.",
+        "scores": {
+          "integrity": 85,
+          "vision": 55
+        }
+      },
+      {
+        "key": "b",
+        "text": "Keep the current metric but add the more accurate one alongside it, letting people draw their own conclusions.",
+        "scores": {
+          "integrity": 60,
+          "adaptability": 50
+        }
+      },
+      {
+        "key": "c",
+        "text": "Keep it as-is. You just started and changing the reporting will create unnecessary friction.",
+        "scores": {
+          "integrity": 20,
+          "adaptability": 60
+        }
+      },
+      {
+        "key": "d",
+        "text": "Raise the concern with your leadership and let them decide whether to change the metric.",
+        "scores": {
+          "integrity": 65,
+          "connection": 40
+        }
+      }
     ],
     "scoring_weights": {
-      "a": { "integrity": 85, "vision": 55 },
-      "b": { "integrity": 60, "adaptability": 50 },
-      "c": { "integrity": 20, "adaptability": 60 },
-      "d": { "integrity": 65, "connection": 40 }
+      "a": {
+        "integrity": 85,
+        "vision": 55
+      },
+      "b": {
+        "integrity": 60,
+        "adaptability": 50
+      },
+      "c": {
+        "integrity": 20,
+        "adaptability": 60
+      },
+      "d": {
+        "integrity": 65,
+        "connection": 40
+      }
     },
-    "difficulty": 0.55,
+    "difficulty": 0.68,
     "reverse_scored": false,
     "validity_pair_id": null,
     "is_impression_management": false,
-    "version_availability": ["quick", "deep"]
+    "version_availability": [
+      "quick",
+      "deep"
+    ],
+    "sub_dimension": "consistency"
   },
   {
     "id": "integrity_situational_13",
     "dimension": "integrity",
     "secondary_dimension": null,
     "type": "situational",
-    "text": "Your company's expense policy says receipts are required for anything over $25. You spent $40 on a legitimate business lunch but lost the receipt. You know no one checks these closely.",
+    "text": "My company's expense policy says receipts are required for anything over $25. I spent $40 on a legitimate business lunch but lost the receipt. I know few people checks these closely.",
     "options": [
-      { "key": "a", "text": "Don't submit it. The policy is the policy, and you lost the receipt.", "scores": { "integrity": 80, "adaptability": 15 } },
-      { "key": "b", "text": "Submit it with a note explaining you lost the receipt and asking if they can make an exception.", "scores": { "integrity": 85, "connection": 40 } },
-      { "key": "c", "text": "Submit it without the receipt. It was a legitimate expense and the policy is a formality.", "scores": { "integrity": 25, "drive": 50 } },
-      { "key": "d", "text": "Estimate the amount on the lower side and submit it without the receipt.", "scores": { "integrity": 15, "drive": 55 } }
+      {
+        "key": "a",
+        "text": "Don't submit it. The policy is the policy, and you lost the receipt.",
+        "scores": {
+          "integrity": 80,
+          "adaptability": 15
+        }
+      },
+      {
+        "key": "b",
+        "text": "Submit it with a note explaining you lost the receipt and asking if they can make an exception.",
+        "scores": {
+          "integrity": 85,
+          "connection": 40
+        }
+      },
+      {
+        "key": "c",
+        "text": "Submit it without the receipt. It was a legitimate expense and the policy is a formality.",
+        "scores": {
+          "integrity": 25,
+          "drive": 50
+        }
+      },
+      {
+        "key": "d",
+        "text": "Estimate the amount on the lower side and submit it without the receipt.",
+        "scores": {
+          "integrity": 15,
+          "drive": 55
+        }
+      }
     ],
     "scoring_weights": {
-      "a": { "integrity": 80, "adaptability": 15 },
-      "b": { "integrity": 85, "connection": 40 },
-      "c": { "integrity": 25, "drive": 50 },
-      "d": { "integrity": 15, "drive": 55 }
+      "a": {
+        "integrity": 80,
+        "adaptability": 15
+      },
+      "b": {
+        "integrity": 85,
+        "connection": 40
+      },
+      "c": {
+        "integrity": 25,
+        "drive": 50
+      },
+      "d": {
+        "integrity": 15,
+        "drive": 55
+      }
     },
-    "difficulty": 0.4,
+    "difficulty": 0.72,
     "reverse_scored": false,
     "validity_pair_id": null,
     "is_impression_management": false,
-    "version_availability": ["quick", "deep"]
+    "version_availability": [
+      "quick",
+      "deep"
+    ],
+    "sub_dimension": "transparency"
   },
   {
     "id": "integrity_situational_14",
     "dimension": "integrity",
     "secondary_dimension": null,
     "type": "situational",
-    "text": "You're in a team meeting and a peer confidently presents data that you're fairly sure is wrong. Correcting them would slow down the meeting and could embarrass them in front of the group.",
+    "text": "I'm in a team meeting and a peer confidently presents data that I'm fairly sure is wrong. Correcting them would slow down the meeting and could embarrass them in front of the group.",
     "options": [
-      { "key": "a", "text": "Raise it in the meeting. Better to get it right now than build plans on bad data.", "scores": { "integrity": 80, "drive": 50 } },
-      { "key": "b", "text": "Message them privately during the meeting so they can self-correct.", "scores": { "integrity": 70, "connection": 65 } },
-      { "key": "c", "text": "Follow up with them after the meeting to double-check the numbers together.", "scores": { "integrity": 55, "connection": 60 } },
-      { "key": "d", "text": "Let it go unless it directly affects a decision being made today.", "scores": { "integrity": 25, "adaptability": 55 } }
+      {
+        "key": "a",
+        "text": "Raise it in the meeting. Better to get it right now than build plans on bad data.",
+        "scores": {
+          "integrity": 80,
+          "drive": 50
+        }
+      },
+      {
+        "key": "b",
+        "text": "Message them privately during the meeting so they can self-correct.",
+        "scores": {
+          "integrity": 70,
+          "connection": 65
+        }
+      },
+      {
+        "key": "c",
+        "text": "Follow up with them after the meeting to double-check the numbers together.",
+        "scores": {
+          "integrity": 55,
+          "connection": 60
+        }
+      },
+      {
+        "key": "d",
+        "text": "Let it go unless it directly affects a decision being made today.",
+        "scores": {
+          "integrity": 25,
+          "adaptability": 55
+        }
+      }
     ],
     "scoring_weights": {
-      "a": { "integrity": 80, "drive": 50 },
-      "b": { "integrity": 70, "connection": 65 },
-      "c": { "integrity": 55, "connection": 60 },
-      "d": { "integrity": 25, "adaptability": 55 }
+      "a": {
+        "integrity": 80,
+        "drive": 50
+      },
+      "b": {
+        "integrity": 70,
+        "connection": 65
+      },
+      "c": {
+        "integrity": 55,
+        "connection": 60
+      },
+      "d": {
+        "integrity": 25,
+        "adaptability": 55
+      }
     },
-    "difficulty": 0.5,
+    "difficulty": 0.73,
     "reverse_scored": false,
     "validity_pair_id": null,
     "is_impression_management": false,
-    "version_availability": ["deep"]
+    "version_availability": [
+      "deep"
+    ],
+    "sub_dimension": "ethics"
   },
   {
     "id": "integrity_situational_15",
     "dimension": "integrity",
     "secondary_dimension": null,
     "type": "situational",
-    "text": "Your organization asks you to sign off on a compliance report. You've reviewed most of it, but one section was prepared by another department and you haven't had time to verify their numbers. The deadline is today.",
+    "text": "My organization asks me to sign off on a compliance report. I've reviewed most of it, but one section was prepared by another department and I haven't had time to verify their numbers. The deadline is today.",
     "options": [
-      { "key": "a", "text": "Refuse to sign until you've verified every section, even if it means missing the deadline.", "scores": { "integrity": 85, "drive": 15 } },
-      { "key": "b", "text": "Sign it but add a caveat noting which sections you personally verified and which you didn't.", "scores": { "integrity": 75, "adaptability": 60 } },
-      { "key": "c", "text": "Sign it. The other department's reputation is good and the deadline matters.", "scores": { "integrity": 30, "drive": 65 } },
-      { "key": "d", "text": "Call the other department lead, ask them to confirm their numbers are accurate, and sign based on their assurance.", "scores": { "integrity": 60, "connection": 50 } }
+      {
+        "key": "a",
+        "text": "Refuse to sign until you've verified every section, even if it means missing the deadline.",
+        "scores": {
+          "integrity": 85,
+          "drive": 15
+        }
+      },
+      {
+        "key": "b",
+        "text": "Sign it but add a caveat noting which sections you personally verified and which you didn't.",
+        "scores": {
+          "integrity": 75,
+          "adaptability": 60
+        }
+      },
+      {
+        "key": "c",
+        "text": "Sign it. The other department's reputation is good and the deadline matters.",
+        "scores": {
+          "integrity": 30,
+          "drive": 65
+        }
+      },
+      {
+        "key": "d",
+        "text": "Call the other department lead, ask them to confirm their numbers are accurate, and sign based on their assurance.",
+        "scores": {
+          "integrity": 60,
+          "connection": 50
+        }
+      }
     ],
     "scoring_weights": {
-      "a": { "integrity": 85, "drive": 15 },
-      "b": { "integrity": 75, "adaptability": 60 },
-      "c": { "integrity": 30, "drive": 65 },
-      "d": { "integrity": 60, "connection": 50 }
+      "a": {
+        "integrity": 85,
+        "drive": 15
+      },
+      "b": {
+        "integrity": 75,
+        "adaptability": 60
+      },
+      "c": {
+        "integrity": 30,
+        "drive": 65
+      },
+      "d": {
+        "integrity": 60,
+        "connection": 50
+      }
     },
-    "difficulty": 0.65,
+    "difficulty": 0.34,
     "reverse_scored": false,
     "validity_pair_id": null,
     "is_impression_management": false,
-    "version_availability": ["deep"]
+    "version_availability": [
+      "deep"
+    ],
+    "sub_dimension": "consistency"
   },
   {
     "id": "integrity_situational_16",
     "dimension": "integrity",
     "secondary_dimension": null,
     "type": "situational",
-    "text": "You told your team you'd be available over the weekend for a critical launch. Saturday morning, a family obligation comes up that you genuinely can't avoid.",
+    "text": "I told my team I'd be available over the weekend for a critical launch. Saturday morning, a family obligation comes up that I genuinely can't avoid.",
     "options": [
-      { "key": "a", "text": "Tell your team immediately, explain the situation honestly, and help arrange backup coverage before you go.", "scores": { "integrity": 85, "connection": 60 } },
-      { "key": "b", "text": "Stay available by phone throughout the family event, checking in every hour.", "scores": { "integrity": 60, "drive": 70 } },
-      { "key": "c", "text": "Tell them something vague came up and you'll be back by the afternoon, without mentioning it's a family thing.", "scores": { "integrity": 35, "adaptability": 45 } },
-      { "key": "d", "text": "Skip the family obligation. You made a commitment to your team and that comes first.", "scores": { "integrity": 70, "drive": 80 } }
+      {
+        "key": "a",
+        "text": "Tell your team immediately, explain the situation honestly, and help arrange backup coverage before you go.",
+        "scores": {
+          "integrity": 85,
+          "connection": 60
+        }
+      },
+      {
+        "key": "b",
+        "text": "Stay available by phone throughout the family event, checking in every hour.",
+        "scores": {
+          "integrity": 60,
+          "drive": 70
+        }
+      },
+      {
+        "key": "c",
+        "text": "Tell them something vague came up and you'll be back by the afternoon, without mentioning it's a family thing.",
+        "scores": {
+          "integrity": 35,
+          "adaptability": 45
+        }
+      },
+      {
+        "key": "d",
+        "text": "Skip the family obligation. You made a commitment to your team and that comes first.",
+        "scores": {
+          "integrity": 70,
+          "drive": 80
+        }
+      }
     ],
     "scoring_weights": {
-      "a": { "integrity": 85, "connection": 60 },
-      "b": { "integrity": 60, "drive": 70 },
-      "c": { "integrity": 35, "adaptability": 45 },
-      "d": { "integrity": 70, "drive": 80 }
+      "a": {
+        "integrity": 85,
+        "connection": 60
+      },
+      "b": {
+        "integrity": 60,
+        "drive": 70
+      },
+      "c": {
+        "integrity": 35,
+        "adaptability": 45
+      },
+      "d": {
+        "integrity": 70,
+        "drive": 80
+      }
     },
-    "difficulty": 0.55,
+    "difficulty": 0.44,
     "reverse_scored": false,
     "validity_pair_id": null,
     "is_impression_management": false,
-    "version_availability": ["quick", "deep"]
+    "version_availability": [
+      "quick",
+      "deep"
+    ],
+    "sub_dimension": "transparency"
   },
   {
     "id": "integrity_situational_17",
     "dimension": "integrity",
     "secondary_dimension": null,
     "type": "situational",
-    "text": "You've built a strong relationship with a client over two years. They ask you off the record whether your company is planning to raise prices next year. You know the answer is yes, but the announcement hasn't been made yet.",
+    "text": "I've built a strong relationship with a client over two years. They ask I off the record whether my company is planning to raise prices next year. I know the answer is yes, but the announcement hasn't been made yet.",
     "options": [
-      { "key": "a", "text": "Tell them you can't share that information. Be direct about why.", "scores": { "integrity": 80, "connection": 30 } },
-      { "key": "b", "text": "Hint at it without saying it outright: 'I'd lock in your current rates if I were you.'", "scores": { "integrity": 35, "connection": 65 } },
-      { "key": "c", "text": "Tell them honestly. The relationship matters more than internal politics, and they'll find out soon anyway.", "scores": { "integrity": 40, "connection": 75 } },
-      { "key": "d", "text": "Deflect: 'I'm not involved in pricing decisions' even though you are.", "scores": { "integrity": 15, "adaptability": 40 } }
+      {
+        "key": "a",
+        "text": "Tell them you can't share that information. Be direct about why.",
+        "scores": {
+          "integrity": 80,
+          "connection": 30
+        }
+      },
+      {
+        "key": "b",
+        "text": "Hint at it without saying it outright: 'I'd lock in your current rates if I were you.'",
+        "scores": {
+          "integrity": 35,
+          "connection": 65
+        }
+      },
+      {
+        "key": "c",
+        "text": "Tell them honestly. The relationship matters more than internal politics, and they'll find out soon anyway.",
+        "scores": {
+          "integrity": 40,
+          "connection": 75
+        }
+      },
+      {
+        "key": "d",
+        "text": "Deflect: 'I'm not involved in pricing decisions' even though you are.",
+        "scores": {
+          "integrity": 15,
+          "adaptability": 40
+        }
+      }
     ],
     "scoring_weights": {
-      "a": { "integrity": 80, "connection": 30 },
-      "b": { "integrity": 35, "connection": 65 },
-      "c": { "integrity": 40, "connection": 75 },
-      "d": { "integrity": 15, "adaptability": 40 }
+      "a": {
+        "integrity": 80,
+        "connection": 30
+      },
+      "b": {
+        "integrity": 35,
+        "connection": 65
+      },
+      "c": {
+        "integrity": 40,
+        "connection": 75
+      },
+      "d": {
+        "integrity": 15,
+        "adaptability": 40
+      }
     },
-    "difficulty": 0.8,
+    "difficulty": 0.5,
     "reverse_scored": false,
     "validity_pair_id": null,
     "is_impression_management": false,
-    "version_availability": ["deep"]
+    "version_availability": [
+      "deep"
+    ],
+    "sub_dimension": "transparency"
   },
   {
     "id": "integrity_forced_01",
     "dimension": "integrity",
     "secondary_dimension": null,
     "type": "forced_choice",
-    "text": "You discover a shortcut that would save the project two weeks but bends an internal compliance rule. You:",
+    "text": "I discover a shortcut that would save the project two weeks but bends an internal compliance rule. I:",
     "options": [
-      { "key": "a", "text": "Follow the rule, absorb the delay, and flag the rule as something worth revisiting.", "scores": { "integrity": 80, "adaptability": 25 } },
-      { "key": "b", "text": "Take the shortcut and document what you did, so it's at least transparent.", "scores": { "integrity": 35, "drive": 75 } }
+      {
+        "key": "a",
+        "text": "Follow the rule, absorb the delay, and flag the rule as something worth revisiting.",
+        "scores": {
+          "integrity": 80,
+          "adaptability": 25
+        }
+      },
+      {
+        "key": "b",
+        "text": "Take the shortcut and document what you did, so it's at least transparent.",
+        "scores": {
+          "integrity": 35,
+          "drive": 75
+        }
+      }
     ],
     "scoring_weights": {
-      "a": { "integrity": 80, "adaptability": 25 },
-      "b": { "integrity": 35, "drive": 75 }
+      "a": {
+        "integrity": 80,
+        "adaptability": 25
+      },
+      "b": {
+        "integrity": 35,
+        "drive": 75
+      }
     },
-    "difficulty": 0.55,
+    "difficulty": 0.41,
     "reverse_scored": false,
     "validity_pair_id": null,
     "is_impression_management": false,
-    "version_availability": ["quick", "deep"]
+    "version_availability": [
+      "quick",
+      "deep"
+    ],
+    "sub_dimension": "ethics"
   },
   {
     "id": "integrity_forced_02",
     "dimension": "integrity",
     "secondary_dimension": null,
     "type": "forced_choice",
-    "text": "A client asks you to shade the truth on a proposal to make the numbers look better. Your gut response:",
+    "text": "A client asks me to shade the truth on a proposal to make the numbers look better. My gut response:",
     "options": [
-      { "key": "a", "text": "Push back directly and present the real numbers, even if the client doesn't like it.", "scores": { "integrity": 85, "connection": 20 } },
-      { "key": "b", "text": "Find a way to frame the numbers more favorably without outright misrepresenting them.", "scores": { "integrity": 30, "drive": 65 } }
+      {
+        "key": "a",
+        "text": "Push back directly and present the real numbers, even if the client doesn't like it.",
+        "scores": {
+          "integrity": 85,
+          "connection": 20
+        }
+      },
+      {
+        "key": "b",
+        "text": "Find a way to frame the numbers more favorably without outright misrepresenting them.",
+        "scores": {
+          "integrity": 30,
+          "drive": 65
+        }
+      }
     ],
     "scoring_weights": {
-      "a": { "integrity": 85, "connection": 20 },
-      "b": { "integrity": 30, "drive": 65 }
+      "a": {
+        "integrity": 85,
+        "connection": 20
+      },
+      "b": {
+        "integrity": 30,
+        "drive": 65
+      }
     },
-    "difficulty": 0.5,
+    "difficulty": 0.73,
     "reverse_scored": false,
     "validity_pair_id": null,
     "is_impression_management": false,
-    "version_availability": ["quick", "deep"]
+    "version_availability": [
+      "quick",
+      "deep"
+    ],
+    "sub_dimension": "transparency"
   },
   {
     "id": "integrity_forced_03",
     "dimension": "integrity",
     "secondary_dimension": null,
     "type": "forced_choice",
-    "text": "Your team cut a corner to hit a tight deadline. When you find out after the fact, you:",
+    "text": "My team cut a corner to hit a tight deadline. When I find out after the fact, I:",
     "options": [
-      { "key": "a", "text": "Go back and redo the work properly, even though the deadline already passed.", "scores": { "integrity": 80, "drive": 20 } },
-      { "key": "b", "text": "Acknowledge it happened and focus on making sure it doesn't happen next time.", "scores": { "integrity": 45, "adaptability": 65 } }
+      {
+        "key": "a",
+        "text": "Go back and redo the work properly, even though the deadline already passed.",
+        "scores": {
+          "integrity": 80,
+          "drive": 20
+        }
+      },
+      {
+        "key": "b",
+        "text": "Acknowledge it happened and focus on making sure it doesn't happen next time.",
+        "scores": {
+          "integrity": 45,
+          "adaptability": 65
+        }
+      }
     ],
     "scoring_weights": {
-      "a": { "integrity": 80, "drive": 20 },
-      "b": { "integrity": 45, "adaptability": 65 }
+      "a": {
+        "integrity": 80,
+        "drive": 20
+      },
+      "b": {
+        "integrity": 45,
+        "adaptability": 65
+      }
     },
-    "difficulty": 0.6,
+    "difficulty": 0.73,
     "reverse_scored": false,
     "validity_pair_id": null,
     "is_impression_management": false,
-    "version_availability": ["quick", "deep"]
+    "version_availability": [
+      "quick",
+      "deep"
+    ],
+    "sub_dimension": "transparency"
   },
   {
     "id": "integrity_forced_04",
     "dimension": "integrity",
     "secondary_dimension": null,
     "type": "forced_choice",
-    "text": "A friend at work asks you what you really think of their presentation. It was mediocre. You:",
+    "text": "A friend at work asks me what I really think of their presentation. It was mediocre. I:",
     "options": [
-      { "key": "a", "text": "Give them specific, honest feedback on what didn't land, knowing it might sting.", "scores": { "integrity": 80, "connection": 25 } },
-      { "key": "b", "text": "Highlight the parts that worked well and gently suggest one thing to improve.", "scores": { "integrity": 35, "connection": 75 } }
+      {
+        "key": "a",
+        "text": "Give them specific, honest feedback on what didn't land, knowing it might sting.",
+        "scores": {
+          "integrity": 80,
+          "connection": 25
+        }
+      },
+      {
+        "key": "b",
+        "text": "Highlight the parts that worked well and gently suggest one thing to improve.",
+        "scores": {
+          "integrity": 35,
+          "connection": 75
+        }
+      }
     ],
     "scoring_weights": {
-      "a": { "integrity": 80, "connection": 25 },
-      "b": { "integrity": 35, "connection": 75 }
+      "a": {
+        "integrity": 80,
+        "connection": 25
+      },
+      "b": {
+        "integrity": 35,
+        "connection": 75
+      }
     },
-    "difficulty": 0.45,
+    "difficulty": 0.43,
     "reverse_scored": false,
     "validity_pair_id": null,
     "is_impression_management": false,
-    "version_availability": ["quick", "deep"]
+    "version_availability": [
+      "quick",
+      "deep"
+    ],
+    "sub_dimension": "transparency"
   },
   {
     "id": "integrity_forced_05",
     "dimension": "integrity",
     "secondary_dimension": null,
     "type": "forced_choice",
-    "text": "You realize you gave a stakeholder incorrect information last week. No decisions have been made yet based on it. You:",
+    "text": "I realize I gave a stakeholder incorrect information last week. No decisions have been made yet based on it. I:",
     "options": [
-      { "key": "a", "text": "Proactively reach out to correct the record, even though they might question your competence.", "scores": { "integrity": 85, "drive": 30 } },
-      { "key": "b", "text": "Quietly correct the information in the next update without drawing attention to the original error.", "scores": { "integrity": 30, "adaptability": 60 } }
+      {
+        "key": "a",
+        "text": "Proactively reach out to correct the record, even though they might question your competence.",
+        "scores": {
+          "integrity": 85,
+          "drive": 30
+        }
+      },
+      {
+        "key": "b",
+        "text": "Quietly correct the information in the next update without drawing attention to the original error.",
+        "scores": {
+          "integrity": 30,
+          "adaptability": 60
+        }
+      }
     ],
     "scoring_weights": {
-      "a": { "integrity": 85, "drive": 30 },
-      "b": { "integrity": 30, "adaptability": 60 }
+      "a": {
+        "integrity": 85,
+        "drive": 30
+      },
+      "b": {
+        "integrity": 30,
+        "adaptability": 60
+      }
     },
-    "difficulty": 0.5,
+    "difficulty": 0.75,
     "reverse_scored": false,
     "validity_pair_id": null,
     "is_impression_management": false,
-    "version_availability": ["quick", "deep"]
+    "version_availability": [
+      "quick",
+      "deep"
+    ],
+    "sub_dimension": "transparency"
   },
   {
     "id": "integrity_forced_06",
     "dimension": "integrity",
     "secondary_dimension": null,
     "type": "forced_choice",
-    "text": "Your manager asks you to present the team's results at a conference. You contributed about 20% of the work. You:",
+    "text": "My manager asks me to present the team's results at a conference. I contributed about 20% of the work. I:",
     "options": [
-      { "key": "a", "text": "Present but make clear who did what, crediting each team member by name for their contributions.", "scores": { "integrity": 80, "connection": 55 } },
-      { "key": "b", "text": "Present it as a team effort without getting into individual credits -- it's simpler and still accurate.", "scores": { "integrity": 40, "drive": 60 } }
+      {
+        "key": "a",
+        "text": "Present but make clear who did what, crediting each team member by name for their contributions.",
+        "scores": {
+          "integrity": 80,
+          "connection": 55
+        }
+      },
+      {
+        "key": "b",
+        "text": "Present it as a team effort without getting into individual credits -- it's simpler and still accurate.",
+        "scores": {
+          "integrity": 40,
+          "drive": 60
+        }
+      }
     ],
     "scoring_weights": {
-      "a": { "integrity": 80, "connection": 55 },
-      "b": { "integrity": 40, "drive": 60 }
+      "a": {
+        "integrity": 80,
+        "connection": 55
+      },
+      "b": {
+        "integrity": 40,
+        "drive": 60
+      }
     },
-    "difficulty": 0.45,
+    "difficulty": 0.73,
     "reverse_scored": false,
     "validity_pair_id": null,
     "is_impression_management": false,
-    "version_availability": ["deep"]
+    "version_availability": [
+      "deep"
+    ],
+    "sub_dimension": "consistency"
   },
   {
     "id": "integrity_forced_07",
     "dimension": "integrity",
     "secondary_dimension": null,
     "type": "forced_choice",
-    "text": "You strongly disagree with a new company policy. Your team looks to you for how to react. You:",
+    "text": "I strongly disagree with a new company policy. My team looks to me for how to react. I:",
     "options": [
-      { "key": "a", "text": "Share your honest opinion with your team while still implementing the policy as required.", "scores": { "integrity": 75, "connection": 50 } },
-      { "key": "b", "text": "Support the policy publicly to maintain unity, and push back through the proper channels privately.", "scores": { "integrity": 50, "adaptability": 70 } }
+      {
+        "key": "a",
+        "text": "Share your honest opinion with your team while still implementing the policy as required.",
+        "scores": {
+          "integrity": 85,
+          "connection": 40
+        }
+      },
+      {
+        "key": "b",
+        "text": "Support the policy publicly to maintain unity, and push back through the proper channels privately.",
+        "scores": {
+          "integrity": 35,
+          "adaptability": 75
+        }
+      }
     ],
     "scoring_weights": {
-      "a": { "integrity": 75, "connection": 50 },
-      "b": { "integrity": 50, "adaptability": 70 }
+      "a": {
+        "integrity": 85,
+        "connection": 40
+      },
+      "b": {
+        "integrity": 35,
+        "adaptability": 75
+      }
     },
-    "difficulty": 0.7,
+    "difficulty": 0.8,
     "reverse_scored": false,
     "validity_pair_id": null,
     "is_impression_management": false,
-    "version_availability": ["quick", "deep"]
+    "version_availability": [
+      "quick",
+      "deep"
+    ],
+    "sub_dimension": "transparency"
   },
   {
     "id": "integrity_forced_08",
     "dimension": "integrity",
     "secondary_dimension": null,
     "type": "forced_choice",
-    "text": "Two people on your team deserve a promotion but there's only one slot. One is more qualified; the other has been waiting longer and is more loyal. You:",
+    "text": "Two people on my team deserve a promotion but there's only one slot. One is more qualified; the other has been waiting longer and is more loyal. I:",
     "options": [
-      { "key": "a", "text": "Promote the more qualified person. Loyalty matters but performance should drive the decision.", "scores": { "integrity": 75, "drive": 65 } },
-      { "key": "b", "text": "Promote the one who's waited longer. Keeping your promises about career growth matters.", "scores": { "integrity": 60, "connection": 70 } }
+      {
+        "key": "a",
+        "text": "Promote the more qualified person. Loyalty matters but performance should drive the decision.",
+        "scores": {
+          "integrity": 85,
+          "drive": 30
+        }
+      },
+      {
+        "key": "b",
+        "text": "Promote the one who's waited longer. Keeping your promises about career growth matters.",
+        "scores": {
+          "integrity": 35,
+          "connection": 80
+        }
+      }
     ],
     "scoring_weights": {
-      "a": { "integrity": 75, "drive": 65 },
-      "b": { "integrity": 60, "connection": 70 }
+      "a": {
+        "integrity": 85,
+        "drive": 30
+      },
+      "b": {
+        "integrity": 35,
+        "connection": 80
+      }
     },
-    "difficulty": 0.75,
+    "difficulty": 0.54,
     "reverse_scored": false,
     "validity_pair_id": null,
     "is_impression_management": false,
-    "version_availability": ["deep"]
+    "version_availability": [
+      "deep"
+    ],
+    "sub_dimension": "ethics"
   },
   {
     "id": "integrity_forced_09",
     "dimension": "integrity",
     "secondary_dimension": null,
     "type": "forced_choice",
-    "text": "You're at a networking event and someone asks what your company does. Your product is solid but not exciting. You:",
+    "text": "I'm at a networking event and someone asks what my company does. My product is solid but not exciting. I:",
     "options": [
-      { "key": "a", "text": "Describe it accurately, including its limitations, and let the product speak for itself.", "scores": { "integrity": 80, "drive": 25 } },
-      { "key": "b", "text": "Lead with the most impressive use case and save the caveats for later in the conversation.", "scores": { "integrity": 35, "drive": 70 } }
+      {
+        "key": "a",
+        "text": "Describe it accurately, including its limitations, and let the product speak for itself.",
+        "scores": {
+          "integrity": 80,
+          "drive": 25
+        }
+      },
+      {
+        "key": "b",
+        "text": "Lead with the most impressive use case and save the caveats for later in the conversation.",
+        "scores": {
+          "integrity": 35,
+          "drive": 70
+        }
+      }
     ],
     "scoring_weights": {
-      "a": { "integrity": 80, "drive": 25 },
-      "b": { "integrity": 35, "drive": 70 }
+      "a": {
+        "integrity": 80,
+        "drive": 25
+      },
+      "b": {
+        "integrity": 35,
+        "drive": 70
+      }
     },
-    "difficulty": 0.4,
+    "difficulty": 0.56,
     "reverse_scored": false,
     "validity_pair_id": null,
     "is_impression_management": false,
-    "version_availability": ["quick", "deep"]
+    "version_availability": [
+      "quick",
+      "deep"
+    ],
+    "sub_dimension": "consistency"
   },
   {
     "id": "integrity_forced_10",
     "dimension": "integrity",
     "secondary_dimension": null,
     "type": "forced_choice",
-    "text": "A process you've always followed is slowing things down and everyone else ignores it. You:",
+    "text": "A process I've consistently followed is slowing things down and everyone else ignores it. I:",
     "options": [
-      { "key": "a", "text": "Keep following it until it's officially changed. Rules exist for reasons even if they're inconvenient.", "scores": { "integrity": 75, "adaptability": 15 } },
-      { "key": "b", "text": "Stop following it too, and put your energy toward getting it formally updated.", "scores": { "integrity": 40, "adaptability": 80 } }
+      {
+        "key": "a",
+        "text": "Keep following it until it's officially changed. Rules exist for reasons even if they're inconvenient.",
+        "scores": {
+          "integrity": 75,
+          "adaptability": 15
+        }
+      },
+      {
+        "key": "b",
+        "text": "Stop following it too, and put your energy toward getting it formally updated.",
+        "scores": {
+          "integrity": 40,
+          "adaptability": 80
+        }
+      }
     ],
     "scoring_weights": {
-      "a": { "integrity": 75, "adaptability": 15 },
-      "b": { "integrity": 40, "adaptability": 80 }
+      "a": {
+        "integrity": 75,
+        "adaptability": 15
+      },
+      "b": {
+        "integrity": 40,
+        "adaptability": 80
+      }
     },
-    "difficulty": 0.65,
+    "difficulty": 0.72,
     "reverse_scored": false,
     "validity_pair_id": null,
     "is_impression_management": false,
-    "version_availability": ["quick", "deep"]
+    "version_availability": [
+      "quick",
+      "deep"
+    ],
+    "sub_dimension": "ethics"
+  },
+  {
+    "id": "integrity_likert_26",
+    "dimension": "integrity",
+    "secondary_dimension": null,
+    "sub_dimension": "transparency",
+    "type": "likert",
+    "text": "I have never told even a small white lie at work, not even to spare someone's feelings.",
+    "options": null,
+    "scoring_weights": {
+      "1": {
+        "integrity": 85
+      },
+      "2": {
+        "integrity": 70
+      },
+      "3": {
+        "integrity": 50
+      },
+      "4": {
+        "integrity": 30
+      },
+      "5": {
+        "integrity": 15
+      }
+    },
+    "difficulty": 0.89,
+    "reverse_scored": true,
+    "validity_pair_id": null,
+    "is_impression_management": true,
+    "version_availability": [
+      "quick",
+      "deep"
+    ]
+  },
+  {
+    "id": "integrity_likert_27",
+    "dimension": "integrity",
+    "secondary_dimension": null,
+    "sub_dimension": "ethics",
+    "type": "likert",
+    "text": "I have never bent a rule, even when I was sure nobody would find out.",
+    "options": null,
+    "scoring_weights": {
+      "1": {
+        "integrity": 85
+      },
+      "2": {
+        "integrity": 70
+      },
+      "3": {
+        "integrity": 50
+      },
+      "4": {
+        "integrity": 30
+      },
+      "5": {
+        "integrity": 15
+      }
+    },
+    "difficulty": 0.88,
+    "reverse_scored": true,
+    "validity_pair_id": null,
+    "is_impression_management": true,
+    "version_availability": [
+      "deep"
+    ]
+  },
+  {
+    "id": "integrity_likert_28",
+    "dimension": "integrity",
+    "secondary_dimension": null,
+    "sub_dimension": "transparency",
+    "type": "likert",
+    "text": "When I make a mistake that affects others, I own it openly rather than waiting to see if anyone notices.",
+    "options": null,
+    "scoring_weights": {
+      "1": {
+        "integrity": 0
+      },
+      "2": {
+        "integrity": 20
+      },
+      "3": {
+        "integrity": 45
+      },
+      "4": {
+        "integrity": 70
+      },
+      "5": {
+        "integrity": 100
+      }
+    },
+    "difficulty": 0.17,
+    "reverse_scored": false,
+    "validity_pair_id": "integrity_vp_02",
+    "is_impression_management": false,
+    "version_availability": [
+      "quick",
+      "deep"
+    ]
+  },
+  {
+    "id": "integrity_likert_29",
+    "dimension": "integrity",
+    "secondary_dimension": null,
+    "sub_dimension": "transparency",
+    "type": "likert",
+    "text": "If I make an error and nobody notices, I sometimes let it slide rather than bringing it up.",
+    "options": null,
+    "scoring_weights": {
+      "1": {
+        "integrity": 100
+      },
+      "2": {
+        "integrity": 70
+      },
+      "3": {
+        "integrity": 45
+      },
+      "4": {
+        "integrity": 20
+      },
+      "5": {
+        "integrity": 0
+      }
+    },
+    "difficulty": 0.55,
+    "reverse_scored": true,
+    "validity_pair_id": "integrity_vp_02",
+    "is_impression_management": false,
+    "version_availability": [
+      "quick",
+      "deep"
+    ]
+  },
+  {
+    "id": "integrity_likert_30",
+    "dimension": "integrity",
+    "secondary_dimension": null,
+    "sub_dimension": "consistency",
+    "type": "likert",
+    "text": "I hold myself to the same standards I hold my team to, even when it would be easier not to.",
+    "options": null,
+    "scoring_weights": {
+      "1": {
+        "integrity": 0
+      },
+      "2": {
+        "integrity": 15
+      },
+      "3": {
+        "integrity": 50
+      },
+      "4": {
+        "integrity": 85
+      },
+      "5": {
+        "integrity": 100
+      }
+    },
+    "difficulty": 0.27,
+    "reverse_scored": false,
+    "validity_pair_id": "integrity_vp_03",
+    "is_impression_management": false,
+    "version_availability": [
+      "deep"
+    ]
+  },
+  {
+    "id": "integrity_likert_31",
+    "dimension": "integrity",
+    "secondary_dimension": null,
+    "sub_dimension": "consistency",
+    "type": "likert",
+    "text": "There are times when I expect more from my team than I consistently deliver myself.",
+    "options": null,
+    "scoring_weights": {
+      "1": {
+        "integrity": 100
+      },
+      "2": {
+        "integrity": 85
+      },
+      "3": {
+        "integrity": 50
+      },
+      "4": {
+        "integrity": 15
+      },
+      "5": {
+        "integrity": 0
+      }
+    },
+    "difficulty": 0.65,
+    "reverse_scored": true,
+    "validity_pair_id": "integrity_vp_03",
+    "is_impression_management": false,
+    "version_availability": [
+      "deep"
+    ]
   }
 ]
