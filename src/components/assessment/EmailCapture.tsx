@@ -14,6 +14,7 @@ import { motion } from 'framer-motion';
 interface EmailCaptureProps {
   isSubmitting: boolean;
   onSubmit: (firstName: string, email: string) => void;
+  totalQuestions?: number;
 }
 
 const containerVariants = {
@@ -34,7 +35,7 @@ const itemVariants = {
   },
 };
 
-export default function EmailCapture({ isSubmitting, onSubmit }: EmailCaptureProps) {
+export default function EmailCapture({ isSubmitting, onSubmit, totalQuestions }: EmailCaptureProps) {
   const [firstName, setFirstName] = useState('');
   const [email, setEmail] = useState('');
   const [errors, setErrors] = useState<{ firstName?: string; email?: string }>({});
@@ -71,6 +72,12 @@ export default function EmailCapture({ isSubmitting, onSubmit }: EmailCapturePro
       className="flex flex-col items-center justify-center min-h-full px-6 md:px-10 py-12"
     >
       <motion.div variants={itemVariants} className="w-full max-w-md">
+        {/* Accent line */}
+        <div
+          className="w-8 h-px mb-5"
+          style={{ backgroundColor: 'rgba(89, 119, 148, 0.2)' }}
+        />
+
         <p className="font-caption text-ops-text-secondary uppercase tracking-[0.2em] text-xs mb-2">
           [ Almost there ]
         </p>
@@ -149,6 +156,16 @@ export default function EmailCapture({ isSubmitting, onSubmit }: EmailCapturePro
             {isSubmitting ? 'Generating...' : 'Generate my results'}
           </button>
         </motion.div>
+
+        {/* Completion context */}
+        {totalQuestions != null && totalQuestions > 0 && (
+          <motion.p
+            variants={itemVariants}
+            className="font-caption text-[10px] text-ops-text-secondary/40 text-center"
+          >
+            {totalQuestions} of {totalQuestions} questions complete
+          </motion.p>
+        )}
 
         {/* Privacy note */}
         <motion.p

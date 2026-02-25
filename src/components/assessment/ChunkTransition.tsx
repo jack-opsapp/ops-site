@@ -11,7 +11,8 @@
 
 'use client';
 
-import { useRef, useEffect, useCallback } from 'react';
+import { useRef, useEffect, useCallback, useState } from 'react';
+import { motion } from 'framer-motion';
 
 /* ------------------------------------------------------------------ */
 /*  Constants                                                          */
@@ -80,7 +81,14 @@ export default function ChunkTransition({ chunkNumber, totalChunks, onComplete }
   const animRef = useRef(0);
   const onCompleteRef = useRef(onComplete);
   const mouseRef = useRef({ x: -9999, y: -9999 });
+  const [showAnalyzing, setShowAnalyzing] = useState(false);
   onCompleteRef.current = onComplete;
+
+  // Show "Analyzing responses..." after 0.5s delay
+  useEffect(() => {
+    const t = setTimeout(() => setShowAnalyzing(true), 500);
+    return () => clearTimeout(t);
+  }, []);
 
   const resize = useCallback(() => {
     const canvas = canvasRef.current;
@@ -251,13 +259,33 @@ export default function ChunkTransition({ chunkNumber, totalChunks, onComplete }
       <div ref={containerRef} className="absolute inset-0">
         <canvas ref={canvasRef} style={{ display: 'block', width: '100%', height: '100%' }} />
       </div>
-      <div className="relative z-10 text-left">
-        <p className="font-caption text-xs uppercase tracking-[0.2em] text-ops-text-secondary">
-          Analyzing responses...
-        </p>
-        <p className="font-caption text-[10px] uppercase tracking-[0.15em] text-ops-text-secondary/50 mt-2">
-          Chunk {chunkNumber} of {totalChunks}
-        </p>
+      <div className="relative z-10 text-center">
+        <motion.p
+          initial={{ opacity: 0, y: 20, filter: 'blur(4px)' }}
+          animate={{ opacity: 1, y: 0, filter: 'blur(0px)' }}
+          transition={{ duration: 0.5, ease: [0.22, 1, 0.36, 1] }}
+          className="font-heading text-2xl font-semibold uppercase text-ops-text-primary tracking-wide"
+        >
+          Section Complete
+        </motion.p>
+        <motion.p
+          initial={{ opacity: 0, y: 12 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.5, ease: [0.22, 1, 0.36, 1], delay: 0.1 }}
+          className="font-caption text-[10px] uppercase tracking-[0.2em] text-ops-text-secondary/60 mt-2"
+        >
+          Section {chunkNumber} of {totalChunks}
+        </motion.p>
+        {showAnalyzing && (
+          <motion.p
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            transition={{ duration: 0.4, ease: [0.22, 1, 0.36, 1] }}
+            className="font-caption text-[10px] uppercase tracking-[0.2em] text-ops-text-secondary/40 mt-3"
+          >
+            Analyzing responses...
+          </motion.p>
+        )}
       </div>
     </div>
   );

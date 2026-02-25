@@ -25,6 +25,7 @@ import {
   submitEmailAndGenerateResults,
 } from '@/lib/assessment/actions';
 import AssessmentOverlay from './AssessmentOverlay';
+import type { PhaseLabel } from './AssessmentOverlay';
 import QuestionFrame from './QuestionFrame';
 import ChunkTransition from './ChunkTransition';
 import EmailCapture from './EmailCapture';
@@ -354,6 +355,18 @@ export default function AssessmentFlow({ version }: AssessmentFlowProps) {
 
   const progress = totalQuestions > 0 ? answeredSoFar / totalQuestions : 0;
 
+  /* ---- Phase label for header ---- */
+  let phaseLabel: PhaseLabel = 'ASSESSMENT';
+  if (state.phase === 'chunk_transition') phaseLabel = 'SECTION COMPLETE';
+  else if (state.phase === 'email_capture') phaseLabel = 'ALMOST THERE';
+  else if (state.phase === 'generating') phaseLabel = 'GENERATING';
+
+  /* ---- Question counter for progress bar ---- */
+  const currentQuestionNumber =
+    state.phase === 'questioning' || state.phase === 'submitting_chunk'
+      ? (state.currentChunk - 1) * questionsPerChunk + state.questionIndex + 1
+      : undefined;
+
   /* ---- Phase variants for AnimatePresence ---- */
 
   const phaseVariants = {
@@ -365,7 +378,15 @@ export default function AssessmentFlow({ version }: AssessmentFlowProps) {
   /* ---- Render ---- */
 
   return (
-    <AssessmentOverlay progress={progress} onExit={handleExit}>
+    <AssessmentOverlay
+      progress={progress}
+      onExit={handleExit}
+      phaseLabel={phaseLabel}
+      questionNumber={currentQuestionNumber}
+      totalQuestions={totalQuestions > 0 ? totalQuestions : undefined}
+      chunkNumber={state.currentChunk > 0 ? state.currentChunk : undefined}
+      totalChunks={state.totalChunks > 0 ? state.totalChunks : undefined}
+    >
       <AnimatePresence mode="wait">
         {/* Starting / Loading */}
         {state.phase === 'starting' && (
@@ -428,6 +449,7 @@ export default function AssessmentFlow({ version }: AssessmentFlowProps) {
             <EmailCapture
               isSubmitting={false}
               onSubmit={handleEmailSubmit}
+              totalQuestions={totalQuestions > 0 ? totalQuestions : undefined}
             />
           </motion.div>
         )}
