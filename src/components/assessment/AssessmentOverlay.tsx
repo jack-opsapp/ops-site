@@ -21,10 +21,11 @@ import Link from 'next/link';
 import ProgressBar from './ProgressBar';
 import AssessmentStarfield from './AssessmentStarfield';
 
-export type PhaseLabel = 'ASSESSMENT' | 'SECTION COMPLETE' | 'ALMOST THERE' | 'GENERATING';
+export type PhaseLabel = 'ASSESSMENT' | 'SECTION REVIEW' | 'SECTION COMPLETE' | 'ALMOST THERE' | 'GENERATING';
 
 interface AssessmentOverlayProps {
   progress: number;
+  lockedProgress?: number;
   onExit: () => void;
   phaseLabel?: PhaseLabel;
   questionNumber?: number;
@@ -36,6 +37,7 @@ interface AssessmentOverlayProps {
 
 export default function AssessmentOverlay({
   progress,
+  lockedProgress,
   onExit,
   phaseLabel = 'ASSESSMENT',
   questionNumber,
@@ -121,6 +123,7 @@ export default function AssessmentOverlay({
         {/* Progress bar with context */}
         <ProgressBar
           progress={progress}
+          lockedProgress={lockedProgress}
           questionNumber={questionNumber}
           totalQuestions={totalQuestions}
           chunkNumber={chunkNumber}

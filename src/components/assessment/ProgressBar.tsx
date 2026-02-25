@@ -11,6 +11,7 @@ import { motion, AnimatePresence } from 'framer-motion';
 
 interface ProgressBarProps {
   progress: number; // 0 to 1
+  lockedProgress?: number; // 0 to 1 — completed sections shown in white
   questionNumber?: number;
   totalQuestions?: number;
   chunkNumber?: number;
@@ -21,12 +22,14 @@ const EASE = [0.22, 1, 0.36, 1] as const;
 
 export default function ProgressBar({
   progress,
+  lockedProgress = 0,
   questionNumber,
   totalQuestions,
   chunkNumber,
   totalChunks,
 }: ProgressBarProps) {
   const pct = Math.max(0, Math.min(1, progress)) * 100;
+  const lockedPct = Math.max(0, Math.min(1, lockedProgress)) * 100;
   const showContext = questionNumber != null && totalQuestions != null && totalQuestions > 0;
   const showSection = chunkNumber != null && totalChunks != null && totalChunks > 0;
 
@@ -74,6 +77,7 @@ export default function ProgressBar({
 
       {/* Progress bar */}
       <div className="w-full h-[2px] bg-white/[0.04] relative overflow-hidden">
+        {/* Accent fill — current progress */}
         <motion.div
           className="absolute inset-y-0 left-0"
           style={{ backgroundColor: '#597794' }}
@@ -81,6 +85,16 @@ export default function ProgressBar({
           animate={{ width: `${pct}%` }}
           transition={{ duration: 0.6, ease: EASE }}
         />
+        {/* White locked fill — completed sections, layered on top */}
+        {lockedPct > 0 && (
+          <motion.div
+            className="absolute inset-y-0 left-0"
+            style={{ backgroundColor: 'rgba(255, 255, 255, 0.8)' }}
+            initial={{ width: '0%' }}
+            animate={{ width: `${lockedPct}%` }}
+            transition={{ duration: 0.6, ease: EASE }}
+          />
+        )}
         {/* Leading-edge glow */}
         <motion.div
           className="absolute inset-y-0 w-[40px]"

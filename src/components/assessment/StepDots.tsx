@@ -2,7 +2,7 @@
  * StepDots — Square dot navigation for questions within a chunk
  *
  * 5 square dots (6x6px, OPS star style).
- * Completed: clickable, bg-white/30, hover bg-white/50
+ * Completed: clickable, emerald/success, hover brightens
  * Current: accent with subtle glow
  * Future: bg-white/10, not clickable
  */
@@ -53,13 +53,15 @@ export default function StepDots({
                 isCurrent
                   ? 'w-full h-full bg-ops-accent'
                   : isCompleted
-                    ? 'w-full h-full bg-white/30 hover:bg-white/50 transition-colors'
+                    ? 'w-full h-full bg-emerald-400/50 hover:bg-emerald-400/70 transition-colors'
                     : 'w-full h-full bg-white/10'
               }
               style={
                 isCurrent
                   ? { boxShadow: '0 0 6px rgba(89, 119, 148, 0.4)' }
-                  : undefined
+                  : isCompleted
+                    ? { boxShadow: '0 0 4px rgba(52, 211, 153, 0.2)' }
+                    : undefined
               }
               transition={{ duration: 0.2, ease: [0.22, 1, 0.36, 1] }}
             />

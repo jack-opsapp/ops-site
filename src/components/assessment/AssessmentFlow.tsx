@@ -2,8 +2,9 @@
  * AssessmentFlow — Core state machine orchestrator
  *
  * Manages the full assessment lifecycle:
- *   starting → cover → cover_exit → questioning → submitting_chunk →
- *   chunk_transition → questioning (loop) → email_capture → generating → complete
+ *   starting → cover → cover_exit → questioning → chunk_review →
+ *   submitting_chunk → chunk_transition → questioning (loop) →
+ *   email_capture → generating → complete
  *
  * Supports back navigation and step dot navigation within chunks.
  * Uses QuestionTransition star galaxy between questions.
@@ -31,6 +32,7 @@ import QuestionFrame from './QuestionFrame';
 import QuestionTransition from './QuestionTransition';
 import ChunkTransition from './ChunkTransition';
 import EmailCapture from './EmailCapture';
+import ChunkReview from './ChunkReview';
 import GeneratingState from './GeneratingState';
 
 /* ------------------------------------------------------------------ */
@@ -43,6 +45,7 @@ type Phase =
   | 'cover_exit'
   | 'questioning'
   | 'question_transition'
+  | 'chunk_review'
   | 'submitting_chunk'
   | 'chunk_transition'
   | 'email_capture'
@@ -69,6 +72,7 @@ interface FlowState {
   transitionDirection: 'forward' | 'back';
   isTransitioning: boolean;
   targetQuestionIndex: number;
+  isRevising: boolean;
 }
 
 /* ------------------------------------------------------------------ */
@@ -84,6 +88,8 @@ type FlowAction =
   | { type: 'GO_BACK' }
   | { type: 'NAVIGATE_TO_STEP'; index: number }
   | { type: 'QUESTION_TRANSITION_DONE' }
+  | { type: 'CONFIRM_CHUNK' }
+  | { type: 'REVISE_QUESTION'; index: number }
   | { type: 'CHUNK_SUBMITTED'; complete: boolean; questions?: ClientQuestion[]; currentChunk: number; totalChunks: number }
   | { type: 'CHUNK_ANIM_DONE' }
   | { type: 'CHUNK_API_DONE'; complete: boolean; questions?: ClientQuestion[]; currentChunk: number; totalChunks: number }
@@ -146,13 +152,23 @@ function reducer(state: FlowState, action: FlowAction): FlowState {
         ? state.chunkResponses.map((r, i) => i === existingIdx ? response : r)
         : [...state.chunkResponses, response];
 
+      // If revising from chunk_review, return to review after answering
+      if (state.isRevising) {
+        return {
+          ...state,
+          chunkResponses: newResponses,
+          phase: 'chunk_review',
+          isRevising: false,
+        };
+      }
+
       const isLastInChunk = state.questionIndex >= state.questions.length - 1;
 
       if (isLastInChunk) {
         return {
           ...state,
           chunkResponses: newResponses,
-          phase: 'submitting_chunk',
+          phase: 'chunk_review',
         };
       }
 
@@ -167,6 +183,14 @@ function reducer(state: FlowState, action: FlowAction): FlowState {
     }
 
     case 'GO_BACK': {
+      // If revising from chunk_review, return to review
+      if (state.isRevising) {
+        return {
+          ...state,
+          phase: 'chunk_review',
+          isRevising: false,
+        };
+      }
       if (state.questionIndex <= 0) return state;
       return {
         ...state,
@@ -197,6 +221,21 @@ function reducer(state: FlowState, action: FlowAction): FlowState {
         questionIndex: state.targetQuestionIndex,
         questionStartTime: Date.now(),
         isTransitioning: false,
+      };
+
+    case 'CONFIRM_CHUNK':
+      return {
+        ...state,
+        phase: 'submitting_chunk',
+      };
+
+    case 'REVISE_QUESTION':
+      return {
+        ...state,
+        phase: 'questioning',
+        questionIndex: action.index,
+        questionStartTime: Date.now(),
+        isRevising: true,
       };
 
     case 'CHUNK_SUBMITTED': {
@@ -390,6 +429,7 @@ export default function AssessmentFlow({ version }: AssessmentFlowProps) {
     transitionDirection: 'forward',
     isTransitioning: false,
     targetQuestionIndex: 0,
+    isRevising: false,
   });
 
   /* ---- Start assessment ---- */
@@ -516,16 +556,22 @@ export default function AssessmentFlow({ version }: AssessmentFlowProps) {
   const answeredSoFar = state.phase === 'email_capture' || state.phase === 'generating' || state.phase === 'complete'
     ? totalQuestions
     : state.phase === 'chunk_transition'
-      ? state.currentChunk * questionsPerChunk
+      ? (state.currentChunk - 1) * questionsPerChunk
       : state.phase === 'cover' || state.phase === 'cover_exit' || state.phase === 'starting'
         ? 0
         : (state.currentChunk - 1) * questionsPerChunk + state.savedAnswers.size;
 
   const progress = totalQuestions > 0 ? answeredSoFar / totalQuestions : 0;
 
+  // Locked progress: completed (submitted) sections shown in white
+  const lockedProgress = totalQuestions > 0
+    ? Math.max(0, (state.currentChunk - 1)) * questionsPerChunk / totalQuestions
+    : 0;
+
   /* ---- Phase label for header ---- */
   let phaseLabel: PhaseLabel = 'ASSESSMENT';
-  if (state.phase === 'chunk_transition') phaseLabel = 'SECTION COMPLETE';
+  if (state.phase === 'chunk_review') phaseLabel = 'SECTION REVIEW';
+  else if (state.phase === 'chunk_transition') phaseLabel = 'SECTION COMPLETE';
   else if (state.phase === 'email_capture') phaseLabel = 'ALMOST THERE';
   else if (state.phase === 'generating') phaseLabel = 'GENERATING';
 
@@ -546,7 +592,7 @@ export default function AssessmentFlow({ version }: AssessmentFlowProps) {
     return set;
   }, [state.questions, state.savedAnswers]);
 
-  const isFirstQuestion = state.currentChunk === 1 && state.questionIndex === 0;
+  const isFirstQuestion = state.questionIndex === 0 && !state.isRevising;
   const currentQuestion = state.questions[state.questionIndex];
   const savedAnswer = currentQuestion ? state.savedAnswers.get(currentQuestion.id) : undefined;
   const meta = VERSION_META[version];
@@ -591,6 +637,7 @@ export default function AssessmentFlow({ version }: AssessmentFlowProps) {
   return (
     <AssessmentOverlay
       progress={progress}
+      lockedProgress={lockedProgress}
       onExit={handleExit}
       phaseLabel={phaseLabel}
       questionNumber={currentQuestionNumber}
@@ -684,7 +731,8 @@ export default function AssessmentFlow({ version }: AssessmentFlowProps) {
                 className="font-heading font-light text-ops-text-secondary/50 text-sm leading-relaxed max-w-md mb-14"
               >
                 Answer honestly — there are no right or wrong responses.
-                Your results are generated instantly.
+                A dedicated AI analyst will interpret your unique patterns
+                and deliver a nuanced portrait of your leadership.
               </motion.p>
 
               {/* Begin button */}
@@ -735,6 +783,20 @@ export default function AssessmentFlow({ version }: AssessmentFlowProps) {
               onAnswer={handleConfirmAdvance}
               onBack={handleBack}
               onNavigateToStep={handleNavigateToStep}
+            />
+          </motion.div>
+        )}
+
+        {/* Chunk review — summary before submission */}
+        {state.phase === 'chunk_review' && (
+          <motion.div key="chunk-review" {...phaseVariants} className="flex-1 h-full">
+            <ChunkReview
+              questions={state.questions}
+              savedAnswers={state.savedAnswers}
+              chunkNumber={state.currentChunk}
+              totalChunks={state.totalChunks}
+              onRevise={(index) => dispatch({ type: 'REVISE_QUESTION', index })}
+              onConfirm={() => dispatch({ type: 'CONFIRM_CHUNK' })}
             />
           </motion.div>
         )}
