@@ -27,7 +27,8 @@ const tools = [
     name: 'LEADERSHIP ASSESSMENT',
     description:
       'Evaluate leadership aptitude and team dynamics. Built on research from construction industry management.',
-    status: 'development' as const,
+    status: 'available' as const,
+    href: '/tools/leadership',
     illustration: <LeadershipIllustration />,
   },
   {
@@ -65,6 +66,7 @@ export default function ToolsPage() {
                   name={tool.name}
                   description={tool.description}
                   status={tool.status}
+                  href={'href' in tool ? tool.href : undefined}
                   illustration={tool.illustration}
                 />
               </FadeInUp>
