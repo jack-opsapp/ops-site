@@ -133,7 +133,7 @@ export default function QuestionFrame({
         initial="initial"
         animate="animate"
         exit="exit"
-        className="flex flex-col items-center justify-center min-h-full px-6 md:px-10 py-8"
+        className="flex flex-col items-center justify-center h-full px-6 md:px-10 py-8"
       >
         {/* Step dots */}
         <StepDots
@@ -154,7 +154,7 @@ export default function QuestionFrame({
         {/* Question text */}
         <motion.h2
           variants={textVariants}
-          className="font-heading text-3xl md:text-4xl font-semibold text-ops-text-primary text-center max-w-3xl mb-6 md:mb-8 leading-[1.15]"
+          className="font-heading text-2xl md:text-3xl lg:text-4xl font-light text-ops-text-primary text-center max-w-3xl mb-6 md:mb-8 leading-[1.3] tracking-tight"
         >
           {question.text}
         </motion.h2>

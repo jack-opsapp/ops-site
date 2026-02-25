@@ -2,7 +2,7 @@
  * AssessmentFlow — Core state machine orchestrator
  *
  * Manages the full assessment lifecycle:
- *   starting → questioning → submitting_chunk → chunk_transition →
+ *   starting → cover → questioning → submitting_chunk → chunk_transition →
  *   questioning (loop) → email_capture → generating → complete
  *
  * Supports back navigation and step dot navigation within chunks.
@@ -38,6 +38,7 @@ import GeneratingState from './GeneratingState';
 
 type Phase =
   | 'starting'
+  | 'cover'
   | 'questioning'
   | 'question_transition'
   | 'submitting_chunk'
@@ -63,7 +64,7 @@ interface FlowState {
   chunkApiDone: boolean;
   chunkAnimDone: boolean;
   nextQuestions: ClientQuestion[] | null;
-  // New: navigation & confirm mode
+  // Navigation & confirm mode
   savedAnswers: Map<string, number | string>;
   transitionDirection: 'forward' | 'back';
   isTransitioning: boolean;
@@ -76,7 +77,7 @@ interface FlowState {
 
 type FlowAction =
   | { type: 'START_SUCCESS'; sessionId: string; token: string; questions: ClientQuestion[]; totalChunks: number }
-  | { type: 'ANSWER'; value: number | string; responseTimeMs: number }
+  | { type: 'DISMISS_COVER' }
   | { type: 'SELECT_ANSWER'; questionId: string; value: number | string }
   | { type: 'CONFIRM_ADVANCE'; responseTimeMs: number }
   | { type: 'GO_BACK' }
@@ -88,24 +89,29 @@ type FlowAction =
   | { type: 'EMAIL_SUBMITTED' }
   | { type: 'GENERATION_COMPLETE'; token: string }
   | { type: 'ERROR'; message: string }
-  | { type: 'RETRY' }
-  | { type: 'BEGIN_QUESTION' };
+  | { type: 'RETRY' };
 
 function reducer(state: FlowState, action: FlowAction): FlowState {
   switch (action.type) {
     case 'START_SUCCESS':
       return {
         ...state,
-        phase: 'questioning',
+        phase: 'cover',
         sessionId: action.sessionId,
         token: action.token,
         questions: action.questions,
         totalChunks: action.totalChunks,
         currentChunk: 1,
         questionIndex: 0,
-        questionStartTime: Date.now(),
         error: null,
         savedAnswers: new Map(),
+      };
+
+    case 'DISMISS_COVER':
+      return {
+        ...state,
+        phase: 'questioning',
+        questionStartTime: Date.now(),
       };
 
     case 'SELECT_ANSWER': {
@@ -128,7 +134,6 @@ function reducer(state: FlowState, action: FlowAction): FlowState {
         response_time_ms: action.responseTimeMs,
       };
 
-      // Update or add to chunkResponses
       const existingIdx = state.chunkResponses.findIndex(r => r.question_id === question.id);
       const newResponses = existingIdx >= 0
         ? state.chunkResponses.map((r, i) => i === existingIdx ? response : r)
@@ -144,7 +149,6 @@ function reducer(state: FlowState, action: FlowAction): FlowState {
         };
       }
 
-      // Start question transition forward
       return {
         ...state,
         chunkResponses: newResponses,
@@ -179,7 +183,7 @@ function reducer(state: FlowState, action: FlowAction): FlowState {
       };
     }
 
-    case 'QUESTION_TRANSITION_DONE': {
+    case 'QUESTION_TRANSITION_DONE':
       return {
         ...state,
         phase: 'questioning',
@@ -187,34 +191,6 @@ function reducer(state: FlowState, action: FlowAction): FlowState {
         questionStartTime: Date.now(),
         isTransitioning: false,
       };
-    }
-
-    // Legacy ANSWER action — kept for backwards compat but not used in new flow
-    case 'ANSWER': {
-      const question = state.questions[state.questionIndex];
-      const response: ChunkSubmission = {
-        question_id: question.id,
-        answer_value: action.value,
-        response_time_ms: action.responseTimeMs,
-      };
-      const newResponses = [...state.chunkResponses, response];
-      const isLastInChunk = state.questionIndex >= state.questions.length - 1;
-
-      if (isLastInChunk) {
-        return {
-          ...state,
-          chunkResponses: newResponses,
-          phase: 'submitting_chunk',
-        };
-      }
-
-      return {
-        ...state,
-        chunkResponses: newResponses,
-        questionIndex: state.questionIndex + 1,
-        questionStartTime: Date.now(),
-      };
-    }
 
     case 'CHUNK_SUBMITTED': {
       if (action.complete) {
@@ -314,12 +290,23 @@ function reducer(state: FlowState, action: FlowAction): FlowState {
 }
 
 /* ------------------------------------------------------------------ */
+/*  Cover labels                                                       */
+/* ------------------------------------------------------------------ */
+
+const VERSION_META = {
+  quick: { title: 'Quick Assessment', questions: '15 questions', time: '~3 minutes' },
+  deep: { title: 'Deep Assessment', questions: '50 questions', time: '~12 minutes' },
+} as const;
+
+/* ------------------------------------------------------------------ */
 /*  Component                                                          */
 /* ------------------------------------------------------------------ */
 
 interface AssessmentFlowProps {
   version: AssessmentVersion;
 }
+
+const EASE = [0.22, 1, 0.36, 1] as const;
 
 export default function AssessmentFlow({ version }: AssessmentFlowProps) {
   const router = useRouter();
@@ -407,14 +394,11 @@ export default function AssessmentFlow({ version }: AssessmentFlowProps) {
 
   /* ---- Handlers ---- */
 
-  const handleSelectAnswer = useCallback((value: number | string) => {
-    if (state.phase !== 'questioning') return;
-    const question = state.questions[state.questionIndex];
-    dispatch({ type: 'SELECT_ANSWER', questionId: question.id, value });
-  }, [state.phase, state.questions, state.questionIndex]);
+  const handleDismissCover = useCallback(() => {
+    dispatch({ type: 'DISMISS_COVER' });
+  }, []);
 
   const handleConfirmAdvance = useCallback((value: number | string) => {
-    // Save the answer first, then advance
     const question = state.questions[state.questionIndex];
     dispatch({ type: 'SELECT_ANSWER', questionId: question.id, value });
     dispatch({
@@ -460,12 +444,13 @@ export default function AssessmentFlow({ version }: AssessmentFlowProps) {
   const questionsPerChunk = 5;
   const totalQuestions = state.totalChunks * questionsPerChunk;
 
-  // Use savedAnswers.size for more accurate progress
   const answeredSoFar = state.phase === 'email_capture' || state.phase === 'generating' || state.phase === 'complete'
     ? totalQuestions
     : state.phase === 'chunk_transition'
       ? state.currentChunk * questionsPerChunk
-      : (state.currentChunk - 1) * questionsPerChunk + state.savedAnswers.size;
+      : state.phase === 'cover' || state.phase === 'starting'
+        ? 0
+        : (state.currentChunk - 1) * questionsPerChunk + state.savedAnswers.size;
 
   const progress = totalQuestions > 0 ? answeredSoFar / totalQuestions : 0;
 
@@ -492,19 +477,17 @@ export default function AssessmentFlow({ version }: AssessmentFlowProps) {
     return set;
   }, [state.questions, state.savedAnswers]);
 
-  /* ---- Is first question of entire assessment ---- */
   const isFirstQuestion = state.currentChunk === 1 && state.questionIndex === 0;
-
-  /* ---- Saved answer for current question ---- */
   const currentQuestion = state.questions[state.questionIndex];
   const savedAnswer = currentQuestion ? state.savedAnswers.get(currentQuestion.id) : undefined;
+  const meta = VERSION_META[version];
 
-  /* ---- Phase variants for AnimatePresence ---- */
+  /* ---- Phase variants ---- */
 
   const phaseVariants = {
-    initial: { opacity: 0, y: 12 },
-    animate: { opacity: 1, y: 0, transition: { duration: 0.4, ease: [0.22, 1, 0.36, 1] as const } },
-    exit: { opacity: 0, y: -12, transition: { duration: 0.25 } },
+    initial: { opacity: 0 },
+    animate: { opacity: 1, transition: { duration: 0.5, ease: EASE } },
+    exit: { opacity: 0, transition: { duration: 0.3, ease: EASE } },
   };
 
   /* ---- Render ---- */
@@ -533,7 +516,7 @@ export default function AssessmentFlow({ version }: AssessmentFlowProps) {
           <motion.div
             key="starting"
             {...phaseVariants}
-            className="flex-1 flex items-center justify-center min-h-full"
+            className="flex-1 flex items-center justify-center h-full"
           >
             <div className="text-center">
               <motion.div
@@ -549,9 +532,73 @@ export default function AssessmentFlow({ version }: AssessmentFlowProps) {
           </motion.div>
         )}
 
+        {/* Cover page */}
+        {state.phase === 'cover' && (
+          <motion.div
+            key="cover"
+            {...phaseVariants}
+            className="flex-1 flex items-center justify-center h-full"
+          >
+            <div className="flex flex-col items-center text-center px-6 max-w-lg">
+              {/* Version badge */}
+              <motion.span
+                initial={{ opacity: 0, y: 10 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ duration: 0.5, delay: 0.1, ease: EASE }}
+                className="font-caption text-[10px] uppercase tracking-[0.25em] text-ops-accent mb-6"
+              >
+                [ {version === 'quick' ? 'Quick' : 'Deep'} ]
+              </motion.span>
+
+              {/* Title */}
+              <motion.h1
+                initial={{ opacity: 0, y: 16 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ duration: 0.6, delay: 0.2, ease: EASE }}
+                className="font-heading font-bold uppercase text-ops-text-primary text-4xl md:text-5xl lg:text-6xl leading-[0.95] tracking-tight mb-6"
+              >
+                Leadership
+                <br />
+                Assessment
+              </motion.h1>
+
+              {/* Meta line */}
+              <motion.p
+                initial={{ opacity: 0, y: 10 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ duration: 0.5, delay: 0.35, ease: EASE }}
+                className="font-heading font-light text-ops-text-secondary text-base mb-3"
+              >
+                {meta.questions} &middot; {meta.time}
+              </motion.p>
+
+              {/* Description */}
+              <motion.p
+                initial={{ opacity: 0, y: 10 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ duration: 0.5, delay: 0.45, ease: EASE }}
+                className="font-heading font-light text-ops-text-secondary/60 text-sm mb-12 max-w-sm"
+              >
+                Answer honestly — there are no right or wrong responses. Your results are generated instantly.
+              </motion.p>
+
+              {/* Begin button */}
+              <motion.button
+                initial={{ opacity: 0, y: 10 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ duration: 0.5, delay: 0.6, ease: EASE }}
+                onClick={handleDismissCover}
+                className="font-caption uppercase tracking-[0.15em] text-[11px] bg-white text-ops-background rounded-[3px] px-8 py-3 cursor-pointer hover:bg-white/90 transition-colors duration-200"
+              >
+                Begin
+              </motion.button>
+            </div>
+          </motion.div>
+        )}
+
         {/* Questioning */}
         {(state.phase === 'questioning' || state.phase === 'question_transition') && currentQuestion && (
-          <motion.div key={`q-${currentQuestion.id}`} {...phaseVariants} className="flex-1 flex min-h-full">
+          <motion.div key={`q-${currentQuestion.id}`} {...phaseVariants} className="flex-1 flex h-full">
             <QuestionFrame
               question={currentQuestion}
               questionIndex={state.questionIndex}
@@ -566,12 +613,12 @@ export default function AssessmentFlow({ version }: AssessmentFlowProps) {
           </motion.div>
         )}
 
-        {/* Submitting chunk (brief, transitions quickly) */}
+        {/* Submitting chunk */}
         {state.phase === 'submitting_chunk' && (
           <motion.div
             key="submitting"
             {...phaseVariants}
-            className="flex-1 flex items-center justify-center min-h-full"
+            className="flex-1 flex items-center justify-center h-full"
           >
             <p className="font-caption text-xs uppercase tracking-[0.2em] text-ops-text-secondary">
               Processing...
@@ -581,7 +628,7 @@ export default function AssessmentFlow({ version }: AssessmentFlowProps) {
 
         {/* Chunk transition */}
         {state.phase === 'chunk_transition' && (
-          <motion.div key="chunk-transition" {...phaseVariants} className="flex-1 min-h-full">
+          <motion.div key="chunk-transition" {...phaseVariants} className="flex-1 h-full">
             <ChunkTransition
               chunkNumber={state.currentChunk}
               totalChunks={state.totalChunks}
@@ -592,7 +639,7 @@ export default function AssessmentFlow({ version }: AssessmentFlowProps) {
 
         {/* Email capture */}
         {state.phase === 'email_capture' && (
-          <motion.div key="email" {...phaseVariants} className="flex-1 min-h-full">
+          <motion.div key="email" {...phaseVariants} className="flex-1 h-full">
             <EmailCapture
               isSubmitting={false}
               onSubmit={handleEmailSubmit}
@@ -603,7 +650,7 @@ export default function AssessmentFlow({ version }: AssessmentFlowProps) {
 
         {/* Generating */}
         {state.phase === 'generating' && (
-          <motion.div key="generating" {...phaseVariants} className="flex-1 min-h-full">
+          <motion.div key="generating" {...phaseVariants} className="flex-1 h-full">
             <GeneratingState />
           </motion.div>
         )}
@@ -613,13 +660,13 @@ export default function AssessmentFlow({ version }: AssessmentFlowProps) {
           <motion.div
             key="error"
             {...phaseVariants}
-            className="flex-1 flex items-center justify-center min-h-full"
+            className="flex-1 flex items-center justify-center h-full"
           >
             <div className="text-center max-w-md px-6">
               <p className="font-caption text-xs uppercase tracking-[0.2em] text-red-400/80 mb-4">
                 [ Something went wrong ]
               </p>
-              <p className="font-body text-ops-text-secondary text-sm mb-8">
+              <p className="font-heading text-ops-text-secondary text-sm mb-8">
                 {state.error || 'An unexpected error occurred.'}
               </p>
               <div className="flex items-center justify-center gap-4">
