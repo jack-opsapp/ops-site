@@ -129,7 +129,7 @@ export default function QuestionTransition({
         y: 0.05 + Math.random() * 0.9,
         size: 1 + Math.random() * 3.5,
         alpha: 0,
-        targetAlpha: 0.08 + Math.random() * 0.27,
+        targetAlpha: 0.15 + Math.random() * 0.35,
         color,
         fadeInTime: (i / PARTICLE_COUNT) * BUILD_DURATION * 0.85 + Math.random() * BUILD_DURATION * 0.15,
         slideSpeed: 0.6 + Math.random() * 0.8,
@@ -229,7 +229,8 @@ export default function QuestionTransition({
   return (
     <div
       ref={containerRef}
-      className="absolute inset-0 z-20 pointer-events-auto"
+      className="absolute inset-x-0 bottom-0 z-20 pointer-events-auto"
+      style={{ top: '38%' }}
     >
       <canvas
         ref={canvasRef}

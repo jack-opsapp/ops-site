@@ -48,7 +48,21 @@ function getTypeBadge(type: string): string {
   }
 }
 
+function getLikertColor(value: number): { bg: string; glow: string } {
+  switch (value) {
+    case 1: return { bg: '#93321A', glow: 'rgba(147, 50, 26, 0.4)' };
+    case 2: return { bg: 'rgba(181, 130, 137, 0.8)', glow: 'rgba(181, 130, 137, 0.3)' };
+    case 3: return { bg: 'rgba(181, 130, 137, 0.5)', glow: 'rgba(181, 130, 137, 0.15)' };
+    case 4: return { bg: 'rgba(150, 150, 150, 0.5)', glow: 'rgba(150, 150, 150, 0.15)' };
+    case 5: return { bg: 'rgba(157, 181, 130, 0.5)', glow: 'rgba(157, 181, 130, 0.15)' };
+    case 6: return { bg: 'rgba(165, 179, 104, 0.8)', glow: 'rgba(165, 179, 104, 0.3)' };
+    case 7: return { bg: '#A5B368', glow: 'rgba(165, 179, 104, 0.4)' };
+    default: return { bg: 'rgba(150, 150, 150, 0.5)', glow: 'rgba(150, 150, 150, 0.15)' };
+  }
+}
+
 function LikertDots({ value }: { value: number }) {
+  const selected = getLikertColor(value);
   return (
     <div className="flex items-center gap-1.5">
       {Array.from({ length: 7 }, (_, i) => {
@@ -57,8 +71,11 @@ function LikertDots({ value }: { value: number }) {
         return (
           <div
             key={i}
-            className={isSelected ? 'w-[5px] h-[5px] bg-ops-accent' : 'w-[5px] h-[5px] bg-white/15'}
-            style={isSelected ? { boxShadow: '0 0 4px rgba(89, 119, 148, 0.4)' } : undefined}
+            className="w-[5px] h-[5px]"
+            style={isSelected
+              ? { backgroundColor: selected.bg, boxShadow: `0 0 4px ${selected.glow}` }
+              : { backgroundColor: 'rgba(255, 255, 255, 0.15)' }
+            }
           />
         );
       })}
@@ -107,7 +124,7 @@ export default function ChunkReview({
       animate="visible"
       className="h-full overflow-y-auto"
     >
-      <div className="max-w-2xl pl-[8%] md:pl-[12%] lg:pl-[14%] pr-6 md:pr-10 py-8 md:py-12">
+      <div className="pl-[6%] md:pl-[8%] lg:pl-[10%] pr-[6%] md:pr-[8%] lg:pr-[10%] py-8 md:py-12">
         {/* Section label */}
         <motion.span
           variants={itemVariants}
