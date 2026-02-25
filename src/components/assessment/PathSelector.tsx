@@ -590,6 +590,29 @@ export default function PathSelector() {
 /*  Label drawing helper                                               */
 /* ------------------------------------------------------------------ */
 
+/** Draw text with manual letter-spacing (cross-browser safe) */
+function drawTrackedText(
+  ctx: CanvasRenderingContext2D,
+  text: string,
+  cx: number,
+  y: number,
+  spacing: number,
+) {
+  // Measure total width with spacing to center it
+  let totalWidth = 0;
+  for (let i = 0; i < text.length; i++) {
+    totalWidth += ctx.measureText(text[i]).width;
+    if (i < text.length - 1) totalWidth += spacing;
+  }
+  let x = cx - totalWidth / 2;
+  ctx.textAlign = 'left';
+  for (let i = 0; i < text.length; i++) {
+    ctx.fillText(text[i], x, y);
+    x += ctx.measureText(text[i]).width + spacing;
+  }
+  ctx.textAlign = 'center';
+}
+
 const LABELS = [
   { title: 'QUICK', time: '3 MINUTES', desc: '15 questions \u2014 snapshot profile' },
   { title: 'DEEP', time: '12 MINUTES', desc: '50 questions \u2014 comprehensive analysis' },
@@ -632,23 +655,23 @@ function drawLabels(
 
     ctx.textAlign = 'center';
 
-    // Title (Kosugi)
-    ctx.font = '400 12px "Kosugi", sans-serif';
+    // Title (Kosugi) — large with manual tracking
+    ctx.font = '400 18px "Kosugi", sans-serif';
     ctx.fillStyle = `rgba(255, 255, 255, ${labelAlpha})`;
-    const titleY = nodeY + 20;
-    ctx.fillText(label.title, nodeX, titleY);
+    const titleY = nodeY + 22;
+    drawTrackedText(ctx, label.title, nodeX, titleY, 3);
 
     // Time (Kosugi, tracked)
     ctx.font = '400 11px "Kosugi", sans-serif';
     const nodeColor = i === 0 ? BLUE : ORANGE;
     const timeAlpha = isSelected ? 0.9 : isHovered ? 0.7 : hasSelection ? 0.15 : 0.4;
     ctx.fillStyle = `rgba(${nodeColor.r}, ${nodeColor.g}, ${nodeColor.b}, ${timeAlpha})`;
-    ctx.fillText(label.time, nodeX, titleY + 20);
+    ctx.fillText(label.time, nodeX, titleY + 28);
 
     // Description (Mohave)
     ctx.font = '300 12px "Mohave", sans-serif';
     const descAlpha = labelAlpha * 0.7;
     ctx.fillStyle = `rgba(153, 153, 153, ${descAlpha})`;
-    ctx.fillText(label.desc, nodeX, titleY + 40);
+    ctx.fillText(label.desc, nodeX, titleY + 48);
   }
 }
