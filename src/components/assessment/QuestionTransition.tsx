@@ -42,10 +42,10 @@ const GREY = { r: 180, g: 180, b: 180 };
 const ORANGE = { r: 210, g: 140, b: 60 };
 
 // Phase timing (seconds)
-const BUILD_DURATION = 0.7;
-const PEAK_START = 0.7;
-const SLIDE_START = 0.7;
-const TOTAL_DURATION = 1.8;
+const BUILD_DURATION = 0.35;
+const PEAK_START = 0.35;
+const SLIDE_START = 0.35;
+const TOTAL_DURATION = 1.0;
 
 // Cursor interaction
 const REPULSE_RADIUS = 80;

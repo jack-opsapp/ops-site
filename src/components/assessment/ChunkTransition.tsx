@@ -255,7 +255,7 @@ export default function ChunkTransition({ chunkNumber, totalChunks, onComplete }
   }, [resize]);
 
   return (
-    <div className="min-h-[400px] flex flex-col items-center justify-center bg-ops-background relative">
+    <div className="h-full flex flex-col items-center justify-center bg-ops-background relative">
       <div ref={containerRef} className="absolute inset-0">
         <canvas ref={canvasRef} style={{ display: 'block', width: '100%', height: '100%' }} />
       </div>

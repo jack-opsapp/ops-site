@@ -14,6 +14,7 @@
 
 'use client';
 
+import { useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import type { ClientQuestion } from '@/lib/assessment/types';
 import LikertRadialGauge from './LikertRadialGauge';
@@ -98,6 +99,21 @@ export default function QuestionFrame({
   onSaveAnswer,
   onCompleteSection,
 }: QuestionFrameProps) {
+  const [selectionMade, setSelectionMade] = useState(false);
+
+  // Immediate fade on selection (normal mode only)
+  const fadeStyle = !isRevising && selectionMade
+    ? { opacity: 0, filter: 'blur(3px)', transition: 'opacity 0.15s ease-out, filter 0.15s ease-out' } as React.CSSProperties
+    : undefined;
+
+  const handleSelectionChange = (value: number | string) => {
+    if (isRevising) {
+      onSaveAnswer?.(value);
+    } else {
+      setSelectionMade(true);
+    }
+  };
+
   return (
     <AnimatePresence mode="wait">
       <motion.div
@@ -115,6 +131,7 @@ export default function QuestionFrame({
         <motion.div
           variants={childVariants}
           className="px-6 md:px-10 lg:px-16 pb-5"
+          style={fadeStyle}
         >
           <StepDots
             totalSteps={totalQuestionsInChunk}
@@ -128,6 +145,7 @@ export default function QuestionFrame({
         <motion.div
           variants={childVariants}
           className="px-6 md:px-10 lg:px-16 pb-4"
+          style={fadeStyle}
         >
           <span className="font-caption text-[10px] uppercase tracking-[0.25em] text-ops-accent">
             {getTypeBadge(question.type)}
@@ -138,12 +156,13 @@ export default function QuestionFrame({
         </motion.div>
 
         {/* Divider */}
-        <div className="mx-6 md:mx-10 lg:mx-16 border-b border-white/[0.06]" />
+        <div className="mx-6 md:mx-10 lg:mx-16 border-b border-white/[0.06]" style={fadeStyle} />
 
         {/* Usage instruction */}
         <motion.p
           variants={childVariants}
           className="px-6 md:px-10 lg:px-16 pt-3 font-caption text-[10px] uppercase tracking-[0.2em] text-ops-text-secondary/40"
+          style={fadeStyle}
         >
           {getInstruction(question.type)}
         </motion.p>
@@ -193,6 +212,7 @@ export default function QuestionFrame({
             <motion.div
               variants={childVariants}
               className="px-6 md:px-10 lg:px-16 pt-5"
+              style={fadeStyle}
             >
               <button
                 type="button"
@@ -215,7 +235,7 @@ export default function QuestionFrame({
               key={question.id}
               onSelect={(value) => onAnswer(value)}
               autoAdvance={!isRevising}
-              onSelectionChange={isRevising ? (value) => onSaveAnswer?.(value) : undefined}
+              onSelectionChange={handleSelectionChange}
               savedAnswer={typeof savedAnswer === 'number' ? savedAnswer : undefined}
             />
           )}
@@ -226,7 +246,7 @@ export default function QuestionFrame({
               options={question.options}
               onSelect={(value) => onAnswer(value)}
               autoAdvance={!isRevising}
-              onSelectionChange={isRevising ? (value) => onSaveAnswer?.(value) : undefined}
+              onSelectionChange={handleSelectionChange}
               savedAnswer={typeof savedAnswer === 'string' ? savedAnswer : undefined}
             />
           )}
@@ -237,7 +257,7 @@ export default function QuestionFrame({
               options={question.options}
               onSelect={(value) => onAnswer(value)}
               autoAdvance={!isRevising}
-              onSelectionChange={isRevising ? (value) => onSaveAnswer?.(value) : undefined}
+              onSelectionChange={handleSelectionChange}
               savedAnswer={typeof savedAnswer === 'string' ? savedAnswer : undefined}
             />
           )}
