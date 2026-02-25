@@ -60,7 +60,7 @@ export default function StepDots({
                 isCurrent
                   ? { boxShadow: '0 0 6px rgba(89, 119, 148, 0.4)' }
                   : isCompleted
-                    ? { backgroundColor: 'rgba(165, 179, 104, 0.5)', boxShadow: '0 0 4px rgba(165, 179, 104, 0.2)' }
+                    ? { backgroundColor: 'rgba(255, 255, 255, 0.5)', boxShadow: '0 0 4px rgba(255, 255, 255, 0.15)' }
                     : undefined
               }
               transition={{ duration: 0.2, ease: [0.22, 1, 0.36, 1] }}
