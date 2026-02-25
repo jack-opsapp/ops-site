@@ -607,7 +607,7 @@ export default function ForcedChoiceFork({
   return (
     <div
       ref={containerRef}
-      className={`w-full ${CANVAS_HEIGHT_CLASS}`}
+      className="w-full h-full"
       style={{ position: 'relative' }}
     >
       <canvas

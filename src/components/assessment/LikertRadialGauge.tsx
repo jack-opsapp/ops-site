@@ -618,7 +618,7 @@ export default function LikertRadialGauge({
   return (
     <div
       ref={containerRef}
-      className="w-full h-[300px] md:h-[360px]"
+      className="w-full h-full"
       style={{ position: 'relative' }}
     >
       <canvas

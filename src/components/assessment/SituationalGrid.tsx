@@ -128,9 +128,9 @@ export default function SituationalGrid({
     const dpr = window.devicePixelRatio || 1;
     const rect = container.getBoundingClientRect();
     canvas.width = rect.width * dpr;
-    canvas.height = CANVAS_HEIGHT * dpr;
+    canvas.height = rect.height * dpr;
     canvas.style.width = `${rect.width}px`;
-    canvas.style.height = `${CANVAS_HEIGHT}px`;
+    canvas.style.height = `${rect.height}px`;
     const ctx = canvas.getContext('2d');
     if (ctx) ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
   }, []);
@@ -495,11 +495,10 @@ export default function SituationalGrid({
   }, [resize, getHoveredIndex, options]);
 
   return (
-    <div ref={containerRef} className="relative w-full">
+    <div ref={containerRef} className="relative w-full h-full">
       <canvas
         ref={canvasRef}
-        className="w-full"
-        style={{ display: 'block', height: `${CANVAS_HEIGHT}px` }}
+        style={{ display: 'block', width: '100%', height: '100%' }}
       />
     </div>
   );

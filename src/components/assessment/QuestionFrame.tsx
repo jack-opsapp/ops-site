@@ -1,12 +1,11 @@
 /**
- * QuestionFrame — Question text + routed input component + navigation
+ * QuestionFrame — Full-viewport question layout
  *
- * Routes by question type:
- *  - 'likert'        -> LikertRadialGauge
- *  - 'situational'   -> SituationalGrid
- *  - 'forced_choice' -> ForcedChoiceFork
+ * Layout (top to bottom):
+ *  - Toolbar row: step dots left, Back/Continue right
+ *  - Question badge + text: compact prompt, left-aligned
+ *  - Input component: fills all remaining vertical space, full width
  *
- * Includes Back/Continue navigation buttons and StepDots.
  * Input components run in manual confirm mode (autoAdvance=false).
  */
 
@@ -47,46 +46,33 @@ function getTypeBadge(type: string): string {
 const questionVariants = {
   initial: {
     opacity: 0,
-    y: 30,
-    filter: 'blur(6px)',
+    filter: 'blur(4px)',
   },
   animate: {
     opacity: 1,
-    y: 0,
     filter: 'blur(0px)',
     transition: {
-      duration: 0.5,
+      duration: 0.45,
       ease: EASE,
-      staggerChildren: 0.12,
+      staggerChildren: 0.08,
     },
   },
   exit: {
     opacity: 0,
-    y: -20,
     filter: 'blur(4px)',
     transition: {
-      duration: 0.3,
+      duration: 0.25,
       ease: EASE,
     },
   },
 };
 
-const textVariants = {
-  initial: { opacity: 0, y: 16 },
+const childVariants = {
+  initial: { opacity: 0, y: 10 },
   animate: {
     opacity: 1,
     y: 0,
-    transition: { duration: 0.5, ease: EASE },
-  },
-  exit: { opacity: 0 },
-};
-
-const componentVariants = {
-  initial: { opacity: 0, y: 20 },
-  animate: {
-    opacity: 1,
-    y: 0,
-    transition: { duration: 0.5, ease: EASE, delay: 0.15 },
+    transition: { duration: 0.4, ease: EASE },
   },
   exit: { opacity: 0 },
 };
@@ -102,7 +88,6 @@ export default function QuestionFrame({
   onBack,
   onNavigateToStep,
 }: QuestionFrameProps) {
-  // Track selection + animation state for confirm mode
   const [selectionValue, setSelectionValue] = useState<number | string | null>(
     savedAnswer ?? null
   );
@@ -133,47 +118,74 @@ export default function QuestionFrame({
         initial="initial"
         animate="animate"
         exit="exit"
-        className="flex flex-col justify-center h-full px-6 md:px-10 lg:px-16 py-8"
+        className="flex flex-col h-full w-full"
       >
-        {/* Step dots — left-aligned */}
-        <div className="w-full max-w-5xl">
+        {/* Toolbar: dots left, nav buttons right */}
+        <motion.div
+          variants={childVariants}
+          className="flex items-center justify-between px-6 md:px-10 lg:px-16 pt-4 pb-2"
+        >
           <StepDots
             totalSteps={totalQuestionsInChunk}
             currentStep={questionIndex}
             completedSteps={completedSteps}
             onNavigate={onNavigateToStep}
           />
-        </div>
 
-        {/* Question type badge */}
-        <motion.span
-          variants={textVariants}
-          className="font-caption text-[10px] uppercase tracking-[0.25em] text-ops-accent mb-4"
-        >
-          {getTypeBadge(question.type)}
-        </motion.span>
+          <div className="flex items-center gap-3">
+            {!isFirstQuestion && (
+              <button
+                type="button"
+                onClick={onBack}
+                className="font-caption uppercase tracking-[0.15em] text-[11px] text-ops-text-secondary hover:text-ops-text-primary border border-ops-border hover:border-ops-border-hover rounded-[3px] px-4 py-2 transition-all duration-200 cursor-pointer"
+              >
+                Back
+              </button>
+            )}
 
-        {/* Question text */}
-        <motion.h2
-          variants={textVariants}
-          className="font-heading text-2xl md:text-3xl lg:text-4xl font-light text-ops-text-primary max-w-3xl mb-6 md:mb-8 leading-[1.3] tracking-tight"
+            <AnimatePresence>
+              {animationDone && selectionValue !== null && (
+                <motion.button
+                  type="button"
+                  onClick={handleContinue}
+                  initial={{ opacity: 0, x: 8 }}
+                  animate={{ opacity: 1, x: 0 }}
+                  exit={{ opacity: 0, x: 8 }}
+                  transition={{ duration: 0.25, ease: EASE }}
+                  className="font-caption uppercase tracking-[0.15em] text-[11px] bg-white text-ops-background rounded-[3px] px-5 py-2 cursor-pointer hover:bg-white/90 transition-colors duration-200"
+                >
+                  Continue
+                </motion.button>
+              )}
+            </AnimatePresence>
+          </div>
+        </motion.div>
+
+        {/* Question prompt — compact, left-aligned */}
+        <motion.div
+          variants={childVariants}
+          className="px-6 md:px-10 lg:px-16 pb-4"
         >
-          {question.text}
-        </motion.h2>
+          <span className="font-caption text-[10px] uppercase tracking-[0.25em] text-ops-accent">
+            {getTypeBadge(question.type)}
+          </span>
+          <h2 className="font-heading text-lg md:text-xl font-light text-ops-text-primary max-w-2xl mt-2 leading-[1.4]">
+            {question.text}
+          </h2>
+        </motion.div>
 
         {/* Divider */}
-        <motion.div
-          variants={textVariants}
-          className="w-12 h-px mb-8 md:mb-12"
-          style={{ backgroundColor: 'rgba(89, 119, 148, 0.15)' }}
-        />
+        <div className="mx-6 md:mx-10 lg:mx-16 border-b border-white/[0.06]" />
 
-        {/* Input component — manual confirm mode */}
-        <motion.div variants={componentVariants} className="w-full max-w-5xl">
+        {/* Input component — fills remaining space, full width */}
+        <motion.div
+          variants={childVariants}
+          className="flex-1 min-h-0 w-full px-2 md:px-6 py-4"
+        >
           {question.type === 'likert' && (
             <LikertRadialGauge
               key={question.id}
-              onSelect={() => {}} // no-op in manual mode
+              onSelect={() => {}}
               autoAdvance={false}
               onSelectionChange={handleSelectionChange}
               onAnimationComplete={handleAnimationComplete}
@@ -185,7 +197,7 @@ export default function QuestionFrame({
             <SituationalGrid
               key={question.id}
               options={question.options}
-              onSelect={() => {}} // no-op in manual mode
+              onSelect={() => {}}
               autoAdvance={false}
               onSelectionChange={handleSelectionChange}
               onAnimationComplete={handleAnimationComplete}
@@ -197,7 +209,7 @@ export default function QuestionFrame({
             <ForcedChoiceFork
               key={question.id}
               options={question.options}
-              onSelect={() => {}} // no-op in manual mode
+              onSelect={() => {}}
               autoAdvance={false}
               onSelectionChange={handleSelectionChange}
               onAnimationComplete={handleAnimationComplete}
@@ -205,39 +217,6 @@ export default function QuestionFrame({
             />
           )}
         </motion.div>
-
-        {/* Navigation buttons */}
-        <div className="flex items-center justify-between w-full max-w-4xl mt-8">
-          {/* Back button */}
-          {!isFirstQuestion ? (
-            <button
-              type="button"
-              onClick={onBack}
-              className="font-caption uppercase tracking-[0.15em] text-[11px] text-ops-text-secondary hover:text-ops-text-primary border border-ops-border hover:border-ops-border-hover rounded-[3px] px-5 py-2.5 transition-all duration-200 cursor-pointer"
-            >
-              Back
-            </button>
-          ) : (
-            <div />
-          )}
-
-          {/* Continue button — fades in after animation completes */}
-          <AnimatePresence>
-            {animationDone && selectionValue !== null && (
-              <motion.button
-                type="button"
-                onClick={handleContinue}
-                initial={{ opacity: 0, y: 8 }}
-                animate={{ opacity: 1, y: 0 }}
-                exit={{ opacity: 0, y: 8 }}
-                transition={{ duration: 0.3, ease: EASE }}
-                className="font-caption uppercase tracking-[0.15em] text-[11px] bg-white text-ops-background rounded-[3px] px-6 py-2.5 cursor-pointer hover:bg-white/90 transition-colors duration-200 ml-auto"
-              >
-                Continue
-              </motion.button>
-            )}
-          </AnimatePresence>
-        </div>
       </motion.div>
     </AnimatePresence>
   );
