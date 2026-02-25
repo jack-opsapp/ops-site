@@ -2,11 +2,12 @@
  * QuestionFrame — Full-viewport question layout
  *
  * Layout:
- *  - Step dots at top
- *  - Question badge + text, pushed down from top
+ *  - Spacer pushes content down from top
+ *  - Step dots just above section title
+ *  - Question badge + text
  *  - Divider + usage instruction
+ *  - Back button below instruction (same spacing as dots→title)
  *  - Input component fills remaining space
- *  - Back button pinned bottom-left
  *
  * Auto-advances after selection animation completes.
  */
@@ -97,10 +98,13 @@ export default function QuestionFrame({
         exit="exit"
         className="relative flex flex-col h-full w-full"
       >
-        {/* Step dots */}
+        {/* Spacer — pushes content down from the top */}
+        <div className="h-[6vh] md:h-[8vh]" />
+
+        {/* Step dots — just above section title */}
         <motion.div
           variants={childVariants}
-          className="px-6 md:px-10 lg:px-16 pt-4 pb-2"
+          className="px-6 md:px-10 lg:px-16 pb-5"
         >
           <StepDots
             totalSteps={totalQuestionsInChunk}
@@ -109,9 +113,6 @@ export default function QuestionFrame({
             onNavigate={onNavigateToStep}
           />
         </motion.div>
-
-        {/* Spacer — pushes question text down from the top */}
-        <div className="h-[6vh] md:h-[8vh]" />
 
         {/* Question prompt */}
         <motion.div
@@ -132,10 +133,26 @@ export default function QuestionFrame({
         {/* Usage instruction */}
         <motion.p
           variants={childVariants}
-          className="px-6 md:px-10 lg:px-16 pt-3 pb-2 font-caption text-[10px] uppercase tracking-[0.2em] text-ops-text-secondary/40"
+          className="px-6 md:px-10 lg:px-16 pt-3 font-caption text-[10px] uppercase tracking-[0.2em] text-ops-text-secondary/40"
         >
           {getInstruction(question.type)}
         </motion.p>
+
+        {/* Back button — below instruction, matching dots→title spacing */}
+        {!isFirstQuestion && (
+          <motion.div
+            variants={childVariants}
+            className="px-6 md:px-10 lg:px-16 pt-5"
+          >
+            <button
+              type="button"
+              onClick={onBack}
+              className="font-caption uppercase tracking-[0.15em] text-[11px] text-ops-text-secondary/50 hover:text-ops-text-primary border border-ops-border/50 hover:border-ops-border-hover rounded-[3px] px-4 py-2 transition-all duration-200 cursor-pointer"
+            >
+              Back
+            </button>
+          </motion.div>
+        )}
 
         {/* Input component — fills remaining space, auto-advances */}
         <motion.div
@@ -171,24 +188,6 @@ export default function QuestionFrame({
             />
           )}
         </motion.div>
-
-        {/* Back button — pinned bottom-left */}
-        {!isFirstQuestion && (
-          <motion.div
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            transition={{ duration: 0.4, delay: 0.3, ease: EASE }}
-            className="absolute bottom-6 left-6 md:left-10 lg:left-16"
-          >
-            <button
-              type="button"
-              onClick={onBack}
-              className="font-caption uppercase tracking-[0.15em] text-[11px] text-ops-text-secondary/50 hover:text-ops-text-primary border border-ops-border/50 hover:border-ops-border-hover rounded-[3px] px-4 py-2 transition-all duration-200 cursor-pointer"
-            >
-              Back
-            </button>
-          </motion.div>
-        )}
       </motion.div>
     </AnimatePresence>
   );

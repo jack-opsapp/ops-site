@@ -577,7 +577,12 @@ export default function AssessmentFlow({ version }: AssessmentFlowProps) {
       opacity: 0,
       x: dir === 'forward' ? -80 : 80,
       filter: 'blur(4px)',
-      transition: { duration: 0.35, ease: EASE },
+      transition: {
+        // Fade to black first, then slide
+        opacity: { duration: 0.2, ease: EASE },
+        filter: { duration: 0.2, ease: EASE },
+        x: { duration: 0.4, delay: 0.15, ease: EASE },
+      },
     }),
   };
 
