@@ -2,16 +2,17 @@
  * AssessmentFlow — Core state machine orchestrator
  *
  * Manages the full assessment lifecycle:
- *   starting → cover → questioning → submitting_chunk → chunk_transition →
- *   questioning (loop) → email_capture → generating → complete
+ *   starting → cover → cover_exit → questioning → submitting_chunk →
+ *   chunk_transition → questioning (loop) → email_capture → generating → complete
  *
  * Supports back navigation and step dot navigation within chunks.
  * Uses QuestionTransition star galaxy between questions.
+ * Uses CoverTransition galaxy burst between cover and first question.
  */
 
 'use client';
 
-import { useReducer, useEffect, useCallback, useRef, useMemo } from 'react';
+import { useReducer, useEffect, useCallback, useRef, useMemo, useState } from 'react';
 import { useRouter } from 'next/navigation';
 import { motion, AnimatePresence } from 'framer-motion';
 import type {
@@ -28,6 +29,7 @@ import AssessmentOverlay from './AssessmentOverlay';
 import type { PhaseLabel } from './AssessmentOverlay';
 import QuestionFrame from './QuestionFrame';
 import QuestionTransition from './QuestionTransition';
+import CoverTransition from './CoverTransition';
 import ChunkTransition from './ChunkTransition';
 import EmailCapture from './EmailCapture';
 import GeneratingState from './GeneratingState';
@@ -39,6 +41,7 @@ import GeneratingState from './GeneratingState';
 type Phase =
   | 'starting'
   | 'cover'
+  | 'cover_exit'
   | 'questioning'
   | 'question_transition'
   | 'submitting_chunk'
@@ -60,11 +63,9 @@ interface FlowState {
   chunkResponses: ChunkSubmission[];
   questionStartTime: number;
   error: string | null;
-  // Chunk transition coordination
   chunkApiDone: boolean;
   chunkAnimDone: boolean;
   nextQuestions: ClientQuestion[] | null;
-  // Navigation & confirm mode
   savedAnswers: Map<string, number | string>;
   transitionDirection: 'forward' | 'back';
   isTransitioning: boolean;
@@ -78,6 +79,7 @@ interface FlowState {
 type FlowAction =
   | { type: 'START_SUCCESS'; sessionId: string; token: string; questions: ClientQuestion[]; totalChunks: number }
   | { type: 'DISMISS_COVER' }
+  | { type: 'COVER_EXIT_DONE' }
   | { type: 'SELECT_ANSWER'; questionId: string; value: number | string }
   | { type: 'CONFIRM_ADVANCE'; responseTimeMs: number }
   | { type: 'GO_BACK' }
@@ -108,6 +110,12 @@ function reducer(state: FlowState, action: FlowAction): FlowState {
       };
 
     case 'DISMISS_COVER':
+      return {
+        ...state,
+        phase: 'cover_exit',
+      };
+
+    case 'COVER_EXIT_DONE':
       return {
         ...state,
         phase: 'questioning',
@@ -294,9 +302,62 @@ function reducer(state: FlowState, action: FlowAction): FlowState {
 /* ------------------------------------------------------------------ */
 
 const VERSION_META = {
-  quick: { title: 'Quick Assessment', questions: '15 questions', time: '~3 minutes' },
-  deep: { title: 'Deep Assessment', questions: '50 questions', time: '~12 minutes' },
+  quick: { label: 'QUICK', questions: '15 questions', time: '~3 min' },
+  deep: { label: 'DEEP', questions: '50 questions', time: '~12 min' },
 } as const;
+
+/* ------------------------------------------------------------------ */
+/*  Cover animation variants                                           */
+/* ------------------------------------------------------------------ */
+
+const EASE = [0.22, 1, 0.36, 1] as const;
+
+const coverContainerVariants = {
+  visible: {
+    transition: {
+      staggerChildren: 0.1,
+      delayChildren: 0.15,
+    },
+  },
+  exit: {
+    transition: {
+      staggerChildren: 0.06,
+      staggerDirection: -1,
+    },
+  },
+};
+
+const coverItemVariants = {
+  hidden: { opacity: 0, y: 16, filter: 'blur(4px)' },
+  visible: {
+    opacity: 1,
+    y: 0,
+    filter: 'blur(0px)',
+    transition: { duration: 0.55, ease: EASE },
+  },
+  exit: {
+    opacity: 0,
+    y: -12,
+    filter: 'blur(6px)',
+    transition: { duration: 0.35, ease: EASE },
+  },
+};
+
+const coverTitleVariants = {
+  hidden: { opacity: 0, y: 24, filter: 'blur(6px)' },
+  visible: {
+    opacity: 1,
+    y: 0,
+    filter: 'blur(0px)',
+    transition: { duration: 0.7, ease: EASE },
+  },
+  exit: {
+    opacity: 0,
+    y: -20,
+    filter: 'blur(8px)',
+    transition: { duration: 0.4, ease: EASE },
+  },
+};
 
 /* ------------------------------------------------------------------ */
 /*  Component                                                          */
@@ -306,11 +367,10 @@ interface AssessmentFlowProps {
   version: AssessmentVersion;
 }
 
-const EASE = [0.22, 1, 0.36, 1] as const;
-
 export default function AssessmentFlow({ version }: AssessmentFlowProps) {
   const router = useRouter();
   const hasStarted = useRef(false);
+  const [beginHovered, setBeginHovered] = useState(false);
 
   const [state, dispatch] = useReducer(reducer, {
     phase: 'starting',
@@ -398,6 +458,10 @@ export default function AssessmentFlow({ version }: AssessmentFlowProps) {
     dispatch({ type: 'DISMISS_COVER' });
   }, []);
 
+  const handleCoverExitDone = useCallback(() => {
+    dispatch({ type: 'COVER_EXIT_DONE' });
+  }, []);
+
   const handleConfirmAdvance = useCallback((value: number | string) => {
     const question = state.questions[state.questionIndex];
     dispatch({ type: 'SELECT_ANSWER', questionId: question.id, value });
@@ -448,7 +512,7 @@ export default function AssessmentFlow({ version }: AssessmentFlowProps) {
     ? totalQuestions
     : state.phase === 'chunk_transition'
       ? state.currentChunk * questionsPerChunk
-      : state.phase === 'cover' || state.phase === 'starting'
+      : state.phase === 'cover' || state.phase === 'cover_exit' || state.phase === 'starting'
         ? 0
         : (state.currentChunk - 1) * questionsPerChunk + state.savedAnswers.size;
 
@@ -482,7 +546,7 @@ export default function AssessmentFlow({ version }: AssessmentFlowProps) {
   const savedAnswer = currentQuestion ? state.savedAnswers.get(currentQuestion.id) : undefined;
   const meta = VERSION_META[version];
 
-  /* ---- Phase variants ---- */
+  /* ---- Phase variants (simple) ---- */
 
   const phaseVariants = {
     initial: { opacity: 0 },
@@ -502,6 +566,11 @@ export default function AssessmentFlow({ version }: AssessmentFlowProps) {
       chunkNumber={state.currentChunk > 0 ? state.currentChunk : undefined}
       totalChunks={state.totalChunks > 0 ? state.totalChunks : undefined}
     >
+      {/* Cover exit galaxy burst */}
+      {state.phase === 'cover_exit' && (
+        <CoverTransition onComplete={handleCoverExitDone} />
+      )}
+
       {/* Question transition overlay */}
       {state.phase === 'question_transition' && (
         <QuestionTransition
@@ -536,61 +605,83 @@ export default function AssessmentFlow({ version }: AssessmentFlowProps) {
         {state.phase === 'cover' && (
           <motion.div
             key="cover"
-            {...phaseVariants}
-            className="flex-1 flex items-start justify-center h-full"
+            initial="hidden"
+            animate="visible"
+            exit="exit"
+            variants={coverContainerVariants}
+            className="flex-1 flex items-center h-full"
           >
-            <div className="flex flex-col items-start px-6 md:px-10 lg:px-16 w-full">
+            <div className="w-full pl-[8%] md:pl-[12%] lg:pl-[14%] pr-6 md:pr-10">
               {/* Version badge */}
               <motion.span
-                initial={{ opacity: 0, y: 10 }}
-                animate={{ opacity: 1, y: 0 }}
-                transition={{ duration: 0.5, delay: 0.1, ease: EASE }}
-                className="font-caption text-[10px] uppercase tracking-[0.25em] text-ops-accent mb-6"
+                variants={coverItemVariants}
+                className="block font-caption text-[10px] uppercase tracking-[0.25em] text-ops-accent mb-8"
               >
-                [ {version === 'quick' ? 'Quick' : 'Deep'} ]
+                [ {meta.label} ]
               </motion.span>
 
               {/* Title */}
               <motion.h1
-                initial={{ opacity: 0, y: 16 }}
-                animate={{ opacity: 1, y: 0 }}
-                transition={{ duration: 0.6, delay: 0.2, ease: EASE }}
-                className="font-heading font-bold uppercase text-ops-text-primary text-4xl md:text-5xl lg:text-6xl leading-[0.95] tracking-tight mb-6"
+                variants={coverTitleVariants}
+                className="font-heading font-bold uppercase text-ops-text-primary text-5xl md:text-6xl lg:text-7xl leading-[0.92] tracking-tight mb-8"
               >
                 Leadership
                 <br />
                 Assessment
               </motion.h1>
 
-              {/* Meta line */}
-              <motion.p
-                initial={{ opacity: 0, y: 10 }}
-                animate={{ opacity: 1, y: 0 }}
-                transition={{ duration: 0.5, delay: 0.35, ease: EASE }}
-                className="font-heading font-light text-ops-text-secondary text-base mb-3"
+              {/* Accent divider */}
+              <motion.div
+                variants={coverItemVariants}
+                className="w-16 h-px mb-8"
+                style={{ backgroundColor: 'rgba(89, 119, 148, 0.2)' }}
+              />
+
+              {/* Meta stats — inline */}
+              <motion.div
+                variants={coverItemVariants}
+                className="flex items-center gap-6 mb-4"
               >
-                {meta.questions} &middot; {meta.time}
-              </motion.p>
+                <span className="font-caption text-[10px] uppercase tracking-[0.2em] text-ops-text-secondary">
+                  {meta.questions}
+                </span>
+                <span className="w-px h-3 bg-white/[0.1]" />
+                <span className="font-caption text-[10px] uppercase tracking-[0.2em] text-ops-text-secondary">
+                  {meta.time}
+                </span>
+              </motion.div>
 
               {/* Description */}
               <motion.p
-                initial={{ opacity: 0, y: 10 }}
-                animate={{ opacity: 1, y: 0 }}
-                transition={{ duration: 0.5, delay: 0.45, ease: EASE }}
-                className="font-heading font-light text-ops-text-secondary/60 text-sm mb-12 max-w-sm"
+                variants={coverItemVariants}
+                className="font-heading font-light text-ops-text-secondary/50 text-sm leading-relaxed max-w-md mb-14"
               >
-                Answer honestly — there are no right or wrong responses. Your results are generated instantly.
+                Answer honestly — there are no right or wrong responses.
+                Your results are generated instantly.
               </motion.p>
 
               {/* Begin button */}
               <motion.button
-                initial={{ opacity: 0, y: 10 }}
-                animate={{ opacity: 1, y: 0 }}
-                transition={{ duration: 0.5, delay: 0.6, ease: EASE }}
+                variants={coverItemVariants}
                 onClick={handleDismissCover}
-                className="font-caption uppercase tracking-[0.15em] text-[11px] bg-white text-ops-background rounded-[3px] px-8 py-3 cursor-pointer hover:bg-white/90 transition-colors duration-200"
+                onMouseEnter={() => setBeginHovered(true)}
+                onMouseLeave={() => setBeginHovered(false)}
+                className="group relative font-caption uppercase tracking-[0.2em] text-[11px] text-ops-background rounded-[3px] px-10 py-3.5 cursor-pointer transition-all duration-300 overflow-hidden"
+                style={{
+                  background: beginHovered
+                    ? 'rgba(255, 255, 255, 0.92)'
+                    : 'rgba(255, 255, 255, 1)',
+                }}
               >
-                Begin
+                {/* Subtle accent underline that expands on hover */}
+                <span
+                  className="absolute bottom-0 left-0 h-[2px] transition-all duration-500 ease-out"
+                  style={{
+                    width: beginHovered ? '100%' : '0%',
+                    backgroundColor: 'rgba(89, 119, 148, 0.5)',
+                  }}
+                />
+                Begin Assessment
               </motion.button>
             </div>
           </motion.div>
@@ -662,14 +753,14 @@ export default function AssessmentFlow({ version }: AssessmentFlowProps) {
             {...phaseVariants}
             className="flex-1 flex items-center justify-center h-full"
           >
-            <div className="text-center max-w-md px-6">
+            <div className="max-w-md px-6">
               <p className="font-caption text-xs uppercase tracking-[0.2em] text-red-400/80 mb-4">
                 [ Something went wrong ]
               </p>
               <p className="font-heading text-ops-text-secondary text-sm mb-8">
                 {state.error || 'An unexpected error occurred.'}
               </p>
-              <div className="flex items-center justify-center gap-4">
+              <div className="flex items-center gap-4">
                 <button
                   onClick={() => dispatch({ type: 'RETRY' })}
                   className="inline-flex items-center justify-center font-caption uppercase tracking-[0.15em] text-xs px-6 py-3 rounded-[3px] transition-all duration-200 cursor-pointer bg-ops-text-primary text-ops-background hover:bg-white/90"
