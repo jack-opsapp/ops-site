@@ -45,12 +45,7 @@ export default function AssessmentOverlay({
   children,
 }: AssessmentOverlayProps) {
   return (
-    <motion.div
-      className="fixed inset-0 z-50 bg-ops-background flex flex-col"
-      initial={{ opacity: 0, scale: 1.01 }}
-      animate={{ opacity: 1, scale: 1 }}
-      transition={{ duration: 0.5, ease: [0.22, 1, 0.36, 1] as const }}
-    >
+    <div className="fixed inset-0 z-50 bg-ops-background flex flex-col">
       {/* Ambient starfield — base layer */}
       <AssessmentStarfield />
 
@@ -137,6 +132,6 @@ export default function AssessmentOverlay({
       <div className="flex-1 overflow-y-auto overflow-x-hidden relative z-10">
         {children}
       </div>
-    </motion.div>
+    </div>
   );
 }

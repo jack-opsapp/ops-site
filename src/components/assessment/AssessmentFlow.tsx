@@ -29,7 +29,6 @@ import AssessmentOverlay from './AssessmentOverlay';
 import type { PhaseLabel } from './AssessmentOverlay';
 import QuestionFrame from './QuestionFrame';
 import QuestionTransition from './QuestionTransition';
-import CoverTransition from './CoverTransition';
 import ChunkTransition from './ChunkTransition';
 import EmailCapture from './EmailCapture';
 import GeneratingState from './GeneratingState';
@@ -415,6 +414,16 @@ export default function AssessmentFlow({ version }: AssessmentFlowProps) {
     })();
   }, [state.phase, version]);
 
+  /* ---- Cover exit: fade to black, then enter questioning ---- */
+  useEffect(() => {
+    if (state.phase !== 'cover_exit') return;
+    // Wait for the cover exit animation to finish (~600ms), then advance
+    const timer = setTimeout(() => {
+      dispatch({ type: 'COVER_EXIT_DONE' });
+    }, 700);
+    return () => clearTimeout(timer);
+  }, [state.phase]);
+
   /* ---- Submit chunk ---- */
   useEffect(() => {
     if (state.phase !== 'submitting_chunk' || !state.sessionId) return;
@@ -456,10 +465,6 @@ export default function AssessmentFlow({ version }: AssessmentFlowProps) {
 
   const handleDismissCover = useCallback(() => {
     dispatch({ type: 'DISMISS_COVER' });
-  }, []);
-
-  const handleCoverExitDone = useCallback(() => {
-    dispatch({ type: 'COVER_EXIT_DONE' });
   }, []);
 
   const handleConfirmAdvance = useCallback((value: number | string) => {
@@ -566,11 +571,6 @@ export default function AssessmentFlow({ version }: AssessmentFlowProps) {
       chunkNumber={state.currentChunk > 0 ? state.currentChunk : undefined}
       totalChunks={state.totalChunks > 0 ? state.totalChunks : undefined}
     >
-      {/* Cover exit galaxy burst */}
-      {state.phase === 'cover_exit' && (
-        <CoverTransition onComplete={handleCoverExitDone} />
-      )}
-
       {/* Question transition overlay */}
       {state.phase === 'question_transition' && (
         <QuestionTransition
