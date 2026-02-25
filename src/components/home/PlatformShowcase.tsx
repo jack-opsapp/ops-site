@@ -1,71 +1,65 @@
 /**
- * PlatformShowcase — Section with 3 alternating DeviceShowcaseCards
- * Phone (scheduling), Laptop (projects), Tablet (team)
- * Server component wrapper, delegates interactivity to client children
+ * PlatformShowcase — "The Solution" section
+ *
+ * Four benefit-focused cards with "Why it matters" format.
+ * Copy aligned to try-ops authority.
  */
 
-import { SectionLabel, FadeInUp } from '@/components/ui';
-import DeviceShowcaseCard from '@/components/home/DeviceShowcaseCard';
+import { SectionLabel, FadeInUp, Card } from '@/components/ui';
 
-const cards = [
+const features = [
   {
-    label: 'SCHEDULING',
-    heading: 'CREWS KNOW WHERE TO GO',
-    body: 'Open the app. See today\u2019s jobs. Drive to the site. No calls. No texts. No Monday morning confusion.',
-    ctaText: 'SEE SCHEDULING',
-    ctaHref: '/platform',
-    variant: 'scheduling' as const,
-    device: 'phone' as const,
-    direction: 'left' as const,
+    title: 'NO TRAINING REQUIRED',
+    copy: 'Your crew opens it once. They see their jobs. They know what to do. That\'s it.',
+    why: 'Every other tool requires days of training. Your guys won\'t use software they don\'t understand. OPS is obvious from the first tap.',
   },
   {
-    label: 'PROJECTS',
-    heading: 'EVERY JOB. ONE PLACE.',
-    body: 'Photos, notes, tasks, and status \u2014 all attached to the project. Nothing falls through the cracks.',
-    ctaText: 'SEE PROJECTS',
-    ctaHref: '/platform',
-    variant: 'projects' as const,
-    device: 'laptop' as const,
-    direction: 'right' as const,
+    title: 'PHOTO DOCUMENTATION THAT WORKS',
+    copy: 'Before/after shots. Progress updates. Damage documentation. Markup with arrows and notes. All organized by job.',
+    why: 'No more hunting through text chains for that one photo. Everything lives with the job it belongs to.',
   },
   {
-    label: 'TEAM',
-    heading: 'YOUR CREW. CONNECTED.',
-    body: 'Know who\u2019s where, what they\u2019re working on, and when they\u2019re done. Without a single phone call.',
-    ctaText: 'SEE TEAM',
-    ctaHref: '/platform',
-    variant: 'team' as const,
-    device: 'tablet' as const,
-    direction: 'left' as const,
+    title: 'A SCHEDULE YOUR CREW ACTUALLY READS',
+    copy: 'An intuitive job board and clean daily schedule. Your crew sees what\'s coming up, who\'s assigned where, and what needs to get done \u2014 all in one glance.',
+    why: 'No more morning phone calls asking \u201Cwhere am I going today?\u201D Your crew opens the app and they\'re read in.',
   },
-] as const;
+  {
+    title: 'DIRECT LINE TO THE BUILDER',
+    copy: 'Missing a feature? Speak directly to the founder. We listen. We build what you actually need.',
+    why: 'No support tickets. No chatbots. You talk to the person who built it and uses it every day.',
+  },
+];
 
 export default function PlatformShowcase() {
   return (
-    <section className="pt-24 md:pt-32 pb-12 md:pb-16 bg-ops-background overflow-x-clip">
+    <section className="py-24 md:py-32 bg-ops-background">
       <div className="max-w-[1400px] mx-auto px-6 md:px-10">
         {/* Section header */}
         <FadeInUp>
-          <SectionLabel label="THE PLATFORM" />
-          <h2 className="mt-4 font-heading font-bold uppercase leading-tight text-ops-text-primary text-4xl md:text-5xl lg:text-6xl">
-            ONE APP. EVERYTHING YOUR CREW NEEDS.
+          <SectionLabel label="THE SOLUTION" />
+          <h2
+            className="mt-4 font-heading font-bold uppercase leading-[0.95] tracking-tight text-ops-text-primary max-w-[700px]"
+            style={{ fontSize: 'clamp(2rem, 4vw, 3.5rem)' }}
+          >
+            BUILT BY SOMEONE WHO ACTUALLY RUNS CREWS
           </h2>
         </FadeInUp>
 
-        {/* Cards */}
-        <div className="mt-20 md:mt-28 space-y-24 md:space-y-32">
-          {cards.map((card, i) => (
-            <FadeInUp key={card.variant} delay={i * 0.15}>
-              <DeviceShowcaseCard
-                label={card.label}
-                heading={card.heading}
-                body={card.body}
-                ctaText={card.ctaText}
-                ctaHref={card.ctaHref}
-                variant={card.variant}
-                device={card.device}
-                direction={card.direction}
-              />
+        {/* Feature cards — 2x2 grid */}
+        <div className="mt-12 md:mt-20 grid grid-cols-1 md:grid-cols-2 gap-6">
+          {features.map((feature, i) => (
+            <FadeInUp key={feature.title} delay={i * 0.08}>
+              <Card hoverable className="p-8 h-full">
+                <h3 className="font-heading font-bold text-lg text-ops-text-primary uppercase tracking-tight">
+                  {feature.title}
+                </h3>
+                <p className="mt-3 font-heading font-light text-base text-ops-text-secondary leading-relaxed">
+                  {feature.copy}
+                </p>
+                <p className="mt-3 font-heading font-light text-sm text-ops-text-secondary leading-relaxed">
+                  <span className="text-ops-text-primary font-normal">Why it matters:</span> {feature.why}
+                </p>
+              </Card>
             </FadeInUp>
           ))}
         </div>

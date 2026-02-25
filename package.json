@@ -13,7 +13,9 @@
     "@supabase/supabase-js": "^2.97.0",
     "framer-motion": "^12.34.3",
     "isomorphic-dompurify": "^3.0.0",
+    "nanoid": "^5.1.6",
     "next": "16.1.6",
+    "openai": "^6.24.0",
     "react": "19.2.3",
     "react-dom": "19.2.3"
   },
@@ -25,6 +27,7 @@
     "eslint": "^9",
     "eslint-config-next": "16.1.6",
     "tailwindcss": "^4",
+    "tsx": "^4.21.0",
     "typescript": "^5"
   }
 }

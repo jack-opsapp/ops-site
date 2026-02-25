@@ -17,13 +17,13 @@ export default function PlansHero() {
 
         <FadeInUp delay={0.06}>
           <h1 className="font-heading font-bold uppercase text-4xl md:text-6xl text-ops-text-primary leading-[0.95] tracking-tight">
-            HONEST PRICING. EVERY FEATURE INCLUDED.
+            START FREE. UPGRADE WHEN YOU&apos;RE READY.
           </h1>
         </FadeInUp>
 
         <FadeInUp delay={0.12}>
           <p className="font-caption uppercase tracking-[0.15em] text-[11px] text-ops-text-secondary mt-6">
-            No hidden fees. No feature gates. Pick your crew size.
+            No credit card. No commitment. Cancel anytime.
           </p>
         </FadeInUp>
       </div>

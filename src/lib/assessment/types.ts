@@ -72,6 +72,7 @@ export type SimpleScores = Record<Dimension, number>;
 export interface SubScore {
   label: string;
   score: number; // 0-100
+  description?: string;
 }
 
 export type DimensionSubScores = Record<Dimension, SubScore[]>;
@@ -136,6 +137,7 @@ export interface AIAnalysis {
   deep_insight: string;
   dimensional_deep_dive?: Record<Dimension, string>;
   population_comparison?: Record<Dimension, { score: number; percentile: number }>;
+  sub_scores?: DimensionSubScores;
 }
 
 /* ------------------------------------------------------------------ */

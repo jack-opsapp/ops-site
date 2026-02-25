@@ -1,11 +1,12 @@
+'use client';
+
 /**
  * PricingCard — Individual pricing tier card
  *
- * Client component (hover state). Dark surface fill with ultra-thin border.
+ * Dark surface fill with ultra-thin border.
  * Recommended tier gets accent top border.
+ * Updated to include user count, annual pricing, and "Best for" line.
  */
-
-'use client';
 
 import { useState } from 'react';
 import { Button, Divider } from '@/components/ui';
@@ -14,6 +15,8 @@ interface PricingCardProps {
   name: string;
   price: string;
   interval: string;
+  users: string;
+  bestFor: string;
   features: string[];
   recommended?: boolean;
   ctaText: string;
@@ -47,6 +50,8 @@ export default function PricingCard({
   name,
   price,
   interval,
+  users,
+  bestFor,
   features,
   recommended = false,
   ctaText,
@@ -81,6 +86,16 @@ export default function PricingCard({
       <span className="font-heading font-light text-sm text-ops-text-secondary mt-1">
         {interval}
       </span>
+
+      {/* Users */}
+      <span className="font-caption uppercase text-[11px] tracking-[0.15em] text-ops-text-secondary mt-3">
+        {users}
+      </span>
+
+      {/* Best for */}
+      <p className="font-heading font-light text-xs text-ops-text-secondary italic mt-3">
+        Best for: {bestFor}
+      </p>
 
       <Divider className="my-6" />
 

@@ -1,0 +1,2427 @@
+[
+  {
+    "id": "vision_likert_01",
+    "dimension": "vision",
+    "secondary_dimension": null,
+    "type": "likert",
+    "text": "When you start a new project, you mentally map out how each piece connects to the final outcome before diving into tasks.",
+    "options": null,
+    "scoring_weights": {
+      "1": {
+        "vision": 0
+      },
+      "2": {
+        "vision": 25
+      },
+      "3": {
+        "vision": 50
+      },
+      "4": {
+        "vision": 75
+      },
+      "5": {
+        "vision": 100
+      }
+    },
+    "difficulty": 0.3,
+    "reverse_scored": false,
+    "validity_pair_id": null,
+    "is_impression_management": false,
+    "version_availability": [
+      "quick",
+      "deep"
+    ]
+  },
+  {
+    "id": "vision_likert_02",
+    "dimension": "vision",
+    "secondary_dimension": null,
+    "type": "likert",
+    "text": "In the last month, you caught yourself thinking about what your team or organization will need six months from now, even when nobody asked you to.",
+    "options": null,
+    "scoring_weights": {
+      "1": {
+        "vision": 0
+      },
+      "2": {
+        "vision": 25
+      },
+      "3": {
+        "vision": 50
+      },
+      "4": {
+        "vision": 75
+      },
+      "5": {
+        "vision": 100
+      }
+    },
+    "difficulty": 0.35,
+    "reverse_scored": false,
+    "validity_pair_id": null,
+    "is_impression_management": false,
+    "version_availability": [
+      "quick",
+      "deep"
+    ]
+  },
+  {
+    "id": "vision_likert_03",
+    "dimension": "vision",
+    "secondary_dimension": "drive",
+    "type": "likert",
+    "text": "When a process has worked fine for a year, you still find yourself questioning whether there is a fundamentally better way to do it.",
+    "options": null,
+    "scoring_weights": {
+      "1": {
+        "vision": 0,
+        "drive": 0
+      },
+      "2": {
+        "vision": 18,
+        "drive": 7
+      },
+      "3": {
+        "vision": 35,
+        "drive": 15
+      },
+      "4": {
+        "vision": 53,
+        "drive": 22
+      },
+      "5": {
+        "vision": 70,
+        "drive": 30
+      }
+    },
+    "difficulty": 0.4,
+    "reverse_scored": false,
+    "validity_pair_id": null,
+    "is_impression_management": false,
+    "version_availability": [
+      "quick",
+      "deep"
+    ]
+  },
+  {
+    "id": "vision_likert_04",
+    "dimension": "vision",
+    "secondary_dimension": null,
+    "type": "likert",
+    "text": "You usually deal with problems one at a time as they come up, rather than looking at how they might be related.",
+    "options": null,
+    "scoring_weights": {
+      "1": {
+        "vision": 100
+      },
+      "2": {
+        "vision": 75
+      },
+      "3": {
+        "vision": 50
+      },
+      "4": {
+        "vision": 25
+      },
+      "5": {
+        "vision": 0
+      }
+    },
+    "difficulty": 0.35,
+    "reverse_scored": true,
+    "validity_pair_id": null,
+    "is_impression_management": false,
+    "version_availability": [
+      "quick",
+      "deep"
+    ]
+  },
+  {
+    "id": "vision_likert_05",
+    "dimension": "vision",
+    "secondary_dimension": "drive",
+    "type": "likert",
+    "text": "When you have limited resources, you instinctively know which two or three things to focus on that will create the biggest ripple effect.",
+    "options": null,
+    "scoring_weights": {
+      "1": {
+        "vision": 0,
+        "drive": 0
+      },
+      "2": {
+        "vision": 18,
+        "drive": 7
+      },
+      "3": {
+        "vision": 35,
+        "drive": 15
+      },
+      "4": {
+        "vision": 53,
+        "drive": 22
+      },
+      "5": {
+        "vision": 70,
+        "drive": 30
+      }
+    },
+    "difficulty": 0.5,
+    "reverse_scored": false,
+    "validity_pair_id": null,
+    "is_impression_management": false,
+    "version_availability": [
+      "quick",
+      "deep"
+    ]
+  },
+  {
+    "id": "vision_likert_06",
+    "dimension": "vision",
+    "secondary_dimension": null,
+    "type": "likert",
+    "text": "When you hear about a change in your industry, your mind immediately runs through three or four downstream consequences.",
+    "options": null,
+    "scoring_weights": {
+      "1": {
+        "vision": 0
+      },
+      "2": {
+        "vision": 25
+      },
+      "3": {
+        "vision": 50
+      },
+      "4": {
+        "vision": 75
+      },
+      "5": {
+        "vision": 100
+      }
+    },
+    "difficulty": 0.45,
+    "reverse_scored": false,
+    "validity_pair_id": null,
+    "is_impression_management": false,
+    "version_availability": [
+      "quick",
+      "deep"
+    ]
+  },
+  {
+    "id": "vision_likert_07",
+    "dimension": "vision",
+    "secondary_dimension": null,
+    "type": "likert",
+    "text": "You spend so much time planning for future scenarios that you sometimes miss deadlines on current work.",
+    "options": null,
+    "scoring_weights": {
+      "1": {
+        "vision": 100
+      },
+      "2": {
+        "vision": 75
+      },
+      "3": {
+        "vision": 50
+      },
+      "4": {
+        "vision": 25
+      },
+      "5": {
+        "vision": 0
+      }
+    },
+    "difficulty": 0.6,
+    "reverse_scored": true,
+    "validity_pair_id": null,
+    "is_impression_management": false,
+    "version_availability": [
+      "deep"
+    ]
+  },
+  {
+    "id": "vision_likert_08",
+    "dimension": "vision",
+    "secondary_dimension": "resilience",
+    "type": "likert",
+    "text": "When your first approach to a problem fails, you tend to look for a completely different angle rather than just tweaking the original plan.",
+    "options": null,
+    "scoring_weights": {
+      "1": {
+        "vision": 0,
+        "resilience": 0
+      },
+      "2": {
+        "vision": 18,
+        "resilience": 7
+      },
+      "3": {
+        "vision": 35,
+        "resilience": 15
+      },
+      "4": {
+        "vision": 53,
+        "resilience": 22
+      },
+      "5": {
+        "vision": 70,
+        "resilience": 30
+      }
+    },
+    "difficulty": 0.45,
+    "reverse_scored": false,
+    "validity_pair_id": null,
+    "is_impression_management": false,
+    "version_availability": [
+      "quick",
+      "deep"
+    ]
+  },
+  {
+    "id": "vision_likert_09",
+    "dimension": "vision",
+    "secondary_dimension": null,
+    "type": "likert",
+    "text": "When you look at your team's current priorities, you can clearly explain how each one connects to where you need to be in a year.",
+    "options": null,
+    "scoring_weights": {
+      "1": {
+        "vision": 0
+      },
+      "2": {
+        "vision": 25
+      },
+      "3": {
+        "vision": 50
+      },
+      "4": {
+        "vision": 75
+      },
+      "5": {
+        "vision": 100
+      }
+    },
+    "difficulty": 0.5,
+    "reverse_scored": false,
+    "validity_pair_id": "vision_vp_01",
+    "is_impression_management": false,
+    "version_availability": [
+      "quick",
+      "deep"
+    ]
+  },
+  {
+    "id": "vision_likert_10",
+    "dimension": "vision",
+    "secondary_dimension": null,
+    "type": "likert",
+    "text": "In the last month, you made a decision primarily based on what would pay off in six-plus months, even though it created short-term friction.",
+    "options": null,
+    "scoring_weights": {
+      "1": {
+        "vision": 0
+      },
+      "2": {
+        "vision": 25
+      },
+      "3": {
+        "vision": 50
+      },
+      "4": {
+        "vision": 75
+      },
+      "5": {
+        "vision": 100
+      }
+    },
+    "difficulty": 0.55,
+    "reverse_scored": false,
+    "validity_pair_id": "vision_vp_01",
+    "is_impression_management": false,
+    "version_availability": [
+      "quick",
+      "deep"
+    ]
+  },
+  {
+    "id": "vision_likert_11",
+    "dimension": "vision",
+    "secondary_dimension": null,
+    "type": "likert",
+    "text": "You rarely question the assumptions behind a plan that is already working.",
+    "options": null,
+    "scoring_weights": {
+      "1": {
+        "vision": 100
+      },
+      "2": {
+        "vision": 75
+      },
+      "3": {
+        "vision": 50
+      },
+      "4": {
+        "vision": 25
+      },
+      "5": {
+        "vision": 0
+      }
+    },
+    "difficulty": 0.4,
+    "reverse_scored": true,
+    "validity_pair_id": null,
+    "is_impression_management": false,
+    "version_availability": [
+      "quick",
+      "deep"
+    ]
+  },
+  {
+    "id": "vision_likert_12",
+    "dimension": "vision",
+    "secondary_dimension": "connection",
+    "type": "likert",
+    "text": "When you see a risk that others have not noticed, you bring it up even if it makes the conversation uncomfortable.",
+    "options": null,
+    "scoring_weights": {
+      "1": {
+        "vision": 0,
+        "connection": 0
+      },
+      "2": {
+        "vision": 18,
+        "connection": 7
+      },
+      "3": {
+        "vision": 35,
+        "connection": 15
+      },
+      "4": {
+        "vision": 53,
+        "connection": 22
+      },
+      "5": {
+        "vision": 70,
+        "connection": 30
+      }
+    },
+    "difficulty": 0.5,
+    "reverse_scored": false,
+    "validity_pair_id": null,
+    "is_impression_management": false,
+    "version_availability": [
+      "quick",
+      "deep"
+    ]
+  },
+  {
+    "id": "vision_likert_13",
+    "dimension": "vision",
+    "secondary_dimension": null,
+    "type": "likert",
+    "text": "You tend to focus on what is right in front of you and let the long-term sort itself out.",
+    "options": null,
+    "scoring_weights": {
+      "1": {
+        "vision": 100
+      },
+      "2": {
+        "vision": 75
+      },
+      "3": {
+        "vision": 50
+      },
+      "4": {
+        "vision": 25
+      },
+      "5": {
+        "vision": 0
+      }
+    },
+    "difficulty": 0.3,
+    "reverse_scored": true,
+    "validity_pair_id": null,
+    "is_impression_management": false,
+    "version_availability": [
+      "quick",
+      "deep"
+    ]
+  },
+  {
+    "id": "vision_likert_14",
+    "dimension": "vision",
+    "secondary_dimension": null,
+    "type": "likert",
+    "text": "In the last month, you borrowed an idea from a completely different field and applied it to your own work.",
+    "options": null,
+    "scoring_weights": {
+      "1": {
+        "vision": 0
+      },
+      "2": {
+        "vision": 25
+      },
+      "3": {
+        "vision": 50
+      },
+      "4": {
+        "vision": 75
+      },
+      "5": {
+        "vision": 100
+      }
+    },
+    "difficulty": 0.55,
+    "reverse_scored": false,
+    "validity_pair_id": null,
+    "is_impression_management": false,
+    "version_availability": [
+      "quick",
+      "deep"
+    ]
+  },
+  {
+    "id": "vision_likert_15",
+    "dimension": "vision",
+    "secondary_dimension": "integrity",
+    "type": "likert",
+    "text": "When you spot a shortcut that would save time now but create problems later, you flag it and push for the longer path.",
+    "options": null,
+    "scoring_weights": {
+      "1": {
+        "vision": 0,
+        "integrity": 0
+      },
+      "2": {
+        "vision": 18,
+        "integrity": 7
+      },
+      "3": {
+        "vision": 35,
+        "integrity": 15
+      },
+      "4": {
+        "vision": 53,
+        "integrity": 22
+      },
+      "5": {
+        "vision": 70,
+        "integrity": 30
+      }
+    },
+    "difficulty": 0.45,
+    "reverse_scored": false,
+    "validity_pair_id": null,
+    "is_impression_management": false,
+    "version_availability": [
+      "quick",
+      "deep"
+    ]
+  },
+  {
+    "id": "vision_likert_16",
+    "dimension": "vision",
+    "secondary_dimension": null,
+    "type": "likert",
+    "text": "You find it hard to explain to others why something that seems unimportant now will matter later.",
+    "options": null,
+    "scoring_weights": {
+      "1": {
+        "vision": 100
+      },
+      "2": {
+        "vision": 75
+      },
+      "3": {
+        "vision": 50
+      },
+      "4": {
+        "vision": 25
+      },
+      "5": {
+        "vision": 0
+      }
+    },
+    "difficulty": 0.5,
+    "reverse_scored": true,
+    "validity_pair_id": null,
+    "is_impression_management": false,
+    "version_availability": [
+      "deep"
+    ]
+  },
+  {
+    "id": "vision_likert_17",
+    "dimension": "vision",
+    "secondary_dimension": "drive",
+    "type": "likert",
+    "text": "When you come up with a new approach, you test it on a small scale before proposing a full rollout.",
+    "options": null,
+    "scoring_weights": {
+      "1": {
+        "vision": 0,
+        "drive": 0
+      },
+      "2": {
+        "vision": 18,
+        "drive": 7
+      },
+      "3": {
+        "vision": 35,
+        "drive": 15
+      },
+      "4": {
+        "vision": 53,
+        "drive": 22
+      },
+      "5": {
+        "vision": 70,
+        "drive": 30
+      }
+    },
+    "difficulty": 0.4,
+    "reverse_scored": false,
+    "validity_pair_id": null,
+    "is_impression_management": false,
+    "version_availability": [
+      "quick",
+      "deep"
+    ]
+  },
+  {
+    "id": "vision_likert_18",
+    "dimension": "vision",
+    "secondary_dimension": null,
+    "type": "likert",
+    "text": "When someone asks you why you made a specific decision, you can trace it back to a larger goal without hesitating.",
+    "options": null,
+    "scoring_weights": {
+      "1": {
+        "vision": 0
+      },
+      "2": {
+        "vision": 25
+      },
+      "3": {
+        "vision": 50
+      },
+      "4": {
+        "vision": 75
+      },
+      "5": {
+        "vision": 100
+      }
+    },
+    "difficulty": 0.45,
+    "reverse_scored": false,
+    "validity_pair_id": null,
+    "is_impression_management": false,
+    "version_availability": [
+      "quick",
+      "deep"
+    ]
+  },
+  {
+    "id": "vision_likert_19",
+    "dimension": "vision",
+    "secondary_dimension": null,
+    "type": "likert",
+    "text": "You often get so deep into analyzing possibilities that you delay making a decision until the window has nearly closed.",
+    "options": null,
+    "scoring_weights": {
+      "1": {
+        "vision": 100
+      },
+      "2": {
+        "vision": 75
+      },
+      "3": {
+        "vision": 50
+      },
+      "4": {
+        "vision": 25
+      },
+      "5": {
+        "vision": 0
+      }
+    },
+    "difficulty": 0.75,
+    "reverse_scored": true,
+    "validity_pair_id": null,
+    "is_impression_management": false,
+    "version_availability": [
+      "deep"
+    ]
+  },
+  {
+    "id": "vision_likert_20",
+    "dimension": "vision",
+    "secondary_dimension": "connection",
+    "type": "likert",
+    "text": "When you see how different people's work fits together toward a bigger outcome, you make sure they see it too.",
+    "options": null,
+    "scoring_weights": {
+      "1": {
+        "vision": 0,
+        "connection": 0
+      },
+      "2": {
+        "vision": 18,
+        "connection": 7
+      },
+      "3": {
+        "vision": 35,
+        "connection": 15
+      },
+      "4": {
+        "vision": 53,
+        "connection": 22
+      },
+      "5": {
+        "vision": 70,
+        "connection": 30
+      }
+    },
+    "difficulty": 0.45,
+    "reverse_scored": false,
+    "validity_pair_id": null,
+    "is_impression_management": false,
+    "version_availability": [
+      "quick",
+      "deep"
+    ]
+  },
+  {
+    "id": "vision_likert_21",
+    "dimension": "vision",
+    "secondary_dimension": null,
+    "type": "likert",
+    "text": "When your team hits a wall, you tend to keep trying harder with the current approach rather than rethinking the problem entirely.",
+    "options": null,
+    "scoring_weights": {
+      "1": {
+        "vision": 100
+      },
+      "2": {
+        "vision": 75
+      },
+      "3": {
+        "vision": 50
+      },
+      "4": {
+        "vision": 25
+      },
+      "5": {
+        "vision": 0
+      }
+    },
+    "difficulty": 0.45,
+    "reverse_scored": true,
+    "validity_pair_id": null,
+    "is_impression_management": false,
+    "version_availability": [
+      "quick",
+      "deep"
+    ]
+  },
+  {
+    "id": "vision_likert_22",
+    "dimension": "vision",
+    "secondary_dimension": null,
+    "type": "likert",
+    "text": "In the last month, you identified a trend early enough that your team had time to prepare before it hit.",
+    "options": null,
+    "scoring_weights": {
+      "1": {
+        "vision": 0
+      },
+      "2": {
+        "vision": 25
+      },
+      "3": {
+        "vision": 50
+      },
+      "4": {
+        "vision": 75
+      },
+      "5": {
+        "vision": 100
+      }
+    },
+    "difficulty": 0.6,
+    "reverse_scored": false,
+    "validity_pair_id": null,
+    "is_impression_management": false,
+    "version_availability": [
+      "quick",
+      "deep"
+    ]
+  },
+  {
+    "id": "vision_likert_23",
+    "dimension": "vision",
+    "secondary_dimension": "resilience",
+    "type": "likert",
+    "text": "When an assumption you have relied on turns out to be wrong, you find it energizing rather than unsettling to rebuild your mental model.",
+    "options": null,
+    "scoring_weights": {
+      "1": {
+        "vision": 0,
+        "resilience": 0
+      },
+      "2": {
+        "vision": 18,
+        "resilience": 7
+      },
+      "3": {
+        "vision": 35,
+        "resilience": 15
+      },
+      "4": {
+        "vision": 53,
+        "resilience": 22
+      },
+      "5": {
+        "vision": 70,
+        "resilience": 30
+      }
+    },
+    "difficulty": 0.55,
+    "reverse_scored": false,
+    "validity_pair_id": null,
+    "is_impression_management": false,
+    "version_availability": [
+      "quick",
+      "deep"
+    ]
+  },
+  {
+    "id": "vision_likert_24",
+    "dimension": "vision",
+    "secondary_dimension": null,
+    "type": "likert",
+    "text": "You prefer to take things as they come rather than work from a plan you mapped out in advance.",
+    "options": null,
+    "scoring_weights": {
+      "1": {
+        "vision": 100
+      },
+      "2": {
+        "vision": 75
+      },
+      "3": {
+        "vision": 50
+      },
+      "4": {
+        "vision": 25
+      },
+      "5": {
+        "vision": 0
+      }
+    },
+    "difficulty": 0.3,
+    "reverse_scored": true,
+    "validity_pair_id": null,
+    "is_impression_management": false,
+    "version_availability": [
+      "quick",
+      "deep"
+    ]
+  },
+  {
+    "id": "vision_likert_25",
+    "dimension": "vision",
+    "secondary_dimension": null,
+    "type": "likert",
+    "text": "I can always predict market changes before they happen.",
+    "options": null,
+    "scoring_weights": {
+      "1": {
+        "vision": 0
+      },
+      "2": {
+        "vision": 25
+      },
+      "3": {
+        "vision": 50
+      },
+      "4": {
+        "vision": 75
+      },
+      "5": {
+        "vision": 100
+      }
+    },
+    "difficulty": 0.25,
+    "reverse_scored": false,
+    "validity_pair_id": null,
+    "is_impression_management": true,
+    "version_availability": [
+      "quick",
+      "deep"
+    ]
+  },
+  {
+    "id": "vision_situational_01",
+    "dimension": "vision",
+    "secondary_dimension": null,
+    "type": "situational",
+    "text": "Your company has budget to invest in one area this quarter. Sales wants more headcount, engineering wants to rebuild a core system, and marketing wants to launch in a new channel. Each team has strong data supporting their case. You have to recommend one.",
+    "options": [
+      {
+        "key": "a",
+        "text": "Map out how each investment would compound over 18 months and pick the one with the highest long-term leverage, even if it is not the most urgent.",
+        "scores": {
+          "vision": 90,
+          "drive": 30
+        }
+      },
+      {
+        "key": "b",
+        "text": "Talk to each team lead one-on-one to understand what they are really worried about, then find a solution that addresses the deepest concern.",
+        "scores": {
+          "vision": 45,
+          "connection": 80
+        }
+      },
+      {
+        "key": "c",
+        "text": "Go with whichever investment closes the most obvious gap right now so the company does not lose ground this quarter.",
+        "scores": {
+          "vision": 25,
+          "drive": 75
+        }
+      },
+      {
+        "key": "d",
+        "text": "Split the budget across all three at reduced levels so no team feels left out and everyone makes some progress.",
+        "scores": {
+          "vision": 35,
+          "connection": 55
+        }
+      }
+    ],
+    "scoring_weights": {
+      "a": {
+        "vision": 90,
+        "drive": 30
+      },
+      "b": {
+        "vision": 45,
+        "connection": 80
+      },
+      "c": {
+        "vision": 25,
+        "drive": 75
+      },
+      "d": {
+        "vision": 35,
+        "connection": 55
+      }
+    },
+    "difficulty": 0.5,
+    "reverse_scored": false,
+    "validity_pair_id": null,
+    "is_impression_management": false,
+    "version_availability": [
+      "quick",
+      "deep"
+    ]
+  },
+  {
+    "id": "vision_situational_02",
+    "dimension": "vision",
+    "secondary_dimension": null,
+    "type": "situational",
+    "text": "A regulation change is being discussed that could affect your industry in 12 to 18 months. Nothing is finalized yet. Your peers are ignoring it because it may not pass.",
+    "options": [
+      {
+        "key": "a",
+        "text": "Build two contingency plans now, one for if it passes and one for if it does not, so you can move fast either way.",
+        "scores": {
+          "vision": 85,
+          "resilience": 45
+        }
+      },
+      {
+        "key": "b",
+        "text": "Wait until the regulation is finalized, then mobilize quickly. No point planning for something that might not happen.",
+        "scores": {
+          "vision": 20,
+          "drive": 60
+        }
+      },
+      {
+        "key": "c",
+        "text": "Bring it up at the next leadership meeting so the team is at least aware, even if you do not act yet.",
+        "scores": {
+          "vision": 55,
+          "integrity": 65
+        }
+      },
+      {
+        "key": "d",
+        "text": "Quietly start adjusting your own work to be ready, but do not raise it publicly until there is more certainty.",
+        "scores": {
+          "vision": 65,
+          "drive": 40
+        }
+      }
+    ],
+    "scoring_weights": {
+      "a": {
+        "vision": 85,
+        "resilience": 45
+      },
+      "b": {
+        "vision": 20,
+        "drive": 60
+      },
+      "c": {
+        "vision": 55,
+        "integrity": 65
+      },
+      "d": {
+        "vision": 65,
+        "drive": 40
+      }
+    },
+    "difficulty": 0.45,
+    "reverse_scored": false,
+    "validity_pair_id": null,
+    "is_impression_management": false,
+    "version_availability": [
+      "quick",
+      "deep"
+    ]
+  },
+  {
+    "id": "vision_situational_03",
+    "dimension": "vision",
+    "secondary_dimension": null,
+    "type": "situational",
+    "text": "Your team's main product has been successful for three years, but growth is slowing. A junior team member suggests a radical redesign. The rest of the team thinks it is too risky.",
+    "options": [
+      {
+        "key": "a",
+        "text": "Give the junior member a small team and two weeks to build a prototype. If it shows promise, expand the experiment.",
+        "scores": {
+          "vision": 80,
+          "connection": 50
+        }
+      },
+      {
+        "key": "b",
+        "text": "Acknowledge the idea publicly, but focus the team on optimizing what is already working. Do not fix what is not broken.",
+        "scores": {
+          "vision": 30,
+          "drive": 65
+        }
+      },
+      {
+        "key": "c",
+        "text": "Run a structured analysis of the redesign idea alongside two other alternatives, then let data decide.",
+        "scores": {
+          "vision": 75,
+          "integrity": 55
+        }
+      },
+      {
+        "key": "d",
+        "text": "Use the idea as a springboard for a broader team brainstorm about what the product should look like in two years.",
+        "scores": {
+          "vision": 85,
+          "connection": 40
+        }
+      }
+    ],
+    "scoring_weights": {
+      "a": {
+        "vision": 80,
+        "connection": 50
+      },
+      "b": {
+        "vision": 30,
+        "drive": 65
+      },
+      "c": {
+        "vision": 75,
+        "integrity": 55
+      },
+      "d": {
+        "vision": 85,
+        "connection": 40
+      }
+    },
+    "difficulty": 0.5,
+    "reverse_scored": false,
+    "validity_pair_id": null,
+    "is_impression_management": false,
+    "version_availability": [
+      "quick",
+      "deep"
+    ]
+  },
+  {
+    "id": "vision_situational_04",
+    "dimension": "vision",
+    "secondary_dimension": null,
+    "type": "situational",
+    "text": "You are halfway through a six-month project when new information suggests the original goal may no longer be the right target. Your team has already invested significant effort.",
+    "options": [
+      {
+        "key": "a",
+        "text": "Pause the project for a week to reassess the goal against the new information, even though it will slow delivery.",
+        "scores": {
+          "vision": 85,
+          "integrity": 50
+        }
+      },
+      {
+        "key": "b",
+        "text": "Push through to the original deadline. Pivoting now would waste the work already done and demoralize the team.",
+        "scores": {
+          "vision": 20,
+          "drive": 70
+        }
+      },
+      {
+        "key": "c",
+        "text": "Adjust the scope to incorporate the new information without abandoning the original direction entirely.",
+        "scores": {
+          "vision": 65,
+          "resilience": 55
+        }
+      },
+      {
+        "key": "d",
+        "text": "Present both paths to the team and let them weigh in before deciding. They are closest to the work.",
+        "scores": {
+          "vision": 50,
+          "connection": 75
+        }
+      }
+    ],
+    "scoring_weights": {
+      "a": {
+        "vision": 85,
+        "integrity": 50
+      },
+      "b": {
+        "vision": 20,
+        "drive": 70
+      },
+      "c": {
+        "vision": 65,
+        "resilience": 55
+      },
+      "d": {
+        "vision": 50,
+        "connection": 75
+      }
+    },
+    "difficulty": 0.55,
+    "reverse_scored": false,
+    "validity_pair_id": null,
+    "is_impression_management": false,
+    "version_availability": [
+      "quick",
+      "deep"
+    ]
+  },
+  {
+    "id": "vision_situational_05",
+    "dimension": "vision",
+    "secondary_dimension": null,
+    "type": "situational",
+    "text": "A key supplier raises their prices 20%. Your competitors are scrambling to find alternatives. You have enough margin to absorb the increase for now.",
+    "options": [
+      {
+        "key": "a",
+        "text": "Use this as a trigger to diversify your supply chain now, treating it as the early warning sign it probably is.",
+        "scores": {
+          "vision": 85,
+          "resilience": 50
+        }
+      },
+      {
+        "key": "b",
+        "text": "Absorb the cost for this quarter and revisit later. Do not overreact to a single price change.",
+        "scores": {
+          "vision": 30,
+          "resilience": 40
+        }
+      },
+      {
+        "key": "c",
+        "text": "Negotiate hard with the supplier. Loyalty should count for something, and you have been a reliable customer.",
+        "scores": {
+          "vision": 40,
+          "connection": 65
+        }
+      },
+      {
+        "key": "d",
+        "text": "Pass the cost to customers immediately. Transparency about pricing protects the business long-term.",
+        "scores": {
+          "vision": 55,
+          "integrity": 70
+        }
+      }
+    ],
+    "scoring_weights": {
+      "a": {
+        "vision": 85,
+        "resilience": 50
+      },
+      "b": {
+        "vision": 30,
+        "resilience": 40
+      },
+      "c": {
+        "vision": 40,
+        "connection": 65
+      },
+      "d": {
+        "vision": 55,
+        "integrity": 70
+      }
+    },
+    "difficulty": 0.5,
+    "reverse_scored": false,
+    "validity_pair_id": null,
+    "is_impression_management": false,
+    "version_availability": [
+      "quick",
+      "deep"
+    ]
+  },
+  {
+    "id": "vision_situational_06",
+    "dimension": "vision",
+    "secondary_dimension": null,
+    "type": "situational",
+    "text": "You notice that two departments are solving similar problems with completely different tools and processes. Neither knows what the other is doing.",
+    "options": [
+      {
+        "key": "a",
+        "text": "Set up a meeting between both teams to share approaches. One might learn from the other, or they might combine into something better.",
+        "scores": {
+          "vision": 75,
+          "connection": 65
+        }
+      },
+      {
+        "key": "b",
+        "text": "Study both approaches to figure out which one is more scalable, then recommend the company standardize on that one.",
+        "scores": {
+          "vision": 85,
+          "drive": 40
+        }
+      },
+      {
+        "key": "c",
+        "text": "Flag it to leadership as a coordination gap and let them decide how to handle it.",
+        "scores": {
+          "vision": 35,
+          "integrity": 60
+        }
+      },
+      {
+        "key": "d",
+        "text": "Leave it alone. Different teams have different needs, and forcing alignment could slow both of them down.",
+        "scores": {
+          "vision": 25,
+          "resilience": 50
+        }
+      }
+    ],
+    "scoring_weights": {
+      "a": {
+        "vision": 75,
+        "connection": 65
+      },
+      "b": {
+        "vision": 85,
+        "drive": 40
+      },
+      "c": {
+        "vision": 35,
+        "integrity": 60
+      },
+      "d": {
+        "vision": 25,
+        "resilience": 50
+      }
+    },
+    "difficulty": 0.45,
+    "reverse_scored": false,
+    "validity_pair_id": null,
+    "is_impression_management": false,
+    "version_availability": [
+      "quick",
+      "deep"
+    ]
+  },
+  {
+    "id": "vision_situational_07",
+    "dimension": "vision",
+    "secondary_dimension": null,
+    "type": "situational",
+    "text": "Your team hits their quarterly targets, but you notice the wins came from a few lucky breaks rather than a repeatable system. Everyone else is celebrating.",
+    "options": [
+      {
+        "key": "a",
+        "text": "Celebrate with the team, then privately begin building systems so the next quarter does not depend on luck.",
+        "scores": {
+          "vision": 85,
+          "connection": 50
+        }
+      },
+      {
+        "key": "b",
+        "text": "Raise the concern openly. The team needs to know that these results are not sustainable.",
+        "scores": {
+          "vision": 70,
+          "integrity": 70
+        }
+      },
+      {
+        "key": "c",
+        "text": "Let it ride. Morale matters, and the team earned the celebration. Address systems next quarter.",
+        "scores": {
+          "vision": 25,
+          "connection": 65
+        }
+      },
+      {
+        "key": "d",
+        "text": "Set higher targets for next quarter. If they hit those too, the system is working fine.",
+        "scores": {
+          "vision": 30,
+          "drive": 75
+        }
+      }
+    ],
+    "scoring_weights": {
+      "a": {
+        "vision": 85,
+        "connection": 50
+      },
+      "b": {
+        "vision": 70,
+        "integrity": 70
+      },
+      "c": {
+        "vision": 25,
+        "connection": 65
+      },
+      "d": {
+        "vision": 30,
+        "drive": 75
+      }
+    },
+    "difficulty": 0.6,
+    "reverse_scored": false,
+    "validity_pair_id": null,
+    "is_impression_management": false,
+    "version_availability": [
+      "quick",
+      "deep"
+    ]
+  },
+  {
+    "id": "vision_situational_08",
+    "dimension": "vision",
+    "secondary_dimension": null,
+    "type": "situational",
+    "text": "A new technology is getting a lot of buzz in your industry. Some companies are investing heavily. Others are calling it overhyped. You need to advise your leadership team.",
+    "options": [
+      {
+        "key": "a",
+        "text": "Research how this technology could specifically change your value chain, then recommend targeted experiments in the areas with highest impact.",
+        "scores": {
+          "vision": 90,
+          "drive": 45
+        }
+      },
+      {
+        "key": "b",
+        "text": "Wait for early adopters to succeed or fail. Learning from their mistakes is cheaper than being the guinea pig.",
+        "scores": {
+          "vision": 40,
+          "resilience": 55
+        }
+      },
+      {
+        "key": "c",
+        "text": "Hire an outside expert to give an objective assessment. You should not bet the company on your own judgment alone.",
+        "scores": {
+          "vision": 55,
+          "integrity": 65
+        }
+      },
+      {
+        "key": "d",
+        "text": "Ask your frontline teams what problems they have that this technology might solve. Start from their pain, not the hype.",
+        "scores": {
+          "vision": 70,
+          "connection": 60
+        }
+      }
+    ],
+    "scoring_weights": {
+      "a": {
+        "vision": 90,
+        "drive": 45
+      },
+      "b": {
+        "vision": 40,
+        "resilience": 55
+      },
+      "c": {
+        "vision": 55,
+        "integrity": 65
+      },
+      "d": {
+        "vision": 70,
+        "connection": 60
+      }
+    },
+    "difficulty": 0.55,
+    "reverse_scored": false,
+    "validity_pair_id": null,
+    "is_impression_management": false,
+    "version_availability": [
+      "quick",
+      "deep"
+    ]
+  },
+  {
+    "id": "vision_situational_09",
+    "dimension": "vision",
+    "secondary_dimension": null,
+    "type": "situational",
+    "text": "Your biggest client wants a custom feature that would take your product in a direction you had not planned. The revenue is significant, but it would pull engineering off the roadmap for two months.",
+    "options": [
+      {
+        "key": "a",
+        "text": "Evaluate whether this request reveals a market need you missed. If it does, incorporate it into the roadmap as a strategic feature, not a one-off.",
+        "scores": {
+          "vision": 85,
+          "drive": 45
+        }
+      },
+      {
+        "key": "b",
+        "text": "Build it. Keeping your biggest client happy is the priority, and you can return to the roadmap after.",
+        "scores": {
+          "vision": 25,
+          "connection": 70
+        }
+      },
+      {
+        "key": "c",
+        "text": "Offer a workaround that partially solves their need without derailing the roadmap.",
+        "scores": {
+          "vision": 60,
+          "resilience": 60
+        }
+      },
+      {
+        "key": "d",
+        "text": "Be transparent that it does not align with your direction. If the client leaves, that tells you something important about product-market fit.",
+        "scores": {
+          "vision": 70,
+          "integrity": 75
+        }
+      }
+    ],
+    "scoring_weights": {
+      "a": {
+        "vision": 85,
+        "drive": 45
+      },
+      "b": {
+        "vision": 25,
+        "connection": 70
+      },
+      "c": {
+        "vision": 60,
+        "resilience": 60
+      },
+      "d": {
+        "vision": 70,
+        "integrity": 75
+      }
+    },
+    "difficulty": 0.6,
+    "reverse_scored": false,
+    "validity_pair_id": null,
+    "is_impression_management": false,
+    "version_availability": [
+      "deep"
+    ]
+  },
+  {
+    "id": "vision_situational_10",
+    "dimension": "vision",
+    "secondary_dimension": null,
+    "type": "situational",
+    "text": "You are asked to present your three-year vision to the board. Your honest assessment is that the market is too volatile to predict beyond 12 months with any confidence.",
+    "options": [
+      {
+        "key": "a",
+        "text": "Present a 12-month plan with clear milestones, plus three plausible scenarios for years two and three with decision triggers for each.",
+        "scores": {
+          "vision": 90,
+          "integrity": 60
+        }
+      },
+      {
+        "key": "b",
+        "text": "Build the best three-year plan you can. Boards need confidence, and you can adjust as you go.",
+        "scores": {
+          "vision": 40,
+          "drive": 55
+        }
+      },
+      {
+        "key": "c",
+        "text": "Tell the board honestly that three-year planning is unreliable right now and propose a rolling 12-month approach instead.",
+        "scores": {
+          "vision": 65,
+          "integrity": 80
+        }
+      },
+      {
+        "key": "d",
+        "text": "Ask other leaders on your team to contribute their three-year outlook for their areas, then weave it into a combined view.",
+        "scores": {
+          "vision": 50,
+          "connection": 65
+        }
+      }
+    ],
+    "scoring_weights": {
+      "a": {
+        "vision": 90,
+        "integrity": 60
+      },
+      "b": {
+        "vision": 40,
+        "drive": 55
+      },
+      "c": {
+        "vision": 65,
+        "integrity": 80
+      },
+      "d": {
+        "vision": 50,
+        "connection": 65
+      }
+    },
+    "difficulty": 0.8,
+    "reverse_scored": false,
+    "validity_pair_id": null,
+    "is_impression_management": false,
+    "version_availability": [
+      "deep"
+    ]
+  },
+  {
+    "id": "vision_situational_11",
+    "dimension": "vision",
+    "secondary_dimension": null,
+    "type": "situational",
+    "text": "Your team's workload has been manageable, but you see three separate projects converging in the same month six weeks from now. Nobody else has flagged it yet.",
+    "options": [
+      {
+        "key": "a",
+        "text": "Start redistributing workloads now so the team has breathing room when the convergence hits.",
+        "scores": {
+          "vision": 85,
+          "drive": 55
+        }
+      },
+      {
+        "key": "b",
+        "text": "Bring it to the team's attention and let them decide how to prepare. They know their capacity best.",
+        "scores": {
+          "vision": 60,
+          "connection": 70
+        }
+      },
+      {
+        "key": "c",
+        "text": "Wait a couple of weeks to see if timelines shift. Things often resolve themselves.",
+        "scores": {
+          "vision": 20,
+          "resilience": 45
+        }
+      },
+      {
+        "key": "d",
+        "text": "Flag it to your manager and recommend that one of the three projects be moved. Better to disappoint one stakeholder than burn out the whole team.",
+        "scores": {
+          "vision": 70,
+          "integrity": 60
+        }
+      }
+    ],
+    "scoring_weights": {
+      "a": {
+        "vision": 85,
+        "drive": 55
+      },
+      "b": {
+        "vision": 60,
+        "connection": 70
+      },
+      "c": {
+        "vision": 20,
+        "resilience": 45
+      },
+      "d": {
+        "vision": 70,
+        "integrity": 60
+      }
+    },
+    "difficulty": 0.4,
+    "reverse_scored": false,
+    "validity_pair_id": null,
+    "is_impression_management": false,
+    "version_availability": [
+      "quick",
+      "deep"
+    ]
+  },
+  {
+    "id": "vision_situational_12",
+    "dimension": "vision",
+    "secondary_dimension": null,
+    "type": "situational",
+    "text": "A competitor launches a product that copies your core feature but offers it for free. Your sales team is panicking.",
+    "options": [
+      {
+        "key": "a",
+        "text": "Use this as the push to differentiate. If they can copy your current feature, you need to be building the next one already.",
+        "scores": {
+          "vision": 85,
+          "resilience": 55
+        }
+      },
+      {
+        "key": "b",
+        "text": "Cut your price to match. Losing market share now will be harder to recover from than a temporary margin hit.",
+        "scores": {
+          "vision": 25,
+          "drive": 70
+        }
+      },
+      {
+        "key": "c",
+        "text": "Double down on customer relationships and service quality. Features can be copied, but trust cannot.",
+        "scores": {
+          "vision": 50,
+          "connection": 80
+        }
+      },
+      {
+        "key": "d",
+        "text": "Analyze exactly what they copied and what they missed. The gaps tell you what they do not understand about your customers.",
+        "scores": {
+          "vision": 80,
+          "integrity": 45
+        }
+      }
+    ],
+    "scoring_weights": {
+      "a": {
+        "vision": 85,
+        "resilience": 55
+      },
+      "b": {
+        "vision": 25,
+        "drive": 70
+      },
+      "c": {
+        "vision": 50,
+        "connection": 80
+      },
+      "d": {
+        "vision": 80,
+        "integrity": 45
+      }
+    },
+    "difficulty": 0.5,
+    "reverse_scored": false,
+    "validity_pair_id": null,
+    "is_impression_management": false,
+    "version_availability": [
+      "quick",
+      "deep"
+    ]
+  },
+  {
+    "id": "vision_situational_13",
+    "dimension": "vision",
+    "secondary_dimension": null,
+    "type": "situational",
+    "text": "You have been promoted and now oversee three teams that historically have not collaborated well. Each has its own goals and metrics that sometimes conflict.",
+    "options": [
+      {
+        "key": "a",
+        "text": "Redesign the metrics so all three teams share at least one common outcome they can only achieve together.",
+        "scores": {
+          "vision": 85,
+          "drive": 50
+        }
+      },
+      {
+        "key": "b",
+        "text": "Spend your first month listening to each team's frustrations with the others before changing anything.",
+        "scores": {
+          "vision": 50,
+          "connection": 80
+        }
+      },
+      {
+        "key": "c",
+        "text": "Set up a weekly cross-team standup so they at least know what each other is working on.",
+        "scores": {
+          "vision": 55,
+          "connection": 55
+        }
+      },
+      {
+        "key": "d",
+        "text": "Let each team keep running independently. They have been successful in their own right, and forced collaboration often backfires.",
+        "scores": {
+          "vision": 25,
+          "resilience": 50
+        }
+      }
+    ],
+    "scoring_weights": {
+      "a": {
+        "vision": 85,
+        "drive": 50
+      },
+      "b": {
+        "vision": 50,
+        "connection": 80
+      },
+      "c": {
+        "vision": 55,
+        "connection": 55
+      },
+      "d": {
+        "vision": 25,
+        "resilience": 50
+      }
+    },
+    "difficulty": 0.55,
+    "reverse_scored": false,
+    "validity_pair_id": null,
+    "is_impression_management": false,
+    "version_availability": [
+      "quick",
+      "deep"
+    ]
+  },
+  {
+    "id": "vision_situational_14",
+    "dimension": "vision",
+    "secondary_dimension": null,
+    "type": "situational",
+    "text": "Your company is growing fast. You can see that the processes that work at your current size will break at double the headcount, but everyone is focused on hiring.",
+    "options": [
+      {
+        "key": "a",
+        "text": "Start investing in scalable systems now, before the cracks show. It is easier to build infrastructure during calm than during a crisis.",
+        "scores": {
+          "vision": 90,
+          "drive": 45
+        }
+      },
+      {
+        "key": "b",
+        "text": "Focus on hiring the right people. Good people will figure out the process problems when they arise.",
+        "scores": {
+          "vision": 30,
+          "connection": 60
+        }
+      },
+      {
+        "key": "c",
+        "text": "Document the concerns and share them with leadership so the risk is on record, even if they choose not to act now.",
+        "scores": {
+          "vision": 60,
+          "integrity": 70
+        }
+      },
+      {
+        "key": "d",
+        "text": "Fix processes only as they break. Premature optimization wastes resources on problems that may never materialize.",
+        "scores": {
+          "vision": 20,
+          "resilience": 55
+        }
+      }
+    ],
+    "scoring_weights": {
+      "a": {
+        "vision": 90,
+        "drive": 45
+      },
+      "b": {
+        "vision": 30,
+        "connection": 60
+      },
+      "c": {
+        "vision": 60,
+        "integrity": 70
+      },
+      "d": {
+        "vision": 20,
+        "resilience": 55
+      }
+    },
+    "difficulty": 0.5,
+    "reverse_scored": false,
+    "validity_pair_id": null,
+    "is_impression_management": false,
+    "version_availability": [
+      "quick",
+      "deep"
+    ]
+  },
+  {
+    "id": "vision_situational_15",
+    "dimension": "vision",
+    "secondary_dimension": null,
+    "type": "situational",
+    "text": "During a routine review, you realize your team has been solving the wrong problem for two weeks. The work is high quality, but pointed in the wrong direction.",
+    "options": [
+      {
+        "key": "a",
+        "text": "Stop the work, redefine the problem clearly, and redirect. Two weeks of sunk cost is better than two months.",
+        "scores": {
+          "vision": 85,
+          "integrity": 55
+        }
+      },
+      {
+        "key": "b",
+        "text": "See if the work can be repurposed toward the actual problem. There may be salvageable pieces.",
+        "scores": {
+          "vision": 70,
+          "resilience": 60
+        }
+      },
+      {
+        "key": "c",
+        "text": "Let the team finish the current sprint, then redirect. Stopping mid-stream is demoralizing.",
+        "scores": {
+          "vision": 35,
+          "connection": 65
+        }
+      },
+      {
+        "key": "d",
+        "text": "Dig into how the misalignment happened so you can prevent it next time, then redirect.",
+        "scores": {
+          "vision": 75,
+          "drive": 50
+        }
+      }
+    ],
+    "scoring_weights": {
+      "a": {
+        "vision": 85,
+        "integrity": 55
+      },
+      "b": {
+        "vision": 70,
+        "resilience": 60
+      },
+      "c": {
+        "vision": 35,
+        "connection": 65
+      },
+      "d": {
+        "vision": 75,
+        "drive": 50
+      }
+    },
+    "difficulty": 0.5,
+    "reverse_scored": false,
+    "validity_pair_id": null,
+    "is_impression_management": false,
+    "version_availability": [
+      "quick",
+      "deep"
+    ]
+  },
+  {
+    "id": "vision_situational_16",
+    "dimension": "vision",
+    "secondary_dimension": null,
+    "type": "situational",
+    "text": "You have a strategic idea that you believe in strongly, but your data is incomplete and your team is skeptical. You need their buy-in to move forward.",
+    "options": [
+      {
+        "key": "a",
+        "text": "Propose a small, low-risk test that would generate the missing data. Let the results do the persuading.",
+        "scores": {
+          "vision": 85,
+          "drive": 55
+        }
+      },
+      {
+        "key": "b",
+        "text": "Make the case with the data you have, be transparent about what is missing, and ask for a conditional go-ahead.",
+        "scores": {
+          "vision": 70,
+          "integrity": 70
+        }
+      },
+      {
+        "key": "c",
+        "text": "Shelve it. If you cannot convince your own team, maybe the idea is not as strong as you think.",
+        "scores": {
+          "vision": 30,
+          "connection": 55
+        }
+      },
+      {
+        "key": "d",
+        "text": "Find one ally on the team who sees the potential and build momentum from there.",
+        "scores": {
+          "vision": 55,
+          "connection": 70
+        }
+      }
+    ],
+    "scoring_weights": {
+      "a": {
+        "vision": 85,
+        "drive": 55
+      },
+      "b": {
+        "vision": 70,
+        "integrity": 70
+      },
+      "c": {
+        "vision": 30,
+        "connection": 55
+      },
+      "d": {
+        "vision": 55,
+        "connection": 70
+      }
+    },
+    "difficulty": 0.55,
+    "reverse_scored": false,
+    "validity_pair_id": null,
+    "is_impression_management": false,
+    "version_availability": [
+      "deep"
+    ]
+  },
+  {
+    "id": "vision_situational_17",
+    "dimension": "vision",
+    "secondary_dimension": null,
+    "type": "situational",
+    "text": "Your industry is stable now, but you read an analysis suggesting a major disruption could happen within five years. The analysis is from a credible source, but the timing is uncertain.",
+    "options": [
+      {
+        "key": "a",
+        "text": "Begin building capabilities now that would be valuable whether or not the disruption happens. Hedge your bet.",
+        "scores": {
+          "vision": 90,
+          "resilience": 50
+        }
+      },
+      {
+        "key": "b",
+        "text": "Set up a quarterly review to track leading indicators of the disruption so you are not caught off guard.",
+        "scores": {
+          "vision": 75,
+          "drive": 45
+        }
+      },
+      {
+        "key": "c",
+        "text": "Share the analysis widely so the organization is aware, but do not change strategy based on a five-year prediction.",
+        "scores": {
+          "vision": 50,
+          "integrity": 60
+        }
+      },
+      {
+        "key": "d",
+        "text": "Focus on strengthening current customer relationships. A loyal customer base is your best defense against any disruption.",
+        "scores": {
+          "vision": 35,
+          "connection": 75
+        }
+      }
+    ],
+    "scoring_weights": {
+      "a": {
+        "vision": 90,
+        "resilience": 50
+      },
+      "b": {
+        "vision": 75,
+        "drive": 45
+      },
+      "c": {
+        "vision": 50,
+        "integrity": 60
+      },
+      "d": {
+        "vision": 35,
+        "connection": 75
+      }
+    },
+    "difficulty": 0.85,
+    "reverse_scored": false,
+    "validity_pair_id": null,
+    "is_impression_management": false,
+    "version_availability": [
+      "deep"
+    ]
+  },
+  {
+    "id": "vision_forced_01",
+    "dimension": "vision",
+    "secondary_dimension": null,
+    "type": "forced_choice",
+    "text": "Your business is profitable but plateauing. Your gut says:",
+    "options": [
+      {
+        "key": "a",
+        "text": "Something fundamental about our model needs to change before the plateau becomes a decline.",
+        "scores": {
+          "vision": 80,
+          "resilience": 35
+        }
+      },
+      {
+        "key": "b",
+        "text": "We need to execute harder on what is already working. Discipline beats reinvention.",
+        "scores": {
+          "vision": 30,
+          "drive": 80
+        }
+      }
+    ],
+    "scoring_weights": {
+      "a": {
+        "vision": 80,
+        "resilience": 35
+      },
+      "b": {
+        "vision": 30,
+        "drive": 80
+      }
+    },
+    "difficulty": 0.5,
+    "reverse_scored": false,
+    "validity_pair_id": null,
+    "is_impression_management": false,
+    "version_availability": [
+      "quick",
+      "deep"
+    ]
+  },
+  {
+    "id": "vision_forced_02",
+    "dimension": "vision",
+    "secondary_dimension": null,
+    "type": "forced_choice",
+    "text": "A competitor makes a surprising move. Your first thought is:",
+    "options": [
+      {
+        "key": "a",
+        "text": "What do they see coming that we do not?",
+        "scores": {
+          "vision": 80,
+          "integrity": 40
+        }
+      },
+      {
+        "key": "b",
+        "text": "How do we respond to protect our position right now?",
+        "scores": {
+          "vision": 30,
+          "drive": 75
+        }
+      }
+    ],
+    "scoring_weights": {
+      "a": {
+        "vision": 80,
+        "integrity": 40
+      },
+      "b": {
+        "vision": 30,
+        "drive": 75
+      }
+    },
+    "difficulty": 0.45,
+    "reverse_scored": false,
+    "validity_pair_id": null,
+    "is_impression_management": false,
+    "version_availability": [
+      "quick",
+      "deep"
+    ]
+  },
+  {
+    "id": "vision_forced_03",
+    "dimension": "vision",
+    "secondary_dimension": null,
+    "type": "forced_choice",
+    "text": "When someone brings you a problem, you tend to:",
+    "options": [
+      {
+        "key": "a",
+        "text": "Ask what caused the problem in the first place, because the real fix is usually upstream.",
+        "scores": {
+          "vision": 80,
+          "integrity": 40
+        }
+      },
+      {
+        "key": "b",
+        "text": "Focus on solving it quickly so the person can get back to work.",
+        "scores": {
+          "vision": 25,
+          "drive": 75
+        }
+      }
+    ],
+    "scoring_weights": {
+      "a": {
+        "vision": 80,
+        "integrity": 40
+      },
+      "b": {
+        "vision": 25,
+        "drive": 75
+      }
+    },
+    "difficulty": 0.4,
+    "reverse_scored": false,
+    "validity_pair_id": null,
+    "is_impression_management": false,
+    "version_availability": [
+      "quick",
+      "deep"
+    ]
+  },
+  {
+    "id": "vision_forced_04",
+    "dimension": "vision",
+    "secondary_dimension": null,
+    "type": "forced_choice",
+    "text": "You are building next year's plan. You open with:",
+    "options": [
+      {
+        "key": "a",
+        "text": "Where do we need to be in three years, and what do we need to start now to get there?",
+        "scores": {
+          "vision": 85,
+          "drive": 35
+        }
+      },
+      {
+        "key": "b",
+        "text": "What did we learn this year, and how do we do more of what worked?",
+        "scores": {
+          "vision": 35,
+          "resilience": 70
+        }
+      }
+    ],
+    "scoring_weights": {
+      "a": {
+        "vision": 85,
+        "drive": 35
+      },
+      "b": {
+        "vision": 35,
+        "resilience": 70
+      }
+    },
+    "difficulty": 0.45,
+    "reverse_scored": false,
+    "validity_pair_id": null,
+    "is_impression_management": false,
+    "version_availability": [
+      "quick",
+      "deep"
+    ]
+  },
+  {
+    "id": "vision_forced_05",
+    "dimension": "vision",
+    "secondary_dimension": null,
+    "type": "forced_choice",
+    "text": "A decision needs to be made by Friday. You have 70% of the information you want. You:",
+    "options": [
+      {
+        "key": "a",
+        "text": "Decide now. Waiting for perfect information usually means missing the window.",
+        "scores": {
+          "vision": 40,
+          "drive": 80
+        }
+      },
+      {
+        "key": "b",
+        "text": "Spend until Thursday gathering the remaining data. The quality of this decision matters more than the speed.",
+        "scores": {
+          "vision": 75,
+          "integrity": 50
+        }
+      }
+    ],
+    "scoring_weights": {
+      "a": {
+        "vision": 40,
+        "drive": 80
+      },
+      "b": {
+        "vision": 75,
+        "integrity": 50
+      }
+    },
+    "difficulty": 0.7,
+    "reverse_scored": false,
+    "validity_pair_id": null,
+    "is_impression_management": false,
+    "version_availability": [
+      "quick",
+      "deep"
+    ]
+  },
+  {
+    "id": "vision_forced_06",
+    "dimension": "vision",
+    "secondary_dimension": null,
+    "type": "forced_choice",
+    "text": "You read something fascinating from a completely unrelated industry. Your instinct is:",
+    "options": [
+      {
+        "key": "a",
+        "text": "Interesting, but not relevant to my work. I should stay focused on my own domain.",
+        "scores": {
+          "vision": 20,
+          "drive": 65
+        }
+      },
+      {
+        "key": "b",
+        "text": "There might be a principle here I can borrow. Let me think about how it maps to what I am doing.",
+        "scores": {
+          "vision": 85,
+          "connection": 35
+        }
+      }
+    ],
+    "scoring_weights": {
+      "a": {
+        "vision": 20,
+        "drive": 65
+      },
+      "b": {
+        "vision": 85,
+        "connection": 35
+      }
+    },
+    "difficulty": 0.35,
+    "reverse_scored": false,
+    "validity_pair_id": null,
+    "is_impression_management": false,
+    "version_availability": [
+      "quick",
+      "deep"
+    ]
+  },
+  {
+    "id": "vision_forced_07",
+    "dimension": "vision",
+    "secondary_dimension": null,
+    "type": "forced_choice",
+    "text": "Two people on your team disagree about priorities. You step in and:",
+    "options": [
+      {
+        "key": "a",
+        "text": "Ask both of them which priority connects more directly to the outcome that matters most this quarter.",
+        "scores": {
+          "vision": 80,
+          "drive": 40
+        }
+      },
+      {
+        "key": "b",
+        "text": "Hear both sides out, then help them find a compromise they can both live with.",
+        "scores": {
+          "vision": 35,
+          "connection": 80
+        }
+      }
+    ],
+    "scoring_weights": {
+      "a": {
+        "vision": 80,
+        "drive": 40
+      },
+      "b": {
+        "vision": 35,
+        "connection": 80
+      }
+    },
+    "difficulty": 0.5,
+    "reverse_scored": false,
+    "validity_pair_id": null,
+    "is_impression_management": false,
+    "version_availability": [
+      "quick",
+      "deep"
+    ]
+  },
+  {
+    "id": "vision_forced_08",
+    "dimension": "vision",
+    "secondary_dimension": null,
+    "type": "forced_choice",
+    "text": "You notice a small inefficiency that costs the company $500 a month. Everyone else ignores it. You:",
+    "options": [
+      {
+        "key": "a",
+        "text": "Fix it. Small leaks sink big ships, and this pattern probably shows up in other places too.",
+        "scores": {
+          "vision": 75,
+          "integrity": 50
+        }
+      },
+      {
+        "key": "b",
+        "text": "Let it go. There are bigger problems to solve, and spending energy on this is a distraction.",
+        "scores": {
+          "vision": 30,
+          "drive": 65
+        }
+      }
+    ],
+    "scoring_weights": {
+      "a": {
+        "vision": 75,
+        "integrity": 50
+      },
+      "b": {
+        "vision": 30,
+        "drive": 65
+      }
+    },
+    "difficulty": 0.5,
+    "reverse_scored": false,
+    "validity_pair_id": null,
+    "is_impression_management": false,
+    "version_availability": [
+      "deep"
+    ]
+  },
+  {
+    "id": "vision_forced_09",
+    "dimension": "vision",
+    "secondary_dimension": null,
+    "type": "forced_choice",
+    "text": "You encounter a complex problem. You naturally start by:",
+    "options": [
+      {
+        "key": "a",
+        "text": "Zooming out to see the full picture and how the pieces relate before touching any of them.",
+        "scores": {
+          "vision": 80,
+          "resilience": 35
+        }
+      },
+      {
+        "key": "b",
+        "text": "Picking the most concrete piece and solving it first to build momentum.",
+        "scores": {
+          "vision": 30,
+          "drive": 75
+        }
+      }
+    ],
+    "scoring_weights": {
+      "a": {
+        "vision": 80,
+        "resilience": 35
+      },
+      "b": {
+        "vision": 30,
+        "drive": 75
+      }
+    },
+    "difficulty": 0.4,
+    "reverse_scored": false,
+    "validity_pair_id": null,
+    "is_impression_management": false,
+    "version_availability": [
+      "quick",
+      "deep"
+    ]
+  },
+  {
+    "id": "vision_forced_10",
+    "dimension": "vision",
+    "secondary_dimension": null,
+    "type": "forced_choice",
+    "text": "Your team just finished a project. Before starting the next one, you want to:",
+    "options": [
+      {
+        "key": "a",
+        "text": "Run a quick retrospective on what worked and what did not, so the next project starts smarter.",
+        "scores": {
+          "vision": 75,
+          "integrity": 50
+        }
+      },
+      {
+        "key": "b",
+        "text": "Jump into the next project while energy is high. Momentum matters more than reflection right now.",
+        "scores": {
+          "vision": 25,
+          "drive": 80
+        }
+      }
+    ],
+    "scoring_weights": {
+      "a": {
+        "vision": 75,
+        "integrity": 50
+      },
+      "b": {
+        "vision": 25,
+        "drive": 80
+      }
+    },
+    "difficulty": 0.35,
+    "reverse_scored": false,
+    "validity_pair_id": null,
+    "is_impression_management": false,
+    "version_availability": [
+      "deep"
+    ]
+  }
+]

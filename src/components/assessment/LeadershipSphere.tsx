@@ -270,6 +270,7 @@ export default function LeadershipSphere({
   const focusedDimRef = useRef<Dimension | null>(null);
   const focusTransitionRef = useRef(0);
   const focusTargetYawRef = useRef(0);
+  const focusTargetTiltRef = useRef(0);
   const prevFocusedDimRef = useRef<Dimension | null>(null);
 
   // Zoom animation refs
@@ -278,6 +279,8 @@ export default function LeadershipSphere({
 
   // React state for DOM description panel
   const [focusedDimState, setFocusedDimState] = useState<Dimension | null>(null);
+  const [selectedSubIndex, setSelectedSubIndex] = useState<number | null>(null);
+  const selectedSubRef = useRef<number | null>(null);
 
   // Keep refs in sync with props
   scoresRef.current = scores;
@@ -323,10 +326,6 @@ export default function LeadershipSphere({
   const handleMouseDown = useCallback((e: React.MouseEvent<HTMLDivElement>) => {
     const drag = dragRef.current;
 
-    if (focusedDimRef.current !== null) {
-      focusedDimRef.current = null;
-    }
-
     drag.active = true;
     drag.didDrag = false;
     drag.startX = e.clientX;
@@ -364,21 +363,37 @@ export default function LeadershipSphere({
 
   const handleMouseUp = useCallback(() => {
     const drag = dragRef.current;
-    if (!drag.didDrag && hoveredRef.current) {
-      const clickedDim = hoveredRef.current;
-
-      if (focusedDimRef.current === null) {
-        focusedDimRef.current = clickedDim;
-        const dir = DIMENSION_DIRS[clickedDim];
-        focusTargetYawRef.current = -Math.atan2(dir.dx, dir.dz);
-      } else if (focusedDimRef.current !== clickedDim) {
-        focusedDimRef.current = clickedDim;
-        const dir = DIMENSION_DIRS[clickedDim];
-        focusTargetYawRef.current = -Math.atan2(dir.dx, dir.dz);
+    if (drag.didDrag) {
+      // Dragging exits focus mode
+      if (focusedDimRef.current !== null) {
+        focusedDimRef.current = null;
       }
+    } else {
+      // Sub-node click takes priority when focused
+      if (hoveredSubRef.current !== null && focusedDimRef.current !== null) {
+        const newIdx = hoveredSubRef.current.index;
+        selectedSubRef.current = selectedSubRef.current === newIdx ? null : newIdx;
+        setSelectedSubIndex(selectedSubRef.current);
+      } else if (hoveredRef.current) {
+        const clickedDim = hoveredRef.current;
+        selectedSubRef.current = null;
+        setSelectedSubIndex(null);
 
-      if (onClickRef.current) {
-        onClickRef.current(clickedDim);
+        if (focusedDimRef.current === null) {
+          focusedDimRef.current = clickedDim;
+          const dir = DIMENSION_DIRS[clickedDim];
+          focusTargetYawRef.current = -Math.atan2(dir.dx, dir.dz);
+          focusTargetTiltRef.current = Math.atan2(dir.dy, Math.sqrt(dir.dx * dir.dx + dir.dz * dir.dz));
+        } else if (focusedDimRef.current !== clickedDim) {
+          focusedDimRef.current = clickedDim;
+          const dir = DIMENSION_DIRS[clickedDim];
+          focusTargetYawRef.current = -Math.atan2(dir.dx, dir.dz);
+          focusTargetTiltRef.current = Math.atan2(dir.dy, Math.sqrt(dir.dx * dir.dx + dir.dz * dir.dz));
+        }
+
+        if (onClickRef.current) {
+          onClickRef.current(clickedDim);
+        }
       }
     }
     drag.active = false;
@@ -398,21 +413,35 @@ export default function LeadershipSphere({
 
     const handleWindowMouseUp = () => {
       const drag = dragRef.current;
-      if (!drag.didDrag && hoveredRef.current) {
-        const clickedDim = hoveredRef.current;
-
-        if (focusedDimRef.current === null) {
-          focusedDimRef.current = clickedDim;
-          const dir = DIMENSION_DIRS[clickedDim];
-          focusTargetYawRef.current = -Math.atan2(dir.dx, dir.dz);
-        } else if (focusedDimRef.current !== clickedDim) {
-          focusedDimRef.current = clickedDim;
-          const dir = DIMENSION_DIRS[clickedDim];
-          focusTargetYawRef.current = -Math.atan2(dir.dx, dir.dz);
+      if (drag.didDrag) {
+        if (focusedDimRef.current !== null) {
+          focusedDimRef.current = null;
         }
+      } else {
+        if (hoveredSubRef.current !== null && focusedDimRef.current !== null) {
+          const newIdx = hoveredSubRef.current.index;
+          selectedSubRef.current = selectedSubRef.current === newIdx ? null : newIdx;
+          setSelectedSubIndex(selectedSubRef.current);
+        } else if (hoveredRef.current) {
+          const clickedDim = hoveredRef.current;
+          selectedSubRef.current = null;
+          setSelectedSubIndex(null);
 
-        if (onClickRef.current) {
-          onClickRef.current(clickedDim);
+          if (focusedDimRef.current === null) {
+            focusedDimRef.current = clickedDim;
+            const dir = DIMENSION_DIRS[clickedDim];
+            focusTargetYawRef.current = -Math.atan2(dir.dx, dir.dz);
+          focusTargetTiltRef.current = Math.atan2(dir.dy, Math.sqrt(dir.dx * dir.dx + dir.dz * dir.dz));
+          } else if (focusedDimRef.current !== clickedDim) {
+            focusedDimRef.current = clickedDim;
+            const dir = DIMENSION_DIRS[clickedDim];
+            focusTargetYawRef.current = -Math.atan2(dir.dx, dir.dz);
+          focusTargetTiltRef.current = Math.atan2(dir.dy, Math.sqrt(dir.dx * dir.dx + dir.dz * dir.dz));
+          }
+
+          if (onClickRef.current) {
+            onClickRef.current(clickedDim);
+          }
         }
       }
       drag.active = false;
@@ -426,10 +455,6 @@ export default function LeadershipSphere({
     const handleTouchStart = (e: TouchEvent) => {
       const t = e.touches[0];
       const drag = dragRef.current;
-
-      if (focusedDimRef.current !== null) {
-        focusedDimRef.current = null;
-      }
 
       drag.active = true;
       drag.didDrag = false;
@@ -457,21 +482,35 @@ export default function LeadershipSphere({
 
     const handleTouchEnd = () => {
       const drag = dragRef.current;
-      if (!drag.didDrag && hoveredRef.current) {
-        const clickedDim = hoveredRef.current;
-
-        if (focusedDimRef.current === null) {
-          focusedDimRef.current = clickedDim;
-          const dir = DIMENSION_DIRS[clickedDim];
-          focusTargetYawRef.current = -Math.atan2(dir.dx, dir.dz);
-        } else if (focusedDimRef.current !== clickedDim) {
-          focusedDimRef.current = clickedDim;
-          const dir = DIMENSION_DIRS[clickedDim];
-          focusTargetYawRef.current = -Math.atan2(dir.dx, dir.dz);
+      if (drag.didDrag) {
+        if (focusedDimRef.current !== null) {
+          focusedDimRef.current = null;
         }
+      } else {
+        if (hoveredSubRef.current !== null && focusedDimRef.current !== null) {
+          const newIdx = hoveredSubRef.current.index;
+          selectedSubRef.current = selectedSubRef.current === newIdx ? null : newIdx;
+          setSelectedSubIndex(selectedSubRef.current);
+        } else if (hoveredRef.current) {
+          const clickedDim = hoveredRef.current;
+          selectedSubRef.current = null;
+          setSelectedSubIndex(null);
 
-        if (onClickRef.current) {
-          onClickRef.current(clickedDim);
+          if (focusedDimRef.current === null) {
+            focusedDimRef.current = clickedDim;
+            const dir = DIMENSION_DIRS[clickedDim];
+            focusTargetYawRef.current = -Math.atan2(dir.dx, dir.dz);
+          focusTargetTiltRef.current = Math.atan2(dir.dy, Math.sqrt(dir.dx * dir.dx + dir.dz * dir.dz));
+          } else if (focusedDimRef.current !== clickedDim) {
+            focusedDimRef.current = clickedDim;
+            const dir = DIMENSION_DIRS[clickedDim];
+            focusTargetYawRef.current = -Math.atan2(dir.dx, dir.dz);
+          focusTargetTiltRef.current = Math.atan2(dir.dy, Math.sqrt(dir.dx * dir.dx + dir.dz * dir.dz));
+          }
+
+          if (onClickRef.current) {
+            onClickRef.current(clickedDim);
+          }
         }
       }
       drag.active = false;
@@ -554,6 +593,8 @@ export default function LeadershipSphere({
       if (focusedDimRef.current !== prevFocusedDimRef.current) {
         prevFocusedDimRef.current = focusedDimRef.current;
         setFocusedDimState(focusedDimRef.current);
+        selectedSubRef.current = null;
+        setSelectedSubIndex(null);
       }
 
       /* ---- Phase 1: Compute ambient line positions ---- */
@@ -680,18 +721,28 @@ export default function LeadershipSphere({
           const dir = DIMENSION_DIRS[dim];
           const isFocused = dim === focusedDim;
 
+          // Umbrella design: sub-nodes branch from parent tip, not from center
+          // Spread = angle between parent shaft and umbrella rib (70-85°)
           const spread = isFocused
-            ? lerp(0.15, 0.9, focusTransition)
-            : lerp(0.15, 0.15, focusTransition);
+            ? lerp(1.36, 1.48, focusTransition)
+            : 1.36;
+
+          // Parent tip position in 3D (pre-rotation)
+          const parentVecLen = MIN_VECTOR_LENGTH + (dc.score / 100) * (MAX_VECTOR_LENGTH - MIN_VECTOR_LENGTH);
+          const tipX = dir.dx * parentVecLen * radius;
+          const tipY = dir.dy * parentVecLen * radius;
+          const tipZ = dir.dz * parentVecLen * radius;
 
           for (let si = 0; si < dimSubs.length; si++) {
             const sub = dimSubs[si];
             const subDir = computeSubNodeDirection(dir, si, dimSubs.length, spread);
-            const subLen = (sub.score / 100) * MAX_VECTOR_LENGTH * 0.6 * radius;
+            // Rib length: proportional to sub-score, up to half the parent vector length
+            const ribLen = (sub.score / 100) * parentVecLen * 0.5 * radius;
 
-            const sx3 = subDir.dx * subLen;
-            const sy3 = subDir.dy * subLen;
-            const sz3 = subDir.dz * subLen;
+            // Sub-node = parent tip + rib offset
+            const sx3 = tipX + subDir.dx * ribLen;
+            const sy3 = tipY + subDir.dy * ribLen;
+            const sz3 = tipZ + subDir.dz * ribLen;
             const r3 = rotate(sx3, sy3, sz3, finalYaw, finalTilt);
             const p = project(r3.x, r3.y, r3.z, ecx, ecy);
 
@@ -854,6 +905,8 @@ export default function LeadershipSphere({
           const isSubHovered = hoveredSub !== null
             && hoveredSub.dim === sn.dim
             && hoveredSub.index === sn.index;
+          const isSubSelected = isFocused
+            && selectedSubRef.current === sn.index;
 
           const snColor = sn.color;
 
@@ -861,24 +914,25 @@ export default function LeadershipSphere({
           let subSize: number;
           if (isFocused) {
             subSize = lerp(3, 7, focusTransition) * dc.scale;
-            if (isSubHovered) subSize += 2;
+            if (isSubSelected) subSize += 3;
+            else if (isSubHovered) subSize += 2;
           } else {
             subSize = 3 * dc.scale;
           }
 
           // Sub-node opacity
           const subAlphaFactor = isFocused
-            ? lerp(0.4, 0.8, focusTransition)
-            : 0.4;
+            ? lerp(0.75, 0.8, focusTransition)
+            : 0.75;
           const subAlpha = nodeAlpha * subAlphaFactor;
 
           // Connector line (colored to match sub-node when focused)
           const connLineWidth = isFocused
-            ? lerp(0.3, 1.2, focusTransition)
-            : 0.3;
+            ? lerp(0.6, isSubSelected ? 1.6 : 1.2, focusTransition)
+            : 0.6;
           const connOpacity = isFocused
-            ? subAlpha * lerp(0.4, 0.75, focusTransition)
-            : subAlpha * 0.4;
+            ? subAlpha * lerp(0.6, isSubSelected ? 0.85 : 0.75, focusTransition)
+            : subAlpha * 0.6;
 
           ctx.beginPath();
           ctx.moveTo(dc.sx, dc.sy);
@@ -887,14 +941,18 @@ export default function LeadershipSphere({
           ctx.lineWidth = connLineWidth;
           ctx.stroke();
 
-          // Sub-node hover glow
-          if (isSubHovered) {
+          // Sub-node hover/selected glow
+          if (isSubSelected) {
+            ctx.shadowColor = `rgba(${snColor.r}, ${snColor.g}, ${snColor.b}, 0.7)`;
+            ctx.shadowBlur = 16;
+          } else if (isSubHovered) {
             ctx.shadowColor = `rgba(${snColor.r}, ${snColor.g}, ${snColor.b}, 0.6)`;
             ctx.shadowBlur = 12;
           }
 
           // Draw sub-node square
-          ctx.fillStyle = `rgba(${snColor.r}, ${snColor.g}, ${snColor.b}, ${subAlpha})`;
+          const drawAlpha = isSubSelected ? Math.min(subAlpha + 0.2, 1) : subAlpha;
+          ctx.fillStyle = `rgba(${snColor.r}, ${snColor.g}, ${snColor.b}, ${drawAlpha})`;
           ctx.fillRect(
             sn.sx - subSize / 2,
             sn.sy - subSize / 2,
@@ -902,23 +960,23 @@ export default function LeadershipSphere({
             subSize,
           );
 
-          if (isSubHovered) {
+          if (isSubHovered || isSubSelected) {
             ctx.shadowColor = 'transparent';
             ctx.shadowBlur = 0;
           }
 
           // Sub-node label in focus mode
           if (isFocused && focusTransition > 0.3) {
-            const labelAlpha = (focusTransition - 0.3) / 0.7 * subAlpha;
-            ctx.font = '400 8px "Kosugi", sans-serif';
+            const labelAlpha = (focusTransition - 0.3) / 0.7 * (isSubSelected ? Math.min(subAlpha + 0.2, 1) : subAlpha);
+            ctx.font = isSubSelected ? '600 9px "Kosugi", sans-serif' : '400 8px "Kosugi", sans-serif';
             ctx.textAlign = 'center';
             ctx.textBaseline = 'top';
             ctx.fillStyle = `rgba(${snColor.r}, ${snColor.g}, ${snColor.b}, ${labelAlpha})`;
             ctx.fillText(sn.label.toUpperCase(), sn.sx, sn.sy + subSize / 2 + 4);
           }
 
-          // Sub-node score on hover
-          if (isSubHovered) {
+          // Sub-node score on hover or selected
+          if (isSubHovered || isSubSelected) {
             ctx.font = '600 12px "Mohave", sans-serif';
             ctx.textAlign = 'center';
             ctx.textBaseline = 'bottom';
@@ -1034,12 +1092,14 @@ export default function LeadershipSphere({
           let delta = focusTargetYawRef.current - yaw;
           delta -= Math.round(delta / (Math.PI * 2)) * (Math.PI * 2);
           yaw += delta * 0.04;
+
+          // Tilt lerps toward target so vector faces camera
+          const targetTiltOffset = focusTargetTiltRef.current - TILT_ANGLE;
+          dragTiltOffsetRef.current += (targetTiltOffset - dragTiltOffsetRef.current) * 0.04;
         } else {
           // Auto-rotation
           yaw = (yaw + BASE_ANGULAR_SPEED * dt) % (Math.PI * 2);
         }
-
-        // Free rotation — tilt stays wherever the user left it (no spring-back)
       }
 
       const finalYaw = yaw + dragYawOffsetRef.current;
@@ -1068,6 +1128,12 @@ export default function LeadershipSphere({
   const focusedSubScores = focusedDimState && subScores ? subScores[focusedDimState] : null;
   const focusedDescription = focusedDimState && dimensionDescriptions
     ? dimensionDescriptions[focusedDimState]
+    : null;
+  const selectedSub = focusedSubScores && selectedSubIndex !== null
+    ? focusedSubScores[selectedSubIndex] ?? null
+    : null;
+  const selectedSubColor = selectedSubIndex !== null
+    ? SUB_NODE_COLORS[selectedSubIndex % SUB_NODE_COLORS.length]
     : null;
 
   return (
@@ -1123,8 +1189,18 @@ export default function LeadershipSphere({
               <div className="space-y-1.5">
                 {focusedSubScores.map((sub, i) => {
                   const c = SUB_NODE_COLORS[i % SUB_NODE_COLORS.length];
+                  const isActive = selectedSubIndex === i;
                   return (
-                    <div key={sub.label} className="flex items-center gap-2 text-xs">
+                    <div
+                      key={sub.label}
+                      className="flex items-center gap-2 text-xs cursor-pointer"
+                      style={{ opacity: selectedSubIndex !== null && !isActive ? 0.4 : 1, transition: 'opacity 300ms ease' }}
+                      onClick={() => {
+                        const newIdx = selectedSubIndex === i ? null : i;
+                        selectedSubRef.current = newIdx;
+                        setSelectedSubIndex(newIdx);
+                      }}
+                    >
                       <span
                         className="inline-block w-2 h-2 rounded-[1px] flex-shrink-0"
                         style={{ background: `rgb(${c.r}, ${c.g}, ${c.b})` }}
@@ -1141,6 +1217,25 @@ export default function LeadershipSphere({
                     </div>
                   );
                 })}
+              </div>
+            )}
+            {selectedSub?.description && selectedSubColor && (
+              <div
+                className="mt-3 pt-3"
+                style={{
+                  borderTop: `1px solid rgba(${selectedSubColor.r}, ${selectedSubColor.g}, ${selectedSubColor.b}, 0.2)`,
+                  transition: 'all 300ms ease',
+                }}
+              >
+                <p
+                  className="font-heading font-semibold uppercase tracking-[0.15em] text-xs mb-1"
+                  style={{ color: `rgb(${selectedSubColor.r}, ${selectedSubColor.g}, ${selectedSubColor.b})` }}
+                >
+                  {selectedSub.label}
+                </p>
+                <p className="font-body text-ops-text-secondary text-xs leading-relaxed">
+                  {selectedSub.description}
+                </p>
               </div>
             )}
           </>

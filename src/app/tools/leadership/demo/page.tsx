@@ -64,31 +64,31 @@ const MOCK_SCORES: SimpleScores = {
 
 const MOCK_SUB_SCORES: DimensionSubScores = {
   drive: [
-    { label: 'Initiative', score: 82 },
-    { label: 'Urgency', score: 71 },
-    { label: 'Ambition', score: 80 },
+    { label: 'Initiative', score: 82, description: 'You consistently step up without being asked. Your ability to identify and act on opportunities before others notice them sets a strong pace for those around you.' },
+    { label: 'Urgency', score: 71, description: 'You maintain a solid sense of momentum, though there are moments where higher-priority items could be escalated faster. Building tighter feedback loops will sharpen this.' },
+    { label: 'Ambition', score: 80, description: 'Your goal-setting is aspirational and grounded. You set targets that stretch your team without breaking morale — a balance many leaders struggle to find.' },
   ],
   resilience: [
-    { label: 'Recovery', score: 60 },
-    { label: 'Composure', score: 70 },
+    { label: 'Recovery', score: 60, description: 'Setbacks tend to linger longer than necessary. Developing structured recovery routines — post-mortems, reframing exercises — will help you bounce back faster.' },
+    { label: 'Composure', score: 70, description: 'You generally stay steady under pressure, though high-stakes situations can cause visible tension. Intentional breathing and preparation rituals will strengthen this further.' },
   ],
   vision: [
-    { label: 'Strategy', score: 85 },
-    { label: 'Foresight', score: 78 },
-    { label: 'Innovation', score: 83 },
+    { label: 'Strategy', score: 85, description: 'You naturally connect short-term actions to long-term objectives. Your strategic instincts allow you to prioritize effectively even with incomplete information.' },
+    { label: 'Foresight', score: 78, description: 'You spot emerging trends before they reach the mainstream, giving your team a consistent planning advantage. Expanding your information sources will sharpen this edge.' },
+    { label: 'Innovation', score: 83, description: 'You generate creative solutions and encourage experimentation. Your comfort with unconventional approaches inspires your team to think beyond standard playbooks.' },
   ],
   connection: [
-    { label: 'Empathy', score: 75 },
-    { label: 'Trust', score: 67 },
+    { label: 'Empathy', score: 75, description: 'You read emotional cues well and adjust your communication accordingly. People feel heard in your presence, which builds genuine rapport across teams.' },
+    { label: 'Trust', score: 67, description: 'Trust-building is a growth area. Consistent follow-through on smaller commitments will compound into deeper trust over time. Focus on reliability in the day-to-day.' },
   ],
   adaptability: [
-    { label: 'Flexibility', score: 55 },
-    { label: 'Learning', score: 61 },
+    { label: 'Flexibility', score: 55, description: 'You tend to favor proven approaches, which provides stability but can limit responsiveness to change. Experimenting with small pivots in low-risk situations will build this muscle.' },
+    { label: 'Learning', score: 61, description: 'Your learning agility is developing. Seeking out unfamiliar challenges and reflecting on what worked (and what didn\'t) will accelerate your growth in new domains.' },
   ],
   integrity: [
-    { label: 'Consistency', score: 90 },
-    { label: 'Transparency', score: 85 },
-    { label: 'Ethics', score: 89 },
+    { label: 'Consistency', score: 90, description: 'You are remarkably consistent in your behavior and standards. People know exactly what to expect from you, which is the foundation of organizational trust.' },
+    { label: 'Transparency', score: 85, description: 'You communicate openly about decisions, reasoning, and trade-offs. This transparency reduces uncertainty and empowers your team to act with confidence.' },
+    { label: 'Ethics', score: 89, description: 'Your ethical compass is strong and unwavering. You make principled decisions even when they carry a personal cost, earning deep respect from those around you.' },
   ],
 };
 

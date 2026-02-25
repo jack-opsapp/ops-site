@@ -1,0 +1,2428 @@
+[
+  {
+    "id": "adaptability_likert_01",
+    "dimension": "adaptability",
+    "secondary_dimension": null,
+    "type": "likert",
+    "text": "When a project I'm leading hits an unexpected obstacle, I find myself energized by the challenge of finding a new path forward.",
+    "options": null,
+    "scoring_weights": {
+      "1": {
+        "adaptability": 0
+      },
+      "2": {
+        "adaptability": 25
+      },
+      "3": {
+        "adaptability": 50
+      },
+      "4": {
+        "adaptability": 75
+      },
+      "5": {
+        "adaptability": 100
+      }
+    },
+    "difficulty": 0.35,
+    "reverse_scored": false,
+    "validity_pair_id": null,
+    "is_impression_management": false,
+    "version_availability": [
+      "quick",
+      "deep"
+    ]
+  },
+  {
+    "id": "adaptability_likert_02",
+    "dimension": "adaptability",
+    "secondary_dimension": null,
+    "type": "likert",
+    "text": "In the last month, I've changed my approach to something after realizing my original plan wasn't working.",
+    "options": null,
+    "scoring_weights": {
+      "1": {
+        "adaptability": 0
+      },
+      "2": {
+        "adaptability": 25
+      },
+      "3": {
+        "adaptability": 50
+      },
+      "4": {
+        "adaptability": 75
+      },
+      "5": {
+        "adaptability": 100
+      }
+    },
+    "difficulty": 0.25,
+    "reverse_scored": false,
+    "validity_pair_id": null,
+    "is_impression_management": false,
+    "version_availability": [
+      "quick",
+      "deep"
+    ]
+  },
+  {
+    "id": "adaptability_likert_03",
+    "dimension": "adaptability",
+    "secondary_dimension": null,
+    "type": "likert",
+    "text": "Once I've decided on a way of doing things, I stick with it even when people suggest alternatives.",
+    "options": null,
+    "scoring_weights": {
+      "1": {
+        "adaptability": 100
+      },
+      "2": {
+        "adaptability": 75
+      },
+      "3": {
+        "adaptability": 50
+      },
+      "4": {
+        "adaptability": 25
+      },
+      "5": {
+        "adaptability": 0
+      }
+    },
+    "difficulty": 0.35,
+    "reverse_scored": true,
+    "validity_pair_id": null,
+    "is_impression_management": false,
+    "version_availability": [
+      "quick",
+      "deep"
+    ]
+  },
+  {
+    "id": "adaptability_likert_04",
+    "dimension": "adaptability",
+    "secondary_dimension": "resilience",
+    "type": "likert",
+    "text": "When I fail at something, I actively study what went wrong so I can extract a specific lesson from it.",
+    "options": null,
+    "scoring_weights": {
+      "1": {
+        "adaptability": 0,
+        "resilience": 0
+      },
+      "2": {
+        "adaptability": 25,
+        "resilience": 8
+      },
+      "3": {
+        "adaptability": 50,
+        "resilience": 15
+      },
+      "4": {
+        "adaptability": 75,
+        "resilience": 22
+      },
+      "5": {
+        "adaptability": 100,
+        "resilience": 30
+      }
+    },
+    "difficulty": 0.4,
+    "reverse_scored": false,
+    "validity_pair_id": null,
+    "is_impression_management": false,
+    "version_availability": [
+      "quick",
+      "deep"
+    ]
+  },
+  {
+    "id": "adaptability_likert_05",
+    "dimension": "adaptability",
+    "secondary_dimension": null,
+    "type": "likert",
+    "text": "I feel uncomfortable when the rules or expectations at work shift without warning.",
+    "options": null,
+    "scoring_weights": {
+      "1": {
+        "adaptability": 100
+      },
+      "2": {
+        "adaptability": 75
+      },
+      "3": {
+        "adaptability": 50
+      },
+      "4": {
+        "adaptability": 25
+      },
+      "5": {
+        "adaptability": 0
+      }
+    },
+    "difficulty": 0.3,
+    "reverse_scored": true,
+    "validity_pair_id": null,
+    "is_impression_management": false,
+    "version_availability": [
+      "quick",
+      "deep"
+    ]
+  },
+  {
+    "id": "adaptability_likert_06",
+    "dimension": "adaptability",
+    "secondary_dimension": null,
+    "type": "likert",
+    "text": "In the last month, I've sought out feedback that challenged how I see my own strengths.",
+    "options": null,
+    "scoring_weights": {
+      "1": {
+        "adaptability": 0
+      },
+      "2": {
+        "adaptability": 25
+      },
+      "3": {
+        "adaptability": 50
+      },
+      "4": {
+        "adaptability": 75
+      },
+      "5": {
+        "adaptability": 100
+      }
+    },
+    "difficulty": 0.55,
+    "reverse_scored": false,
+    "validity_pair_id": null,
+    "is_impression_management": false,
+    "version_availability": [
+      "quick",
+      "deep"
+    ]
+  },
+  {
+    "id": "adaptability_likert_07",
+    "dimension": "adaptability",
+    "secondary_dimension": "drive",
+    "type": "likert",
+    "text": "When I'm learning a new skill, I push through the frustrating early stage where I'm bad at it rather than retreating to what I already know.",
+    "options": null,
+    "scoring_weights": {
+      "1": {
+        "adaptability": 0,
+        "drive": 0
+      },
+      "2": {
+        "adaptability": 25,
+        "drive": 8
+      },
+      "3": {
+        "adaptability": 50,
+        "drive": 15
+      },
+      "4": {
+        "adaptability": 75,
+        "drive": 22
+      },
+      "5": {
+        "adaptability": 100,
+        "drive": 30
+      }
+    },
+    "difficulty": 0.45,
+    "reverse_scored": false,
+    "validity_pair_id": null,
+    "is_impression_management": false,
+    "version_availability": [
+      "quick",
+      "deep"
+    ]
+  },
+  {
+    "id": "adaptability_likert_08",
+    "dimension": "adaptability",
+    "secondary_dimension": null,
+    "type": "likert",
+    "text": "I find it hard to let go of a method I've personally developed, even when data shows a better option exists.",
+    "options": null,
+    "scoring_weights": {
+      "1": {
+        "adaptability": 100
+      },
+      "2": {
+        "adaptability": 75
+      },
+      "3": {
+        "adaptability": 50
+      },
+      "4": {
+        "adaptability": 25
+      },
+      "5": {
+        "adaptability": 0
+      }
+    },
+    "difficulty": 0.5,
+    "reverse_scored": true,
+    "validity_pair_id": null,
+    "is_impression_management": false,
+    "version_availability": [
+      "quick",
+      "deep"
+    ]
+  },
+  {
+    "id": "adaptability_likert_09",
+    "dimension": "adaptability",
+    "secondary_dimension": null,
+    "type": "likert",
+    "text": "I always embrace change immediately, without any period of adjustment or discomfort.",
+    "options": null,
+    "scoring_weights": {
+      "1": {
+        "adaptability": 50
+      },
+      "2": {
+        "adaptability": 50
+      },
+      "3": {
+        "adaptability": 50
+      },
+      "4": {
+        "adaptability": 50
+      },
+      "5": {
+        "adaptability": 50
+      }
+    },
+    "difficulty": 0.5,
+    "reverse_scored": false,
+    "validity_pair_id": null,
+    "is_impression_management": true,
+    "version_availability": [
+      "quick",
+      "deep"
+    ]
+  },
+  {
+    "id": "adaptability_likert_10",
+    "dimension": "adaptability",
+    "secondary_dimension": null,
+    "type": "likert",
+    "text": "If the core skill that built my career became obsolete tomorrow, I'd feel like I'd lost a part of who I am.",
+    "options": null,
+    "scoring_weights": {
+      "1": {
+        "adaptability": 100
+      },
+      "2": {
+        "adaptability": 75
+      },
+      "3": {
+        "adaptability": 50
+      },
+      "4": {
+        "adaptability": 25
+      },
+      "5": {
+        "adaptability": 0
+      }
+    },
+    "difficulty": 0.85,
+    "reverse_scored": true,
+    "validity_pair_id": null,
+    "is_impression_management": false,
+    "version_availability": [
+      "deep"
+    ]
+  },
+  {
+    "id": "adaptability_likert_11",
+    "dimension": "adaptability",
+    "secondary_dimension": "integrity",
+    "type": "likert",
+    "text": "When someone on my team does things differently than I would, I let their approach stand as long as the outcome is solid.",
+    "options": null,
+    "scoring_weights": {
+      "1": {
+        "adaptability": 0,
+        "integrity": 0
+      },
+      "2": {
+        "adaptability": 25,
+        "integrity": 8
+      },
+      "3": {
+        "adaptability": 50,
+        "integrity": 15
+      },
+      "4": {
+        "adaptability": 75,
+        "integrity": 22
+      },
+      "5": {
+        "adaptability": 100,
+        "integrity": 30
+      }
+    },
+    "difficulty": 0.4,
+    "reverse_scored": false,
+    "validity_pair_id": null,
+    "is_impression_management": false,
+    "version_availability": [
+      "quick",
+      "deep"
+    ]
+  },
+  {
+    "id": "adaptability_likert_12",
+    "dimension": "adaptability",
+    "secondary_dimension": null,
+    "type": "likert",
+    "text": "I regularly read, watch, or listen to material outside my field specifically to expose myself to unfamiliar ideas.",
+    "options": null,
+    "scoring_weights": {
+      "1": {
+        "adaptability": 0
+      },
+      "2": {
+        "adaptability": 25
+      },
+      "3": {
+        "adaptability": 50
+      },
+      "4": {
+        "adaptability": 75
+      },
+      "5": {
+        "adaptability": 100
+      }
+    },
+    "difficulty": 0.35,
+    "reverse_scored": false,
+    "validity_pair_id": "adaptability_vp_01",
+    "is_impression_management": false,
+    "version_availability": [
+      "quick",
+      "deep"
+    ]
+  },
+  {
+    "id": "adaptability_likert_13",
+    "dimension": "adaptability",
+    "secondary_dimension": null,
+    "type": "likert",
+    "text": "I tend to consume information mostly within my own industry or area of expertise.",
+    "options": null,
+    "scoring_weights": {
+      "1": {
+        "adaptability": 100
+      },
+      "2": {
+        "adaptability": 75
+      },
+      "3": {
+        "adaptability": 50
+      },
+      "4": {
+        "adaptability": 25
+      },
+      "5": {
+        "adaptability": 0
+      }
+    },
+    "difficulty": 0.35,
+    "reverse_scored": true,
+    "validity_pair_id": "adaptability_vp_01",
+    "is_impression_management": false,
+    "version_availability": [
+      "quick",
+      "deep"
+    ]
+  },
+  {
+    "id": "adaptability_likert_14",
+    "dimension": "adaptability",
+    "secondary_dimension": "connection",
+    "type": "likert",
+    "text": "When I walk into a room where the social dynamics are unfamiliar, I adjust my communication style to fit the context.",
+    "options": null,
+    "scoring_weights": {
+      "1": {
+        "adaptability": 0,
+        "connection": 0
+      },
+      "2": {
+        "adaptability": 25,
+        "connection": 8
+      },
+      "3": {
+        "adaptability": 50,
+        "connection": 15
+      },
+      "4": {
+        "adaptability": 75,
+        "connection": 22
+      },
+      "5": {
+        "adaptability": 100,
+        "connection": 30
+      }
+    },
+    "difficulty": 0.4,
+    "reverse_scored": false,
+    "validity_pair_id": null,
+    "is_impression_management": false,
+    "version_availability": [
+      "quick",
+      "deep"
+    ]
+  },
+  {
+    "id": "adaptability_likert_15",
+    "dimension": "adaptability",
+    "secondary_dimension": "vision",
+    "type": "likert",
+    "text": "I'd rather update a long-term plan based on new information than defend the original version.",
+    "options": null,
+    "scoring_weights": {
+      "1": {
+        "adaptability": 0,
+        "vision": 0
+      },
+      "2": {
+        "adaptability": 25,
+        "vision": 8
+      },
+      "3": {
+        "adaptability": 50,
+        "vision": 15
+      },
+      "4": {
+        "adaptability": 75,
+        "vision": 22
+      },
+      "5": {
+        "adaptability": 100,
+        "vision": 30
+      }
+    },
+    "difficulty": 0.45,
+    "reverse_scored": false,
+    "validity_pair_id": null,
+    "is_impression_management": false,
+    "version_availability": [
+      "quick",
+      "deep"
+    ]
+  },
+  {
+    "id": "adaptability_likert_16",
+    "dimension": "adaptability",
+    "secondary_dimension": null,
+    "type": "likert",
+    "text": "When I receive critical feedback, my first instinct is to explain why I did what I did.",
+    "options": null,
+    "scoring_weights": {
+      "1": {
+        "adaptability": 100
+      },
+      "2": {
+        "adaptability": 75
+      },
+      "3": {
+        "adaptability": 50
+      },
+      "4": {
+        "adaptability": 25
+      },
+      "5": {
+        "adaptability": 0
+      }
+    },
+    "difficulty": 0.5,
+    "reverse_scored": true,
+    "validity_pair_id": null,
+    "is_impression_management": false,
+    "version_availability": [
+      "quick",
+      "deep"
+    ]
+  },
+  {
+    "id": "adaptability_likert_17",
+    "dimension": "adaptability",
+    "secondary_dimension": null,
+    "type": "likert",
+    "text": "In the last month, I've deliberately practiced something I'm not naturally good at.",
+    "options": null,
+    "scoring_weights": {
+      "1": {
+        "adaptability": 0
+      },
+      "2": {
+        "adaptability": 25
+      },
+      "3": {
+        "adaptability": 50
+      },
+      "4": {
+        "adaptability": 75
+      },
+      "5": {
+        "adaptability": 100
+      }
+    },
+    "difficulty": 0.5,
+    "reverse_scored": false,
+    "validity_pair_id": null,
+    "is_impression_management": false,
+    "version_availability": [
+      "quick",
+      "deep"
+    ]
+  },
+  {
+    "id": "adaptability_likert_18",
+    "dimension": "adaptability",
+    "secondary_dimension": "connection",
+    "type": "likert",
+    "text": "When I'm working with someone whose thinking style is very different from mine, I find ways to bridge the gap rather than defaulting to my preference.",
+    "options": null,
+    "scoring_weights": {
+      "1": {
+        "adaptability": 0,
+        "connection": 0
+      },
+      "2": {
+        "adaptability": 25,
+        "connection": 8
+      },
+      "3": {
+        "adaptability": 50,
+        "connection": 15
+      },
+      "4": {
+        "adaptability": 75,
+        "connection": 22
+      },
+      "5": {
+        "adaptability": 100,
+        "connection": 30
+      }
+    },
+    "difficulty": 0.45,
+    "reverse_scored": false,
+    "validity_pair_id": null,
+    "is_impression_management": false,
+    "version_availability": [
+      "quick",
+      "deep"
+    ]
+  },
+  {
+    "id": "adaptability_likert_19",
+    "dimension": "adaptability",
+    "secondary_dimension": null,
+    "type": "likert",
+    "text": "I get frustrated when priorities shift mid-project and I have to rework something I already finished.",
+    "options": null,
+    "scoring_weights": {
+      "1": {
+        "adaptability": 100
+      },
+      "2": {
+        "adaptability": 75
+      },
+      "3": {
+        "adaptability": 50
+      },
+      "4": {
+        "adaptability": 25
+      },
+      "5": {
+        "adaptability": 0
+      }
+    },
+    "difficulty": 0.3,
+    "reverse_scored": true,
+    "validity_pair_id": null,
+    "is_impression_management": false,
+    "version_availability": [
+      "quick",
+      "deep"
+    ]
+  },
+  {
+    "id": "adaptability_likert_20",
+    "dimension": "adaptability",
+    "secondary_dimension": null,
+    "type": "likert",
+    "text": "I define myself more by my ability to figure things out than by any single skill I currently have.",
+    "options": null,
+    "scoring_weights": {
+      "1": {
+        "adaptability": 0
+      },
+      "2": {
+        "adaptability": 25
+      },
+      "3": {
+        "adaptability": 50
+      },
+      "4": {
+        "adaptability": 75
+      },
+      "5": {
+        "adaptability": 100
+      }
+    },
+    "difficulty": 0.7,
+    "reverse_scored": false,
+    "validity_pair_id": null,
+    "is_impression_management": false,
+    "version_availability": [
+      "deep"
+    ]
+  },
+  {
+    "id": "adaptability_likert_21",
+    "dimension": "adaptability",
+    "secondary_dimension": "drive",
+    "type": "likert",
+    "text": "When I notice an early sign that my current approach isn't working, I course-correct quickly rather than waiting for definitive proof.",
+    "options": null,
+    "scoring_weights": {
+      "1": {
+        "adaptability": 0,
+        "drive": 0
+      },
+      "2": {
+        "adaptability": 25,
+        "drive": 8
+      },
+      "3": {
+        "adaptability": 50,
+        "drive": 15
+      },
+      "4": {
+        "adaptability": 75,
+        "drive": 22
+      },
+      "5": {
+        "adaptability": 100,
+        "drive": 30
+      }
+    },
+    "difficulty": 0.55,
+    "reverse_scored": false,
+    "validity_pair_id": null,
+    "is_impression_management": false,
+    "version_availability": [
+      "quick",
+      "deep"
+    ]
+  },
+  {
+    "id": "adaptability_likert_22",
+    "dimension": "adaptability",
+    "secondary_dimension": null,
+    "type": "likert",
+    "text": "I've asked someone younger or less experienced than me to teach me something in the past three months.",
+    "options": null,
+    "scoring_weights": {
+      "1": {
+        "adaptability": 0
+      },
+      "2": {
+        "adaptability": 25
+      },
+      "3": {
+        "adaptability": 50
+      },
+      "4": {
+        "adaptability": 75
+      },
+      "5": {
+        "adaptability": 100
+      }
+    },
+    "difficulty": 0.6,
+    "reverse_scored": false,
+    "validity_pair_id": null,
+    "is_impression_management": false,
+    "version_availability": [
+      "quick",
+      "deep"
+    ]
+  },
+  {
+    "id": "adaptability_likert_23",
+    "dimension": "adaptability",
+    "secondary_dimension": null,
+    "type": "likert",
+    "text": "When my team faces ambiguity, I feel a strong pull to create structure and clarity before moving forward.",
+    "options": null,
+    "scoring_weights": {
+      "1": {
+        "adaptability": 100
+      },
+      "2": {
+        "adaptability": 75
+      },
+      "3": {
+        "adaptability": 50
+      },
+      "4": {
+        "adaptability": 25
+      },
+      "5": {
+        "adaptability": 0
+      }
+    },
+    "difficulty": 0.6,
+    "reverse_scored": true,
+    "validity_pair_id": null,
+    "is_impression_management": false,
+    "version_availability": [
+      "deep"
+    ]
+  },
+  {
+    "id": "adaptability_likert_24",
+    "dimension": "adaptability",
+    "secondary_dimension": "resilience",
+    "type": "likert",
+    "text": "When something I built gets scrapped, I can let go of it without taking it personally.",
+    "options": null,
+    "scoring_weights": {
+      "1": {
+        "adaptability": 0,
+        "resilience": 0
+      },
+      "2": {
+        "adaptability": 25,
+        "resilience": 8
+      },
+      "3": {
+        "adaptability": 50,
+        "resilience": 15
+      },
+      "4": {
+        "adaptability": 75,
+        "resilience": 22
+      },
+      "5": {
+        "adaptability": 100,
+        "resilience": 30
+      }
+    },
+    "difficulty": 0.55,
+    "reverse_scored": false,
+    "validity_pair_id": null,
+    "is_impression_management": false,
+    "version_availability": [
+      "quick",
+      "deep"
+    ]
+  },
+  {
+    "id": "adaptability_likert_25",
+    "dimension": "adaptability",
+    "secondary_dimension": null,
+    "type": "likert",
+    "text": "There are parts of how I work that I consider non-negotiable, regardless of what the situation calls for.",
+    "options": null,
+    "scoring_weights": {
+      "1": {
+        "adaptability": 100
+      },
+      "2": {
+        "adaptability": 75
+      },
+      "3": {
+        "adaptability": 50
+      },
+      "4": {
+        "adaptability": 25
+      },
+      "5": {
+        "adaptability": 0
+      }
+    },
+    "difficulty": 0.65,
+    "reverse_scored": true,
+    "validity_pair_id": null,
+    "is_impression_management": false,
+    "version_availability": [
+      "deep"
+    ]
+  },
+  {
+    "id": "adaptability_situational_01",
+    "dimension": "adaptability",
+    "secondary_dimension": null,
+    "type": "situational",
+    "text": "You've spent three weeks building a detailed project plan. On the day you're about to present it, leadership announces a major strategic pivot that makes half your plan irrelevant. You:",
+    "options": [
+      {
+        "key": "a",
+        "text": "Immediately identify which parts of your plan still apply and start rebuilding around the new direction before the end of the day.",
+        "scores": {
+          "adaptability": 90,
+          "drive": 50
+        }
+      },
+      {
+        "key": "b",
+        "text": "Present the original plan anyway, highlighting the parts that still work, and ask for a week to revise the rest.",
+        "scores": {
+          "adaptability": 55,
+          "drive": 60
+        }
+      },
+      {
+        "key": "c",
+        "text": "Push back on the pivot, arguing that the original strategy was sound and the new direction hasn't been fully thought through.",
+        "scores": {
+          "adaptability": 20,
+          "integrity": 65
+        }
+      },
+      {
+        "key": "d",
+        "text": "Scrap the entire plan and start fresh, treating the old work as a sunk cost.",
+        "scores": {
+          "adaptability": 70,
+          "vision": 30
+        }
+      }
+    ],
+    "scoring_weights": {
+      "a": {
+        "adaptability": 90,
+        "drive": 50
+      },
+      "b": {
+        "adaptability": 55,
+        "drive": 60
+      },
+      "c": {
+        "adaptability": 20,
+        "integrity": 65
+      },
+      "d": {
+        "adaptability": 70,
+        "vision": 30
+      }
+    },
+    "difficulty": 0.45,
+    "reverse_scored": false,
+    "validity_pair_id": null,
+    "is_impression_management": false,
+    "version_availability": [
+      "quick",
+      "deep"
+    ]
+  },
+  {
+    "id": "adaptability_situational_02",
+    "dimension": "adaptability",
+    "secondary_dimension": null,
+    "type": "situational",
+    "text": "A new technology tool is rolled out across your organization. You've heard mixed reviews. Your current workflow is efficient and you're one of the top performers using the old system. You:",
+    "options": [
+      {
+        "key": "a",
+        "text": "Volunteer to be an early adopter and commit to learning the new tool thoroughly, even though it will slow you down for weeks.",
+        "scores": {
+          "adaptability": 85,
+          "drive": 55
+        }
+      },
+      {
+        "key": "b",
+        "text": "Wait until the tool is mandatory, then learn only what you need to maintain your current output.",
+        "scores": {
+          "adaptability": 30,
+          "drive": 60
+        }
+      },
+      {
+        "key": "c",
+        "text": "Run both systems in parallel for a month to compare results before fully committing to either.",
+        "scores": {
+          "adaptability": 65,
+          "integrity": 50
+        }
+      },
+      {
+        "key": "d",
+        "text": "Advocate for keeping the old system, presenting data on your current performance as evidence it's still superior.",
+        "scores": {
+          "adaptability": 15,
+          "vision": 40
+        }
+      }
+    ],
+    "scoring_weights": {
+      "a": {
+        "adaptability": 85,
+        "drive": 55
+      },
+      "b": {
+        "adaptability": 30,
+        "drive": 60
+      },
+      "c": {
+        "adaptability": 65,
+        "integrity": 50
+      },
+      "d": {
+        "adaptability": 15,
+        "vision": 40
+      }
+    },
+    "difficulty": 0.35,
+    "reverse_scored": false,
+    "validity_pair_id": null,
+    "is_impression_management": false,
+    "version_availability": [
+      "quick",
+      "deep"
+    ]
+  },
+  {
+    "id": "adaptability_situational_03",
+    "dimension": "adaptability",
+    "secondary_dimension": null,
+    "type": "situational",
+    "text": "You're managing a team that just went through its third reorganization in eighteen months. Morale is low. People are saying, 'Here we go again.' You:",
+    "options": [
+      {
+        "key": "a",
+        "text": "Acknowledge the fatigue openly, then help your team find one or two things they can control within the new structure and focus there.",
+        "scores": {
+          "adaptability": 80,
+          "connection": 70
+        }
+      },
+      {
+        "key": "b",
+        "text": "Frame the reorganization as an opportunity and encourage the team to see the upside of the new structure.",
+        "scores": {
+          "adaptability": 50,
+          "vision": 55
+        }
+      },
+      {
+        "key": "c",
+        "text": "Escalate to leadership that the constant changes are damaging performance and request a period of stability.",
+        "scores": {
+          "adaptability": 30,
+          "integrity": 75
+        }
+      },
+      {
+        "key": "d",
+        "text": "Keep your head down, implement the changes quietly, and focus on protecting your team from further disruption.",
+        "scores": {
+          "adaptability": 45,
+          "resilience": 55
+        }
+      }
+    ],
+    "scoring_weights": {
+      "a": {
+        "adaptability": 80,
+        "connection": 70
+      },
+      "b": {
+        "adaptability": 50,
+        "vision": 55
+      },
+      "c": {
+        "adaptability": 30,
+        "integrity": 75
+      },
+      "d": {
+        "adaptability": 45,
+        "resilience": 55
+      }
+    },
+    "difficulty": 0.55,
+    "reverse_scored": false,
+    "validity_pair_id": null,
+    "is_impression_management": false,
+    "version_availability": [
+      "quick",
+      "deep"
+    ]
+  },
+  {
+    "id": "adaptability_situational_04",
+    "dimension": "adaptability",
+    "secondary_dimension": null,
+    "type": "situational",
+    "text": "You've been the go-to expert on a specific process for five years. A junior colleague proposes a fundamentally different approach that, on the surface, looks promising but would make your expertise less relevant. You:",
+    "options": [
+      {
+        "key": "a",
+        "text": "Genuinely evaluate the proposal on its merits, and if it's better, champion it publicly even though it diminishes your unique value.",
+        "scores": {
+          "adaptability": 90,
+          "integrity": 80
+        }
+      },
+      {
+        "key": "b",
+        "text": "Mentor the junior colleague to refine their idea, positioning yourself as the person who helped develop the innovation.",
+        "scores": {
+          "adaptability": 60,
+          "connection": 50
+        }
+      },
+      {
+        "key": "c",
+        "text": "Point out the risks and edge cases their approach doesn't account for, drawing on your five years of experience.",
+        "scores": {
+          "adaptability": 25,
+          "drive": 55
+        }
+      },
+      {
+        "key": "d",
+        "text": "Suggest a pilot test on a small project before committing to a full change.",
+        "scores": {
+          "adaptability": 70,
+          "drive": 45
+        }
+      }
+    ],
+    "scoring_weights": {
+      "a": {
+        "adaptability": 90,
+        "integrity": 80
+      },
+      "b": {
+        "adaptability": 60,
+        "connection": 50
+      },
+      "c": {
+        "adaptability": 25,
+        "drive": 55
+      },
+      "d": {
+        "adaptability": 70,
+        "drive": 45
+      }
+    },
+    "difficulty": 0.7,
+    "reverse_scored": false,
+    "validity_pair_id": null,
+    "is_impression_management": false,
+    "version_availability": [
+      "quick",
+      "deep"
+    ]
+  },
+  {
+    "id": "adaptability_situational_05",
+    "dimension": "adaptability",
+    "secondary_dimension": null,
+    "type": "situational",
+    "text": "You just moved from a large corporation to a scrappy startup. There's no playbook, no established processes, and people wear multiple hats. In your first week, you:",
+    "options": [
+      {
+        "key": "a",
+        "text": "Jump in and start figuring things out through trial and error, asking questions as you go.",
+        "scores": {
+          "adaptability": 85,
+          "drive": 60
+        }
+      },
+      {
+        "key": "b",
+        "text": "Spend the first two weeks observing how things work before taking action, to avoid making assumptions.",
+        "scores": {
+          "adaptability": 55,
+          "integrity": 50
+        }
+      },
+      {
+        "key": "c",
+        "text": "Start building the processes and documentation that are missing, drawing on your corporate experience.",
+        "scores": {
+          "adaptability": 30,
+          "drive": 70
+        }
+      },
+      {
+        "key": "d",
+        "text": "Identify the one or two people who seem to know how things really work and shadow them closely.",
+        "scores": {
+          "adaptability": 70,
+          "connection": 55
+        }
+      }
+    ],
+    "scoring_weights": {
+      "a": {
+        "adaptability": 85,
+        "drive": 60
+      },
+      "b": {
+        "adaptability": 55,
+        "integrity": 50
+      },
+      "c": {
+        "adaptability": 30,
+        "drive": 70
+      },
+      "d": {
+        "adaptability": 70,
+        "connection": 55
+      }
+    },
+    "difficulty": 0.4,
+    "reverse_scored": false,
+    "validity_pair_id": null,
+    "is_impression_management": false,
+    "version_availability": [
+      "quick",
+      "deep"
+    ]
+  },
+  {
+    "id": "adaptability_situational_06",
+    "dimension": "adaptability",
+    "secondary_dimension": null,
+    "type": "situational",
+    "text": "Your industry is being disrupted by AI and automation. Tasks that used to take your team a week now take a day. Some of your team members are anxious about their relevance. You:",
+    "options": [
+      {
+        "key": "a",
+        "text": "Proactively upskill yourself and your team on the new tools, redefining roles around what humans do better than machines.",
+        "scores": {
+          "adaptability": 90,
+          "vision": 65
+        }
+      },
+      {
+        "key": "b",
+        "text": "Focus on the parts of your work that can't be automated and double down there.",
+        "scores": {
+          "adaptability": 55,
+          "drive": 60
+        }
+      },
+      {
+        "key": "c",
+        "text": "Resist the changes and make the case that the human touch in your work can't be replicated by technology.",
+        "scores": {
+          "adaptability": 15,
+          "integrity": 45
+        }
+      },
+      {
+        "key": "d",
+        "text": "Wait to see how the industry settles before making any major changes to how your team operates.",
+        "scores": {
+          "adaptability": 30,
+          "resilience": 40
+        }
+      }
+    ],
+    "scoring_weights": {
+      "a": {
+        "adaptability": 90,
+        "vision": 65
+      },
+      "b": {
+        "adaptability": 55,
+        "drive": 60
+      },
+      "c": {
+        "adaptability": 15,
+        "integrity": 45
+      },
+      "d": {
+        "adaptability": 30,
+        "resilience": 40
+      }
+    },
+    "difficulty": 0.45,
+    "reverse_scored": false,
+    "validity_pair_id": null,
+    "is_impression_management": false,
+    "version_availability": [
+      "quick",
+      "deep"
+    ]
+  },
+  {
+    "id": "adaptability_situational_07",
+    "dimension": "adaptability",
+    "secondary_dimension": null,
+    "type": "situational",
+    "text": "You're in a meeting and realize you've been operating on an incorrect assumption for weeks. Correcting it now will mean admitting a mistake in front of peers and reworking a deliverable. You:",
+    "options": [
+      {
+        "key": "a",
+        "text": "Speak up immediately, name the mistake, and propose a corrected path forward in the same conversation.",
+        "scores": {
+          "adaptability": 85,
+          "integrity": 85
+        }
+      },
+      {
+        "key": "b",
+        "text": "Quietly adjust your approach after the meeting and present the corrected version without drawing attention to the error.",
+        "scores": {
+          "adaptability": 60,
+          "drive": 45
+        }
+      },
+      {
+        "key": "c",
+        "text": "Finish the meeting, then tell your manager privately before announcing the correction more broadly.",
+        "scores": {
+          "adaptability": 55,
+          "connection": 50
+        }
+      },
+      {
+        "key": "d",
+        "text": "See if the assumption actually matters to the final outcome before deciding whether it's worth correcting.",
+        "scores": {
+          "adaptability": 40,
+          "drive": 55
+        }
+      }
+    ],
+    "scoring_weights": {
+      "a": {
+        "adaptability": 85,
+        "integrity": 85
+      },
+      "b": {
+        "adaptability": 60,
+        "drive": 45
+      },
+      "c": {
+        "adaptability": 55,
+        "connection": 50
+      },
+      "d": {
+        "adaptability": 40,
+        "drive": 55
+      }
+    },
+    "difficulty": 0.5,
+    "reverse_scored": false,
+    "validity_pair_id": null,
+    "is_impression_management": false,
+    "version_availability": [
+      "quick",
+      "deep"
+    ]
+  },
+  {
+    "id": "adaptability_situational_08",
+    "dimension": "adaptability",
+    "secondary_dimension": null,
+    "type": "situational",
+    "text": "You're leading a project using a methodology you've successfully used many times before. Halfway through, a team member presents evidence that a completely different methodology would yield better results for this specific project. You:",
+    "options": [
+      {
+        "key": "a",
+        "text": "Pause the project, assess the evidence honestly, and switch methodologies if the case is strong enough.",
+        "scores": {
+          "adaptability": 85,
+          "integrity": 60
+        }
+      },
+      {
+        "key": "b",
+        "text": "Incorporate elements of the new methodology while keeping the overall structure of your proven approach.",
+        "scores": {
+          "adaptability": 60,
+          "drive": 55
+        }
+      },
+      {
+        "key": "c",
+        "text": "Acknowledge the input but continue with your methodology, noting that consistency matters more than optimization.",
+        "scores": {
+          "adaptability": 20,
+          "drive": 65
+        }
+      },
+      {
+        "key": "d",
+        "text": "Ask the team member to build a detailed comparison before making any changes, to avoid disrupting momentum.",
+        "scores": {
+          "adaptability": 50,
+          "vision": 50
+        }
+      }
+    ],
+    "scoring_weights": {
+      "a": {
+        "adaptability": 85,
+        "integrity": 60
+      },
+      "b": {
+        "adaptability": 60,
+        "drive": 55
+      },
+      "c": {
+        "adaptability": 20,
+        "drive": 65
+      },
+      "d": {
+        "adaptability": 50,
+        "vision": 50
+      }
+    },
+    "difficulty": 0.55,
+    "reverse_scored": false,
+    "validity_pair_id": null,
+    "is_impression_management": false,
+    "version_availability": [
+      "quick",
+      "deep"
+    ]
+  },
+  {
+    "id": "adaptability_situational_09",
+    "dimension": "adaptability",
+    "secondary_dimension": null,
+    "type": "situational",
+    "text": "You've been promoted to lead a department you have no background in. You're surrounded by people who know far more about the work than you do. In your first month, you:",
+    "options": [
+      {
+        "key": "a",
+        "text": "Tell your team openly that you're here to learn from them, ask each person what they'd change if they could, and focus on removing obstacles.",
+        "scores": {
+          "adaptability": 85,
+          "connection": 75
+        }
+      },
+      {
+        "key": "b",
+        "text": "Study the department's metrics, processes, and history intensively before making any changes or public statements.",
+        "scores": {
+          "adaptability": 60,
+          "drive": 55
+        }
+      },
+      {
+        "key": "c",
+        "text": "Bring in frameworks and practices from your previous department that you know work, adapting them to the new context.",
+        "scores": {
+          "adaptability": 35,
+          "vision": 60
+        }
+      },
+      {
+        "key": "d",
+        "text": "Identify the strongest performer on the team and rely heavily on them as your guide while you get up to speed.",
+        "scores": {
+          "adaptability": 55,
+          "drive": 40
+        }
+      }
+    ],
+    "scoring_weights": {
+      "a": {
+        "adaptability": 85,
+        "connection": 75
+      },
+      "b": {
+        "adaptability": 60,
+        "drive": 55
+      },
+      "c": {
+        "adaptability": 35,
+        "vision": 60
+      },
+      "d": {
+        "adaptability": 55,
+        "drive": 40
+      }
+    },
+    "difficulty": 0.5,
+    "reverse_scored": false,
+    "validity_pair_id": null,
+    "is_impression_management": false,
+    "version_availability": [
+      "quick",
+      "deep"
+    ]
+  },
+  {
+    "id": "adaptability_situational_10",
+    "dimension": "adaptability",
+    "secondary_dimension": null,
+    "type": "situational",
+    "text": "A client abruptly changes the scope of a project two days before the deadline. The new scope is doable but requires a completely different approach than what you've built. You:",
+    "options": [
+      {
+        "key": "a",
+        "text": "Accept the change, rally the team, and rebuild from scratch using the tightest possible timeline.",
+        "scores": {
+          "adaptability": 80,
+          "drive": 70
+        }
+      },
+      {
+        "key": "b",
+        "text": "Negotiate with the client to push the deadline by a week so you can deliver the new scope properly.",
+        "scores": {
+          "adaptability": 60,
+          "integrity": 65
+        }
+      },
+      {
+        "key": "c",
+        "text": "Deliver the original scope on time and propose the new scope as a follow-up phase.",
+        "scores": {
+          "adaptability": 25,
+          "drive": 75
+        }
+      },
+      {
+        "key": "d",
+        "text": "Find a creative hybrid that addresses the client's new priorities while preserving as much of your existing work as possible.",
+        "scores": {
+          "adaptability": 70,
+          "vision": 55
+        }
+      }
+    ],
+    "scoring_weights": {
+      "a": {
+        "adaptability": 80,
+        "drive": 70
+      },
+      "b": {
+        "adaptability": 60,
+        "integrity": 65
+      },
+      "c": {
+        "adaptability": 25,
+        "drive": 75
+      },
+      "d": {
+        "adaptability": 70,
+        "vision": 55
+      }
+    },
+    "difficulty": 0.45,
+    "reverse_scored": false,
+    "validity_pair_id": null,
+    "is_impression_management": false,
+    "version_availability": [
+      "quick",
+      "deep"
+    ]
+  },
+  {
+    "id": "adaptability_situational_11",
+    "dimension": "adaptability",
+    "secondary_dimension": null,
+    "type": "situational",
+    "text": "You discover that a belief you've held about effective leadership for years is contradicted by strong evidence. Specifically, a practice you've been coaching others on turns out to be counterproductive. You:",
+    "options": [
+      {
+        "key": "a",
+        "text": "Go back to the people you've coached, share what you've learned, and help them unlearn the practice alongside you.",
+        "scores": {
+          "adaptability": 90,
+          "integrity": 85
+        }
+      },
+      {
+        "key": "b",
+        "text": "Quietly stop using the practice yourself and adopt the evidence-based approach going forward, without making a big deal of it.",
+        "scores": {
+          "adaptability": 65,
+          "drive": 40
+        }
+      },
+      {
+        "key": "c",
+        "text": "Dig deeper into the evidence before changing anything, since your direct experience tells a different story.",
+        "scores": {
+          "adaptability": 35,
+          "drive": 55
+        }
+      },
+      {
+        "key": "d",
+        "text": "Acknowledge the evidence but note that what works depends on context, and your approach may still be valid in certain situations.",
+        "scores": {
+          "adaptability": 45,
+          "vision": 50
+        }
+      }
+    ],
+    "scoring_weights": {
+      "a": {
+        "adaptability": 90,
+        "integrity": 85
+      },
+      "b": {
+        "adaptability": 65,
+        "drive": 40
+      },
+      "c": {
+        "adaptability": 35,
+        "drive": 55
+      },
+      "d": {
+        "adaptability": 45,
+        "vision": 50
+      }
+    },
+    "difficulty": 0.75,
+    "reverse_scored": false,
+    "validity_pair_id": null,
+    "is_impression_management": false,
+    "version_availability": [
+      "deep"
+    ]
+  },
+  {
+    "id": "adaptability_situational_12",
+    "dimension": "adaptability",
+    "secondary_dimension": null,
+    "type": "situational",
+    "text": "You're running a team meeting and someone raises a concern that completely contradicts the direction you just proposed. The room goes quiet. You:",
+    "options": [
+      {
+        "key": "a",
+        "text": "Thank them for the pushback, explore their concern seriously in front of the group, and adjust your proposal if warranted.",
+        "scores": {
+          "adaptability": 85,
+          "connection": 65
+        }
+      },
+      {
+        "key": "b",
+        "text": "Acknowledge the concern, say you'll think about it, and move on to keep the meeting on track.",
+        "scores": {
+          "adaptability": 45,
+          "drive": 55
+        }
+      },
+      {
+        "key": "c",
+        "text": "Address the concern point by point, explaining why your direction accounts for it.",
+        "scores": {
+          "adaptability": 25,
+          "drive": 60
+        }
+      },
+      {
+        "key": "d",
+        "text": "Open it up to the room for discussion, stepping back from your position to let the team weigh in.",
+        "scores": {
+          "adaptability": 75,
+          "integrity": 50
+        }
+      }
+    ],
+    "scoring_weights": {
+      "a": {
+        "adaptability": 85,
+        "connection": 65
+      },
+      "b": {
+        "adaptability": 45,
+        "drive": 55
+      },
+      "c": {
+        "adaptability": 25,
+        "drive": 60
+      },
+      "d": {
+        "adaptability": 75,
+        "integrity": 50
+      }
+    },
+    "difficulty": 0.45,
+    "reverse_scored": false,
+    "validity_pair_id": null,
+    "is_impression_management": false,
+    "version_availability": [
+      "quick",
+      "deep"
+    ]
+  },
+  {
+    "id": "adaptability_situational_13",
+    "dimension": "adaptability",
+    "secondary_dimension": null,
+    "type": "situational",
+    "text": "You've been asked to take on a role that requires skills you don't currently have. You'll be visibly learning on the job, and mistakes will be public. You:",
+    "options": [
+      {
+        "key": "a",
+        "text": "Accept the role, tell stakeholders upfront about your learning curve, and set milestones to track your progress transparently.",
+        "scores": {
+          "adaptability": 85,
+          "integrity": 70
+        }
+      },
+      {
+        "key": "b",
+        "text": "Accept the role and quietly study everything you can before your start date so the learning is less visible.",
+        "scores": {
+          "adaptability": 60,
+          "drive": 65
+        }
+      },
+      {
+        "key": "c",
+        "text": "Decline and recommend someone with the right existing skill set, knowing it's better for the organization.",
+        "scores": {
+          "adaptability": 20,
+          "drive": 55
+        }
+      },
+      {
+        "key": "d",
+        "text": "Accept the role but negotiate for a mentor or co-lead who has the skills you lack.",
+        "scores": {
+          "adaptability": 70,
+          "connection": 60
+        }
+      }
+    ],
+    "scoring_weights": {
+      "a": {
+        "adaptability": 85,
+        "integrity": 70
+      },
+      "b": {
+        "adaptability": 60,
+        "drive": 65
+      },
+      "c": {
+        "adaptability": 20,
+        "drive": 55
+      },
+      "d": {
+        "adaptability": 70,
+        "connection": 60
+      }
+    },
+    "difficulty": 0.5,
+    "reverse_scored": false,
+    "validity_pair_id": null,
+    "is_impression_management": false,
+    "version_availability": [
+      "quick",
+      "deep"
+    ]
+  },
+  {
+    "id": "adaptability_situational_14",
+    "dimension": "adaptability",
+    "secondary_dimension": null,
+    "type": "situational",
+    "text": "Your team has been doing something the same way for three years. It works fine, but you suspect it could be significantly better. There's no pressure to change. You:",
+    "options": [
+      {
+        "key": "a",
+        "text": "Run an experiment on a small scale to test whether a new approach delivers measurably better results.",
+        "scores": {
+          "adaptability": 80,
+          "drive": 60
+        }
+      },
+      {
+        "key": "b",
+        "text": "Leave it alone. If it's working, the risk of change outweighs the potential upside.",
+        "scores": {
+          "adaptability": 15,
+          "drive": 65
+        }
+      },
+      {
+        "key": "c",
+        "text": "Bring the idea to the team and see if anyone else has been thinking about improvements.",
+        "scores": {
+          "adaptability": 65,
+          "connection": 55
+        }
+      },
+      {
+        "key": "d",
+        "text": "Research what other organizations are doing in the same area and benchmark your approach.",
+        "scores": {
+          "adaptability": 60,
+          "vision": 50
+        }
+      }
+    ],
+    "scoring_weights": {
+      "a": {
+        "adaptability": 80,
+        "drive": 60
+      },
+      "b": {
+        "adaptability": 15,
+        "drive": 65
+      },
+      "c": {
+        "adaptability": 65,
+        "connection": 55
+      },
+      "d": {
+        "adaptability": 60,
+        "vision": 50
+      }
+    },
+    "difficulty": 0.4,
+    "reverse_scored": false,
+    "validity_pair_id": null,
+    "is_impression_management": false,
+    "version_availability": [
+      "quick",
+      "deep"
+    ]
+  },
+  {
+    "id": "adaptability_situational_15",
+    "dimension": "adaptability",
+    "secondary_dimension": null,
+    "type": "situational",
+    "text": "You receive a performance review that gives you high marks on results but low marks on collaboration. You've always believed your direct, efficient style was a strength. You:",
+    "options": [
+      {
+        "key": "a",
+        "text": "Ask three trusted colleagues for specific examples of how your style has affected them, and commit to experimenting with a different approach.",
+        "scores": {
+          "adaptability": 85,
+          "connection": 70
+        }
+      },
+      {
+        "key": "b",
+        "text": "Accept the feedback but remind yourself that results speak louder, and continue focusing on what you're best at.",
+        "scores": {
+          "adaptability": 20,
+          "drive": 70
+        }
+      },
+      {
+        "key": "c",
+        "text": "Adjust your behavior in visible ways during meetings and projects over the next quarter to address the perception.",
+        "scores": {
+          "adaptability": 60,
+          "drive": 50
+        }
+      },
+      {
+        "key": "d",
+        "text": "Have a candid conversation with your manager about whether collaboration is being weighted appropriately relative to outcomes.",
+        "scores": {
+          "adaptability": 40,
+          "integrity": 60
+        }
+      }
+    ],
+    "scoring_weights": {
+      "a": {
+        "adaptability": 85,
+        "connection": 70
+      },
+      "b": {
+        "adaptability": 20,
+        "drive": 70
+      },
+      "c": {
+        "adaptability": 60,
+        "drive": 50
+      },
+      "d": {
+        "adaptability": 40,
+        "integrity": 60
+      }
+    },
+    "difficulty": 0.6,
+    "reverse_scored": false,
+    "validity_pair_id": null,
+    "is_impression_management": false,
+    "version_availability": [
+      "deep"
+    ]
+  },
+  {
+    "id": "adaptability_situational_16",
+    "dimension": "adaptability",
+    "secondary_dimension": null,
+    "type": "situational",
+    "text": "You've recently failed at a high-visibility initiative. It was your idea, your plan, and your execution. The failure is unambiguous. In the week after, you:",
+    "options": [
+      {
+        "key": "a",
+        "text": "Write a detailed post-mortem, share it with stakeholders, and identify exactly what you'd do differently.",
+        "scores": {
+          "adaptability": 80,
+          "integrity": 80
+        }
+      },
+      {
+        "key": "b",
+        "text": "Take time to process the failure privately before engaging with others about what went wrong.",
+        "scores": {
+          "adaptability": 50,
+          "resilience": 65
+        }
+      },
+      {
+        "key": "c",
+        "text": "Immediately start a new initiative to demonstrate that you can bounce back and deliver.",
+        "scores": {
+          "adaptability": 55,
+          "drive": 70
+        }
+      },
+      {
+        "key": "d",
+        "text": "Analyze external factors that contributed to the failure to develop a more complete picture of what happened.",
+        "scores": {
+          "adaptability": 35,
+          "vision": 45
+        }
+      }
+    ],
+    "scoring_weights": {
+      "a": {
+        "adaptability": 80,
+        "integrity": 80
+      },
+      "b": {
+        "adaptability": 50,
+        "resilience": 65
+      },
+      "c": {
+        "adaptability": 55,
+        "drive": 70
+      },
+      "d": {
+        "adaptability": 35,
+        "vision": 45
+      }
+    },
+    "difficulty": 0.6,
+    "reverse_scored": false,
+    "validity_pair_id": null,
+    "is_impression_management": false,
+    "version_availability": [
+      "quick",
+      "deep"
+    ]
+  },
+  {
+    "id": "adaptability_situational_17",
+    "dimension": "adaptability",
+    "secondary_dimension": null,
+    "type": "situational",
+    "text": "You're working with a team from a different culture where the communication norms are very different from yours. Decisions happen slower, feedback is indirect, and hierarchy matters more than you're used to. You:",
+    "options": [
+      {
+        "key": "a",
+        "text": "Study the cultural norms, adapt your communication style, and treat it as an opportunity to expand how you operate.",
+        "scores": {
+          "adaptability": 90,
+          "connection": 65
+        }
+      },
+      {
+        "key": "b",
+        "text": "Meet them halfway by adjusting some of your habits while being transparent about your natural style.",
+        "scores": {
+          "adaptability": 65,
+          "integrity": 55
+        }
+      },
+      {
+        "key": "c",
+        "text": "Maintain your usual style but be patient and respectful, trusting that good work will speak across cultural differences.",
+        "scores": {
+          "adaptability": 25,
+          "drive": 50
+        }
+      },
+      {
+        "key": "d",
+        "text": "Appoint a cultural liaison from the other team to help translate between communication styles.",
+        "scores": {
+          "adaptability": 50,
+          "drive": 55
+        }
+      }
+    ],
+    "scoring_weights": {
+      "a": {
+        "adaptability": 90,
+        "connection": 65
+      },
+      "b": {
+        "adaptability": 65,
+        "integrity": 55
+      },
+      "c": {
+        "adaptability": 25,
+        "drive": 50
+      },
+      "d": {
+        "adaptability": 50,
+        "drive": 55
+      }
+    },
+    "difficulty": 0.5,
+    "reverse_scored": false,
+    "validity_pair_id": null,
+    "is_impression_management": false,
+    "version_availability": [
+      "quick",
+      "deep"
+    ]
+  },
+  {
+    "id": "adaptability_forced_01",
+    "dimension": "adaptability",
+    "secondary_dimension": null,
+    "type": "forced_choice",
+    "text": "Your proven method just stopped working. Your first thought:",
+    "options": [
+      {
+        "key": "a",
+        "text": "Good. I was getting bored of it anyway. Time to find something better.",
+        "scores": {
+          "adaptability": 85,
+          "drive": 35
+        }
+      },
+      {
+        "key": "b",
+        "text": "I need to figure out why it stopped working before I abandon something that's served me well.",
+        "scores": {
+          "adaptability": 30,
+          "integrity": 70
+        }
+      }
+    ],
+    "scoring_weights": {
+      "a": {
+        "adaptability": 85,
+        "drive": 35
+      },
+      "b": {
+        "adaptability": 30,
+        "integrity": 70
+      }
+    },
+    "difficulty": 0.4,
+    "reverse_scored": false,
+    "validity_pair_id": null,
+    "is_impression_management": false,
+    "version_availability": [
+      "quick",
+      "deep"
+    ]
+  },
+  {
+    "id": "adaptability_forced_02",
+    "dimension": "adaptability",
+    "secondary_dimension": null,
+    "type": "forced_choice",
+    "text": "A new hire suggests completely rethinking your core process. You feel:",
+    "options": [
+      {
+        "key": "a",
+        "text": "Curious. Fresh eyes often see what we've become blind to.",
+        "scores": {
+          "adaptability": 80,
+          "connection": 45
+        }
+      },
+      {
+        "key": "b",
+        "text": "Skeptical. They don't yet understand why things are done this way.",
+        "scores": {
+          "adaptability": 20,
+          "vision": 55
+        }
+      }
+    ],
+    "scoring_weights": {
+      "a": {
+        "adaptability": 80,
+        "connection": 45
+      },
+      "b": {
+        "adaptability": 20,
+        "vision": 55
+      }
+    },
+    "difficulty": 0.35,
+    "reverse_scored": false,
+    "validity_pair_id": null,
+    "is_impression_management": false,
+    "version_availability": [
+      "quick",
+      "deep"
+    ]
+  },
+  {
+    "id": "adaptability_forced_03",
+    "dimension": "adaptability",
+    "secondary_dimension": null,
+    "type": "forced_choice",
+    "text": "You realize you've been wrong about something for years. Your reaction:",
+    "options": [
+      {
+        "key": "a",
+        "text": "Relief, almost. Now I can stop building on a faulty foundation.",
+        "scores": {
+          "adaptability": 85,
+          "integrity": 60
+        }
+      },
+      {
+        "key": "b",
+        "text": "A sinking feeling. All that effort based on the wrong assumption.",
+        "scores": {
+          "adaptability": 25,
+          "resilience": 40
+        }
+      }
+    ],
+    "scoring_weights": {
+      "a": {
+        "adaptability": 85,
+        "integrity": 60
+      },
+      "b": {
+        "adaptability": 25,
+        "resilience": 40
+      }
+    },
+    "difficulty": 0.55,
+    "reverse_scored": false,
+    "validity_pair_id": null,
+    "is_impression_management": false,
+    "version_availability": [
+      "quick",
+      "deep"
+    ]
+  },
+  {
+    "id": "adaptability_forced_04",
+    "dimension": "adaptability",
+    "secondary_dimension": null,
+    "type": "forced_choice",
+    "text": "The industry you've built your career in is being completely transformed. Honestly, your gut says:",
+    "options": [
+      {
+        "key": "a",
+        "text": "I'll ride this wave. I've reinvented myself before and I'll do it again.",
+        "scores": {
+          "adaptability": 80,
+          "drive": 55
+        }
+      },
+      {
+        "key": "b",
+        "text": "I need to protect what I've built. Deep expertise still matters, even when everything is shifting.",
+        "scores": {
+          "adaptability": 25,
+          "vision": 65
+        }
+      }
+    ],
+    "scoring_weights": {
+      "a": {
+        "adaptability": 80,
+        "drive": 55
+      },
+      "b": {
+        "adaptability": 25,
+        "vision": 65
+      }
+    },
+    "difficulty": 0.5,
+    "reverse_scored": false,
+    "validity_pair_id": null,
+    "is_impression_management": false,
+    "version_availability": [
+      "quick",
+      "deep"
+    ]
+  },
+  {
+    "id": "adaptability_forced_05",
+    "dimension": "adaptability",
+    "secondary_dimension": null,
+    "type": "forced_choice",
+    "text": "You're dropped into a situation where nothing you know applies. The feeling that hits you first:",
+    "options": [
+      {
+        "key": "a",
+        "text": "A quiet thrill. This is where real growth happens.",
+        "scores": {
+          "adaptability": 85,
+          "resilience": 50
+        }
+      },
+      {
+        "key": "b",
+        "text": "Anxiety. I need to find something familiar to anchor to before I can move forward.",
+        "scores": {
+          "adaptability": 20,
+          "drive": 55
+        }
+      }
+    ],
+    "scoring_weights": {
+      "a": {
+        "adaptability": 85,
+        "resilience": 50
+      },
+      "b": {
+        "adaptability": 20,
+        "drive": 55
+      }
+    },
+    "difficulty": 0.45,
+    "reverse_scored": false,
+    "validity_pair_id": null,
+    "is_impression_management": false,
+    "version_availability": [
+      "quick",
+      "deep"
+    ]
+  },
+  {
+    "id": "adaptability_forced_06",
+    "dimension": "adaptability",
+    "secondary_dimension": null,
+    "type": "forced_choice",
+    "text": "Someone gives you feedback that completely contradicts your self-image. You're most likely to:",
+    "options": [
+      {
+        "key": "a",
+        "text": "Sit with it seriously. If multiple people see this, maybe my self-image needs updating.",
+        "scores": {
+          "adaptability": 80,
+          "integrity": 65
+        }
+      },
+      {
+        "key": "b",
+        "text": "Consider the source. Not everyone sees the full picture of who I am and why I operate the way I do.",
+        "scores": {
+          "adaptability": 25,
+          "drive": 50
+        }
+      }
+    ],
+    "scoring_weights": {
+      "a": {
+        "adaptability": 80,
+        "integrity": 65
+      },
+      "b": {
+        "adaptability": 25,
+        "drive": 50
+      }
+    },
+    "difficulty": 0.65,
+    "reverse_scored": false,
+    "validity_pair_id": null,
+    "is_impression_management": false,
+    "version_availability": [
+      "deep"
+    ]
+  },
+  {
+    "id": "adaptability_forced_07",
+    "dimension": "adaptability",
+    "secondary_dimension": null,
+    "type": "forced_choice",
+    "text": "Your team's direction changed three times this quarter. When someone asks how you're handling it, the honest answer is:",
+    "options": [
+      {
+        "key": "a",
+        "text": "I've learned to hold plans loosely. I focus on what's in front of me and adjust as it shifts.",
+        "scores": {
+          "adaptability": 75,
+          "resilience": 55
+        }
+      },
+      {
+        "key": "b",
+        "text": "It's exhausting. I need stability to do my best work, and this constant shifting is burning me out.",
+        "scores": {
+          "adaptability": 20,
+          "integrity": 70
+        }
+      }
+    ],
+    "scoring_weights": {
+      "a": {
+        "adaptability": 75,
+        "resilience": 55
+      },
+      "b": {
+        "adaptability": 20,
+        "integrity": 70
+      }
+    },
+    "difficulty": 0.4,
+    "reverse_scored": false,
+    "validity_pair_id": null,
+    "is_impression_management": false,
+    "version_availability": [
+      "quick",
+      "deep"
+    ]
+  },
+  {
+    "id": "adaptability_forced_08",
+    "dimension": "adaptability",
+    "secondary_dimension": null,
+    "type": "forced_choice",
+    "text": "If you had to choose between these two career paths for the next five years:",
+    "options": [
+      {
+        "key": "a",
+        "text": "A role that changes every six months -- new problems, new teams, new skills required each time.",
+        "scores": {
+          "adaptability": 80,
+          "vision": 25
+        }
+      },
+      {
+        "key": "b",
+        "text": "A role that deepens over time -- same domain, increasing mastery, growing reputation as the expert.",
+        "scores": {
+          "adaptability": 25,
+          "drive": 70
+        }
+      }
+    ],
+    "scoring_weights": {
+      "a": {
+        "adaptability": 80,
+        "vision": 25
+      },
+      "b": {
+        "adaptability": 25,
+        "drive": 70
+      }
+    },
+    "difficulty": 0.5,
+    "reverse_scored": false,
+    "validity_pair_id": null,
+    "is_impression_management": false,
+    "version_availability": [
+      "quick",
+      "deep"
+    ]
+  },
+  {
+    "id": "adaptability_forced_09",
+    "dimension": "adaptability",
+    "secondary_dimension": null,
+    "type": "forced_choice",
+    "text": "The last time you were completely out of your depth, you noticed yourself:",
+    "options": [
+      {
+        "key": "a",
+        "text": "Asking more questions than usual and paying close attention to people who knew things I didn't.",
+        "scores": {
+          "adaptability": 80,
+          "connection": 55
+        }
+      },
+      {
+        "key": "b",
+        "text": "Drawing on principles from past experiences to create a framework I could operate from.",
+        "scores": {
+          "adaptability": 35,
+          "drive": 65
+        }
+      }
+    ],
+    "scoring_weights": {
+      "a": {
+        "adaptability": 80,
+        "connection": 55
+      },
+      "b": {
+        "adaptability": 35,
+        "drive": 65
+      }
+    },
+    "difficulty": 0.55,
+    "reverse_scored": false,
+    "validity_pair_id": null,
+    "is_impression_management": false,
+    "version_availability": [
+      "quick",
+      "deep"
+    ]
+  },
+  {
+    "id": "adaptability_forced_10",
+    "dimension": "adaptability",
+    "secondary_dimension": null,
+    "type": "forced_choice",
+    "text": "When you think about who you are as a leader, the thing that feels most true:",
+    "options": [
+      {
+        "key": "a",
+        "text": "I'm someone who evolves. The leader I am today is different from who I was two years ago, and I expect that to keep changing.",
+        "scores": {
+          "adaptability": 85,
+          "vision": 40
+        }
+      },
+      {
+        "key": "b",
+        "text": "I'm someone with a clear identity. People know what they're getting with me, and that consistency is what makes me trustworthy.",
+        "scores": {
+          "adaptability": 20,
+          "integrity": 80
+        }
+      }
+    ],
+    "scoring_weights": {
+      "a": {
+        "adaptability": 85,
+        "vision": 40
+      },
+      "b": {
+        "adaptability": 20,
+        "integrity": 80
+      }
+    },
+    "difficulty": 0.75,
+    "reverse_scored": false,
+    "validity_pair_id": null,
+    "is_impression_management": false,
+    "version_availability": [
+      "deep"
+    ]
+  }
+]

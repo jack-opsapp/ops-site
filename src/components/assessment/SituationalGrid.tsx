@@ -92,6 +92,8 @@ export default function SituationalGrid({
   const currentAnglesRef = useRef<number[]>([...BASE_ANGLES]);
   const targetAnglesRef = useRef<number[]>([...BASE_ANGLES]);
   const nodeRadiiRef = useRef<number[]>([1, 1, 1, 1]);
+  // Per-node tint intensity (0 = grey, 1 = accent) — lerped for gradual color shift
+  const nodeTintRef = useRef<number[]>([0, 0, 0, 0]);
 
   onSelectRef.current = onSelect;
 
@@ -436,25 +438,32 @@ export default function SituationalGrid({
 
         /* ---- Response text near node ---- */
 
-        const cos = Math.cos(currentAngles[i]);
-        const sin = Math.sin(currentAngles[i]);
-        const labelIsBlue = isSelected || isHovered;
+        // Use BASE angles (static) for justification so it NEVER changes
+        const baseCos = Math.cos(BASE_ANGLES[i]);
+        const baseSin = Math.sin(BASE_ANGLES[i]);
+
+        // Lerp tint toward target (gradual color shift)
+        const tintTarget = (isSelected || isHovered) ? 1 : 0;
+        const tints = nodeTintRef.current;
+        tints[i] += (tintTarget - tints[i]) * 0.08;
+        const tint = tints[i];
 
         const textAlpha = isSelected ? 0.85 : isHoveredWhileSelected ? 0.45 : (isHovered && !hasSelection) ? 0.60 : hasSelection ? 0.18 : 0.50;
         ctx.font = '400 11px "Kosugi", sans-serif';
-        ctx.fillStyle = `rgba(${labelIsBlue ? ACCENT.r : 200}, ${labelIsBlue ? ACCENT.g : 200}, ${labelIsBlue ? ACCENT.b : 200}, ${textAlpha})`;
+        // Blend between grey (200) and ACCENT based on lerped tint
+        const labelR = 200 + (ACCENT.r - 200) * tint;
+        const labelG = 200 + (ACCENT.g - 200) * tint;
+        const labelB = 200 + (ACCENT.b - 200) * tint;
+        ctx.fillStyle = `rgba(${labelR | 0}, ${labelG | 0}, ${labelB | 0}, ${textAlpha})`;
 
-        // Determine text position and alignment
-        // Right-align for top and left nodes, left-align for bottom and right
-        // Always vertically centered on the node
+        // Determine text position and alignment from BASE angles (never shifts)
         const lineHeight = 15;
         const maxWidth = 200;
         let textX: number;
 
-        // Top or left → right-align; Bottom or right → left-align
-        const isTopOrLeft = (sin < -0.3) || (cos < -0.3 && Math.abs(sin) < 0.7);
+        const isRightAligned = (baseSin < -0.3 && baseCos < 0.3) || (baseCos < -0.3 && Math.abs(baseSin) < 0.7) || (baseSin > 0.3 && Math.abs(baseCos) < 0.7);
 
-        if (isTopOrLeft) {
+        if (isRightAligned) {
           ctx.textAlign = 'right';
           textX = pos.x - 20;
         } else {

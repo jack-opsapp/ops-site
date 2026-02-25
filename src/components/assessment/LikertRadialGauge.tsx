@@ -1,10 +1,10 @@
 /**
- * LikertRadialGauge — Canvas 2D interactive Likert scale (1-5)
+ * LikertRadialGauge — Spectrum Line with Emanating Field
  *
- * A semicircular arc with 5 interactive nodes, ~40 atmospheric background
- * rays with breathing animation and mouse proximity effects. Selection
- * triggers a meter fill effect with animated fill angle lerp and particle
- * stream along the selected ray.
+ * Horizontal baseline with 5 interactive nodes (Strongly Disagree → Strongly Agree).
+ * ~72 thin vertical field lines emanate from the baseline, following the user's
+ * mouse with Gaussian falloff. Colors shift red → grey → green across the spectrum.
+ * Click locks the field to the selected node with concentrated opacity.
  *
  * Pure Canvas 2D API — no animation libraries.
  */
@@ -21,35 +21,31 @@ interface LikertRadialGaugeProps {
   onSelect: (value: number) => void; // 1-5
 }
 
-interface Particle {
-  progress: number;
-  speed: number;
-  opacity: number;
-  size: number;
-}
-
-interface BackgroundRay {
-  angle: number;
-  baseLength: number;    // 0.3-0.8
-  phaseOffset: number;
-  baseOpacity: number;   // 0.04-0.10
+interface FieldLine {
+  normX: number;       // 0-1 position along baseline
+  jitterX: number;     // slight random offset for organic feel
+  phaseOffset: number;  // for idle breathing
 }
 
 /* ------------------------------------------------------------------ */
 /*  Constants                                                          */
 /* ------------------------------------------------------------------ */
 
-const ACCENT = { r: 89, g: 119, b: 148 };
-const GREY = { r: 100, g: 100, b: 100 };
+const SPECTRUM = [
+  { r: 170, g: 65,  b: 65  },  // Strongly Disagree — muted red
+  { r: 160, g: 90,  b: 80  },  // Disagree — softer red
+  { r: 160, g: 160, b: 160 },  // Neutral — warm grey
+  { r: 80,  g: 150, b: 100 },  // Agree — soft green
+  { r: 60,  g: 160, b: 90  },  // Strongly Agree — muted green
+];
 
-const NODE_COUNT = 5;
-const ARC_SPAN = Math.PI * 0.85;
-const RAY_LENGTH_FRACTION = 0.7;
-const HIT_RADIUS = 24;
-const PARTICLE_COUNT = 8;
-const SELECT_DELAY_MS = 600;
-const BG_RAY_COUNT = 40;
-const PROXIMITY_THRESHOLD = 0.15; // radians
+const FIELD_LINE_COUNT = 72;
+const HIT_RADIUS = 32;
+const SELECT_DELAY_MS = 500;
+const LERP_FACTOR = 0.06;
+const FIELD_MAX_HEIGHT = 100;
+const FIELD_MIN_HEIGHT = 3;
+const GAUSSIAN_SIGMA = 0.08;
 
 const LABELS = [
   'STRONGLY\nDISAGREE',
@@ -60,29 +56,80 @@ const LABELS = [
 ];
 
 /* ------------------------------------------------------------------ */
-/*  Background ray generation                                          */
+/*  Helpers                                                            */
 /* ------------------------------------------------------------------ */
 
-function generateBackgroundRays(): BackgroundRay[] {
-  const rays: BackgroundRay[] = [];
-  const startAngle = -Math.PI / 2 - ARC_SPAN / 2;
-  const endAngle = -Math.PI / 2 + ARC_SPAN / 2;
+/** Interpolate across the 5-color spectrum based on normalized X (0-1) */
+function getSpectrumColor(normX: number): { r: number; g: number; b: number } {
+  const t = Math.max(0, Math.min(1, normX)) * (SPECTRUM.length - 1);
+  const i = Math.floor(t);
+  const f = t - i;
+  const a = SPECTRUM[Math.min(i, SPECTRUM.length - 1)];
+  const b = SPECTRUM[Math.min(i + 1, SPECTRUM.length - 1)];
+  return {
+    r: a.r + (b.r - a.r) * f,
+    g: a.g + (b.g - a.g) * f,
+    b: a.b + (b.b - a.b) * f,
+  };
+}
 
-  for (let i = 0; i < BG_RAY_COUNT; i++) {
-    const t = i / (BG_RAY_COUNT - 1);
-    const baseAngle = startAngle + t * (endAngle - startAngle);
-    // Slight random jitter for organicness
-    const angle = baseAngle + (Math.random() - 0.5) * 0.04;
+/** Compute layout positions from canvas dimensions */
+function getLayout(w: number, h: number) {
+  const baselineY = h * 0.45;
+  const lineStartX = w * 0.10;
+  const lineEndX = w * 0.90;
+  const lineWidth = lineEndX - lineStartX;
 
-    rays.push({
-      angle,
-      baseLength: 0.3 + Math.random() * 0.5,
-      phaseOffset: Math.random() * Math.PI * 2,
-      baseOpacity: 0.04 + Math.random() * 0.06,
+  const nodes: { x: number; y: number; normX: number }[] = [];
+  for (let i = 0; i < 5; i++) {
+    const normX = i / 4;
+    nodes.push({
+      x: lineStartX + normX * lineWidth,
+      y: baselineY,
+      normX,
     });
   }
 
-  return rays;
+  return { baselineY, lineStartX, lineEndX, lineWidth, nodes };
+}
+
+/** Euclidean distance hit test */
+function getHoveredIndex(
+  mx: number,
+  my: number,
+  nodes: { x: number; y: number }[],
+): number {
+  let closest = -1;
+  let closestDist = HIT_RADIUS;
+  for (let i = 0; i < nodes.length; i++) {
+    const dx = mx - nodes[i].x;
+    const dy = my - nodes[i].y;
+    const dist = Math.sqrt(dx * dx + dy * dy);
+    if (dist < closestDist) {
+      closestDist = dist;
+      closest = i;
+    }
+  }
+  return closest;
+}
+
+/** Gaussian function */
+function gaussian(x: number, mu: number, sigma: number): number {
+  const d = x - mu;
+  return Math.exp(-(d * d) / (2 * sigma * sigma));
+}
+
+/** Generate field line data */
+function generateFieldLines(): FieldLine[] {
+  const lines: FieldLine[] = [];
+  for (let i = 0; i < FIELD_LINE_COUNT; i++) {
+    lines.push({
+      normX: i / (FIELD_LINE_COUNT - 1),
+      jitterX: (Math.random() - 0.5) * 0.004,
+      phaseOffset: Math.random() * Math.PI * 2,
+    });
+  }
+  return lines;
 }
 
 /* ------------------------------------------------------------------ */
@@ -95,18 +142,29 @@ export default function LikertRadialGauge({ onSelect }: LikertRadialGaugeProps) 
   const animRef = useRef<number>(0);
   const hoveredRef = useRef<number>(-1);
   const selectedRef = useRef<number>(-1);
-  const particlesRef = useRef<Particle[]>([]);
-  const bgRaysRef = useRef<BackgroundRay[] | null>(null);
-  const selectTimerRef = useRef<ReturnType<typeof setTimeout> | null>(null);
-  const reducedMotionRef = useRef(false);
   const onSelectRef = useRef(onSelect);
-  const animatedFillAngleRef = useRef<number>(-999);
+  const selectTimerRef = useRef<ReturnType<typeof setTimeout> | null>(null);
   const timeRef = useRef(0);
+
+  // Smooth mouse X (normalized 0-1), -1 when off canvas
+  const smoothMouseXRef = useRef<number>(-1);
+  // Hover intensity (0→1 fade in/out when mouse enters/leaves)
+  const hoverIntensityRef = useRef<number>(0);
+  // Selection animation: lerped center position (starts from mouse, moves to node)
+  const selectionCenterRef = useRef<number>(-1);
+  // Selection animation progress: 0→1 for expand, used as abs value for rendering
+  const selectionProgressRef = useRef<number>(0);
+  // Selection phase: 'idle' | 'shrinking' | 'expanding'
+  const selPhaseRef = useRef<'idle' | 'shrinking' | 'expanding'>('idle');
+  // Pending selection index (set during shrink, applied when shrink completes)
+  const selPendingRef = useRef<number>(-1);
+  // Field line data (generated once)
+  const fieldLinesRef = useRef<FieldLine[] | null>(null);
 
   onSelectRef.current = onSelect;
 
-  if (!bgRaysRef.current) {
-    bgRaysRef.current = generateBackgroundRays();
+  if (!fieldLinesRef.current) {
+    fieldLinesRef.current = generateFieldLines();
   }
 
   /* ---- DPI-aware resize ---- */
@@ -125,62 +183,6 @@ export default function LikertRadialGauge({ onSelect }: LikertRadialGaugeProps) 
     if (ctx) ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
   }, []);
 
-  /* ---- Geometry helper ---- */
-
-  const getNodePositions = useCallback((w: number, h: number) => {
-    const cx = w / 2;
-    const cy = h * 0.85;
-    const radius = Math.min(w * 0.42, h * 0.7);
-    const rayLen = radius * RAY_LENGTH_FRACTION;
-    const startAngle = -Math.PI / 2 - ARC_SPAN / 2;
-
-    const nodes: { x: number; y: number; angle: number }[] = [];
-    for (let i = 0; i < NODE_COUNT; i++) {
-      const angle = startAngle + (ARC_SPAN / (NODE_COUNT - 1)) * i;
-      nodes.push({
-        x: cx + Math.cos(angle) * rayLen,
-        y: cy + Math.sin(angle) * rayLen,
-        angle,
-      });
-    }
-    return { cx, cy, radius, rayLen, startAngle, nodes };
-  }, []);
-
-  /* ---- Spawn particles for selected ray ---- */
-
-  const spawnParticles = useCallback(() => {
-    const particles: Particle[] = [];
-    for (let i = 0; i < PARTICLE_COUNT; i++) {
-      particles.push({
-        progress: Math.random(),
-        speed: 0.008 + Math.random() * 0.006,
-        opacity: 0.4 + Math.random() * 0.4,
-        size: 2 + Math.random() * 2,
-      });
-    }
-    particlesRef.current = particles;
-  }, []);
-
-  /* ---- Hit detection helper ---- */
-
-  const getHoveredIndex = useCallback((
-    mx: number, my: number,
-    nodes: { x: number; y: number }[],
-  ): number => {
-    let closest = -1;
-    let closestDist = HIT_RADIUS;
-    for (let i = 0; i < nodes.length; i++) {
-      const dx = mx - nodes[i].x;
-      const dy = my - nodes[i].y;
-      const dist = Math.sqrt(dx * dx + dy * dy);
-      if (dist < closestDist) {
-        closestDist = dist;
-        closest = i;
-      }
-    }
-    return closest;
-  }, []);
-
   /* ---- Main effect: animation loop + events ---- */
 
   useEffect(() => {
@@ -192,13 +194,6 @@ export default function LikertRadialGauge({ onSelect }: LikertRadialGaugeProps) 
       observer = new ResizeObserver(() => resize());
       observer.observe(container);
     }
-
-    const mql = window.matchMedia('(prefers-reduced-motion: reduce)');
-    reducedMotionRef.current = mql.matches;
-    const handleMotionChange = (e: MediaQueryListEvent) => {
-      reducedMotionRef.current = e.matches;
-    };
-    mql.addEventListener('change', handleMotionChange);
 
     const mousePos = { x: -9999, y: -9999 };
 
@@ -219,18 +214,28 @@ export default function LikertRadialGauge({ onSelect }: LikertRadialGaugeProps) 
       if (!canvas) return;
       const w = parseFloat(canvas.style.width) || canvas.width;
       const h = parseFloat(canvas.style.height) || canvas.height;
-      const { nodes } = getNodePositions(w, h);
+      const { nodes } = getLayout(w, h);
       const idx = getHoveredIndex(mx, my, nodes);
 
       if (idx >= 0) {
-        selectedRef.current = idx;
-        spawnParticles();
-
         if (selectTimerRef.current) clearTimeout(selectTimerRef.current);
 
-        if (reducedMotionRef.current) {
-          onSelectRef.current(idx + 1);
+        if (selectedRef.current >= 0 && selectedRef.current !== idx) {
+          // Re-selection: shrink first, then expand at new position
+          selPendingRef.current = idx;
+          selPhaseRef.current = 'shrinking';
+        } else if (selectedRef.current === idx) {
+          // Same node clicked again — ignore
+          return;
         } else {
+          // First selection: shrink from hover to 0, then expand
+          selectedRef.current = idx;
+          selectionCenterRef.current = smoothMouseXRef.current >= 0
+            ? smoothMouseXRef.current
+            : nodes[idx].normX;
+          selectionProgressRef.current = 0;
+          selPhaseRef.current = 'expanding';
+
           selectTimerRef.current = setTimeout(() => {
             onSelectRef.current(idx + 1);
           }, SELECT_DELAY_MS);
@@ -260,18 +265,23 @@ export default function LikertRadialGauge({ onSelect }: LikertRadialGaugeProps) 
       if (!canvas) return;
       const w = parseFloat(canvas.style.width) || canvas.width;
       const h = parseFloat(canvas.style.height) || canvas.height;
-      const { nodes } = getNodePositions(w, h);
+      const { nodes } = getLayout(w, h);
       const idx = getHoveredIndex(mx, my, nodes);
 
       if (idx >= 0) {
-        selectedRef.current = idx;
-        spawnParticles();
-
         if (selectTimerRef.current) clearTimeout(selectTimerRef.current);
 
-        if (reducedMotionRef.current) {
-          onSelectRef.current(idx + 1);
+        if (selectedRef.current >= 0 && selectedRef.current !== idx) {
+          selPendingRef.current = idx;
+          selPhaseRef.current = 'shrinking';
+        } else if (selectedRef.current === idx) {
+          return;
         } else {
+          selectedRef.current = idx;
+          selectionCenterRef.current = nodes[idx].normX;
+          selectionProgressRef.current = 0;
+          selPhaseRef.current = 'expanding';
+
           selectTimerRef.current = setTimeout(() => {
             onSelectRef.current(idx + 1);
           }, SELECT_DELAY_MS);
@@ -283,7 +293,7 @@ export default function LikertRadialGauge({ onSelect }: LikertRadialGaugeProps) 
 
     /* ---- Animation loop ---- */
 
-    const bgRays = bgRaysRef.current!;
+    const fieldLines = fieldLinesRef.current!;
     let prevTimestamp: number | null = null;
 
     function draw(timestamp: number) {
@@ -302,160 +312,200 @@ export default function LikertRadialGauge({ onSelect }: LikertRadialGaugeProps) 
 
       ctx.clearRect(0, 0, w, h);
 
-      const { cx, cy, rayLen, startAngle, nodes } = getNodePositions(w, h);
+      const { baselineY, lineStartX, lineEndX, lineWidth, nodes } = getLayout(w, h);
       const selected = selectedRef.current;
       const time = timeRef.current;
 
-      // Compute mouse angle from center
-      let mouseAngle = -999;
-      if (mousePos.x > -9000) {
-        mouseAngle = Math.atan2(mousePos.y - cy, mousePos.x - cx);
-      }
+      /* ---- 3. Hit detection + cursor ---- */
 
-      // Hover detection
       const hoverIdx = getHoveredIndex(mousePos.x, mousePos.y, nodes);
       hoveredRef.current = hoverIdx;
       container.style.cursor = hoverIdx >= 0 ? 'pointer' : 'default';
 
-      // Compute animated fill angle
+      /* ---- 4. Update smoothMouseX (lerp) + hover intensity ---- */
+
+      const mouseOnCanvas = mousePos.x > -9000;
+
+      if (mouseOnCanvas) {
+        const rawNormX = Math.max(0, Math.min(1, (mousePos.x - lineStartX) / lineWidth));
+        if (smoothMouseXRef.current < 0) {
+          // First frame on canvas — snap position, but intensity still fades in
+          smoothMouseXRef.current = rawNormX;
+        } else {
+          smoothMouseXRef.current += (rawNormX - smoothMouseXRef.current) * LERP_FACTOR;
+        }
+        // Fade in hover intensity
+        hoverIntensityRef.current = Math.min(1, hoverIntensityRef.current + dt * 3.0);
+      } else {
+        // Fade out hover intensity
+        hoverIntensityRef.current = Math.max(0, hoverIntensityRef.current - dt * 3.0);
+        // Once fully faded, reset smoothMouseX so next entry re-snaps
+        if (hoverIntensityRef.current <= 0) {
+          smoothMouseXRef.current = -1;
+        }
+      }
+
+      const hoverIntensity = hoverIntensityRef.current;
+      const smoothMouseX = smoothMouseXRef.current;
+
+      /* ---- 5. Advance selectionProgress + lerp selection center ---- */
+
+      const phase = selPhaseRef.current;
+
+      if (phase === 'shrinking') {
+        // Collapse current selection toward 0
+        selectionProgressRef.current = Math.max(0, selectionProgressRef.current - dt * 4.0);
+        if (selectionProgressRef.current <= 0) {
+          // Shrink complete — apply pending selection and start expanding
+          const pending = selPendingRef.current;
+          if (pending >= 0) {
+            // Seed center from old selection position (will lerp to new)
+            // selectionCenterRef already holds old position
+            selectedRef.current = pending;
+            selPendingRef.current = -1;
+            selectionProgressRef.current = 0;
+            selPhaseRef.current = 'expanding';
+
+            if (selectTimerRef.current) clearTimeout(selectTimerRef.current);
+            selectTimerRef.current = setTimeout(() => {
+              onSelectRef.current(pending + 1);
+            }, SELECT_DELAY_MS);
+          }
+        }
+      } else if (phase === 'expanding' && selected >= 0) {
+        selectionProgressRef.current = Math.min(1, selectionProgressRef.current + dt * 2.5);
+      }
+
+      // Always lerp center toward current selection target
       if (selected >= 0) {
-        const targetFillAngle = nodes[selected].angle;
-        if (animatedFillAngleRef.current < -900) {
-          animatedFillAngleRef.current = startAngle;
-        }
-        animatedFillAngleRef.current += (targetFillAngle - animatedFillAngleRef.current) * 0.08;
+        const targetX = nodes[selected].normX;
+        selectionCenterRef.current += (targetX - selectionCenterRef.current) * 0.08;
       }
 
-      const fillAngle = animatedFillAngleRef.current;
-      const hasFill = selected >= 0 && fillAngle > -900;
+      const selProgress = selectionProgressRef.current;
+      const selCenter = selectionCenterRef.current;
 
-      /* ---- Draw background rays ---- */
+      /* ---- 6. Draw baseline ---- */
 
-      for (const ray of bgRays) {
-        const breathe = Math.sin(time * 0.5 + ray.phaseOffset) * 0.04 * ray.baseLength;
-        let rayLength = ray.baseLength + breathe;
-        let opacity = ray.baseOpacity;
+      ctx.beginPath();
+      ctx.moveTo(lineStartX, baselineY);
+      ctx.lineTo(lineEndX, baselineY);
+      ctx.strokeStyle = 'rgba(255, 255, 255, 0.06)';
+      ctx.lineWidth = 1;
+      ctx.stroke();
 
-        // Mouse proximity boost (mouse-only)
-        if (mouseAngle > -900) {
-          let angularDist = Math.abs(ray.angle - mouseAngle);
-          if (angularDist > Math.PI) angularDist = Math.PI * 2 - angularDist;
-          const proximityFactor = Math.max(0, 1 - angularDist / PROXIMITY_THRESHOLD);
-          if (proximityFactor > 0) {
-            opacity += proximityFactor * 0.08;
-            rayLength += proximityFactor * 0.05;
+      /* ---- 7. Draw field lines ---- */
+
+      // Hover field: subdued (half height, low alpha, desaturated)
+      const HOVER_MAX_HEIGHT = 55;
+      const HOVER_MAX_ALPHA = 0.15;
+      // Post-selection hover: even smaller
+      const POST_SEL_HOVER_MAX_HEIGHT = 30;
+      const POST_SEL_HOVER_SIGMA = 0.06;
+      const POST_SEL_HOVER_MAX_ALPHA = 0.08;
+
+      for (const fl of fieldLines) {
+        const x = lineStartX + (fl.normX + fl.jitterX) * lineWidth;
+        const fullColor = getSpectrumColor(fl.normX);
+        // Desaturated version for hover (blend toward grey)
+        const grey = 140;
+        const hoverColor = {
+          r: grey + (fullColor.r - grey) * 0.35,
+          g: grey + (fullColor.g - grey) * 0.35,
+          b: grey + (fullColor.b - grey) * 0.35,
+        };
+
+        let height: number;
+        let alpha: number;
+        let cr: number, cg: number, cb: number;
+
+        if (selected >= 0) {
+          // Selection field: full color, concentrates around lerped center
+          const sigma = 0.15 - selProgress * 0.09; // 0.15 → 0.06
+          const g = gaussian(fl.normX, selCenter, sigma);
+
+          height = FIELD_MIN_HEIGHT + g * (FIELD_MAX_HEIGHT * 1.2 - FIELD_MIN_HEIGHT);
+          alpha = 0.02 + g * (0.65 - 0.02);
+          cr = fullColor.r; cg = fullColor.g; cb = fullColor.b;
+
+          // Layer post-selection hover on top (smaller, subtler)
+          if (smoothMouseX >= 0 && hoverIntensity > 0) {
+            const gh = gaussian(fl.normX, smoothMouseX, POST_SEL_HOVER_SIGMA);
+            const hoverH = FIELD_MIN_HEIGHT + gh * (POST_SEL_HOVER_MAX_HEIGHT - FIELD_MIN_HEIGHT);
+            const hoverA = gh * POST_SEL_HOVER_MAX_ALPHA * hoverIntensity;
+            // Take the max of selection vs hover for height, add alphas
+            if (hoverH > height) height = hoverH;
+            alpha = Math.min(0.7, alpha + hoverA);
           }
+        } else if (smoothMouseX >= 0 && hoverIntensity > 0) {
+          // Hover state: subdued wave follows mouse, fades in/out
+          const g = gaussian(fl.normX, smoothMouseX, GAUSSIAN_SIGMA);
+          const rawHeight = FIELD_MIN_HEIGHT + g * (HOVER_MAX_HEIGHT - FIELD_MIN_HEIGHT);
+          const rawAlpha = 0.03 + g * (HOVER_MAX_ALPHA - 0.03);
+
+          // Idle breathing as baseline
+          const breathe = Math.sin(time * 0.8 + fl.phaseOffset) * 0.5 + 0.5;
+          const idleHeight = FIELD_MIN_HEIGHT + breathe * 4;
+          const idleAlpha = 0.03 + breathe * 0.02;
+
+          // Crossfade between idle and hover based on hoverIntensity
+          height = idleHeight + (rawHeight - idleHeight) * hoverIntensity;
+          alpha = idleAlpha + (rawAlpha - idleAlpha) * hoverIntensity;
+          cr = hoverColor.r; cg = hoverColor.g; cb = hoverColor.b;
+        } else {
+          // Idle state: subtle breathing
+          const breathe = Math.sin(time * 0.8 + fl.phaseOffset) * 0.5 + 0.5;
+          height = FIELD_MIN_HEIGHT + breathe * 4;
+          alpha = 0.03 + breathe * 0.02;
+          cr = hoverColor.r; cg = hoverColor.g; cb = hoverColor.b;
         }
-
-        // Selection: meter fill effect
-        if (hasFill) {
-          const inFill = ray.angle >= startAngle && ray.angle <= fillAngle;
-          if (inFill) {
-            // Within filled range: tint ACCENT with higher opacity
-            const endX = cx + Math.cos(ray.angle) * rayLen * rayLength;
-            const endY = cy + Math.sin(ray.angle) * rayLen * rayLength;
-
-            ctx.beginPath();
-            ctx.moveTo(cx, cy);
-            ctx.lineTo(endX, endY);
-            ctx.strokeStyle = `rgba(${ACCENT.r}, ${ACCENT.g}, ${ACCENT.b}, ${Math.min(opacity * 2.5, 0.25)})`;
-            ctx.lineWidth = 0.8;
-            ctx.stroke();
-            continue;
-          } else {
-            // Beyond selection: dim to 0.02
-            opacity = 0.02;
-          }
-        }
-
-        const endX = cx + Math.cos(ray.angle) * rayLen * rayLength;
-        const endY = cy + Math.sin(ray.angle) * rayLen * rayLength;
 
         ctx.beginPath();
-        ctx.moveTo(cx, cy);
-        ctx.lineTo(endX, endY);
-        ctx.strokeStyle = `rgba(${GREY.r}, ${GREY.g}, ${GREY.b}, ${opacity})`;
-        ctx.lineWidth = 0.5;
+        ctx.moveTo(x, baselineY - height);
+        ctx.lineTo(x, baselineY + height);
+        ctx.strokeStyle = `rgba(${cr! | 0}, ${cg! | 0}, ${cb! | 0}, ${alpha})`;
+        ctx.lineWidth = 1;
         ctx.stroke();
       }
 
-      /* ---- Draw arc fill glow segment ---- */
+      /* ---- 8. Draw nodes ---- */
 
-      if (hasFill) {
-        ctx.beginPath();
-        ctx.arc(cx, cy, rayLen * 0.5, startAngle, fillAngle);
-        ctx.strokeStyle = `rgba(${ACCENT.r}, ${ACCENT.g}, ${ACCENT.b}, 0.35)`;
-        ctx.lineWidth = 2;
-        ctx.stroke();
-      }
-
-      /* ---- Draw rays and nodes ---- */
-
-      for (let i = 0; i < NODE_COUNT; i++) {
+      for (let i = 0; i < 5; i++) {
         const node = nodes[i];
-        const isHovered = hoverIdx === i && selected < 0;
+        const isHovered = hoverIdx === i;
         const isSelected = selected === i;
         const hasSelection = selected >= 0;
+        const color = SPECTRUM[i];
 
-        // Ray line
-        let lineAlpha: number;
-        let lineColor: typeof ACCENT;
-        let lineWidth: number;
-
-        if (isSelected) {
-          lineColor = ACCENT;
-          lineAlpha = 0.6;
-          lineWidth = 1.5;
-        } else if (isHovered) {
-          lineColor = ACCENT;
-          lineAlpha = 0.4;
-          lineWidth = 0.8;
-        } else if (hasSelection) {
-          lineColor = GREY;
-          lineAlpha = 0.08;
-          lineWidth = 0.8;
-        } else {
-          lineColor = GREY;
-          lineAlpha = 0.15;
-          lineWidth = 0.8;
-        }
-
-        ctx.beginPath();
-        ctx.moveTo(cx, cy);
-        ctx.lineTo(node.x, node.y);
-        ctx.strokeStyle = `rgba(${lineColor.r}, ${lineColor.g}, ${lineColor.b}, ${lineAlpha})`;
-        ctx.lineWidth = lineWidth;
-        ctx.stroke();
-
-        // Node (square)
         let nodeSize: number;
         let nodeAlpha: number;
-        let nodeColor: typeof ACCENT;
 
         if (isSelected) {
-          nodeColor = ACCENT;
           nodeSize = 12;
-          nodeAlpha = 0.9;
-        } else if (isHovered) {
-          nodeColor = ACCENT;
-          nodeSize = 10;
-          nodeAlpha = 0.7;
-        } else if (hasSelection) {
-          nodeColor = GREY;
-          nodeSize = 6;
-          nodeAlpha = 0.15;
-        } else {
-          nodeColor = GREY;
-          nodeSize = 6;
+          nodeAlpha = 0.95;
+        } else if (isHovered && hasSelection) {
+          // Hover after selection: subtle bump
+          nodeSize = 8;
           nodeAlpha = 0.35;
+        } else if (isHovered) {
+          // Hover before selection: subdued
+          nodeSize = 9;
+          nodeAlpha = 0.6;
+        } else if (hasSelection) {
+          nodeSize = 6;
+          nodeAlpha = 0.2;
+        } else {
+          nodeSize = 7;
+          nodeAlpha = 0.5;
         }
 
+        // Glow for selected node
         if (isSelected) {
-          ctx.shadowColor = `rgba(${ACCENT.r}, ${ACCENT.g}, ${ACCENT.b}, 0.5)`;
+          ctx.shadowColor = `rgba(${color.r}, ${color.g}, ${color.b}, 0.6)`;
           ctx.shadowBlur = 16;
         }
 
-        ctx.fillStyle = `rgba(${nodeColor.r}, ${nodeColor.g}, ${nodeColor.b}, ${nodeAlpha})`;
+        ctx.fillStyle = `rgba(${color.r}, ${color.g}, ${color.b}, ${nodeAlpha})`;
         ctx.fillRect(
           node.x - nodeSize / 2,
           node.y - nodeSize / 2,
@@ -467,62 +517,60 @@ export default function LikertRadialGauge({ onSelect }: LikertRadialGaugeProps) 
           ctx.shadowColor = 'transparent';
           ctx.shadowBlur = 0;
         }
+      }
 
-        // Label
+      /* ---- 9. Draw labels ---- */
+
+      ctx.font = '400 10px "Kosugi", sans-serif';
+      ctx.textAlign = 'center';
+      ctx.textBaseline = 'top';
+
+      for (let i = 0; i < 5; i++) {
+        const node = nodes[i];
+        const isHovered = hoverIdx === i;
+        const isSelected = selected === i;
+        const hasSelection = selected >= 0;
+        const color = SPECTRUM[i];
+
         let labelAlpha: number;
         if (isSelected) {
           labelAlpha = 0.9;
+        } else if (isHovered && hasSelection) {
+          labelAlpha = 0.4;
         } else if (isHovered) {
-          labelAlpha = 0.7;
+          labelAlpha = 0.6;
         } else if (hasSelection) {
           labelAlpha = 0.2;
         } else {
           labelAlpha = 0.5;
         }
 
-        ctx.font = '400 10px "Kosugi", sans-serif';
-        ctx.textAlign = 'center';
-        ctx.textBaseline = 'top';
-        ctx.fillStyle = `rgba(255, 255, 255, ${labelAlpha})`;
+        // Tint with spectrum color on hover/selection, white otherwise
+        // Hover tint is subdued (blend toward white), selection is full color
+        const tinted = isSelected || isHovered;
+        let lr: number, lg: number, lb: number;
+        if (isSelected) {
+          lr = color.r; lg = color.g; lb = color.b;
+        } else if (isHovered) {
+          // Subdued tint: halfway between white and spectrum
+          lr = 255 + (color.r - 255) * 0.4;
+          lg = 255 + (color.g - 255) * 0.4;
+          lb = 255 + (color.b - 255) * 0.4;
+        } else {
+          lr = 255; lg = 255; lb = 255;
+        }
+
+        ctx.fillStyle = `rgba(${lr | 0}, ${lg | 0}, ${lb | 0}, ${labelAlpha})`;
 
         const labelText = LABELS[i];
         const labelLines = labelText.split('\n');
         const labelLineHeight = 13;
-        const labelStartY = node.y + nodeSize / 2 + 10;
+        const labelStartY = node.y + 14;
 
         for (let l = 0; l < labelLines.length; l++) {
           ctx.fillText(labelLines[l], node.x, labelStartY + l * labelLineHeight);
         }
       }
-
-      /* ---- Particles (selected state, animated) ---- */
-
-      if (selected >= 0 && !reducedMotionRef.current) {
-        const selNode = nodes[selected];
-        const particles = particlesRef.current;
-
-        for (const p of particles) {
-          p.progress += p.speed;
-          if (p.progress > 1) p.progress = 0;
-
-          const px = cx + (selNode.x - cx) * p.progress;
-          const py = cy + (selNode.y - cy) * p.progress;
-          const alpha = p.opacity * (1 - p.progress * 0.5);
-
-          ctx.fillStyle = `rgba(${ACCENT.r}, ${ACCENT.g}, ${ACCENT.b}, ${alpha})`;
-          ctx.fillRect(
-            px - p.size / 2,
-            py - p.size / 2,
-            p.size,
-            p.size,
-          );
-        }
-      }
-
-      /* ---- Center point indicator ---- */
-
-      ctx.fillStyle = `rgba(${GREY.r}, ${GREY.g}, ${GREY.b}, 0.15)`;
-      ctx.fillRect(cx - 1.5, cy - 1.5, 3, 3);
 
       animRef.current = requestAnimationFrame(draw);
     }
@@ -534,14 +582,13 @@ export default function LikertRadialGauge({ onSelect }: LikertRadialGaugeProps) 
     return () => {
       cancelAnimationFrame(animRef.current);
       if (observer) observer.disconnect();
-      mql.removeEventListener('change', handleMotionChange);
       container.removeEventListener('mousemove', handleMouseMove);
       container.removeEventListener('click', handleClick);
       container.removeEventListener('mouseleave', handleMouseLeave);
       container.removeEventListener('touchend', handleTouchEnd);
       if (selectTimerRef.current) clearTimeout(selectTimerRef.current);
     };
-  }, [resize, getNodePositions, getHoveredIndex, spawnParticles]);
+  }, [resize]);
 
   return (
     <div

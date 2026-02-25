@@ -1,11 +1,13 @@
 /**
  * Hero — Full-viewport landing section
- * Dark gradient background, lower-left headline, two CTA buttons
- * Server component (no client interactivity)
+ * Headline, subtext, two CTAs, trust line, founder quote
+ * Copy aligned to try-ops authority
  */
 
 import Button from '@/components/ui/Button';
 import GradientOverlay from '@/components/ui/GradientOverlay';
+
+const APP_STORE_URL = 'https://apps.apple.com/us/app/ops-job-crew-management/id6746662078';
 
 export default function Hero() {
   return (
@@ -33,27 +35,41 @@ export default function Hero() {
       <div className="relative z-10 flex min-h-screen flex-col justify-end px-6 pb-[clamp(4rem,10vh,8rem)] sm:px-10 md:px-16 lg:px-24">
         {/* Headline */}
         <h1
-          className="font-heading font-bold uppercase leading-[0.95] tracking-tight text-ops-text-primary"
-          style={{ fontSize: 'clamp(4rem, 8vw, 7rem)' }}
+          className="font-heading font-bold uppercase leading-[0.95] tracking-tight text-ops-text-primary max-w-[800px]"
+          style={{ fontSize: 'clamp(3rem, 6vw, 5.5rem)' }}
         >
-          RUN YOUR
-          <br />
-          OPERATION
+          JOB MANAGEMENT YOUR CREW WILL ACTUALLY USE
         </h1>
 
         {/* Subtext */}
-        <p className="mt-4 font-heading font-light text-lg text-ops-text-secondary sm:text-xl md:text-2xl">
-          Job management your crew will actually use.
+        <p className="mt-4 font-heading font-light text-lg text-ops-text-secondary sm:text-xl md:text-2xl max-w-[600px]">
+          Built by trades, for trades. Your software should handle the chaos so you don&apos;t have to.
         </p>
 
         {/* CTA buttons */}
         <div className="mt-8 flex items-center gap-4">
-          <Button variant="solid" href="https://app.opsapp.co" external={true}>
-            GET OPS
+          <Button variant="solid" href={APP_STORE_URL} external={true}>
+            DOWNLOAD FREE
           </Button>
-          <Button variant="ghost" href="/platform">
-            SEE PLATFORM
+          <Button variant="ghost" href="https://try.opsapp.co/tutorial-intro" external={true}>
+            TRY IT FIRST
           </Button>
+        </div>
+
+        {/* Trust line */}
+        <p className="mt-4 font-caption text-xs text-ops-text-secondary tracking-[0.1em]">
+          Get started for free &middot; No credit card &middot; Rated 5.0
+        </p>
+
+        {/* Founder quote */}
+        <div className="hidden lg:block border-l-2 border-white/20 pl-6 mt-10 max-w-[560px]">
+          <p className="font-heading font-light text-base text-ops-text-secondary leading-relaxed">
+            &ldquo;I scaled a deck and railing business from 0 to $1.6M in 4 years. Tried Jobber, ServiceTitan, Housecall Pro.
+            None of them worked the way my crew actually works. So I built OPS.&rdquo;
+          </p>
+          <p className="font-caption uppercase tracking-[0.15em] text-[11px] text-ops-text-secondary mt-2">
+            &mdash; Jack, Founder
+          </p>
         </div>
       </div>
     </section>
