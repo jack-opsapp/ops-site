@@ -25,7 +25,7 @@ export default function StepDots({
   onNavigate,
 }: StepDotsProps) {
   return (
-    <div className="flex items-center justify-center gap-3 py-4">
+    <div className="flex items-center gap-3 py-4">
       {Array.from({ length: totalSteps }, (_, i) => {
         const isCurrent = i === currentStep;
         const isCompleted = completedSteps.has(i);

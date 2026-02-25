@@ -537,9 +537,9 @@ export default function AssessmentFlow({ version }: AssessmentFlowProps) {
           <motion.div
             key="cover"
             {...phaseVariants}
-            className="flex-1 flex items-center justify-center h-full"
+            className="flex-1 flex items-start justify-center h-full"
           >
-            <div className="flex flex-col items-center text-center px-6 max-w-lg">
+            <div className="flex flex-col items-start px-6 md:px-10 lg:px-16 w-full">
               {/* Version badge */}
               <motion.span
                 initial={{ opacity: 0, y: 10 }}
