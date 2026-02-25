@@ -31,6 +31,11 @@ interface QuestionFrameProps {
   onAnswer: (value: number | string) => void;
   onBack: () => void;
   onNavigateToStep: (index: number) => void;
+  isRevising?: boolean;
+  allChunkQuestionsAnswered?: boolean;
+  nextQuestionAnswered?: boolean;
+  onSaveAnswer?: (value: number | string) => void;
+  onCompleteSection?: () => void;
 }
 
 const EASE = [0.22, 1, 0.36, 1] as const;
@@ -87,6 +92,11 @@ export default function QuestionFrame({
   onAnswer,
   onBack,
   onNavigateToStep,
+  isRevising = false,
+  allChunkQuestionsAnswered = false,
+  nextQuestionAnswered = false,
+  onSaveAnswer,
+  onCompleteSection,
 }: QuestionFrameProps) {
   return (
     <AnimatePresence mode="wait">
@@ -138,12 +148,13 @@ export default function QuestionFrame({
           {getInstruction(question.type)}
         </motion.p>
 
-        {/* Back button — below instruction, matching dots→title spacing */}
-        {!isFirstQuestion && (
+        {/* Navigation buttons */}
+        {isRevising ? (
           <motion.div
             variants={childVariants}
-            className="px-6 md:px-10 lg:px-16 pt-5"
+            className="px-6 md:px-10 lg:px-16 pt-5 flex items-center justify-between"
           >
+            {/* Back to review */}
             <button
               type="button"
               onClick={onBack}
@@ -151,10 +162,50 @@ export default function QuestionFrame({
             >
               Back
             </button>
+
+            <div className="flex items-center gap-3">
+              {/* Next question — only if next has a saved answer */}
+              {nextQuestionAnswered && questionIndex < totalQuestionsInChunk - 1 && (
+                <button
+                  type="button"
+                  onClick={() => onNavigateToStep(questionIndex + 1)}
+                  className="font-caption uppercase tracking-[0.15em] text-[11px] text-ops-text-secondary/50 hover:text-ops-text-primary border border-ops-border/50 hover:border-ops-border-hover rounded-[3px] px-4 py-2 transition-all duration-200 cursor-pointer"
+                >
+                  Next
+                </button>
+              )}
+
+              {/* Complete section — return to review */}
+              {allChunkQuestionsAnswered && (
+                <button
+                  type="button"
+                  onClick={onCompleteSection}
+                  className="font-caption uppercase tracking-[0.2em] text-[11px] text-ops-background bg-white rounded-[3px] px-6 py-2 cursor-pointer transition-all duration-200 hover:bg-white/90"
+                >
+                  Complete Section
+                </button>
+              )}
+            </div>
           </motion.div>
+        ) : (
+          /* Back button — normal mode */
+          !isFirstQuestion && (
+            <motion.div
+              variants={childVariants}
+              className="px-6 md:px-10 lg:px-16 pt-5"
+            >
+              <button
+                type="button"
+                onClick={onBack}
+                className="font-caption uppercase tracking-[0.15em] text-[11px] text-ops-text-secondary/50 hover:text-ops-text-primary border border-ops-border/50 hover:border-ops-border-hover rounded-[3px] px-4 py-2 transition-all duration-200 cursor-pointer"
+              >
+                Back
+              </button>
+            </motion.div>
+          )
         )}
 
-        {/* Input component — fills remaining space, auto-advances */}
+        {/* Input component — fills remaining space */}
         <motion.div
           variants={childVariants}
           className="flex-1 min-h-0 w-full px-2 md:px-6 py-2"
@@ -163,7 +214,8 @@ export default function QuestionFrame({
             <LikertRadialGauge
               key={question.id}
               onSelect={(value) => onAnswer(value)}
-              autoAdvance={true}
+              autoAdvance={!isRevising}
+              onSelectionChange={isRevising ? (value) => onSaveAnswer?.(value) : undefined}
               savedAnswer={typeof savedAnswer === 'number' ? savedAnswer : undefined}
             />
           )}
@@ -173,7 +225,8 @@ export default function QuestionFrame({
               key={question.id}
               options={question.options}
               onSelect={(value) => onAnswer(value)}
-              autoAdvance={true}
+              autoAdvance={!isRevising}
+              onSelectionChange={isRevising ? (value) => onSaveAnswer?.(value) : undefined}
               savedAnswer={typeof savedAnswer === 'string' ? savedAnswer : undefined}
             />
           )}
@@ -183,7 +236,8 @@ export default function QuestionFrame({
               key={question.id}
               options={question.options}
               onSelect={(value) => onAnswer(value)}
-              autoAdvance={true}
+              autoAdvance={!isRevising}
+              onSelectionChange={isRevising ? (value) => onSaveAnswer?.(value) : undefined}
               savedAnswer={typeof savedAnswer === 'string' ? savedAnswer : undefined}
             />
           )}

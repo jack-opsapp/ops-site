@@ -192,7 +192,18 @@ export default function SituationalGrid({
       const idx = getHoveredIndex(mx, my, nodePositions);
 
       if (idx >= 0 && idx < options.length) {
-        if (selectedRef.current === idx) return; // same node — ignore
+        if (selectedRef.current === idx) {
+          // Same node re-clicked — re-fire callbacks without re-animating
+          onSelectionChangeRef.current?.(options[idx].key);
+          if (selectTimerRef.current) clearTimeout(selectTimerRef.current);
+          selectTimerRef.current = setTimeout(() => {
+            if (autoAdvanceRef.current) {
+              onSelectRef.current(options[idx].key);
+            }
+            onAnimationCompleteRef.current?.();
+          }, 500);
+          return;
+        }
         selectedRef.current = idx;
 
         const selAngle = BASE_ANGLES[idx];

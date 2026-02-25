@@ -210,7 +210,18 @@ export default function ForcedChoiceFork({
       }
 
       if (closest >= 0 && closest < optionsRef.current.length) {
-        if (selectedRef.current === closest) return; // same node — ignore
+        if (selectedRef.current === closest) {
+          // Same node re-clicked — re-fire callbacks without re-animating
+          onSelectionChangeRef.current?.(optionsRef.current[closest].key);
+          if (selectTimerRef.current) clearTimeout(selectTimerRef.current);
+          selectTimerRef.current = setTimeout(() => {
+            if (autoAdvanceRef.current) {
+              onSelectRef.current(optionsRef.current[closest].key);
+            }
+            onAnimationCompleteRef.current?.();
+          }, SELECT_DELAY_MS);
+          return;
+        }
         selectedRef.current = closest;
         selProgressRef.current = 0;
 

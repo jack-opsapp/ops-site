@@ -236,6 +236,15 @@ export default function LikertRadialGauge({
         // Fire selection change immediately
         onSelectionChangeRef.current?.(idx + 1);
       } else if (selectedRef.current === idx) {
+        // Same node re-clicked — re-fire callbacks without re-animating
+        onSelectionChangeRef.current?.(idx + 1);
+        if (selectTimerRef.current) clearTimeout(selectTimerRef.current);
+        selectTimerRef.current = setTimeout(() => {
+          if (autoAdvanceRef.current) {
+            onSelectRef.current(idx + 1);
+          }
+          onAnimationCompleteRef.current?.();
+        }, SELECT_DELAY_MS);
         return;
       } else {
         // First selection

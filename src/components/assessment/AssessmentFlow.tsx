@@ -89,6 +89,7 @@ type FlowAction =
   | { type: 'NAVIGATE_TO_STEP'; index: number }
   | { type: 'QUESTION_TRANSITION_DONE' }
   | { type: 'CONFIRM_CHUNK' }
+  | { type: 'COMPLETE_SECTION' }
   | { type: 'REVISE_QUESTION'; index: number }
   | { type: 'CHUNK_SUBMITTED'; complete: boolean; questions?: ClientQuestion[]; currentChunk: number; totalChunks: number }
   | { type: 'CHUNK_ANIM_DONE' }
@@ -223,10 +224,28 @@ function reducer(state: FlowState, action: FlowAction): FlowState {
         isTransitioning: false,
       };
 
-    case 'CONFIRM_CHUNK':
+    case 'CONFIRM_CHUNK': {
+      // Rebuild chunkResponses from savedAnswers to capture any revisions
+      const rebuiltResponses: ChunkSubmission[] = state.questions.map(q => {
+        const existing = state.chunkResponses.find(r => r.question_id === q.id);
+        return {
+          question_id: q.id,
+          answer_value: state.savedAnswers.get(q.id) ?? existing?.answer_value ?? 0,
+          response_time_ms: existing?.response_time_ms ?? 0,
+        };
+      });
       return {
         ...state,
         phase: 'submitting_chunk',
+        chunkResponses: rebuiltResponses,
+      };
+    }
+
+    case 'COMPLETE_SECTION':
+      return {
+        ...state,
+        phase: 'chunk_review',
+        isRevising: false,
       };
 
     case 'REVISE_QUESTION':
@@ -544,6 +563,15 @@ export default function AssessmentFlow({ version }: AssessmentFlowProps) {
     }
   }, [state.sessionId]);
 
+  const handleSaveAnswer = useCallback((value: number | string) => {
+    const question = state.questions[state.questionIndex];
+    dispatch({ type: 'SELECT_ANSWER', questionId: question.id, value });
+  }, [state.questions, state.questionIndex]);
+
+  const handleCompleteSection = useCallback(() => {
+    dispatch({ type: 'COMPLETE_SECTION' });
+  }, []);
+
   const handleExit = useCallback(() => {
     router.push('/tools/leadership');
   }, [router]);
@@ -596,6 +624,12 @@ export default function AssessmentFlow({ version }: AssessmentFlowProps) {
   const currentQuestion = state.questions[state.questionIndex];
   const savedAnswer = currentQuestion ? state.savedAnswers.get(currentQuestion.id) : undefined;
   const meta = VERSION_META[version];
+
+  // Revision mode navigation flags
+  const allChunkQuestionsAnswered = state.questions.every(q => state.savedAnswers.has(q.id));
+  const nextQuestionAnswered = state.questionIndex < state.questions.length - 1
+    ? state.savedAnswers.has(state.questions[state.questionIndex + 1].id)
+    : false;
 
   /* ---- Phase variants (simple) ---- */
 
@@ -783,6 +817,11 @@ export default function AssessmentFlow({ version }: AssessmentFlowProps) {
               onAnswer={handleConfirmAdvance}
               onBack={handleBack}
               onNavigateToStep={handleNavigateToStep}
+              isRevising={state.isRevising}
+              allChunkQuestionsAnswered={allChunkQuestionsAnswered}
+              nextQuestionAnswered={nextQuestionAnswered}
+              onSaveAnswer={handleSaveAnswer}
+              onCompleteSection={handleCompleteSection}
             />
           </motion.div>
         )}
