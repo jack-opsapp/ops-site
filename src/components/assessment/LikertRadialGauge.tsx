@@ -19,6 +19,10 @@ import { useRef, useEffect, useCallback } from 'react';
 
 interface LikertRadialGaugeProps {
   onSelect: (value: number) => void; // 1-5
+  autoAdvance?: boolean;
+  onSelectionChange?: (value: number) => void;
+  onAnimationComplete?: () => void;
+  savedAnswer?: number;
 }
 
 interface FieldLine {
@@ -136,13 +140,22 @@ function generateFieldLines(): FieldLine[] {
 /*  Component                                                          */
 /* ------------------------------------------------------------------ */
 
-export default function LikertRadialGauge({ onSelect }: LikertRadialGaugeProps) {
+export default function LikertRadialGauge({
+  onSelect,
+  autoAdvance = true,
+  onSelectionChange,
+  onAnimationComplete,
+  savedAnswer,
+}: LikertRadialGaugeProps) {
   const canvasRef = useRef<HTMLCanvasElement>(null);
   const containerRef = useRef<HTMLDivElement>(null);
   const animRef = useRef<number>(0);
   const hoveredRef = useRef<number>(-1);
   const selectedRef = useRef<number>(-1);
   const onSelectRef = useRef(onSelect);
+  const onSelectionChangeRef = useRef(onSelectionChange);
+  const onAnimationCompleteRef = useRef(onAnimationComplete);
+  const autoAdvanceRef = useRef(autoAdvance);
   const selectTimerRef = useRef<ReturnType<typeof setTimeout> | null>(null);
   const timeRef = useRef(0);
 
@@ -162,6 +175,16 @@ export default function LikertRadialGauge({ onSelect }: LikertRadialGaugeProps) 
   const fieldLinesRef = useRef<FieldLine[] | null>(null);
 
   onSelectRef.current = onSelect;
+  onSelectionChangeRef.current = onSelectionChange;
+  onAnimationCompleteRef.current = onAnimationComplete;
+  autoAdvanceRef.current = autoAdvance;
+
+  // Apply savedAnswer on mount
+  if (savedAnswer !== undefined && savedAnswer >= 1 && savedAnswer <= 5 && selectedRef.current < 0) {
+    selectedRef.current = savedAnswer - 1;
+    selPhaseRef.current = 'expanding';
+    selectionProgressRef.current = 1;
+  }
 
   if (!fieldLinesRef.current) {
     fieldLinesRef.current = generateFieldLines();
@@ -197,6 +220,42 @@ export default function LikertRadialGauge({ onSelect }: LikertRadialGaugeProps) 
 
     const mousePos = { x: -9999, y: -9999 };
 
+    /* ---- Shared selection logic ---- */
+
+    const selectNode = (
+      idx: number,
+      nodes: { x: number; y: number; normX: number }[],
+      centerX: number,
+    ) => {
+      if (selectTimerRef.current) clearTimeout(selectTimerRef.current);
+
+      if (selectedRef.current >= 0 && selectedRef.current !== idx) {
+        // Re-selection: shrink first, then expand at new position
+        selPendingRef.current = idx;
+        selPhaseRef.current = 'shrinking';
+        // Fire selection change immediately
+        onSelectionChangeRef.current?.(idx + 1);
+      } else if (selectedRef.current === idx) {
+        return;
+      } else {
+        // First selection
+        selectedRef.current = idx;
+        selectionCenterRef.current = centerX >= 0 ? centerX : nodes[idx].normX;
+        selectionProgressRef.current = 0;
+        selPhaseRef.current = 'expanding';
+
+        // Fire selection change immediately
+        onSelectionChangeRef.current?.(idx + 1);
+
+        selectTimerRef.current = setTimeout(() => {
+          if (autoAdvanceRef.current) {
+            onSelectRef.current(idx + 1);
+          }
+          onAnimationCompleteRef.current?.();
+        }, SELECT_DELAY_MS);
+      }
+    };
+
     /* ---- Mouse handlers ---- */
 
     const handleMouseMove = (e: MouseEvent) => {
@@ -218,28 +277,7 @@ export default function LikertRadialGauge({ onSelect }: LikertRadialGaugeProps) 
       const idx = getHoveredIndex(mx, my, nodes);
 
       if (idx >= 0) {
-        if (selectTimerRef.current) clearTimeout(selectTimerRef.current);
-
-        if (selectedRef.current >= 0 && selectedRef.current !== idx) {
-          // Re-selection: shrink first, then expand at new position
-          selPendingRef.current = idx;
-          selPhaseRef.current = 'shrinking';
-        } else if (selectedRef.current === idx) {
-          // Same node clicked again — ignore
-          return;
-        } else {
-          // First selection: shrink from hover to 0, then expand
-          selectedRef.current = idx;
-          selectionCenterRef.current = smoothMouseXRef.current >= 0
-            ? smoothMouseXRef.current
-            : nodes[idx].normX;
-          selectionProgressRef.current = 0;
-          selPhaseRef.current = 'expanding';
-
-          selectTimerRef.current = setTimeout(() => {
-            onSelectRef.current(idx + 1);
-          }, SELECT_DELAY_MS);
-        }
+        selectNode(idx, nodes, smoothMouseXRef.current);
       }
     };
 
@@ -269,23 +307,7 @@ export default function LikertRadialGauge({ onSelect }: LikertRadialGaugeProps) 
       const idx = getHoveredIndex(mx, my, nodes);
 
       if (idx >= 0) {
-        if (selectTimerRef.current) clearTimeout(selectTimerRef.current);
-
-        if (selectedRef.current >= 0 && selectedRef.current !== idx) {
-          selPendingRef.current = idx;
-          selPhaseRef.current = 'shrinking';
-        } else if (selectedRef.current === idx) {
-          return;
-        } else {
-          selectedRef.current = idx;
-          selectionCenterRef.current = nodes[idx].normX;
-          selectionProgressRef.current = 0;
-          selPhaseRef.current = 'expanding';
-
-          selectTimerRef.current = setTimeout(() => {
-            onSelectRef.current(idx + 1);
-          }, SELECT_DELAY_MS);
-        }
+        selectNode(idx, nodes, nodes[idx].normX);
       }
     };
 
@@ -368,7 +390,10 @@ export default function LikertRadialGauge({ onSelect }: LikertRadialGaugeProps) 
 
             if (selectTimerRef.current) clearTimeout(selectTimerRef.current);
             selectTimerRef.current = setTimeout(() => {
-              onSelectRef.current(pending + 1);
+              if (autoAdvanceRef.current) {
+                onSelectRef.current(pending + 1);
+              }
+              onAnimationCompleteRef.current?.();
             }, SELECT_DELAY_MS);
           }
         }

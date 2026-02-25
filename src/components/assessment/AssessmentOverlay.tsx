@@ -54,12 +54,19 @@ export default function AssessmentOverlay({
       {/* Ambient starfield — base layer */}
       <AssessmentStarfield />
 
-      {/* Radial vignette — CSS only depth layer */}
+      {/* Linear edge vignettes — top + bottom */}
       <div
-        className="absolute inset-0 pointer-events-none"
+        className="absolute inset-x-0 top-0 h-32 pointer-events-none"
         aria-hidden="true"
         style={{
-          background: 'radial-gradient(ellipse at center, transparent 40%, rgba(0, 0, 0, 0.5) 100%)',
+          background: 'linear-gradient(to bottom, rgba(0, 0, 0, 0.35) 0%, transparent 100%)',
+        }}
+      />
+      <div
+        className="absolute inset-x-0 bottom-0 h-32 pointer-events-none"
+        aria-hidden="true"
+        style={{
+          background: 'linear-gradient(to top, rgba(0, 0, 0, 0.35) 0%, transparent 100%)',
         }}
       />
 

@@ -21,6 +21,10 @@ import { useRef, useEffect, useCallback } from 'react';
 interface ForcedChoiceForkProps {
   options: { key: string; text: string }[];
   onSelect: (key: string) => void;
+  autoAdvance?: boolean;
+  onSelectionChange?: (value: string) => void;
+  onAnimationComplete?: () => void;
+  savedAnswer?: string;
 }
 
 interface Particle {
@@ -111,6 +115,10 @@ function lerpColor(
 export default function ForcedChoiceFork({
   options,
   onSelect,
+  autoAdvance = true,
+  onSelectionChange,
+  onAnimationComplete,
+  savedAnswer,
 }: ForcedChoiceForkProps) {
   const canvasRef = useRef<HTMLCanvasElement>(null);
   const containerRef = useRef<HTMLDivElement>(null);
@@ -118,6 +126,9 @@ export default function ForcedChoiceFork({
   const hoveredRef = useRef<number>(-1);
   const selectedRef = useRef<number>(-1);
   const onSelectRef = useRef(onSelect);
+  const onSelectionChangeRef = useRef(onSelectionChange);
+  const onAnimationCompleteRef = useRef(onAnimationComplete);
+  const autoAdvanceRef = useRef(autoAdvance);
   const optionsRef = useRef(options);
   const selectTimerRef = useRef<ReturnType<typeof setTimeout> | null>(null);
   const timeRef = useRef(0);
@@ -125,7 +136,19 @@ export default function ForcedChoiceFork({
   const selProgressRef = useRef(0);
 
   onSelectRef.current = onSelect;
+  onSelectionChangeRef.current = onSelectionChange;
+  onAnimationCompleteRef.current = onAnimationComplete;
+  autoAdvanceRef.current = autoAdvance;
   optionsRef.current = options;
+
+  // Apply savedAnswer on mount
+  if (savedAnswer !== undefined && selectedRef.current < 0) {
+    const savedIdx = options.findIndex(o => o.key === savedAnswer);
+    if (savedIdx >= 0) {
+      selectedRef.current = savedIdx;
+      selProgressRef.current = 1;
+    }
+  }
 
   if (!particlesRef.current) {
     particlesRef.current = generateParticles();
@@ -161,19 +184,9 @@ export default function ForcedChoiceFork({
 
     const mousePos = { x: -9999, y: -9999 };
 
-    /* ---- Event handlers ---- */
+    /* ---- Shared selection logic ---- */
 
-    const handleMouseMove = (e: MouseEvent) => {
-      const rect = container.getBoundingClientRect();
-      mousePos.x = e.clientX - rect.left;
-      mousePos.y = e.clientY - rect.top;
-    };
-
-    const handleClick = (e: MouseEvent) => {
-      const rect = container.getBoundingClientRect();
-      const mx = e.clientX - rect.left;
-      const my = e.clientY - rect.top;
-
+    const selectNode = (mx: number, my: number) => {
       const canvas = canvasRef.current;
       if (!canvas) return;
       const w = parseFloat(canvas.style.width) || canvas.width;
@@ -197,14 +210,34 @@ export default function ForcedChoiceFork({
       }
 
       if (closest >= 0 && closest < optionsRef.current.length) {
+        if (selectedRef.current === closest) return; // same node — ignore
         selectedRef.current = closest;
         selProgressRef.current = 0;
 
+        // Fire selection change immediately
+        onSelectionChangeRef.current?.(optionsRef.current[closest].key);
+
         if (selectTimerRef.current) clearTimeout(selectTimerRef.current);
         selectTimerRef.current = setTimeout(() => {
-          onSelectRef.current(optionsRef.current[closest].key);
+          if (autoAdvanceRef.current) {
+            onSelectRef.current(optionsRef.current[closest].key);
+          }
+          onAnimationCompleteRef.current?.();
         }, SELECT_DELAY_MS);
       }
+    };
+
+    /* ---- Event handlers ---- */
+
+    const handleMouseMove = (e: MouseEvent) => {
+      const rect = container.getBoundingClientRect();
+      mousePos.x = e.clientX - rect.left;
+      mousePos.y = e.clientY - rect.top;
+    };
+
+    const handleClick = (e: MouseEvent) => {
+      const rect = container.getBoundingClientRect();
+      selectNode(e.clientX - rect.left, e.clientY - rect.top);
     };
 
     const handleMouseLeave = () => {
@@ -222,40 +255,7 @@ export default function ForcedChoiceFork({
       if (e.changedTouches.length === 0) return;
       const t = e.changedTouches[0];
       const rect = container.getBoundingClientRect();
-      const mx = t.clientX - rect.left;
-      const my = t.clientY - rect.top;
-
-      const canvas = canvasRef.current;
-      if (!canvas) return;
-      const w = parseFloat(canvas.style.width) || canvas.width;
-      const h = parseFloat(canvas.style.height) || canvas.height;
-
-      const nodes = [
-        { x: LEFT_NODE.nx * w, y: LEFT_NODE.ny * h },
-        { x: RIGHT_NODE.nx * w, y: RIGHT_NODE.ny * h },
-      ];
-
-      let closest = -1;
-      let closestDist = HIT_RADIUS;
-      for (let i = 0; i < nodes.length; i++) {
-        const dx = mx - nodes[i].x;
-        const dy = my - nodes[i].y;
-        const dist = Math.sqrt(dx * dx + dy * dy);
-        if (dist < closestDist) {
-          closestDist = dist;
-          closest = i;
-        }
-      }
-
-      if (closest >= 0 && closest < optionsRef.current.length) {
-        selectedRef.current = closest;
-        selProgressRef.current = 0;
-
-        if (selectTimerRef.current) clearTimeout(selectTimerRef.current);
-        selectTimerRef.current = setTimeout(() => {
-          onSelectRef.current(optionsRef.current[closest].key);
-        }, SELECT_DELAY_MS);
-      }
+      selectNode(t.clientX - rect.left, t.clientY - rect.top);
     };
 
     container.addEventListener('touchend', handleTouchEnd);

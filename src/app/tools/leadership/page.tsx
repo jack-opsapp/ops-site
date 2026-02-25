@@ -5,14 +5,15 @@
  * Standard PageLayout (nav + footer visible).
  *
  * Sections:
- *  1. Hero with AmbientBurst background
- *  2. Two version cards (Quick / Deep)
- *  3. How it works — 3-step process
+ *  1. Hero with AmbientBurst background — left-aligned
+ *  2. PathSelector — interactive fork canvas (replaces cards)
+ *  3. How it works — 3-step grid, left-aligned
  */
 
 import { Metadata } from 'next';
-import { FadeInUp, SectionLabel, Button, Card, Divider } from '@/components/ui';
+import { FadeInUp, SectionLabel, Divider } from '@/components/ui';
 import AmbientBurst from '@/components/assessment/AmbientBurst';
+import PathSelector from '@/components/assessment/PathSelector';
 
 export const metadata: Metadata = {
   title: 'Leadership Assessment',
@@ -32,7 +33,7 @@ const STEPS = [
   {
     number: '02',
     title: 'Analyze',
-    description: 'Our Bayesian scoring engine processes your responses and AI generates a personalized analysis.',
+    description: 'Our Bayesian scoring engine processes your responses and our trained LLM builds out a detailed character analysis.',
   },
   {
     number: '03',
@@ -49,11 +50,11 @@ export default function LeadershipIntroPage() {
   return (
     <>
       {/* ---- Hero ---- */}
-      <section className="relative min-h-[85vh] flex items-center justify-center overflow-hidden">
+      <section className="relative min-h-[85vh] flex items-start overflow-hidden">
         {/* AmbientBurst background */}
         <AmbientBurst className="absolute inset-0 opacity-40" />
 
-        <div className="relative z-10 max-w-[900px] mx-auto px-6 md:px-10 text-center py-32">
+        <div className="relative z-10 max-w-[1400px] w-full mx-auto px-6 md:px-10 pt-40 md:pt-52 pb-32">
           <FadeInUp>
             <SectionLabel label="Leadership Tool" className="mb-6" />
           </FadeInUp>
@@ -67,62 +68,22 @@ export default function LeadershipIntroPage() {
           </FadeInUp>
 
           <FadeInUp delay={0.16}>
-            <p className="mt-6 font-heading font-light text-lg md:text-xl text-ops-text-secondary max-w-xl mx-auto">
+            <p className="mt-6 font-heading font-light text-lg md:text-xl text-ops-text-secondary max-w-xl">
               Discover your leadership archetype. Understand your strengths, blind spots, and the path forward.
             </p>
           </FadeInUp>
         </div>
       </section>
 
-      {/* ---- Version Cards ---- */}
+      {/* ---- Version Selection — PathSelector ---- */}
       <section className="max-w-[1400px] mx-auto px-6 md:px-10 py-24 md:py-32">
         <FadeInUp>
           <SectionLabel label="Choose Your Path" className="mb-10" />
         </FadeInUp>
 
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-6 md:gap-8">
-          {/* Quick Version */}
-          <FadeInUp delay={0.06}>
-            <Card className="p-8 md:p-10 flex flex-col h-full">
-              <p className="font-caption text-ops-accent uppercase tracking-[0.2em] text-xs mb-4">
-                Quick
-              </p>
-              <h2 className="font-heading text-3xl md:text-4xl font-semibold text-ops-text-primary mb-3">
-                3 Minutes
-              </h2>
-              <p className="font-heading font-light text-ops-text-secondary mb-2">
-                15 questions
-              </p>
-              <p className="font-body text-ops-text-secondary text-sm mb-8 flex-1">
-                A focused snapshot of your leadership profile. Get your archetype, core strengths, and key blind spots.
-              </p>
-              <Button variant="solid" href="/tools/leadership/assess?version=quick">
-                Start Quick Assessment
-              </Button>
-            </Card>
-          </FadeInUp>
-
-          {/* Deep Version */}
-          <FadeInUp delay={0.12}>
-            <Card className="p-8 md:p-10 flex flex-col h-full">
-              <p className="font-caption text-ops-accent uppercase tracking-[0.2em] text-xs mb-4">
-                Deep
-              </p>
-              <h2 className="font-heading text-3xl md:text-4xl font-semibold text-ops-text-primary mb-3">
-                12 Minutes
-              </h2>
-              <p className="font-heading font-light text-ops-text-secondary mb-2">
-                50 questions
-              </p>
-              <p className="font-body text-ops-text-secondary text-sm mb-8 flex-1">
-                A comprehensive leadership profile with dimensional deep-dive, population comparison, and detailed AI analysis.
-              </p>
-              <Button variant="solid" href="/tools/leadership/assess?version=deep">
-                Start Deep Assessment
-              </Button>
-            </Card>
-          </FadeInUp>
-        </div>
+        <FadeInUp delay={0.06}>
+          <PathSelector />
+        </FadeInUp>
       </section>
 
       <div className="max-w-[1400px] mx-auto px-6 md:px-10">
@@ -145,7 +106,7 @@ export default function LeadershipIntroPage() {
                 <h3 className="font-heading text-xl font-semibold text-ops-text-primary mb-3 uppercase">
                   {step.title}
                 </h3>
-                <p className="font-body text-ops-text-secondary text-sm leading-relaxed">
+                <p className="font-heading text-ops-text-secondary text-sm leading-relaxed">
                   {step.description}
                 </p>
               </div>

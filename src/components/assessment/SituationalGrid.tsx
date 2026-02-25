@@ -20,6 +20,10 @@ import { useRef, useEffect, useCallback } from 'react';
 interface SituationalGridProps {
   options: { key: string; text: string }[];
   onSelect: (key: string) => void;
+  autoAdvance?: boolean;
+  onSelectionChange?: (value: string) => void;
+  onAnimationComplete?: () => void;
+  savedAnswer?: string;
 }
 
 /* ------------------------------------------------------------------ */
@@ -80,6 +84,10 @@ function wrapText(
 export default function SituationalGrid({
   options,
   onSelect,
+  autoAdvance = true,
+  onSelectionChange,
+  onAnimationComplete,
+  savedAnswer,
 }: SituationalGridProps) {
   const canvasRef = useRef<HTMLCanvasElement>(null);
   const containerRef = useRef<HTMLDivElement>(null);
@@ -87,6 +95,9 @@ export default function SituationalGrid({
   const selectedRef = useRef<number>(-1);
   const hoveredRef = useRef<number>(-1);
   const onSelectRef = useRef(onSelect);
+  const onSelectionChangeRef = useRef(onSelectionChange);
+  const onAnimationCompleteRef = useRef(onAnimationComplete);
+  const autoAdvanceRef = useRef(autoAdvance);
   const selectTimerRef = useRef<ReturnType<typeof setTimeout> | null>(null);
 
   const currentAnglesRef = useRef<number[]>([...BASE_ANGLES]);
@@ -96,6 +107,17 @@ export default function SituationalGrid({
   const nodeTintRef = useRef<number[]>([0, 0, 0, 0]);
 
   onSelectRef.current = onSelect;
+  onSelectionChangeRef.current = onSelectionChange;
+  onAnimationCompleteRef.current = onAnimationComplete;
+  autoAdvanceRef.current = autoAdvance;
+
+  // Apply savedAnswer on mount
+  if (savedAnswer !== undefined && selectedRef.current < 0) {
+    const savedIdx = options.findIndex(o => o.key === savedAnswer);
+    if (savedIdx >= 0) {
+      selectedRef.current = savedIdx;
+    }
+  }
 
   /* ---- DPI-aware resize ---- */
 
@@ -148,19 +170,11 @@ export default function SituationalGrid({
 
     const mousePos = { x: -9999, y: -9999 };
 
-    /* ---- Mouse handlers ---- */
+    /* ---- Shared selection logic ---- */
 
-    const handleMouseMove = (e: MouseEvent) => {
-      const rect = canvas.getBoundingClientRect();
-      mousePos.x = e.clientX - rect.left;
-      mousePos.y = e.clientY - rect.top;
-    };
-
-    const handleClick = (e: MouseEvent) => {
-      if (selectedRef.current >= 0) return;
-      const rect = canvas.getBoundingClientRect();
-      const mx = e.clientX - rect.left;
-      const my = e.clientY - rect.top;
+    const selectNode = (mx: number, my: number) => {
+      // When autoAdvance, lock after first selection; when manual, allow re-selection
+      if (autoAdvanceRef.current && selectedRef.current >= 0) return;
 
       const w = parseFloat(canvas.style.width) || canvas.width;
       const h = parseFloat(canvas.style.height) || canvas.height;
@@ -178,6 +192,7 @@ export default function SituationalGrid({
       const idx = getHoveredIndex(mx, my, nodePositions);
 
       if (idx >= 0 && idx < options.length) {
+        if (selectedRef.current === idx) return; // same node — ignore
         selectedRef.current = idx;
 
         const selAngle = BASE_ANGLES[idx];
@@ -199,11 +214,30 @@ export default function SituationalGrid({
         }
         targetAnglesRef.current = targets;
 
+        // Fire selection change immediately
+        onSelectionChangeRef.current?.(options[idx].key);
+
         if (selectTimerRef.current) clearTimeout(selectTimerRef.current);
         selectTimerRef.current = setTimeout(() => {
-          onSelectRef.current(options[idx].key);
+          if (autoAdvanceRef.current) {
+            onSelectRef.current(options[idx].key);
+          }
+          onAnimationCompleteRef.current?.();
         }, 500);
       }
+    };
+
+    /* ---- Mouse handlers ---- */
+
+    const handleMouseMove = (e: MouseEvent) => {
+      const rect = canvas.getBoundingClientRect();
+      mousePos.x = e.clientX - rect.left;
+      mousePos.y = e.clientY - rect.top;
+    };
+
+    const handleClick = (e: MouseEvent) => {
+      const rect = canvas.getBoundingClientRect();
+      selectNode(e.clientX - rect.left, e.clientY - rect.top);
     };
 
     const handleMouseLeave = () => {
@@ -218,55 +252,10 @@ export default function SituationalGrid({
     /* ---- Touch handler ---- */
 
     const handleTouchEnd = (e: TouchEvent) => {
-      if (selectedRef.current >= 0) return;
       if (e.changedTouches.length === 0) return;
       const t = e.changedTouches[0];
       const rect = canvas.getBoundingClientRect();
-      const mx = t.clientX - rect.left;
-      const my = t.clientY - rect.top;
-
-      const w = parseFloat(canvas.style.width) || canvas.width;
-      const h = parseFloat(canvas.style.height) || canvas.height;
-      const cx = w / 2;
-      const cy = h / 2;
-      const radius = Math.min(w, h) * 0.32;
-
-      const currentAngles = currentAnglesRef.current;
-      const radii = nodeRadiiRef.current;
-      const nodePositions = currentAngles.map((angle, i) => ({
-        x: cx + Math.cos(angle) * radius * radii[i],
-        y: cy + Math.sin(angle) * radius * radii[i],
-      }));
-
-      const idx = getHoveredIndex(mx, my, nodePositions);
-
-      if (idx >= 0 && idx < options.length) {
-        selectedRef.current = idx;
-
-        const selAngle = BASE_ANGLES[idx];
-        const targets = [...BASE_ANGLES];
-        targets[idx] = selAngle;
-
-        for (let i = 0; i < 4; i++) {
-          if (i === idx) continue;
-          const diff = Math.abs(i - idx);
-          const isOpposite = diff === 2;
-          const isAdjacent = diff === 1 || diff === 3;
-
-          if (isAdjacent) {
-            const sign = wrapAngleDelta(BASE_ANGLES[i], selAngle) > 0 ? 1 : -1;
-            targets[i] = selAngle + sign * (Math.PI * 2 / 3);
-          } else if (isOpposite) {
-            targets[i] = selAngle + Math.PI;
-          }
-        }
-        targetAnglesRef.current = targets;
-
-        if (selectTimerRef.current) clearTimeout(selectTimerRef.current);
-        selectTimerRef.current = setTimeout(() => {
-          onSelectRef.current(options[idx].key);
-        }, 500);
-      }
+      selectNode(t.clientX - rect.left, t.clientY - rect.top);
     };
 
     canvas.addEventListener('touchend', handleTouchEnd);

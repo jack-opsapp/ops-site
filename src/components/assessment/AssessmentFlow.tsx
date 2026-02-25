@@ -5,13 +5,13 @@
  *   starting → questioning → submitting_chunk → chunk_transition →
  *   questioning (loop) → email_capture → generating → complete
  *
- * Calls server actions for data persistence and AI generation.
- * Renders the appropriate UI for each phase.
+ * Supports back navigation and step dot navigation within chunks.
+ * Uses QuestionTransition star galaxy between questions.
  */
 
 'use client';
 
-import { useReducer, useEffect, useCallback, useRef } from 'react';
+import { useReducer, useEffect, useCallback, useRef, useMemo } from 'react';
 import { useRouter } from 'next/navigation';
 import { motion, AnimatePresence } from 'framer-motion';
 import type {
@@ -27,6 +27,7 @@ import {
 import AssessmentOverlay from './AssessmentOverlay';
 import type { PhaseLabel } from './AssessmentOverlay';
 import QuestionFrame from './QuestionFrame';
+import QuestionTransition from './QuestionTransition';
 import ChunkTransition from './ChunkTransition';
 import EmailCapture from './EmailCapture';
 import GeneratingState from './GeneratingState';
@@ -38,6 +39,7 @@ import GeneratingState from './GeneratingState';
 type Phase =
   | 'starting'
   | 'questioning'
+  | 'question_transition'
   | 'submitting_chunk'
   | 'chunk_transition'
   | 'email_capture'
@@ -57,10 +59,15 @@ interface FlowState {
   chunkResponses: ChunkSubmission[];
   questionStartTime: number;
   error: string | null;
-  // Track whether API + animation are both done for chunk transition
+  // Chunk transition coordination
   chunkApiDone: boolean;
   chunkAnimDone: boolean;
   nextQuestions: ClientQuestion[] | null;
+  // New: navigation & confirm mode
+  savedAnswers: Map<string, number | string>;
+  transitionDirection: 'forward' | 'back';
+  isTransitioning: boolean;
+  targetQuestionIndex: number;
 }
 
 /* ------------------------------------------------------------------ */
@@ -70,6 +77,11 @@ interface FlowState {
 type FlowAction =
   | { type: 'START_SUCCESS'; sessionId: string; token: string; questions: ClientQuestion[]; totalChunks: number }
   | { type: 'ANSWER'; value: number | string; responseTimeMs: number }
+  | { type: 'SELECT_ANSWER'; questionId: string; value: number | string }
+  | { type: 'CONFIRM_ADVANCE'; responseTimeMs: number }
+  | { type: 'GO_BACK' }
+  | { type: 'NAVIGATE_TO_STEP'; index: number }
+  | { type: 'QUESTION_TRANSITION_DONE' }
   | { type: 'CHUNK_SUBMITTED'; complete: boolean; questions?: ClientQuestion[]; currentChunk: number; totalChunks: number }
   | { type: 'CHUNK_ANIM_DONE' }
   | { type: 'CHUNK_API_DONE'; complete: boolean; questions?: ClientQuestion[]; currentChunk: number; totalChunks: number }
@@ -93,8 +105,91 @@ function reducer(state: FlowState, action: FlowAction): FlowState {
         questionIndex: 0,
         questionStartTime: Date.now(),
         error: null,
+        savedAnswers: new Map(),
       };
 
+    case 'SELECT_ANSWER': {
+      const newAnswers = new Map(state.savedAnswers);
+      newAnswers.set(action.questionId, action.value);
+      return {
+        ...state,
+        savedAnswers: newAnswers,
+      };
+    }
+
+    case 'CONFIRM_ADVANCE': {
+      const question = state.questions[state.questionIndex];
+      const savedValue = state.savedAnswers.get(question.id);
+      if (savedValue === undefined) return state;
+
+      const response: ChunkSubmission = {
+        question_id: question.id,
+        answer_value: savedValue,
+        response_time_ms: action.responseTimeMs,
+      };
+
+      // Update or add to chunkResponses
+      const existingIdx = state.chunkResponses.findIndex(r => r.question_id === question.id);
+      const newResponses = existingIdx >= 0
+        ? state.chunkResponses.map((r, i) => i === existingIdx ? response : r)
+        : [...state.chunkResponses, response];
+
+      const isLastInChunk = state.questionIndex >= state.questions.length - 1;
+
+      if (isLastInChunk) {
+        return {
+          ...state,
+          chunkResponses: newResponses,
+          phase: 'submitting_chunk',
+        };
+      }
+
+      // Start question transition forward
+      return {
+        ...state,
+        chunkResponses: newResponses,
+        phase: 'question_transition',
+        transitionDirection: 'forward',
+        isTransitioning: true,
+        targetQuestionIndex: state.questionIndex + 1,
+      };
+    }
+
+    case 'GO_BACK': {
+      if (state.questionIndex <= 0) return state;
+      return {
+        ...state,
+        phase: 'question_transition',
+        transitionDirection: 'back',
+        isTransitioning: true,
+        targetQuestionIndex: state.questionIndex - 1,
+      };
+    }
+
+    case 'NAVIGATE_TO_STEP': {
+      const idx = action.index;
+      if (idx === state.questionIndex) return state;
+      if (idx < 0 || idx >= state.questions.length) return state;
+      return {
+        ...state,
+        phase: 'question_transition',
+        transitionDirection: idx > state.questionIndex ? 'forward' : 'back',
+        isTransitioning: true,
+        targetQuestionIndex: idx,
+      };
+    }
+
+    case 'QUESTION_TRANSITION_DONE': {
+      return {
+        ...state,
+        phase: 'questioning',
+        questionIndex: state.targetQuestionIndex,
+        questionStartTime: Date.now(),
+        isTransitioning: false,
+      };
+    }
+
+    // Legacy ANSWER action — kept for backwards compat but not used in new flow
     case 'ANSWER': {
       const question = state.questions[state.questionIndex];
       const response: ChunkSubmission = {
@@ -123,7 +218,6 @@ function reducer(state: FlowState, action: FlowAction): FlowState {
 
     case 'CHUNK_SUBMITTED': {
       if (action.complete) {
-        // Last chunk — go to email capture
         return {
           ...state,
           phase: 'email_capture',
@@ -132,7 +226,6 @@ function reducer(state: FlowState, action: FlowAction): FlowState {
           totalChunks: action.totalChunks,
         };
       }
-      // Transition to chunk_transition phase (animation + API concurrent)
       return {
         ...state,
         phase: 'chunk_transition',
@@ -147,7 +240,6 @@ function reducer(state: FlowState, action: FlowAction): FlowState {
 
     case 'CHUNK_ANIM_DONE': {
       if (state.chunkApiDone && state.nextQuestions) {
-        // Both done — proceed to questioning
         return {
           ...state,
           phase: 'questioning',
@@ -157,6 +249,7 @@ function reducer(state: FlowState, action: FlowAction): FlowState {
           questionStartTime: Date.now(),
           chunkAnimDone: false,
           chunkApiDone: false,
+          savedAnswers: new Map(),
         };
       }
       return { ...state, chunkAnimDone: true };
@@ -184,6 +277,7 @@ function reducer(state: FlowState, action: FlowAction): FlowState {
           chunkApiDone: false,
           currentChunk: action.currentChunk,
           totalChunks: action.totalChunks,
+          savedAnswers: new Map(),
         };
       }
       return {
@@ -205,7 +299,6 @@ function reducer(state: FlowState, action: FlowAction): FlowState {
       return { ...state, phase: 'error', error: action.message };
 
     case 'RETRY': {
-      // Return to previous actionable phase
       if (state.sessionId && state.questions.length > 0) {
         if (state.chunkResponses.length > 0) {
           return { ...state, phase: 'submitting_chunk', error: null };
@@ -247,6 +340,10 @@ export default function AssessmentFlow({ version }: AssessmentFlowProps) {
     chunkApiDone: false,
     chunkAnimDone: false,
     nextQuestions: null,
+    savedAnswers: new Map(),
+    transitionDirection: 'forward',
+    isTransitioning: false,
+    targetQuestionIndex: 0,
   });
 
   /* ---- Start assessment ---- */
@@ -287,7 +384,6 @@ export default function AssessmentFlow({ version }: AssessmentFlowProps) {
             totalChunks: result.totalChunks,
           });
         } else {
-          // Start chunk transition animation, API result comes later or already done
           dispatch({
             type: 'CHUNK_SUBMITTED',
             complete: false,
@@ -311,13 +407,33 @@ export default function AssessmentFlow({ version }: AssessmentFlowProps) {
 
   /* ---- Handlers ---- */
 
-  const handleAnswer = useCallback((value: number | string) => {
+  const handleSelectAnswer = useCallback((value: number | string) => {
+    if (state.phase !== 'questioning') return;
+    const question = state.questions[state.questionIndex];
+    dispatch({ type: 'SELECT_ANSWER', questionId: question.id, value });
+  }, [state.phase, state.questions, state.questionIndex]);
+
+  const handleConfirmAdvance = useCallback((value: number | string) => {
+    // Save the answer first, then advance
+    const question = state.questions[state.questionIndex];
+    dispatch({ type: 'SELECT_ANSWER', questionId: question.id, value });
     dispatch({
-      type: 'ANSWER',
-      value,
+      type: 'CONFIRM_ADVANCE',
       responseTimeMs: Date.now() - state.questionStartTime,
     });
-  }, [state.questionStartTime]);
+  }, [state.questions, state.questionIndex, state.questionStartTime]);
+
+  const handleBack = useCallback(() => {
+    dispatch({ type: 'GO_BACK' });
+  }, []);
+
+  const handleNavigateToStep = useCallback((index: number) => {
+    dispatch({ type: 'NAVIGATE_TO_STEP', index });
+  }, []);
+
+  const handleQuestionTransitionComplete = useCallback(() => {
+    dispatch({ type: 'QUESTION_TRANSITION_DONE' });
+  }, []);
 
   const handleChunkTransitionComplete = useCallback(() => {
     dispatch({ type: 'CHUNK_ANIM_DONE' });
@@ -343,15 +459,13 @@ export default function AssessmentFlow({ version }: AssessmentFlowProps) {
 
   const questionsPerChunk = 5;
   const totalQuestions = state.totalChunks * questionsPerChunk;
-  let answeredSoFar = 0;
 
-  if (state.phase === 'questioning' || state.phase === 'submitting_chunk') {
-    answeredSoFar = (state.currentChunk - 1) * questionsPerChunk + state.questionIndex;
-  } else if (state.phase === 'chunk_transition') {
-    answeredSoFar = state.currentChunk * questionsPerChunk;
-  } else if (state.phase === 'email_capture' || state.phase === 'generating' || state.phase === 'complete') {
-    answeredSoFar = totalQuestions;
-  }
+  // Use savedAnswers.size for more accurate progress
+  const answeredSoFar = state.phase === 'email_capture' || state.phase === 'generating' || state.phase === 'complete'
+    ? totalQuestions
+    : state.phase === 'chunk_transition'
+      ? state.currentChunk * questionsPerChunk
+      : (state.currentChunk - 1) * questionsPerChunk + state.savedAnswers.size;
 
   const progress = totalQuestions > 0 ? answeredSoFar / totalQuestions : 0;
 
@@ -361,11 +475,29 @@ export default function AssessmentFlow({ version }: AssessmentFlowProps) {
   else if (state.phase === 'email_capture') phaseLabel = 'ALMOST THERE';
   else if (state.phase === 'generating') phaseLabel = 'GENERATING';
 
-  /* ---- Question counter for progress bar ---- */
+  /* ---- Question counter ---- */
   const currentQuestionNumber =
-    state.phase === 'questioning' || state.phase === 'submitting_chunk'
+    state.phase === 'questioning' || state.phase === 'submitting_chunk' || state.phase === 'question_transition'
       ? (state.currentChunk - 1) * questionsPerChunk + state.questionIndex + 1
       : undefined;
+
+  /* ---- Completed steps set ---- */
+  const completedSteps = useMemo(() => {
+    const set = new Set<number>();
+    for (let i = 0; i < state.questions.length; i++) {
+      if (state.savedAnswers.has(state.questions[i].id)) {
+        set.add(i);
+      }
+    }
+    return set;
+  }, [state.questions, state.savedAnswers]);
+
+  /* ---- Is first question of entire assessment ---- */
+  const isFirstQuestion = state.currentChunk === 1 && state.questionIndex === 0;
+
+  /* ---- Saved answer for current question ---- */
+  const currentQuestion = state.questions[state.questionIndex];
+  const savedAnswer = currentQuestion ? state.savedAnswers.get(currentQuestion.id) : undefined;
 
   /* ---- Phase variants for AnimatePresence ---- */
 
@@ -387,6 +519,14 @@ export default function AssessmentFlow({ version }: AssessmentFlowProps) {
       chunkNumber={state.currentChunk > 0 ? state.currentChunk : undefined}
       totalChunks={state.totalChunks > 0 ? state.totalChunks : undefined}
     >
+      {/* Question transition overlay */}
+      {state.phase === 'question_transition' && (
+        <QuestionTransition
+          direction={state.transitionDirection}
+          onComplete={handleQuestionTransitionComplete}
+        />
+      )}
+
       <AnimatePresence mode="wait">
         {/* Starting / Loading */}
         {state.phase === 'starting' && (
@@ -410,11 +550,18 @@ export default function AssessmentFlow({ version }: AssessmentFlowProps) {
         )}
 
         {/* Questioning */}
-        {state.phase === 'questioning' && state.questions[state.questionIndex] && (
-          <motion.div key={`q-${state.questions[state.questionIndex].id}`} {...phaseVariants} className="flex-1 flex min-h-full">
+        {(state.phase === 'questioning' || state.phase === 'question_transition') && currentQuestion && (
+          <motion.div key={`q-${currentQuestion.id}`} {...phaseVariants} className="flex-1 flex min-h-full">
             <QuestionFrame
-              question={state.questions[state.questionIndex]}
-              onAnswer={handleAnswer}
+              question={currentQuestion}
+              questionIndex={state.questionIndex}
+              totalQuestionsInChunk={state.questions.length}
+              isFirstQuestion={isFirstQuestion}
+              savedAnswer={savedAnswer}
+              completedSteps={completedSteps}
+              onAnswer={handleConfirmAdvance}
+              onBack={handleBack}
+              onNavigateToStep={handleNavigateToStep}
             />
           </motion.div>
         )}
