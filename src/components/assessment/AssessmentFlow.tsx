@@ -559,6 +559,28 @@ export default function AssessmentFlow({ version }: AssessmentFlowProps) {
     exit: { opacity: 0, transition: { duration: 0.3, ease: EASE } },
   };
 
+  /* ---- Directional question variants ---- */
+
+  const questionVariants = {
+    initial: (dir: 'forward' | 'back') => ({
+      opacity: 0,
+      x: dir === 'forward' ? 80 : -80,
+      filter: 'blur(4px)',
+    }),
+    animate: {
+      opacity: 1,
+      x: 0,
+      filter: 'blur(0px)',
+      transition: { duration: 0.45, ease: EASE },
+    },
+    exit: (dir: 'forward' | 'back') => ({
+      opacity: 0,
+      x: dir === 'forward' ? -80 : 80,
+      filter: 'blur(4px)',
+      transition: { duration: 0.35, ease: EASE },
+    }),
+  };
+
   /* ---- Render ---- */
 
   return (
@@ -579,7 +601,7 @@ export default function AssessmentFlow({ version }: AssessmentFlowProps) {
         />
       )}
 
-      <AnimatePresence mode="wait">
+      <AnimatePresence mode="wait" custom={state.transitionDirection}>
         {/* Starting / Loading */}
         {state.phase === 'starting' && (
           <motion.div
@@ -688,8 +710,16 @@ export default function AssessmentFlow({ version }: AssessmentFlowProps) {
         )}
 
         {/* Questioning */}
-        {(state.phase === 'questioning' || state.phase === 'question_transition') && currentQuestion && (
-          <motion.div key={`q-${currentQuestion.id}`} {...phaseVariants} className="flex-1 flex h-full">
+        {state.phase === 'questioning' && currentQuestion && (
+          <motion.div
+            key={`q-${currentQuestion.id}`}
+            custom={state.transitionDirection}
+            variants={questionVariants}
+            initial="initial"
+            animate="animate"
+            exit="exit"
+            className="flex-1 flex h-full"
+          >
             <QuestionFrame
               question={currentQuestion}
               questionIndex={state.questionIndex}
