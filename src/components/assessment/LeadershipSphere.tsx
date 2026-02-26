@@ -20,7 +20,7 @@
 'use client';
 
 import { useRef, useEffect, useCallback, useState } from 'react';
-import type { Dimension, SimpleScores, DimensionSubScores } from '@/lib/assessment/types';
+import type { Dimension, SimpleScores, DimensionSubScores, AssessmentVersion } from '@/lib/assessment/types';
 import { DIMENSIONS } from '@/lib/assessment/types';
 
 /* ------------------------------------------------------------------ */
@@ -34,8 +34,8 @@ const ROTATION_PERIOD_S = 120;
 const TILT_ANGLE = 0.25;
 const DRAG_SENSITIVITY = 0.005;
 const DRAG_THRESHOLD = 3;
-const HOVER_RADIUS = 28;
-const SUB_HOVER_RADIUS = 22;
+const HOVER_RADIUS = 34;
+const SUB_HOVER_RADIUS = 26;
 const AMBIENT_LINE_COUNT = 80;
 const MIN_VECTOR_LENGTH = 0.3;
 const MAX_VECTOR_LENGTH = 0.9;
@@ -117,6 +117,7 @@ interface LeadershipSphereProps {
   scores: SimpleScores;
   subScores?: DimensionSubScores;
   dimensionDescriptions?: Record<Dimension, string>;
+  version?: AssessmentVersion;
   onDimensionClick?: (dimension: Dimension) => void;
   className?: string;
 }
@@ -241,9 +242,11 @@ export default function LeadershipSphere({
   scores,
   subScores,
   dimensionDescriptions,
+  version = 'deep',
   onDimensionClick,
   className,
 }: LeadershipSphereProps) {
+  const isQuick = version === 'quick';
   const canvasRef = useRef<HTMLCanvasElement>(null);
   const containerRef = useRef<HTMLDivElement>(null);
   const ambientRef = useRef<AmbientLine[] | null>(null);
@@ -281,11 +284,13 @@ export default function LeadershipSphere({
   const [focusedDimState, setFocusedDimState] = useState<Dimension | null>(null);
   const [selectedSubIndex, setSelectedSubIndex] = useState<number | null>(null);
   const selectedSubRef = useRef<number | null>(null);
+  const isQuickRef = useRef(isQuick);
 
   // Keep refs in sync with props
   scoresRef.current = scores;
   subScoresRef.current = subScores;
   onClickRef.current = onDimensionClick;
+  isQuickRef.current = isQuick;
 
   // Generate ambient lines once
   if (!ambientRef.current) {
@@ -545,7 +550,7 @@ export default function LeadershipSphere({
       const h = parseFloat(canvas.style.height) || canvas.height;
       const cx = w / 2;
       const cy = h / 2;
-      const baseRadius = Math.min(w, h) * 0.48;
+      const baseRadius = Math.min(w, h) * 0.58;
       const mouse = mouseRef.current;
       const drag = dragRef.current;
       const focusTransition = focusTransitionRef.current;
@@ -789,10 +794,14 @@ export default function LeadershipSphere({
 
       let hoveredSub: { dim: Dimension; index: number } | null = null;
 
-      if (!drag.didDrag && focusedDim !== null) {
+      // In quick mode, detect hover on all visible sub-nodes (for upsell tooltip)
+      // In deep mode, only detect when focused on a dimension
+      const detectSubHover = !drag.didDrag && (isQuickRef.current || focusedDim !== null);
+
+      if (detectSubHover) {
         let bestDist = SUB_HOVER_RADIUS;
         for (const sn of subNodesComputed) {
-          if (sn.dim !== focusedDim) continue;
+          if (!isQuickRef.current && sn.dim !== focusedDim) continue;
           if (!sn.isFront) continue;
           const ddx = mouse.x - sn.sx;
           const ddy = mouse.y - sn.sy;
@@ -805,6 +814,7 @@ export default function LeadershipSphere({
       }
 
       hoveredSubRef.current = hoveredSub;
+
 
       /* ---- Phase 4: Draw ambient lines (sorted back-to-front) ---- */
 
@@ -852,28 +862,35 @@ export default function LeadershipSphere({
         const isHovered = dc.dim === hoveredDim;
         const isFocused = dc.dim === focusedDim;
 
+        // Check if any sub-node of this dimension is hovered
+        const hasSubHovered = hoveredSub !== null && hoveredSub.dim === dc.dim;
+        // Brighten when either the major node OR any of its sub-nodes is hovered
+        const isBright = isHovered || hasSubHovered;
+
         const focusDimAlpha = isFocused || focusedDim === null
           ? 1.0
           : 1.0 - focusTransition * 0.7;
 
-        // Continuous depth-based ray opacity
-        const rayOpacity = lerp(0.10, 0.45, dc.depthNorm) * focusDimAlpha;
+        // Continuous depth-based ray opacity — brightens on hover or sub-hover
+        const rayOpacity = (isBright
+          ? lerp(0.45, 0.75, dc.depthNorm)
+          : lerp(0.10, 0.45, dc.depthNorm)) * focusDimAlpha;
 
         // Draw ray from center to node
         ctx.beginPath();
         ctx.moveTo(ecx, ecy);
         ctx.lineTo(dc.sx, dc.sy);
         ctx.strokeStyle = `rgba(${r}, ${g}, ${b}, ${rayOpacity})`;
-        ctx.lineWidth = isHovered ? 1.5 : (0.5 + dc.depthNorm * 0.8);
+        ctx.lineWidth = isBright ? 1.8 : (0.5 + dc.depthNorm * 0.8);
         ctx.stroke();
 
-        // Draw node (square)
-        const nodeSize = (isHovered ? 8 : 5) * dc.scale;
-        const nodeAlpha = (isHovered
+        // Draw node (square) — brightens on hover or sub-hover
+        const nodeSize = (isBright ? 9 : 6) * dc.scale;
+        const nodeAlpha = (isBright
           ? 0.90
           : lerp(0.18, 0.75, dc.depthNorm)) * focusDimAlpha;
 
-        if (isHovered) {
+        if (isBright) {
           ctx.shadowColor = `rgba(${ACCENT.r}, ${ACCENT.g}, ${ACCENT.b}, 0.5)`;
           ctx.shadowBlur = 14;
         }
@@ -886,7 +903,7 @@ export default function LeadershipSphere({
           nodeSize,
         );
 
-        if (isHovered) {
+        if (isBright) {
           ctx.fillRect(
             dc.sx - nodeSize / 2,
             dc.sy - nodeSize / 2,
@@ -900,39 +917,58 @@ export default function LeadershipSphere({
         /* ---- Sub-nodes for this dimension ---- */
 
         const dimSubNodes = subNodesComputed.filter(sn => sn.dim === dc.dim);
+        const quickMode = isQuickRef.current;
 
         for (const sn of dimSubNodes) {
           const isSubHovered = hoveredSub !== null
             && hoveredSub.dim === sn.dim
             && hoveredSub.index === sn.index;
-          const isSubSelected = isFocused
+          const isSubSelected = !quickMode && isFocused
             && selectedSubRef.current === sn.index;
 
           const snColor = sn.color;
 
-          // Sub-node size
+          // Sub-node size — larger base, grows more on hover
           let subSize: number;
-          if (isFocused) {
-            subSize = lerp(3, 7, focusTransition) * dc.scale;
+          if (quickMode) {
+            subSize = 4 * dc.scale;
+            if (isSubHovered) subSize += 2;
+          } else if (isFocused) {
+            subSize = lerp(4, 8, focusTransition) * dc.scale;
             if (isSubSelected) subSize += 3;
             else if (isSubHovered) subSize += 2;
           } else {
-            subSize = 3 * dc.scale;
+            subSize = 4 * dc.scale;
+            if (isSubHovered) subSize += 2;
           }
 
           // Sub-node opacity
-          const subAlphaFactor = isFocused
-            ? lerp(0.75, 0.8, focusTransition)
-            : 0.75;
+          const subAlphaFactor = quickMode
+            ? 0.65
+            : isFocused
+              ? lerp(0.75, 0.8, focusTransition)
+              : 0.75;
           const subAlpha = nodeAlpha * subAlphaFactor;
 
-          // Connector line (colored to match sub-node when focused)
-          const connLineWidth = isFocused
-            ? lerp(0.6, isSubSelected ? 1.6 : 1.2, focusTransition)
-            : 0.6;
-          const connOpacity = isFocused
-            ? subAlpha * lerp(0.6, isSubSelected ? 0.85 : 0.75, focusTransition)
-            : subAlpha * 0.6;
+          // Connector line — visible when zoomed out, brightens on hover
+          let connLineWidth: number;
+          let connOpacity: number;
+
+          if (isSubHovered) {
+            // Hovered sub-node: bright connector
+            connLineWidth = 1.6;
+            connOpacity = Math.min(subAlpha * 1.2, 0.9);
+          } else if (quickMode) {
+            connLineWidth = 0.6;
+            connOpacity = subAlpha * 0.55;
+          } else if (isFocused) {
+            connLineWidth = lerp(0.7, isSubSelected ? 1.6 : 1.2, focusTransition);
+            connOpacity = subAlpha * lerp(0.6, isSubSelected ? 0.85 : 0.75, focusTransition);
+          } else {
+            // Zoomed out — still visible
+            connLineWidth = 0.7;
+            connOpacity = subAlpha * 0.55;
+          }
 
           ctx.beginPath();
           ctx.moveTo(dc.sx, dc.sy);
@@ -951,7 +987,7 @@ export default function LeadershipSphere({
           }
 
           // Draw sub-node square
-          const drawAlpha = isSubSelected ? Math.min(subAlpha + 0.2, 1) : subAlpha;
+          const drawAlpha = !quickMode && isSubSelected ? Math.min(subAlpha + 0.2, 1) : subAlpha;
           ctx.fillStyle = `rgba(${snColor.r}, ${snColor.g}, ${snColor.b}, ${drawAlpha})`;
           ctx.fillRect(
             sn.sx - subSize / 2,
@@ -965,23 +1001,36 @@ export default function LeadershipSphere({
             ctx.shadowBlur = 0;
           }
 
-          // Sub-node label in focus mode
-          if (isFocused && focusTransition > 0.3) {
-            const labelAlpha = (focusTransition - 0.3) / 0.7 * (isSubSelected ? Math.min(subAlpha + 0.2, 1) : subAlpha);
-            ctx.font = isSubSelected ? '600 9px "Kosugi", sans-serif' : '400 8px "Kosugi", sans-serif';
+          // Sub-node label — always visible for quick mode, focus mode for deep
+          if (quickMode) {
+            const labelAlpha = isSubHovered ? 0.9 : subAlpha * 0.8;
+            ctx.font = isSubHovered ? '600 11px "Kosugi", sans-serif' : '400 10px "Kosugi", sans-serif';
             ctx.textAlign = 'center';
             ctx.textBaseline = 'top';
             ctx.fillStyle = `rgba(${snColor.r}, ${snColor.g}, ${snColor.b}, ${labelAlpha})`;
-            ctx.fillText(sn.label.toUpperCase(), sn.sx, sn.sy + subSize / 2 + 4);
+            ctx.fillText(sn.label.toUpperCase(), sn.sx, sn.sy + subSize / 2 + 5);
+          } else if (isFocused && focusTransition > 0.3) {
+            const labelAlpha = (focusTransition - 0.3) / 0.7 * (isSubSelected ? Math.min(subAlpha + 0.2, 1) : isSubHovered ? 0.9 : subAlpha);
+            ctx.font = (isSubSelected || isSubHovered) ? '600 11px "Kosugi", sans-serif' : '400 10px "Kosugi", sans-serif';
+            ctx.textAlign = 'center';
+            ctx.textBaseline = 'top';
+            ctx.fillStyle = `rgba(${snColor.r}, ${snColor.g}, ${snColor.b}, ${labelAlpha})`;
+            ctx.fillText(sn.label.toUpperCase(), sn.sx, sn.sy + subSize / 2 + 5);
           }
 
-          // Sub-node score on hover or selected
+          // Hover text — score for deep, "information not available" for quick
           if (isSubHovered || isSubSelected) {
-            ctx.font = '600 12px "Mohave", sans-serif';
             ctx.textAlign = 'center';
             ctx.textBaseline = 'bottom';
-            ctx.fillStyle = `rgba(${snColor.r}, ${snColor.g}, ${snColor.b}, 0.95)`;
-            ctx.fillText(`${sn.score}`, sn.sx, sn.sy - subSize / 2 - 6);
+            if (quickMode) {
+              ctx.font = '400 9px "Kosugi", sans-serif';
+              ctx.fillStyle = `rgba(${snColor.r}, ${snColor.g}, ${snColor.b}, 0.6)`;
+              ctx.fillText('information not available', sn.sx, sn.sy - subSize / 2 - 7);
+            } else {
+              ctx.font = '600 14px "Mohave", sans-serif';
+              ctx.fillStyle = `rgba(${snColor.r}, ${snColor.g}, ${snColor.b}, 0.95)`;
+              ctx.fillText(`${sn.score}`, sn.sx, sn.sy - subSize / 2 - 7);
+            }
           }
         }
 
@@ -1010,14 +1059,14 @@ export default function LeadershipSphere({
 
         // Draw dimension label
         const dir = DIMENSION_DIRS[dc.dim];
-        const labelOffsetY = dir.dy < 0 ? -14 : 18;
+        const labelOffsetY = dir.dy < 0 ? -18 : 22;
         const labelX = dc.sx;
         const labelY = dc.sy + labelOffsetY;
-        const labelAlpha = (isHovered
+        const labelAlpha = (isBright
           ? 0.90
           : lerp(0.10, 0.55, dc.depthNorm)) * focusDimAlpha;
 
-        ctx.font = '400 10px "Kosugi", sans-serif';
+        ctx.font = isBright ? '600 13px "Kosugi", sans-serif' : '400 12px "Kosugi", sans-serif';
         ctx.textBaseline = dir.dy < 0 ? 'bottom' : 'top';
         if (dir.dx < -0.1) {
           ctx.textAlign = 'right';
@@ -1030,11 +1079,11 @@ export default function LeadershipSphere({
         ctx.fillStyle = `rgba(${r}, ${g}, ${b}, ${labelAlpha})`;
         ctx.fillText(DIMENSION_LABELS[dc.dim], labelX, labelY);
 
-        // Show score value when hovered
-        if (isHovered) {
+        // Show score value when hovered (major or sub-hover)
+        if (isBright) {
           const scoreLabel = `${dc.score}`;
-          const scoreLabelY = dir.dy < 0 ? labelY - 13 : labelY + 13;
-          ctx.font = '600 12px "Mohave", sans-serif';
+          const scoreLabelY = dir.dy < 0 ? labelY - 15 : labelY + 15;
+          ctx.font = '600 14px "Mohave", sans-serif';
           ctx.fillStyle = `rgba(${ACCENT.r}, ${ACCENT.g}, ${ACCENT.b}, 0.90)`;
           ctx.fillText(scoreLabel, labelX, scoreLabelY);
         }
@@ -1189,13 +1238,17 @@ export default function LeadershipSphere({
               <div className="space-y-1.5">
                 {focusedSubScores.map((sub, i) => {
                   const c = SUB_NODE_COLORS[i % SUB_NODE_COLORS.length];
-                  const isActive = selectedSubIndex === i;
+                  const isActive = !isQuick && selectedSubIndex === i;
                   return (
                     <div
                       key={sub.label}
-                      className="flex items-center gap-2 text-xs cursor-pointer"
-                      style={{ opacity: selectedSubIndex !== null && !isActive ? 0.4 : 1, transition: 'opacity 300ms ease' }}
-                      onClick={() => {
+                      className="flex items-center gap-2 text-xs"
+                      style={{
+                        opacity: isQuick ? 0.45 : (selectedSubIndex !== null && !isActive ? 0.4 : 1),
+                        transition: 'opacity 300ms ease',
+                        cursor: isQuick ? 'default' : 'pointer',
+                      }}
+                      onClick={isQuick ? undefined : () => {
                         const newIdx = selectedSubIndex === i ? null : i;
                         selectedSubRef.current = newIdx;
                         setSelectedSubIndex(newIdx);
@@ -1206,20 +1259,37 @@ export default function LeadershipSphere({
                         style={{ background: `rgb(${c.r}, ${c.g}, ${c.b})` }}
                       />
                       <span className="font-body text-ops-text-secondary">
-                        {sub.label}:
+                        {sub.label}
                       </span>
-                      <span
-                        className="font-heading font-semibold"
-                        style={{ color: `rgb(${c.r}, ${c.g}, ${c.b})` }}
-                      >
-                        {sub.score}
-                      </span>
+                      {isQuick ? (
+                        <span
+                          className="font-body italic text-[10px]"
+                          style={{ color: `rgba(${c.r}, ${c.g}, ${c.b}, 0.5)` }}
+                        >
+                          results not available
+                        </span>
+                      ) : (
+                        <>
+                          <span className="text-ops-text-secondary">:</span>
+                          <span
+                            className="font-heading font-semibold"
+                            style={{ color: `rgb(${c.r}, ${c.g}, ${c.b})` }}
+                          >
+                            {sub.score}
+                          </span>
+                        </>
+                      )}
                     </div>
                   );
                 })}
+                {isQuick && (
+                  <p className="font-body text-ops-text-secondary/40 text-[10px] mt-3">
+                    Complete the deep assessment for comprehensive insight.
+                  </p>
+                )}
               </div>
             )}
-            {selectedSub?.description && selectedSubColor && (
+            {!isQuick && selectedSub?.description && selectedSubColor && (
               <div
                 className="mt-3 pt-3"
                 style={{

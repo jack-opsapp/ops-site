@@ -1,8 +1,8 @@
 /**
  * ResultsHero — Archetype reveal with AmbientBurst backdrop
  *
- * Large archetype name, tagline, and subtle ambient animation.
- * Cinematic staggered entrance.
+ * Left-aligned per design system. Section label in [ brackets ],
+ * large archetype name, tagline, and down arrow scroll indicator.
  */
 
 'use client';
@@ -36,7 +36,7 @@ const itemVariants = {
 
 export default function ResultsHero({ archetypeName, tagline, firstName }: ResultsHeroProps) {
   return (
-    <section className="relative min-h-[80vh] flex items-center justify-center overflow-hidden">
+    <section className="relative min-h-[70vh] md:min-h-[85vh] flex items-center overflow-hidden">
       {/* AmbientBurst background */}
       <AmbientBurst className="absolute inset-0 opacity-30" />
 
@@ -44,47 +44,65 @@ export default function ResultsHero({ archetypeName, tagline, firstName }: Resul
         variants={containerVariants}
         initial="initial"
         animate="animate"
-        className="relative z-10 max-w-[900px] mx-auto px-6 md:px-10 text-center py-32"
+        className="relative z-10 max-w-[1400px] w-full mx-auto px-6 md:px-10"
       >
+        {/* Section label */}
         <motion.p
           variants={itemVariants}
-          className="font-caption text-ops-text-secondary uppercase tracking-[0.2em] text-xs mb-6"
+          className="font-caption text-[10px] uppercase tracking-[0.25em] text-ops-text-secondary mb-8"
         >
           [ {firstName}&apos;s Leadership Profile ]
         </motion.p>
 
+        {/* Archetype name */}
         <motion.h1
           variants={itemVariants}
-          className="font-heading font-bold uppercase leading-[0.90] tracking-tight text-ops-text-primary text-5xl md:text-7xl lg:text-8xl"
+          className="font-heading font-bold uppercase leading-[0.90] tracking-tight text-ops-text-primary text-3xl sm:text-5xl md:text-7xl lg:text-8xl"
         >
           {archetypeName}
         </motion.h1>
 
+        {/* Accent divider */}
+        <motion.div
+          variants={itemVariants}
+          className="w-16 h-px mt-8 mb-8"
+          style={{ backgroundColor: 'rgba(89, 119, 148, 0.2)' }}
+        />
+
+        {/* Tagline */}
         <motion.p
           variants={itemVariants}
-          className="mt-6 font-heading font-light text-lg md:text-xl text-ops-text-secondary max-w-xl mx-auto"
+          className="font-heading font-light text-lg md:text-xl text-ops-text-secondary max-w-xl"
         >
           {tagline}
         </motion.p>
 
-        {/* Subtle scroll indicator */}
+        {/* Down arrow — scrolls to first section */}
         <motion.div
           variants={itemVariants}
           className="mt-16"
         >
-          <motion.div
-            animate={{ y: [0, 8, 0] }}
-            transition={{ duration: 2, repeat: Infinity, ease: 'easeInOut' }}
+          <button
+            type="button"
+            onClick={() => document.getElementById('results-sphere')?.scrollIntoView({ behavior: 'smooth', block: 'center' })}
+            className="cursor-pointer opacity-20 hover:opacity-40 transition-opacity duration-300"
+            aria-label="Scroll to results"
           >
-            <svg width="20" height="32" viewBox="0 0 20 32" fill="none" className="mx-auto opacity-20">
-              <rect x="1" y="1" width="18" height="30" rx="9" stroke="white" strokeWidth="1" />
-              <motion.rect
-                x="8" y="8" width="4" height="8" rx="2" fill="white"
-                animate={{ y: [8, 16, 8] }}
-                transition={{ duration: 2, repeat: Infinity, ease: 'easeInOut' }}
-              />
-            </svg>
-          </motion.div>
+            <motion.div
+              animate={{ y: [0, 6, 0] }}
+              transition={{ duration: 2, repeat: Infinity, ease: 'easeInOut' }}
+            >
+              <svg width="16" height="24" viewBox="0 0 16 24" fill="none">
+                <path
+                  d="M8 2L8 20M8 20L2 14M8 20L14 14"
+                  stroke="white"
+                  strokeWidth="1.5"
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                />
+              </svg>
+            </motion.div>
+          </button>
         </motion.div>
       </motion.div>
     </section>
