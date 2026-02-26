@@ -11,7 +11,8 @@ import { Metadata } from 'next';
 import Link from 'next/link';
 import { getResults } from '@/lib/assessment/actions';
 import type { AssessmentResult, Dimension } from '@/lib/assessment/types';
-import { FadeInUp, Divider } from '@/components/ui';
+import { DIMENSIONS } from '@/lib/assessment/types';
+import { FadeInUp } from '@/components/ui';
 import BottomCTA from '@/components/shared/BottomCTA';
 import ResultsHero from '@/components/assessment/ResultsHero';
 import ResultsAnalysis from '@/components/assessment/ResultsAnalysis';
@@ -95,33 +96,132 @@ export default async function ResultsPage({ params }: PageProps) {
       />
 
       {/* Leadership Sphere — Interactive 3D visualization */}
-      <section className="py-8 md:py-16">
+      <section id="results-content" className="py-8 md:py-16">
         <div className="max-w-[1100px] mx-auto px-6 md:px-10">
+          {/* Archetype badge + secondary label */}
           <FadeInUp>
-            <div className="h-[500px] md:h-[600px] w-full">
+            <div className="flex flex-wrap items-center gap-3 mb-6">
+              <span className="inline-flex items-center font-caption uppercase tracking-[0.15em] text-[10px] px-3 py-1 rounded-[3px] border border-ops-accent/30 text-ops-accent bg-ops-accent/5">
+                {data.archetype.name}
+              </span>
+              {data.secondary_archetype && (
+                <span className="font-body text-ops-text-secondary text-xs">
+                  with traits of <span className="text-ops-text-primary/70">{data.secondary_archetype.name}</span>
+                </span>
+              )}
+            </div>
+          </FadeInUp>
+
+          {/* Score summary chips */}
+          <FadeInUp>
+            <div className="flex flex-wrap gap-2 mb-6">
+              {DIMENSIONS.map((dim) => (
+                <span
+                  key={dim}
+                  className="inline-flex items-center gap-1.5 font-caption uppercase tracking-[0.1em] text-[10px] px-2.5 py-1 rounded-[3px] border border-ops-border text-ops-text-secondary"
+                >
+                  {dim}
+                  <span className="font-heading font-semibold text-ops-text-primary text-xs">
+                    {data.scores[dim]}
+                  </span>
+                </span>
+              ))}
+            </div>
+          </FadeInUp>
+
+          <FadeInUp>
+            <div id="results-sphere" className="h-[350px] sm:h-[450px] md:h-[600px] w-full">
               <ResultsSphereSection
                 scores={data.scores}
                 subScores={data.analysis.sub_scores}
                 dimensionDescriptions={dimensionDescriptions}
+                version={data.version}
               />
             </div>
           </FadeInUp>
+
+          {/* Top strengths as subtle labels below sphere */}
+          {data.analysis.strengths && data.analysis.strengths.length > 0 && (
+            <FadeInUp>
+              <div className="flex flex-wrap gap-2 mt-4">
+                {data.analysis.strengths.slice(0, 3).map((s) => (
+                  <span
+                    key={s.title}
+                    className="font-body text-ops-text-secondary/60 text-[11px] px-3 py-1 rounded-[3px] border border-ops-border/50"
+                  >
+                    {s.title}
+                  </span>
+                ))}
+              </div>
+            </FadeInUp>
+          )}
         </div>
       </section>
 
-      <div className="max-w-[900px] mx-auto px-6 md:px-10">
-        <Divider />
-      </div>
-
-      {/* AI Analysis sections */}
+      {/* AI Analysis — expandable sections */}
       <ResultsAnalysis analysis={data.analysis} />
-
-      <div className="max-w-[900px] mx-auto px-6 md:px-10">
-        <Divider />
-      </div>
 
       {/* Share bar */}
       <ResultsShareBar token={token} />
+
+      {/* Upgrade CTA — quick results only */}
+      {data.version === 'quick' && (
+        <section className="py-16 md:py-24">
+          <div className="max-w-[1100px] mx-auto px-6 md:px-10">
+            <FadeInUp>
+              <p className="font-caption text-ops-accent uppercase tracking-[0.2em] text-xs mb-6">
+                [ GO DEEPER ]
+              </p>
+            </FadeInUp>
+
+            <FadeInUp>
+              <h2 className="font-heading font-bold uppercase text-ops-text-primary text-3xl md:text-4xl leading-[0.92] tracking-tight mb-4">
+                Continue your
+                <br />
+                assessment
+              </h2>
+            </FadeInUp>
+
+            <FadeInUp>
+              <div
+                className="w-12 h-px mb-6"
+                style={{ backgroundColor: 'rgba(89, 119, 148, 0.2)' }}
+              />
+            </FadeInUp>
+
+            <FadeInUp>
+              <p className="font-heading font-light text-ops-text-secondary/60 text-sm leading-relaxed max-w-lg mb-4">
+                Your quick results are just the beginning. The full assessment
+                unlocks sub-dimension scores, deeper analysis, and comprehensive
+                leadership insights — and it builds on what you&apos;ve already
+                answered.
+              </p>
+            </FadeInUp>
+
+            <FadeInUp>
+              <div className="flex items-center gap-6 mb-10">
+                <span className="font-caption text-[10px] uppercase tracking-[0.2em] text-ops-text-secondary">
+                  35 additional questions
+                </span>
+                <span className="w-px h-3 bg-white/[0.1]" />
+                <span className="font-caption text-[10px] uppercase tracking-[0.2em] text-ops-text-secondary">
+                  ~8 min
+                </span>
+              </div>
+            </FadeInUp>
+
+            <FadeInUp>
+              <Link
+                href={`/tools/leadership/assess?version=deep&upgrade_from=${token}`}
+                className="w-full sm:w-auto inline-flex items-center justify-center font-caption uppercase tracking-[0.15em] text-xs px-8 py-3.5 rounded-[3px] transition-all duration-200 bg-ops-text-primary text-ops-background hover:bg-white/90"
+              >
+                <span className="hidden sm:inline">Continue My Progress in the Full Assessment</span>
+                <span className="sm:hidden">Continue Full Assessment</span>
+              </Link>
+            </FadeInUp>
+          </div>
+        </section>
+      )}
 
       {/* Bottom CTA */}
       <BottomCTA
