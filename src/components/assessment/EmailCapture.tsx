@@ -69,7 +69,7 @@ export default function EmailCapture({ isSubmitting, onSubmit, totalQuestions }:
       variants={containerVariants}
       initial="initial"
       animate="animate"
-      className="flex flex-col items-center justify-center min-h-full px-6 md:px-10 py-12"
+      className="flex flex-col items-start justify-center min-h-full px-6 md:px-10 py-12"
     >
       <motion.div variants={itemVariants} className="w-full max-w-md">
         {/* Accent line */}
@@ -161,7 +161,7 @@ export default function EmailCapture({ isSubmitting, onSubmit, totalQuestions }:
         {totalQuestions != null && totalQuestions > 0 && (
           <motion.p
             variants={itemVariants}
-            className="font-caption text-[10px] text-ops-text-secondary/40 text-center"
+            className="font-caption text-[10px] text-ops-text-secondary/40"
           >
             {totalQuestions} of {totalQuestions} questions complete
           </motion.p>
@@ -170,7 +170,7 @@ export default function EmailCapture({ isSubmitting, onSubmit, totalQuestions }:
         {/* Privacy note */}
         <motion.p
           variants={itemVariants}
-          className="font-caption text-[10px] text-ops-text-secondary/50 text-center"
+          className="font-caption text-[10px] text-ops-text-secondary/50"
         >
           We&apos;ll send your results to this email. No spam.
         </motion.p>

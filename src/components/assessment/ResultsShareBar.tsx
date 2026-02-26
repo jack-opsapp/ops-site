@@ -39,7 +39,7 @@ export default function ResultsShareBar({ token }: ResultsShareBarProps) {
 
   return (
     <section className="py-16 md:py-24">
-      <div className="max-w-[900px] mx-auto px-6 md:px-10 text-center">
+      <div className="max-w-[900px] mx-auto px-6 md:px-10">
         <FadeInUp>
           <SectionLabel label="Share" className="mb-6" />
         </FadeInUp>

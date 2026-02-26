@@ -23,9 +23,14 @@ import type {
 } from '@/lib/assessment/types';
 import {
   startAssessment,
+  startUpgradeAssessment,
   submitChunkAndGetNext,
   submitEmailAndGenerateResults,
 } from '@/lib/assessment/actions';
+import {
+  saveDraftAnswers,
+  clearDraftAnswers,
+} from '@/lib/assessment/session-storage';
 import AssessmentOverlay from './AssessmentOverlay';
 import type { PhaseLabel } from './AssessmentOverlay';
 import QuestionFrame from './QuestionFrame';
@@ -34,6 +39,7 @@ import ChunkTransition from './ChunkTransition';
 import EmailCapture from './EmailCapture';
 import ChunkReview from './ChunkReview';
 import GeneratingState from './GeneratingState';
+import StepDots from './StepDots';
 
 /* ------------------------------------------------------------------ */
 /*  State Types                                                        */
@@ -420,31 +426,64 @@ const coverTitleVariants = {
 /*  Component                                                          */
 /* ------------------------------------------------------------------ */
 
-interface AssessmentFlowProps {
-  version: AssessmentVersion;
+export interface ResumeData {
+  sessionId: string;
+  token: string;
+  questions: ClientQuestion[];
+  currentChunk: number;
+  totalChunks: number;
+  draftAnswers?: Record<string, number | string>;
 }
 
-export default function AssessmentFlow({ version }: AssessmentFlowProps) {
+interface AssessmentFlowProps {
+  version: AssessmentVersion;
+  resumeData?: ResumeData;
+  upgradeFromToken?: string;
+}
+
+export default function AssessmentFlow({ version, resumeData, upgradeFromToken }: AssessmentFlowProps) {
   const router = useRouter();
   const hasStarted = useRef(false);
   const [beginHovered, setBeginHovered] = useState(false);
+  const submittingStartRef = useRef(0);
+  const chunkGalaxyOffsetRef = useRef(0);
+
+  // Build initial saved answers from resumeData drafts
+  const initialSavedAnswers = useMemo(() => {
+    if (!resumeData?.draftAnswers) return new Map<string, number | string>();
+    return new Map(Object.entries(resumeData.draftAnswers));
+  }, [resumeData]);
+
+  // Resume: compute starting phase and question index (skip cover)
+  const initialResumeState = useMemo(() => {
+    if (!resumeData) return { phase: 'starting' as Phase, questionIndex: 0 };
+    const drafts = resumeData.draftAnswers ?? {};
+    const allAnswered = resumeData.questions.length > 0
+      && resumeData.questions.every(q => q.id in drafts);
+    if (allAnswered) {
+      return { phase: 'chunk_review' as Phase, questionIndex: 0 };
+    }
+    // Find first unanswered question
+    const idx = resumeData.questions.findIndex(q => !(q.id in drafts));
+    return { phase: 'questioning' as Phase, questionIndex: idx >= 0 ? idx : 0 };
+  }, [resumeData]);
 
   const [state, dispatch] = useReducer(reducer, {
-    phase: 'starting',
+    phase: initialResumeState.phase,
     version,
-    sessionId: null,
-    token: null,
-    currentChunk: 0,
-    totalChunks: 0,
-    questions: [],
-    questionIndex: 0,
+    sessionId: resumeData?.sessionId ?? null,
+    token: resumeData?.token ?? null,
+    currentChunk: resumeData?.currentChunk ?? 0,
+    totalChunks: resumeData?.totalChunks ?? 0,
+    questions: resumeData?.questions ?? [],
+    questionIndex: initialResumeState.questionIndex,
     chunkResponses: [],
     questionStartTime: Date.now(),
     error: null,
     chunkApiDone: false,
     chunkAnimDone: false,
     nextQuestions: null,
-    savedAnswers: new Map(),
+    savedAnswers: initialSavedAnswers,
     transitionDirection: 'forward',
     isTransitioning: false,
     targetQuestionIndex: 0,
@@ -458,7 +497,9 @@ export default function AssessmentFlow({ version }: AssessmentFlowProps) {
 
     (async () => {
       try {
-        const result = await startAssessment(version);
+        const result = upgradeFromToken
+          ? await startUpgradeAssessment(upgradeFromToken)
+          : await startAssessment(version);
         dispatch({
           type: 'START_SUCCESS',
           sessionId: result.sessionId,
@@ -471,7 +512,7 @@ export default function AssessmentFlow({ version }: AssessmentFlowProps) {
         hasStarted.current = false;
       }
     })();
-  }, [state.phase, version]);
+  }, [state.phase, version, upgradeFromToken]);
 
   /* ---- Cover exit: fade to black, then enter questioning ---- */
   useEffect(() => {
@@ -516,9 +557,47 @@ export default function AssessmentFlow({ version }: AssessmentFlowProps) {
   /* ---- Navigate on complete ---- */
   useEffect(() => {
     if (state.phase === 'complete' && state.token) {
+      clearDraftAnswers();
       router.push(`/tools/leadership/results/${state.token}`);
     }
   }, [state.phase, state.token, router]);
+
+  /* ---- Push token into URL whenever we have one (silent, no re-render) ---- */
+  useEffect(() => {
+    if (state.token) {
+      const url = new URL(window.location.href);
+      if (url.searchParams.get('token') !== state.token) {
+        url.searchParams.set('token', state.token);
+        window.history.replaceState(null, '', url.toString());
+      }
+    }
+  }, [state.token]);
+
+  /* ---- Persist draft answers on each selection ---- */
+  useEffect(() => {
+    if (state.savedAnswers.size > 0 && state.sessionId) {
+      const obj: Record<string, number | string> = {};
+      state.savedAnswers.forEach((v, k) => { obj[k] = v; });
+      saveDraftAnswers(obj);
+    }
+  }, [state.savedAnswers, state.sessionId]);
+
+  /* ---- Track galaxy elapsed time across submitting → chunk_transition ---- */
+  useEffect(() => {
+    if (state.phase === 'submitting_chunk') {
+      submittingStartRef.current = Date.now();
+    }
+    if (state.phase === 'chunk_transition') {
+      chunkGalaxyOffsetRef.current = (Date.now() - submittingStartRef.current) / 1000;
+    }
+  }, [state.phase]);
+
+  /* ---- Clear draft answers when chunk is submitted to server ---- */
+  useEffect(() => {
+    if (state.phase === 'chunk_transition' || state.phase === 'email_capture') {
+      clearDraftAnswers();
+    }
+  }, [state.phase]);
 
   /* ---- Handlers ---- */
 
@@ -623,7 +702,10 @@ export default function AssessmentFlow({ version }: AssessmentFlowProps) {
   const isFirstQuestion = state.questionIndex === 0 && !state.isRevising;
   const currentQuestion = state.questions[state.questionIndex];
   const savedAnswer = currentQuestion ? state.savedAnswers.get(currentQuestion.id) : undefined;
-  const meta = VERSION_META[version];
+  const isUpgrade = !!upgradeFromToken;
+  const meta = isUpgrade
+    ? { label: 'DEEP — UPGRADE', questions: '35 questions', time: '~8 min' }
+    : VERSION_META[version];
 
   // Revision mode navigation flags
   const allChunkQuestionsAnswered = state.questions.every(q => state.savedAnswers.has(q.id));
@@ -653,14 +735,10 @@ export default function AssessmentFlow({ version }: AssessmentFlowProps) {
       filter: 'blur(0px)',
       transition: { duration: 0.45, ease: EASE },
     },
-    exit: () => ({
+    exit: {
       opacity: 0,
-      filter: 'blur(4px)',
-      transition: {
-        opacity: { duration: 0.15, ease: EASE },
-        filter: { duration: 0.15, ease: EASE },
-      },
-    }),
+      transition: { duration: 0.2, ease: EASE },
+    },
   };
 
   /* ---- Render ---- */
@@ -676,12 +754,28 @@ export default function AssessmentFlow({ version }: AssessmentFlowProps) {
       chunkNumber={state.currentChunk > 0 ? state.currentChunk : undefined}
       totalChunks={state.totalChunks > 0 ? state.totalChunks : undefined}
     >
-      {/* Question transition overlay */}
-      {state.phase === 'question_transition' && (
+      {/* Persistent background galaxy — dims during questions, brightens between */}
+      {(state.phase === 'questioning' || state.phase === 'question_transition') && (
         <QuestionTransition
-          direction={state.transitionDirection}
-          onComplete={handleQuestionTransitionComplete}
+          dimmed={state.phase !== 'question_transition'}
+          dimLevel={currentQuestion?.type === 'forced_choice' ? 0.1 : undefined}
+          onBrightComplete={handleQuestionTransitionComplete}
         />
+      )}
+
+      {/* Persistent StepDots — rendered outside AnimatePresence so they don't disappear during question transitions */}
+      {(state.phase === 'questioning' || state.phase === 'question_transition') && state.questions.length > 0 && (
+        <div className="absolute top-0 left-0 right-0 z-[15]">
+          <div className="h-[6vh] md:h-[8vh]" />
+          <div className="px-6 md:px-10 lg:px-16 pb-5">
+            <StepDots
+              totalSteps={state.questions.length}
+              currentStep={state.phase === 'question_transition' ? state.targetQuestionIndex : state.questionIndex}
+              completedSteps={completedSteps}
+              onNavigate={handleNavigateToStep}
+            />
+          </div>
+        </div>
       )}
 
       <AnimatePresence mode="wait" custom={state.transitionDirection}>
@@ -761,9 +855,9 @@ export default function AssessmentFlow({ version }: AssessmentFlowProps) {
                 variants={coverItemVariants}
                 className="font-heading font-light text-ops-text-secondary/50 text-sm leading-relaxed max-w-md mb-14"
               >
-                Answer honestly — there are no right or wrong responses.
-                A dedicated AI analyst will interpret your unique patterns
-                and deliver a nuanced portrait of your leadership.
+                {isUpgrade
+                  ? 'Building on your quick assessment results. Answer honestly — your prior responses are already factored in.'
+                  : 'Answer honestly — there are no right or wrong responses. A dedicated AI analyst will interpret your unique patterns and deliver a nuanced portrait of your leadership.'}
               </motion.p>
 
               {/* Begin button */}
@@ -787,7 +881,7 @@ export default function AssessmentFlow({ version }: AssessmentFlowProps) {
                     backgroundColor: 'rgba(89, 119, 148, 0.5)',
                   }}
                 />
-                Begin Assessment
+                {isUpgrade ? 'Continue Assessment' : 'Begin Assessment'}
               </motion.button>
             </div>
           </motion.div>
@@ -819,6 +913,7 @@ export default function AssessmentFlow({ version }: AssessmentFlowProps) {
               nextQuestionAnswered={nextQuestionAnswered}
               onSaveAnswer={handleSaveAnswer}
               onCompleteSection={handleCompleteSection}
+              hideStepDots
             />
           </motion.div>
         )}
@@ -837,26 +932,30 @@ export default function AssessmentFlow({ version }: AssessmentFlowProps) {
           </motion.div>
         )}
 
-        {/* Submitting chunk */}
+        {/* Submitting chunk — galaxy starts building immediately */}
         {state.phase === 'submitting_chunk' && (
           <motion.div
             key="submitting"
             {...phaseVariants}
-            className="flex-1 flex items-center justify-center h-full"
+            className="flex-1 h-full"
           >
-            <p className="font-caption text-xs uppercase tracking-[0.2em] text-ops-text-secondary">
-              Processing...
-            </p>
+            <ChunkTransition
+              chunkNumber={state.currentChunk}
+              totalChunks={state.totalChunks}
+              onComplete={() => {}}
+              galaxyOnly
+            />
           </motion.div>
         )}
 
-        {/* Chunk transition */}
+        {/* Chunk transition — continues galaxy from submitting phase */}
         {state.phase === 'chunk_transition' && (
           <motion.div key="chunk-transition" {...phaseVariants} className="flex-1 h-full">
             <ChunkTransition
               chunkNumber={state.currentChunk}
               totalChunks={state.totalChunks}
               onComplete={handleChunkTransitionComplete}
+              elapsedOffset={chunkGalaxyOffsetRef.current}
             />
           </motion.div>
         )}

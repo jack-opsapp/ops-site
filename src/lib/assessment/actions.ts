@@ -25,7 +25,7 @@ import type {
   ValidityFlags,
 } from './types';
 import { CHUNKS_PER_VERSION, DIMENSIONS } from './types';
-import { initializeScoreProfile, scoreBatch, computeValidityFlags } from './scoring';
+import { initializeScoreProfile, scoreBatch, computeValidityFlags, computeSubScores } from './scoring';
 import { matchArchetype } from './archetypes';
 import { selectSeedChunk, selectNextChunk } from './adaptive-selection';
 import { generateAnalysis } from './analysis-generator';
@@ -62,6 +62,10 @@ export async function startAssessment(
   const token = nanoid(12);
   const totalChunks = CHUNKS_PER_VERSION[version];
 
+  // Get question pool and select seed chunk (before insert so IDs are available)
+  const pool = await getQuestionPool(version);
+  const seedQuestions = selectSeedChunk(pool, version);
+
   // Insert session row
   const { data: session, error: sessionError } = await supabaseAdmin
     .from('assessment_sessions')
@@ -72,7 +76,9 @@ export async function startAssessment(
       current_chunk: 1,
       total_chunks: totalChunks,
       demographic_context: demographicContext ?? null,
-      metadata: {},
+      metadata: {
+        current_chunk_question_ids: seedQuestions.map((q) => q.id),
+      },
     })
     .select('id')
     .single();
@@ -81,9 +87,103 @@ export async function startAssessment(
     throw new Error(`Failed to create session: ${sessionError?.message ?? 'Unknown error'}`);
   }
 
-  // Get question pool and select seed chunk
+  return {
+    sessionId: session.id,
+    token,
+    questions: stripScoresToClient(seedQuestions),
+    totalChunks,
+  };
+}
+
+/* ------------------------------------------------------------------ */
+/*  1b. startUpgradeAssessment                                         */
+/* ------------------------------------------------------------------ */
+
+/**
+ * Creates a deep assessment session that builds on a completed quick
+ * session's score profile as Bayesian priors. The deep pool's own
+ * 50+ questions are independent — the quick ScoreProfile just gives
+ * the adaptive engine a head start.
+ *
+ * 7 chunks (35 questions) instead of 10 (50), since the combined
+ * data points (15 quick + 35 deep) equal a full deep assessment.
+ */
+export async function startUpgradeAssessment(
+  quickToken: string,
+): Promise<{
+  sessionId: string;
+  token: string;
+  questions: ClientQuestion[];
+  totalChunks: number;
+}> {
+  // Fetch the completed quick session
+  const { data: quickSession, error: quickError } = await supabaseAdmin
+    .from('assessment_sessions')
+    .select('id, version, status, score_details')
+    .eq('token', quickToken)
+    .single();
+
+  if (quickError || !quickSession) {
+    throw new Error('Quick assessment session not found');
+  }
+  if (quickSession.status !== 'completed') {
+    throw new Error('Quick assessment is not yet completed');
+  }
+  if (quickSession.version !== 'quick') {
+    throw new Error('Source session is not a quick assessment');
+  }
+
+  const quickScoreProfile = quickSession.score_details as ScoreProfile;
+  if (!quickScoreProfile) {
+    throw new Error('Quick assessment has no score data');
+  }
+
+  const token = nanoid(12);
+  const totalChunks = 7; // 35 questions (vs 10 chunks / 50 for full deep)
+  const version: AssessmentVersion = 'deep';
+
+  // Get deep question pool
   const pool = await getQuestionPool(version);
-  const seedQuestions = selectSeedChunk(pool, version);
+
+  // Use selectNextChunk (not selectSeedChunk) so the adaptive engine
+  // targets dimensions where the quick assessment had high uncertainty
+  const { questionIds, reasoning } = await selectNextChunk({
+    scoreProfile: quickScoreProfile,
+    answeredIds: [], // deep pool is independent — no IDs to exclude
+    pool,
+    version,
+    chunkNumber: 1,
+    totalChunks,
+    validityFlags: null,
+  });
+
+  const questionMap = new Map(pool.map((q) => [q.id, q]));
+  const seedQuestions = questionIds
+    .map((id) => questionMap.get(id))
+    .filter(Boolean) as typeof pool;
+
+  // Insert session row
+  const { data: session, error: sessionError } = await supabaseAdmin
+    .from('assessment_sessions')
+    .insert({
+      token,
+      version,
+      status: 'in_progress',
+      current_chunk: 1,
+      total_chunks: totalChunks,
+      metadata: {
+        upgrade_from_token: quickToken,
+        quick_score_profile: quickScoreProfile,
+        current_chunk_question_ids: questionIds,
+        last_selection_reasoning: reasoning,
+      },
+    })
+    .select('id')
+    .single();
+
+  if (sessionError || !session) {
+    throw new Error(`Failed to create upgrade session: ${sessionError?.message ?? 'Unknown error'}`);
+  }
 
   return {
     sessionId: session.id,
@@ -109,7 +209,7 @@ export async function submitChunkAndGetNext(
   // Validate session
   const { data: session, error: sessionError } = await supabaseAdmin
     .from('assessment_sessions')
-    .select('id, version, status, current_chunk, total_chunks')
+    .select('id, version, status, current_chunk, total_chunks, metadata')
     .eq('id', sessionId)
     .single();
 
@@ -123,6 +223,10 @@ export async function submitChunkAndGetNext(
   const version = session.version as AssessmentVersion;
   const currentChunk = session.current_chunk as number;
   const totalChunks = session.total_chunks as number;
+
+  // For upgrade sessions, extract the quick score profile to use as priors
+  const sessionMeta = (session.metadata ?? {}) as Record<string, unknown>;
+  const quickPrior = sessionMeta.quick_score_profile as ScoreProfile | undefined;
 
   // Get question pool for lookups
   const pool = await getQuestionPool(version);
@@ -169,13 +273,14 @@ export async function submitChunkAndGetNext(
     response_time_ms: r.response_time_ms as number | null,
   }));
 
-  // Score all responses
+  // Score all responses (quick priors seed the profile for upgrade sessions)
   const scoreProfile = scoreBatch(
     pool,
     parsedResponses.map((r) => ({
       question_id: r.question_id,
       answer_value: r.answer_value,
     })),
+    quickPrior,
   );
 
   // Compute validity flags
@@ -233,7 +338,10 @@ export async function submitChunkAndGetNext(
       scores: simpleScores,
       score_details: scoreProfile,
       validity_flags: validityFlags,
-      metadata: { last_selection_reasoning: reasoning },
+      metadata: {
+        last_selection_reasoning: reasoning,
+        current_chunk_question_ids: questionIds,
+      },
     })
     .eq('id', sessionId);
 
@@ -267,6 +375,10 @@ export async function submitEmailAndGenerateResults(
 
   const version = session.version as AssessmentVersion;
 
+  // For upgrade sessions, extract the quick score profile to use as priors
+  const emailSessionMeta = (session.metadata ?? {}) as Record<string, unknown>;
+  const emailQuickPrior = emailSessionMeta.quick_score_profile as ScoreProfile | undefined;
+
   // Fetch all responses
   const { data: allResponses, error: respError } = await supabaseAdmin
     .from('assessment_responses')
@@ -290,13 +402,14 @@ export async function submitEmailAndGenerateResults(
     question_type: r.question_type as string,
   }));
 
-  // Full scoring
+  // Full scoring (quick priors seed the profile for upgrade sessions)
   const scoreProfile = scoreBatch(
     pool,
     parsedResponses.map((r) => ({
       question_id: r.question_id,
       answer_value: r.answer_value,
     })),
+    emailQuickPrior,
   );
 
   const validityFlags = computeValidityFlags(
@@ -340,6 +453,34 @@ export async function submitEmailAndGenerateResults(
     demographicContext: session.demographic_context as DemographicContext | null,
     needsTiebreak: matchResult.needs_tiebreak,
   });
+
+  // Compute deterministic sub-scores and merge into analysis
+  const deterministic = computeSubScores(
+    pool,
+    parsedResponses.map((r) => ({ question_id: r.question_id, answer_value: r.answer_value })),
+    scoreProfile,
+  );
+
+  if (version === 'deep' && analysis.sub_scores) {
+    // Deep: merge AI descriptions onto deterministic scores (AI scores as tiebreaker)
+    for (const dim of DIMENSIONS) {
+      const aiSubs = analysis.sub_scores[dim];
+      const detSubs = deterministic[dim];
+      if (!aiSubs || !detSubs) continue;
+
+      analysis.sub_scores[dim] = detSubs.map((det) => {
+        const aiMatch = aiSubs.find((a) => a.label === det.label);
+        return {
+          label: det.label,
+          score: det.score,
+          description: aiMatch?.description,
+        };
+      });
+    }
+  } else {
+    // Quick (or AI didn't produce sub_scores): use deterministic scores only
+    analysis.sub_scores = deterministic;
+  }
 
   // Compute simple scores
   const simpleScores: SimpleScores = {} as SimpleScores;
@@ -440,16 +581,90 @@ export async function getResults(
     }
   }
 
+  // Ensure sub_scores exist (backfill for legacy records)
+  const analysis = session.ai_analysis as AssessmentResult['analysis'];
+  if (!analysis.sub_scores) {
+    const version = session.version as AssessmentVersion;
+    const scoreProfile = session.score_details as ScoreProfile;
+
+    // Fetch responses to compute sub-scores deterministically
+    const { data: responses } = await supabaseAdmin
+      .from('assessment_responses')
+      .select('question_id, answer_value')
+      .eq('session_id', session.id);
+
+    if (responses && responses.length > 0) {
+      const pool = await getQuestionPool(version);
+      const parsed = responses.map((r) => ({
+        question_id: r.question_id as string,
+        answer_value: (typeof r.answer_value === 'object'
+          ? JSON.parse(JSON.stringify(r.answer_value))
+          : r.answer_value) as number | string,
+      }));
+      analysis.sub_scores = computeSubScores(pool, parsed, scoreProfile);
+    }
+  }
+
   return {
     archetype: primaryArchetype,
     secondary_archetype: secondaryArchetype,
     scores: session.scores as SimpleScores,
     score_details: session.score_details as ScoreProfile,
-    analysis: session.ai_analysis as AssessmentResult['analysis'],
+    analysis,
     validity: session.validity_flags as ValidityFlags,
     version: session.version as AssessmentVersion,
     first_name: session.first_name as string,
     completed_at: session.completed_at as string,
     norms: normsRecord,
+  };
+}
+
+/* ------------------------------------------------------------------ */
+/*  5. resumeAssessment                                                */
+/* ------------------------------------------------------------------ */
+
+export async function resumeAssessment(
+  token: string,
+): Promise<{
+  sessionId: string;
+  token: string;
+  version: AssessmentVersion;
+  questions: ClientQuestion[];
+  currentChunk: number;
+  totalChunks: number;
+} | null> {
+  // Look up session by token
+  const { data: session, error: sessionError } = await supabaseAdmin
+    .from('assessment_sessions')
+    .select('id, token, version, status, current_chunk, total_chunks, metadata')
+    .eq('token', token)
+    .single();
+
+  if (sessionError || !session) return null;
+  if (session.status !== 'in_progress') return null;
+
+  // Read stored question IDs from metadata
+  const metadata = (session.metadata ?? {}) as Record<string, unknown>;
+  const questionIds = metadata.current_chunk_question_ids as string[] | undefined;
+  if (!questionIds || questionIds.length === 0) return null;
+
+  const version = session.version as AssessmentVersion;
+
+  // Fetch those questions from the pool and strip scoring data
+  const pool = await getQuestionPool(version);
+  const poolMap = new Map(pool.map((q) => [q.id, q]));
+  const questions = questionIds
+    .map((id) => poolMap.get(id))
+    .filter(Boolean) as typeof pool;
+
+  if (questions.length === 0) return null;
+
+  return {
+    sessionId: session.id as string,
+    token: session.token as string,
+    version,
+    questions: stripScoresToClient(questions),
+    currentChunk: session.current_chunk as number,
+    totalChunks: session.total_chunks as number,
   };
 }
