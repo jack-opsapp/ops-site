@@ -36,7 +36,7 @@ const itemVariants = {
 
 export default function ResultsHero({ archetypeName, tagline, firstName }: ResultsHeroProps) {
   return (
-    <section className="relative min-h-[70vh] md:min-h-[85vh] flex items-center overflow-hidden">
+    <section className="relative min-h-[70vh] md:min-h-[85vh] flex items-center overflow-hidden text-left">
       {/* AmbientBurst background */}
       <AmbientBurst className="absolute inset-0 opacity-30" />
 

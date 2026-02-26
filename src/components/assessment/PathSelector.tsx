@@ -35,7 +35,7 @@ interface Particle {
 const PARTICLE_COUNT = 80;
 const HIT_RADIUS = 70;
 const SELECT_DELAY_MS = 800;
-const CANVAS_HEIGHT_CLASS = 'h-[400px] md:h-[500px]';
+const CANVAS_HEIGHT_CLASS = 'h-[280px] sm:h-[340px] md:h-[420px]';
 
 // Node positions — wider spread for dramatic fork
 const LEFT_NODE = { nx: 0.22, ny: 0.40 };

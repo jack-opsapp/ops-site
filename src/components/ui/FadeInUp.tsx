@@ -13,15 +13,18 @@ interface FadeInUpProps {
   children: React.ReactNode;
   delay?: number;
   className?: string;
+  id?: string;
 }
 
 export default function FadeInUp({
   children,
   delay = 0,
   className = '',
+  id,
 }: FadeInUpProps) {
   return (
     <motion.div
+      id={id}
       initial={theme.animation.fadeInUp.initial}
       whileInView={theme.animation.fadeInUp.whileInView}
       transition={{

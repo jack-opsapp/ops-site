@@ -454,12 +454,14 @@ export default function LikertRadialGauge({
         let cr: number, cg: number, cb: number;
 
         if (selected >= 0) {
-          // Selection field: full color, concentrates around lerped center
-          const sigma = 0.15 - selProgress * 0.09; // 0.15 → 0.06
+          // Selection field: expands outward from clicked node
+          const sigma = 0.03 + selProgress * 0.14; // 0.03 → 0.17 (tight → wide)
           const g = gaussian(fl.normX, selCenter, sigma);
 
-          height = FIELD_MIN_HEIGHT + g * (FIELD_MAX_HEIGHT * 1.2 - FIELD_MIN_HEIGHT);
-          alpha = 0.02 + g * (0.65 - 0.02);
+          // Height and alpha scale up with progress so bars grow outward
+          const heightMult = 0.15 + selProgress * 0.85; // ramp from 15% → 100%
+          height = FIELD_MIN_HEIGHT + g * (FIELD_MAX_HEIGHT * 1.2 - FIELD_MIN_HEIGHT) * heightMult;
+          alpha = (0.02 + g * (0.65 - 0.02)) * (0.2 + selProgress * 0.8);
           cr = fullColor.r; cg = fullColor.g; cb = fullColor.b;
 
           // Layer post-selection hover on top (smaller, subtler)
@@ -555,7 +557,7 @@ export default function LikertRadialGauge({
 
       /* ---- 9. Draw labels ---- */
 
-      ctx.font = '400 10px "Kosugi", sans-serif';
+      ctx.font = '400 12px "Kosugi", sans-serif';
       ctx.textAlign = 'center';
       ctx.textBaseline = 'top';
 
@@ -568,15 +570,15 @@ export default function LikertRadialGauge({
 
         let labelAlpha: number;
         if (isSelected) {
-          labelAlpha = 0.9;
+          labelAlpha = 0.95;
         } else if (isHovered && hasSelection) {
-          labelAlpha = 0.4;
+          labelAlpha = 0.55;
         } else if (isHovered) {
-          labelAlpha = 0.6;
+          labelAlpha = 0.75;
         } else if (hasSelection) {
-          labelAlpha = 0.2;
+          labelAlpha = 0.3;
         } else {
-          labelAlpha = 0.5;
+          labelAlpha = 0.65;
         }
 
         // Tint with spectrum color on hover/selection, white otherwise
@@ -598,8 +600,8 @@ export default function LikertRadialGauge({
 
         const labelText = LABELS[i];
         const labelLines = labelText.split('\n');
-        const labelLineHeight = 13;
-        const labelStartY = node.y + 14;
+        const labelLineHeight = 15;
+        const labelStartY = node.y + 16;
 
         for (let l = 0; l < labelLines.length; l++) {
           ctx.fillText(labelLines[l], node.x, labelStartY + l * labelLineHeight);

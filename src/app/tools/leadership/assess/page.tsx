@@ -113,10 +113,24 @@ function AssessmentContent() {
   }, [resumeState]);
 
   const handleStartFresh = useCallback(() => {
-    stripTokenFromUrl();
+    // Clear all assessment data from localStorage
     clearDraftAnswers();
+    try {
+      // Remove any other assessment-related keys
+      Object.keys(localStorage).forEach((key) => {
+        if (key.startsWith('ops_assessment')) localStorage.removeItem(key);
+      });
+    } catch {
+      // ignore
+    }
+
+    // Use router.replace to properly sync URL with Next.js (not just history.replaceState)
+    const url = new URL(window.location.href);
+    url.searchParams.delete('token');
+    router.replace(url.pathname + '?' + url.searchParams.toString());
+
     setResumeState({ status: 'fresh' });
-  }, []);
+  }, [router]);
 
   // Checking phase — show minimal loading
   if (resumeState.status === 'checking') {

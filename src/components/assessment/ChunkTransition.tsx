@@ -151,17 +151,9 @@ export default function ChunkTransition({
   const animRef = useRef(0);
   const onCompleteRef = useRef(onComplete);
   const mouseRef = useRef({ x: -9999, y: -9999 });
-  const [showAnalyzing, setShowAnalyzing] = useState(false);
   const [activeQuote, setActiveQuote] = useState<{ text: string; x: number; y: number } | null>(null);
   const activeQuoteRef = useRef<{ text: string; x: number; y: number } | null>(null);
   onCompleteRef.current = onComplete;
-
-  // Show "Analyzing responses..." after 0.5s delay (only in full mode)
-  useEffect(() => {
-    if (galaxyOnly) return;
-    const t = setTimeout(() => setShowAnalyzing(true), 500);
-    return () => clearTimeout(t);
-  }, [galaxyOnly]);
 
   const resize = useCallback(() => {
     const canvas = canvasRef.current;
@@ -230,12 +222,12 @@ export default function ChunkTransition({
     for (let i = 0; i < PARTICLE_COUNT; i++) {
       const isQuote = quoteIndices.has(i);
       const roll = Math.random();
-      const baseColor = isQuote ? GREY_STAR : (roll < 0.7 ? GREY_STAR : ACCENT);
+      const baseColor = isQuote ? QUOTE_BLUE : (roll < 0.7 ? GREY_STAR : ACCENT);
       stars.push({
         baseX: 0.08 + Math.random() * 0.84,
         baseY: sampleVerticalPosition(),
         size: isQuote ? 2.5 + Math.random() * 2 : 1 + Math.random() * 3.5,
-        baseAlpha: isQuote ? 0.25 + Math.random() * 0.3 : 0.12 + Math.random() * 0.4,
+        baseAlpha: isQuote ? 0.35 + Math.random() * 0.35 : 0.12 + Math.random() * 0.4,
         baseColor,
         fadeInTime: (i / PARTICLE_COUNT) * FADE_IN_DURATION * 0.85 + Math.random() * FADE_IN_DURATION * 0.15,
         funnelSpeed: 0.6 + Math.random() * 0.8,
@@ -335,10 +327,15 @@ export default function ChunkTransition({
           if (alpha < 0.01) continue;
 
           ctx.save();
+          // Default blue glow on quote stars, stronger on hover
           if (mDist < QUOTE_HOVER_RADIUS * 1.5 && inHoverPhase) {
             const glowT = Math.max(0, 1 - mDist / (QUOTE_HOVER_RADIUS * 1.5));
-            ctx.shadowColor = `rgba(${QUOTE_BLUE.r}, ${QUOTE_BLUE.g}, ${QUOTE_BLUE.b}, ${glowT * 0.4})`;
-            ctx.shadowBlur = 8 + glowT * 6;
+            ctx.shadowColor = `rgba(${QUOTE_BLUE.r}, ${QUOTE_BLUE.g}, ${QUOTE_BLUE.b}, ${glowT * 0.5 + 0.15})`;
+            ctx.shadowBlur = 8 + glowT * 8;
+          } else {
+            // Ambient blue glow even without hover
+            ctx.shadowColor = `rgba(${QUOTE_BLUE.r}, ${QUOTE_BLUE.g}, ${QUOTE_BLUE.b}, 0.25)`;
+            ctx.shadowBlur = 6;
           }
           ctx.fillStyle = `rgba(${cr}, ${cg}, ${cb}, ${alpha})`;
           ctx.fillRect(px - sz / 2, py - sz / 2, sz, sz);
@@ -445,16 +442,33 @@ export default function ChunkTransition({
           >
             Section {chunkNumber} of {totalChunks}
           </motion.p>
-          {showAnalyzing && (
-            <motion.p
-              initial={{ opacity: 0 }}
-              animate={{ opacity: 1 }}
-              transition={{ duration: 0.4, ease: [0.22, 1, 0.36, 1] }}
-              className="font-caption text-[10px] uppercase tracking-[0.2em] text-ops-text-secondary/40 mt-3"
-            >
-              Analyzing responses...
-            </motion.p>
-          )}
+          <motion.p
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            transition={{ duration: 0.3, ease: [0.22, 1, 0.36, 1], delay: 0.15 }}
+            className="font-caption text-[10px] uppercase tracking-[0.2em] text-ops-text-secondary/40 mt-3"
+          >
+            Analyzing responses...
+          </motion.p>
+          {/* Progress bar */}
+          <motion.div
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            transition={{ duration: 0.3, delay: 0.2 }}
+            className="mt-4 mx-auto w-48"
+          >
+            <div className="h-px bg-white/[0.06] rounded-full overflow-hidden">
+              <motion.div
+                initial={{ width: '0%' }}
+                animate={{ width: '100%' }}
+                transition={{
+                  duration: FADE_IN_DURATION + HOLD_DURATION + FUNNEL_DURATION - 0.5,
+                  ease: 'linear',
+                }}
+                className="h-full bg-ops-accent/40"
+              />
+            </div>
+          </motion.div>
         </div>
       )}
     </div>

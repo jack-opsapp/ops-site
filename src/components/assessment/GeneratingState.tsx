@@ -11,7 +11,8 @@
 
 'use client';
 
-import { useRef, useEffect, useCallback } from 'react';
+import { useRef, useEffect, useCallback, useState } from 'react';
+import { motion } from 'framer-motion';
 
 /* ------------------------------------------------------------------ */
 /*  Constants                                                          */
@@ -52,6 +53,10 @@ const SUB_SCORES = [
 const MIN_VEC_LEN = 0.3;
 const MAX_VEC_LEN = 0.9;
 const SUB_SPREAD = 1.36; // ~78° umbrella angle
+const TOTAL_ANIM_DURATION = MESH_FADE_START + MESH_FADE_DURATION; // 9.5s
+
+const DIM_LABELS = ['DRIVE', 'RESILIENCE', 'VISION', 'CONNECTION', 'ADAPTABILITY', 'INTEGRITY'];
+const NODE_HOVER_RADIUS = 30;
 
 /* ------------------------------------------------------------------ */
 /*  Vector helpers                                                     */
@@ -264,6 +269,8 @@ export default function GeneratingState() {
   const geomRef = useRef<ReturnType<typeof computeGeometry> | null>(null);
   const animRef = useRef<number>(0);
   const mouseRef = useRef({ x: -9999, y: -9999 });
+  const [hoveredNode, setHoveredNode] = useState<{ index: number; x: number; y: number } | null>(null);
+  const hoveredNodeRef = useRef<{ index: number; x: number; y: number } | null>(null);
 
   if (!starsRef.current) starsRef.current = generateStarfield();
   if (!geomRef.current) geomRef.current = computeGeometry();
@@ -441,6 +448,32 @@ export default function GeneratingState() {
         }
       }
 
+      /* ---- 2b. Hover detection on major nodes ---- */
+      if (vectorT > 0.7) {
+        let closestNode: { index: number; x: number; y: number; dist: number } | null = null;
+        for (let i = 0; i < majorProjected.length; i++) {
+          const mp = majorProjected[i];
+          const ndx = mp.sx - mouse.x;
+          const ndy = mp.sy - mouse.y;
+          const dist = Math.sqrt(ndx * ndx + ndy * ndy);
+          if (dist < NODE_HOVER_RADIUS && (!closestNode || dist < closestNode.dist)) {
+            closestNode = { index: i, x: mp.sx, y: mp.sy, dist };
+          }
+        }
+
+        const prev = hoveredNodeRef.current;
+        if (closestNode && (!prev || prev.index !== closestNode.index)) {
+          hoveredNodeRef.current = { index: closestNode.index, x: closestNode.x, y: closestNode.y };
+          setHoveredNode({ index: closestNode.index, x: closestNode.x, y: closestNode.y });
+        } else if (closestNode && prev) {
+          // Update position without triggering re-render unless node changed
+          hoveredNodeRef.current = { index: prev.index, x: closestNode.x, y: closestNode.y };
+        } else if (!closestNode && prev) {
+          hoveredNodeRef.current = null;
+          setHoveredNode(null);
+        }
+      }
+
       /* ---- 3. Sub-node vectors extruding from major nodes ---- */
 
       if (subT > 0) {
@@ -532,14 +565,55 @@ export default function GeneratingState() {
   }, [resize]);
 
   return (
-    <div className="min-h-[400px] flex flex-col items-center justify-center bg-ops-background relative">
+    <div className="h-full flex flex-col items-center justify-center bg-ops-background relative">
       <div ref={containerRef} className="absolute inset-0">
         <canvas ref={canvasRef} style={{ display: 'block', width: '100%', height: '100%' }} />
       </div>
-      <div className="relative z-10 pointer-events-none">
-        <p className="font-caption text-xs uppercase tracking-[0.2em] text-ops-text-secondary">
+
+      {/* Node hover label */}
+      {hoveredNode && (
+        <div
+          className="absolute z-20 pointer-events-none"
+          style={{
+            left: hoveredNode.x,
+            top: hoveredNode.y - 22,
+            transform: 'translateX(-50%)',
+          }}
+        >
+          <span className="font-caption text-[9px] uppercase tracking-[0.25em] text-ops-accent/80 whitespace-nowrap">
+            {DIM_LABELS[hoveredNode.index]}
+          </span>
+        </div>
+      )}
+
+      <div className="relative z-10 pointer-events-none text-center">
+        <motion.p
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 1 }}
+          transition={{ duration: 0.4, ease: [0.22, 1, 0.36, 1] }}
+          className="font-caption text-xs uppercase tracking-[0.2em] text-ops-text-secondary"
+        >
           Generating your leadership profile...
-        </p>
+        </motion.p>
+        {/* Progress bar */}
+        <motion.div
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 1 }}
+          transition={{ duration: 0.3, delay: 0.2 }}
+          className="mt-4 mx-auto w-48"
+        >
+          <div className="h-px bg-white/[0.06] rounded-full overflow-hidden">
+            <motion.div
+              initial={{ width: '0%' }}
+              animate={{ width: '100%' }}
+              transition={{
+                duration: TOTAL_ANIM_DURATION,
+                ease: 'linear',
+              }}
+              className="h-full bg-ops-accent/40"
+            />
+          </div>
+        </motion.div>
       </div>
     </div>
   );

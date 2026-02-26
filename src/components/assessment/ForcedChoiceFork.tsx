@@ -573,17 +573,16 @@ export default function ForcedChoiceFork({
         if (isSelected) {
           labelAlpha = 0.95;
         } else if (isHovered && hasSelection) {
-          // Hovering unselected — brighten it
-          labelAlpha = 0.7;
+          labelAlpha = 0.75;
         } else if (isHovered) {
-          labelAlpha = 0.85;
+          labelAlpha = 0.90;
         } else if (hasSelection) {
-          labelAlpha = 0.2;
+          labelAlpha = 0.30;
         } else {
-          labelAlpha = 0.45;
+          labelAlpha = 0.65;
         }
 
-        ctx.font = '400 11px "Kosugi", sans-serif';
+        ctx.font = '400 12px "Kosugi", sans-serif';
         ctx.textAlign = 'center';
         ctx.fillStyle = `rgba(255, 255, 255, ${labelAlpha})`;
 

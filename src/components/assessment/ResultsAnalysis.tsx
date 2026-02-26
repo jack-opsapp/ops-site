@@ -20,16 +20,18 @@ function ExpandableSection({
   children,
   defaultOpen = false,
   delay = 0,
+  id,
 }: {
   label: string;
   children: React.ReactNode;
   defaultOpen?: boolean;
   delay?: number;
+  id?: string;
 }) {
   const [open, setOpen] = useState(defaultOpen);
 
   return (
-    <FadeInUp delay={delay}>
+    <FadeInUp delay={delay} id={id}>
       <button
         onClick={() => setOpen(!open)}
         className="w-full flex items-center justify-between py-4 group cursor-pointer"
@@ -69,8 +71,11 @@ interface ResultsAnalysisProps {
 }
 
 export default function ResultsAnalysis({ analysis }: ResultsAnalysisProps) {
+  // Sanitize headline: strip duplicate "The The" → "The" (AI sometimes doubles the article)
+  const headline = analysis.headline.replace(/^The The /i, 'The ');
+
   return (
-    <div className="max-w-[900px] mx-auto px-6 md:px-10">
+    <div id="results-analysis" className="max-w-[900px] mx-auto px-6 md:px-10">
       {/* ---- Headline + Summary (always visible) ---- */}
       <section className="py-10 md:py-14">
         <FadeInUp>
@@ -78,7 +83,7 @@ export default function ResultsAnalysis({ analysis }: ResultsAnalysisProps) {
         </FadeInUp>
         <FadeInUp delay={0.06}>
           <h2 className="font-heading text-2xl md:text-3xl font-semibold text-ops-text-primary mb-4">
-            {analysis.headline}
+            {headline}
           </h2>
         </FadeInUp>
         <FadeInUp delay={0.12}>
@@ -92,7 +97,7 @@ export default function ResultsAnalysis({ analysis }: ResultsAnalysisProps) {
 
       {/* ---- Expandable sections ---- */}
 
-      <ExpandableSection label="Strengths" defaultOpen={true} delay={0.04}>
+      <ExpandableSection label="Strengths" defaultOpen={true} delay={0.04} id="results-strengths">
         <div className="grid grid-cols-1 md:grid-cols-3 gap-3">
           {analysis.strengths.map((s) => (
             <div
@@ -151,23 +156,36 @@ export default function ResultsAnalysis({ analysis }: ResultsAnalysisProps) {
         </div>
       </ExpandableSection>
 
-      <ExpandableSection label="Under Pressure" delay={0.10}>
-        <p className="font-body text-ops-text-secondary text-sm leading-relaxed">
-          {analysis.under_pressure}
-        </p>
-      </ExpandableSection>
-
-      <ExpandableSection label="Team Dynamics" delay={0.12}>
-        <p className="font-body text-ops-text-secondary text-sm leading-relaxed">
-          {analysis.team_dynamics}
-        </p>
-      </ExpandableSection>
-
-      <ExpandableSection label="Deep Insight" delay={0.14}>
-        <p className="font-body text-ops-text-secondary text-sm leading-relaxed italic">
-          {analysis.deep_insight}
-        </p>
-      </ExpandableSection>
+      {/* Under Pressure + Team Dynamics + Deep Insight — combined, non-collapsible */}
+      <FadeInUp delay={0.10}>
+        <div className="py-6 space-y-5">
+          <div>
+            <span className="font-caption uppercase tracking-[0.2em] text-[10px] text-ops-text-secondary block mb-2">
+              [ Under Pressure ]
+            </span>
+            <p className="font-body text-ops-text-secondary text-sm leading-relaxed">
+              {analysis.under_pressure}
+            </p>
+          </div>
+          <div>
+            <span className="font-caption uppercase tracking-[0.2em] text-[10px] text-ops-text-secondary block mb-2">
+              [ Team Dynamics ]
+            </span>
+            <p className="font-body text-ops-text-secondary text-sm leading-relaxed">
+              {analysis.team_dynamics}
+            </p>
+          </div>
+          <div>
+            <span className="font-caption uppercase tracking-[0.2em] text-[10px] text-ops-text-secondary block mb-2">
+              [ Deep Insight ]
+            </span>
+            <p className="font-body text-ops-text-secondary text-sm leading-relaxed italic">
+              {analysis.deep_insight}
+            </p>
+          </div>
+        </div>
+        <div className="h-px bg-ops-border/50" />
+      </FadeInUp>
     </div>
   );
 }

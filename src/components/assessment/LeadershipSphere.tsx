@@ -118,6 +118,7 @@ interface LeadershipSphereProps {
   subScores?: DimensionSubScores;
   dimensionDescriptions?: Record<Dimension, string>;
   version?: AssessmentVersion;
+  focusDimension?: Dimension | null;
   onDimensionClick?: (dimension: Dimension) => void;
   className?: string;
 }
@@ -243,6 +244,7 @@ export default function LeadershipSphere({
   subScores,
   dimensionDescriptions,
   version = 'deep',
+  focusDimension: externalFocusDimension,
   onDimensionClick,
   className,
 }: LeadershipSphereProps) {
@@ -283,14 +285,39 @@ export default function LeadershipSphere({
   // React state for DOM description panel
   const [focusedDimState, setFocusedDimState] = useState<Dimension | null>(null);
   const [selectedSubIndex, setSelectedSubIndex] = useState<number | null>(null);
+  const [hoveredSubIndex, setHoveredSubIndex] = useState<number | null>(null);
   const selectedSubRef = useRef<number | null>(null);
+  const prevHoveredSubIndexRef = useRef<number | null>(null);
   const isQuickRef = useRef(isQuick);
+
+  // Accumulated time ref for pulse animation
+  const timeAccumRef = useRef(0);
 
   // Keep refs in sync with props
   scoresRef.current = scores;
   subScoresRef.current = subScores;
   onClickRef.current = onDimensionClick;
   isQuickRef.current = isQuick;
+
+  // External focus dimension synchronization
+  useEffect(() => {
+    if (externalFocusDimension === undefined) return;
+
+    if (externalFocusDimension === null) {
+      if (focusedDimRef.current !== null) {
+        focusedDimRef.current = null;
+        selectedSubRef.current = null;
+        setSelectedSubIndex(null);
+      }
+    } else {
+      focusedDimRef.current = externalFocusDimension;
+      selectedSubRef.current = null;
+      setSelectedSubIndex(null);
+      const dir = DIMENSION_DIRS[externalFocusDimension];
+      focusTargetYawRef.current = -Math.atan2(dir.dx, dir.dz);
+      focusTargetTiltRef.current = Math.atan2(dir.dy, Math.sqrt(dir.dx * dir.dx + dir.dz * dir.dz));
+    }
+  }, [externalFocusDimension]);
 
   // Generate ambient lines once
   if (!ambientRef.current) {
@@ -815,6 +842,12 @@ export default function LeadershipSphere({
 
       hoveredSubRef.current = hoveredSub;
 
+      // Sync hovered sub-node index to React state (for DOM description)
+      const newHovSubIdx = hoveredSub?.index ?? null;
+      if (newHovSubIdx !== prevHoveredSubIndexRef.current) {
+        prevHoveredSubIndexRef.current = newHovSubIdx;
+        setHoveredSubIndex(newHovSubIdx);
+      }
 
       /* ---- Phase 4: Draw ambient lines (sorted back-to-front) ---- */
 
@@ -884,16 +917,27 @@ export default function LeadershipSphere({
         ctx.lineWidth = isBright ? 1.8 : (0.5 + dc.depthNorm * 0.8);
         ctx.stroke();
 
-        // Draw node (square) — brightens on hover or sub-hover
-        const nodeSize = (isBright ? 9 : 6) * dc.scale;
-        const nodeAlpha = (isBright
-          ? 0.90
-          : lerp(0.18, 0.75, dc.depthNorm)) * focusDimAlpha;
+        // Draw node (square) — brightens on hover or sub-hover, with pulse
+        const dimIdx = DIMENSIONS.indexOf(dc.dim);
+        const time = timeAccumRef.current;
+        // Pulse only when no dimension has been clicked yet
+        const shouldPulse = focusedDim === null && !isBright;
+        const pulse = shouldPulse
+          ? 0.5 + 0.5 * Math.sin(time * 2.0 + dimIdx * 1.05)
+          : 0;
+        const basePulseSize = isBright ? 9 : shouldPulse ? (6 + pulse * 2) : 7;
+        const nodeSize = basePulseSize * dc.scale;
+        // Brighter default glow when no node clicked yet
+        const defaultAlpha = shouldPulse
+          ? lerp(0.30, 0.80, dc.depthNorm)  // brighter default
+          : lerp(0.18, 0.75, dc.depthNorm);
+        const nodeAlpha = (isBright ? 0.90 : defaultAlpha) * focusDimAlpha;
 
-        if (isBright) {
-          ctx.shadowColor = `rgba(${ACCENT.r}, ${ACCENT.g}, ${ACCENT.b}, 0.5)`;
-          ctx.shadowBlur = 14;
-        }
+        // Pulse glow on major nodes — only before first click
+        const pulseGlow = isBright ? 14 : shouldPulse ? (4 + pulse * 8) : 0;
+        const pulseGlowAlpha = isBright ? 0.5 : shouldPulse ? (0.10 + pulse * 0.18) : 0;
+        ctx.shadowColor = `rgba(${r}, ${g}, ${b}, ${pulseGlowAlpha * focusDimAlpha})`;
+        ctx.shadowBlur = pulseGlow;
 
         ctx.fillStyle = `rgba(${r}, ${g}, ${b}, ${nodeAlpha})`;
         ctx.fillRect(
@@ -910,9 +954,9 @@ export default function LeadershipSphere({
             nodeSize,
             nodeSize,
           );
-          ctx.shadowColor = 'transparent';
-          ctx.shadowBlur = 0;
         }
+        ctx.shadowColor = 'transparent';
+        ctx.shadowBlur = 0;
 
         /* ---- Sub-nodes for this dimension ---- */
 
@@ -1120,6 +1164,7 @@ export default function LeadershipSphere({
       if (prevTimestamp === null) prevTimestamp = timestamp;
       const dt = (timestamp - prevTimestamp) / 1000;
       prevTimestamp = timestamp;
+      timeAccumRef.current += dt;
 
       const drag = dragRef.current;
       const focusedDim = focusedDimRef.current;
@@ -1193,23 +1238,23 @@ export default function LeadershipSphere({
       onMouseMove={handleMouseMove}
       onMouseLeave={handleMouseLeave}
       onMouseUp={handleMouseUp}
-      style={{ position: 'relative', cursor: 'grab' }}
+      style={{ position: 'relative', cursor: 'grab', overflow: 'visible' }}
     >
       <canvas
         ref={canvasRef}
         style={{ display: 'block', width: '100%', height: '100%' }}
       />
 
-      {/* Description panel */}
+      {/* Description panel — mobile: below sphere; desktop: bottom-left overlay */}
       <div
-        className="absolute bottom-4 left-4 max-w-[320px] rounded-[3px] p-5 border border-ops-border"
+        className="absolute z-20 left-2 right-2 bottom-0 translate-y-[85%] md:translate-y-0 md:bottom-4 md:left-4 md:right-auto md:max-w-[320px] rounded-[3px] p-3 md:p-5 border border-white/[0.08]"
         onMouseDown={(e) => e.stopPropagation()}
+        onTouchStart={(e) => e.stopPropagation()}
         style={{
-          background: 'rgba(10, 10, 10, 0.75)',
-          backdropFilter: 'blur(20px)',
-          WebkitBackdropFilter: 'blur(20px)',
+          background: 'rgba(20, 20, 22, 0.45)',
+          backdropFilter: 'blur(40px) saturate(1.4)',
+          WebkitBackdropFilter: 'blur(40px) saturate(1.4)',
           opacity: focusedDimState ? 1 : 0,
-          transform: focusedDimState ? 'translateY(0)' : 'translateY(12px)',
           transition: 'all 500ms ease',
           pointerEvents: focusedDimState ? 'auto' : 'none',
           cursor: 'default',
@@ -1217,32 +1262,35 @@ export default function LeadershipSphere({
       >
         {focusedDimState && (
           <>
-            <p
-              className="font-heading font-semibold uppercase tracking-[0.15em] text-xs mb-1"
-              style={{ color: `rgb(${ACCENT.r}, ${ACCENT.g}, ${ACCENT.b})` }}
-            >
-              {DIMENSION_LABELS[focusedDimState]}
-            </p>
-            <p
-              className="font-heading font-semibold text-3xl mb-3"
-              style={{ color: `rgb(${ACCENT.r}, ${ACCENT.g}, ${ACCENT.b})` }}
-            >
-              {focusedScore}
-            </p>
+            {/* Mobile: compact horizontal header. Desktop: stacked */}
+            <div className="flex items-baseline gap-3 md:block mb-1 md:mb-0">
+              <p
+                className="font-heading font-semibold uppercase tracking-[0.15em] text-xs md:mb-1"
+                style={{ color: `rgb(${ACCENT.r}, ${ACCENT.g}, ${ACCENT.b})` }}
+              >
+                {DIMENSION_LABELS[focusedDimState]}
+              </p>
+              <p
+                className="font-heading font-semibold text-xl md:text-3xl md:mb-3"
+                style={{ color: `rgb(${ACCENT.r}, ${ACCENT.g}, ${ACCENT.b})` }}
+              >
+                {focusedScore}
+              </p>
+            </div>
             {focusedDescription && (
-              <p className="font-body text-ops-text-secondary text-sm mb-4 leading-relaxed">
+              <p className="hidden md:block font-body text-ops-text-secondary text-sm mb-4 leading-relaxed">
                 {focusedDescription}
               </p>
             )}
             {focusedSubScores && focusedSubScores.length > 0 && (
-              <div className="space-y-1.5">
+              <div className="flex flex-wrap gap-x-3 gap-y-1 md:block md:space-y-1.5">
                 {focusedSubScores.map((sub, i) => {
                   const c = SUB_NODE_COLORS[i % SUB_NODE_COLORS.length];
                   const isActive = !isQuick && selectedSubIndex === i;
                   return (
                     <div
                       key={sub.label}
-                      className="flex items-center gap-2 text-xs"
+                      className="flex items-center gap-1.5 md:gap-2 text-[10px] md:text-xs"
                       style={{
                         opacity: isQuick ? 0.45 : (selectedSubIndex !== null && !isActive ? 0.4 : 1),
                         transition: 'opacity 300ms ease',
@@ -1255,7 +1303,7 @@ export default function LeadershipSphere({
                       }}
                     >
                       <span
-                        className="inline-block w-2 h-2 rounded-[1px] flex-shrink-0"
+                        className="inline-block w-1.5 h-1.5 md:w-2 md:h-2 rounded-[1px] flex-shrink-0"
                         style={{ background: `rgb(${c.r}, ${c.g}, ${c.b})` }}
                       />
                       <span className="font-body text-ops-text-secondary">
@@ -1263,10 +1311,10 @@ export default function LeadershipSphere({
                       </span>
                       {isQuick ? (
                         <span
-                          className="font-body italic text-[10px]"
+                          className="font-body italic text-[9px] md:text-[10px] hidden md:inline"
                           style={{ color: `rgba(${c.r}, ${c.g}, ${c.b}, 0.5)` }}
                         >
-                          results not available
+                          n/a
                         </span>
                       ) : (
                         <>
@@ -1282,16 +1330,29 @@ export default function LeadershipSphere({
                     </div>
                   );
                 })}
-                {isQuick && (
-                  <p className="font-body text-ops-text-secondary/40 text-[10px] mt-3">
-                    Complete the deep assessment for comprehensive insight.
-                  </p>
-                )}
+                {isQuick && (() => {
+                  const hovColor = hoveredSubIndex !== null
+                    ? SUB_NODE_COLORS[hoveredSubIndex % SUB_NODE_COLORS.length]
+                    : null;
+                  return (
+                    <p
+                      className="hidden md:block font-body text-[10px] mt-3"
+                      style={{
+                        color: hovColor
+                          ? `rgb(${hovColor.r}, ${hovColor.g}, ${hovColor.b})`
+                          : 'rgba(255, 255, 255, 0.75)',
+                        transition: 'color 300ms ease',
+                      }}
+                    >
+                      Complete the deep assessment for comprehensive insight.
+                    </p>
+                  );
+                })()}
               </div>
             )}
             {!isQuick && selectedSub?.description && selectedSubColor && (
               <div
-                className="mt-3 pt-3"
+                className="hidden md:block mt-3 pt-3"
                 style={{
                   borderTop: `1px solid rgba(${selectedSubColor.r}, ${selectedSubColor.g}, ${selectedSubColor.b}, 0.2)`,
                   transition: 'all 300ms ease',

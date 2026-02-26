@@ -178,16 +178,31 @@ export default function SituationalGrid({
 
       const w = parseFloat(canvas.style.width) || canvas.width;
       const h = parseFloat(canvas.style.height) || canvas.height;
-      const cx = w / 2;
-      const cy = h / 2;
-      const radius = Math.min(w, h) * 0.32;
+      const mCx = w / 2;
+      const mCy = h / 2;
+      const mobile = w < 500;
+      const optCount = Math.min(4, options.length);
 
-      const currentAngles = currentAnglesRef.current;
-      const radii = nodeRadiiRef.current;
-      const nodePositions = currentAngles.map((angle, i) => ({
-        x: cx + Math.cos(angle) * radius * radii[i],
-        y: cy + Math.sin(angle) * radius * radii[i],
-      }));
+      let nodePositions: { x: number; y: number }[];
+
+      if (mobile) {
+        const topY = h * 0.08;
+        const bottomY = h * 0.92;
+        const lineLen = bottomY - topY;
+        nodePositions = [];
+        for (let i = 0; i < optCount; i++) {
+          const normY = optCount > 1 ? i / (optCount - 1) : 0.5;
+          nodePositions.push({ x: mCx, y: topY + normY * lineLen });
+        }
+      } else {
+        const radius = Math.min(w, h) * 0.32;
+        const currentAngles = currentAnglesRef.current;
+        const radii = nodeRadiiRef.current;
+        nodePositions = currentAngles.map((angle, i) => ({
+          x: mCx + Math.cos(angle) * radius * radii[i],
+          y: mCy + Math.sin(angle) * radius * radii[i],
+        }));
+      }
 
       const idx = getHoveredIndex(mx, my, nodePositions);
 
@@ -288,204 +303,296 @@ export default function SituationalGrid({
       const h = parseFloat(canvasEl.style.height) || canvasEl.height;
       const cx = w / 2;
       const cy = h / 2;
-      const radius = Math.min(w, h) * 0.32;
       const selected = selectedRef.current;
+      const isMobile = w < 500;
 
       ctx.clearRect(0, 0, w, h);
 
-      // Hover detection (need positions first for hover targets)
       const currentAngles = currentAnglesRef.current;
       const targetAngles = targetAnglesRef.current;
       const radii = nodeRadiiRef.current;
+      const tints = nodeTintRef.current;
+      const optCount = Math.min(4, options.length);
 
-      // Compute current node positions for hover detection
-      const nodePositions = currentAngles.map((angle, i) => ({
-        x: cx + Math.cos(angle) * radius * radii[i],
-        y: cy + Math.sin(angle) * radius * radii[i],
-      }));
+      let nodePositions: { x: number; y: number }[];
 
-      const hoverIdx = getHoveredIndex(mousePos.x, mousePos.y, nodePositions);
-      hoveredRef.current = hoverIdx;
-      canvas.style.cursor = (hoverIdx >= 0) ? 'pointer' : 'default';
+      if (isMobile) {
+        /* ============================================================ */
+        /*  MOBILE: Vertical line with nodes, text alternating L/R      */
+        /* ============================================================ */
 
-      /* ---- Update target angles based on hover (only if no selection) ---- */
+        const lineX = cx;
+        const topY = h * 0.08;
+        const bottomY = h * 0.92;
+        const lineLen = bottomY - topY;
 
-      if (selected < 0) {
-        if (hoverIdx >= 0) {
-          // Hover: push others only slightly (~PI/8)
-          const hovAngle = BASE_ANGLES[hoverIdx];
-          for (let i = 0; i < 4; i++) {
-            if (i === hoverIdx) {
-              targetAngles[i] = BASE_ANGLES[i];
-            } else {
-              const diff = Math.abs(i - hoverIdx);
-              const isOpposite = diff === 2;
-              if (isOpposite) {
-                targetAngles[i] = hovAngle + Math.PI;
-              } else {
-                const sign = wrapAngleDelta(BASE_ANGLES[i], hovAngle) > 0 ? 1 : -1;
-                targetAngles[i] = hovAngle + sign * (Math.PI / 2 + Math.PI / 8);
-              }
-            }
-          }
-        } else {
-          for (let i = 0; i < 4; i++) {
-            targetAngles[i] = BASE_ANGLES[i];
-          }
-        }
-      }
-
-      /* ---- Lerp angles and radii ---- */
-
-      for (let i = 0; i < 4; i++) {
-        const delta = wrapAngleDelta(targetAngles[i], currentAngles[i]);
-        currentAngles[i] += delta * 0.06;
-      }
-
-      for (let i = 0; i < 4; i++) {
-        const target = selected >= 0
-          ? (selected === i ? 1.15 : 0.92)
-          : (hoverIdx === i ? 1.06 : 1.0);
-        radii[i] += (target - radii[i]) * 0.06;
-      }
-
-      // Recompute positions after lerp
-      for (let i = 0; i < 4; i++) {
-        nodePositions[i] = {
-          x: cx + Math.cos(currentAngles[i]) * radius * radii[i],
-          y: cy + Math.sin(currentAngles[i]) * radius * radii[i],
-        };
-      }
-
-      /* ---- Draw rays and nodes ---- */
-
-      for (let i = 0; i < Math.min(4, options.length); i++) {
-        const pos = nodePositions[i];
-        const isSelected = selected === i;
-        const isHovered = hoverIdx === i;
-        const hasSelection = selected >= 0;
-        const isHoveredWhileSelected = isHovered && hasSelection && !isSelected;
-
-        let nodeSize: number;
-        let nodeAlpha: number;
-        let nodeColor: typeof ACCENT;
-
-        if (isSelected) {
-          nodeColor = ACCENT;
-          nodeSize = 12;
-          nodeAlpha = 0.9;
-        } else if (isHoveredWhileSelected) {
-          // Hovered non-selected node while another is selected: subtle glow
-          nodeColor = ACCENT;
-          nodeSize = 6;
-          nodeAlpha = 0.35;
-        } else if (isHovered && !hasSelection) {
-          nodeColor = ACCENT;
-          nodeSize = 9;
-          nodeAlpha = 0.65;
-        } else if (hasSelection) {
-          nodeColor = GREY;
-          nodeSize = 5;
-          nodeAlpha = 0.15;
-        } else {
-          nodeColor = { r: 160, g: 160, b: 160 };
-          nodeSize = 7;
-          nodeAlpha = 0.50;
+        // Compute node positions along vertical line
+        nodePositions = [];
+        for (let i = 0; i < optCount; i++) {
+          const normY = optCount > 1 ? i / (optCount - 1) : 0.5;
+          nodePositions.push({ x: lineX, y: topY + normY * lineLen });
         }
 
-        // Ray from center to node
-        const rayAlpha = isSelected ? 0.6 : (isHovered && !hasSelection) ? 0.35 : isHoveredWhileSelected ? 0.12 : hasSelection ? 0.06 : 0.25;
+        const hoverIdx = getHoveredIndex(mousePos.x, mousePos.y, nodePositions);
+        hoveredRef.current = hoverIdx;
+        canvas.style.cursor = (hoverIdx >= 0) ? 'pointer' : 'default';
 
-        if (isSelected) {
-          ctx.shadowColor = `rgba(${ACCENT.r}, ${ACCENT.g}, ${ACCENT.b}, 0.6)`;
-          ctx.shadowBlur = 18;
-        }
-
+        // Draw vertical line
         ctx.beginPath();
-        ctx.moveTo(cx, cy);
-        ctx.lineTo(pos.x, pos.y);
-        const rayColor = (!isSelected && !isHovered && !hasSelection) ? { r: 160, g: 160, b: 160 } : nodeColor;
-        ctx.strokeStyle = `rgba(${rayColor.r}, ${rayColor.g}, ${rayColor.b}, ${rayAlpha})`;
-        ctx.lineWidth = isSelected ? 1.5 : 0.6;
+        ctx.moveTo(lineX, topY);
+        ctx.lineTo(lineX, bottomY);
+        ctx.strokeStyle = 'rgba(255, 255, 255, 0.06)';
+        ctx.lineWidth = 1;
         ctx.stroke();
 
-        if (isSelected) {
-          ctx.stroke(); // double-stroke for glow
+        // Draw nodes + labels
+        for (let i = 0; i < optCount; i++) {
+          const pos = nodePositions[i];
+          const isSelected = selected === i;
+          const isHovered = hoverIdx === i;
+          const hasSelection = selected >= 0;
+          const isHoveredWhileSelected = isHovered && hasSelection && !isSelected;
+
+          let nodeSize: number;
+          let nodeAlpha: number;
+          let nodeColor: typeof ACCENT;
+
+          if (isSelected) {
+            nodeColor = ACCENT; nodeSize = 12; nodeAlpha = 0.9;
+          } else if (isHoveredWhileSelected) {
+            nodeColor = ACCENT; nodeSize = 6; nodeAlpha = 0.35;
+          } else if (isHovered && !hasSelection) {
+            nodeColor = ACCENT; nodeSize = 9; nodeAlpha = 0.65;
+          } else if (hasSelection) {
+            nodeColor = GREY; nodeSize = 5; nodeAlpha = 0.15;
+          } else {
+            nodeColor = { r: 160, g: 160, b: 160 }; nodeSize = 7; nodeAlpha = 0.50;
+          }
+
+          // Node glow
+          if (isSelected || isHoveredWhileSelected) {
+            ctx.shadowColor = `rgba(${ACCENT.r}, ${ACCENT.g}, ${ACCENT.b}, ${isSelected ? 0.5 : 0.3})`;
+            ctx.shadowBlur = isSelected ? 14 : 8;
+          }
+
+          ctx.fillStyle = `rgba(${nodeColor.r}, ${nodeColor.g}, ${nodeColor.b}, ${nodeAlpha})`;
+          ctx.fillRect(pos.x - nodeSize / 2, pos.y - nodeSize / 2, nodeSize, nodeSize);
+
+          if (isSelected || isHoveredWhileSelected) {
+            ctx.shadowColor = 'transparent';
+            ctx.shadowBlur = 0;
+          }
+
+          // Label — alternate left/right
+          const tintTarget = (isSelected || isHovered) ? 1 : 0;
+          tints[i] += (tintTarget - tints[i]) * 0.08;
+          const tint = tints[i];
+
+          const textAlpha = isSelected ? 0.90 : isHoveredWhileSelected ? 0.55 : (isHovered && !hasSelection) ? 0.70 : hasSelection ? 0.25 : 0.60;
+          ctx.font = '400 12px "Kosugi", sans-serif';
+          const labelR = 200 + (ACCENT.r - 200) * tint;
+          const labelG = 200 + (ACCENT.g - 200) * tint;
+          const labelB = 200 + (ACCENT.b - 200) * tint;
+          ctx.fillStyle = `rgba(${labelR | 0}, ${labelG | 0}, ${labelB | 0}, ${textAlpha})`;
+          ctx.textBaseline = 'middle';
+
+          const isLeftSide = i % 2 === 0; // even = left, odd = right
+          const textGap = 18;
+          const maxWidth = cx - 30;
+
+          if (isLeftSide) {
+            ctx.textAlign = 'right';
+            const lines = wrapText(ctx, options[i].text, maxWidth);
+            const lineHeight = 15;
+            const blockHeight = (lines.length - 1) * lineHeight;
+            const startY = pos.y - blockHeight / 2;
+            for (let li = 0; li < lines.length; li++) {
+              ctx.fillText(lines[li], pos.x - textGap, startY + li * lineHeight);
+            }
+          } else {
+            ctx.textAlign = 'left';
+            const lines = wrapText(ctx, options[i].text, maxWidth);
+            const lineHeight = 15;
+            const blockHeight = (lines.length - 1) * lineHeight;
+            const startY = pos.y - blockHeight / 2;
+            for (let li = 0; li < lines.length; li++) {
+              ctx.fillText(lines[li], pos.x + textGap, startY + li * lineHeight);
+            }
+          }
         }
 
-        ctx.shadowColor = 'transparent';
-        ctx.shadowBlur = 0;
+      } else {
+        /* ============================================================ */
+        /*  DESKTOP: Original radial layout                             */
+        /* ============================================================ */
 
-        // Node glow
-        if (isSelected || isHoveredWhileSelected) {
-          ctx.shadowColor = `rgba(${ACCENT.r}, ${ACCENT.g}, ${ACCENT.b}, ${isSelected ? 0.5 : 0.3})`;
-          ctx.shadowBlur = isSelected ? 14 : 8;
+        const radius = Math.min(w, h) * 0.32;
+
+        // Compute current node positions
+        nodePositions = currentAngles.map((angle, i) => ({
+          x: cx + Math.cos(angle) * radius * radii[i],
+          y: cy + Math.sin(angle) * radius * radii[i],
+        }));
+
+        const hoverIdx = getHoveredIndex(mousePos.x, mousePos.y, nodePositions);
+        hoveredRef.current = hoverIdx;
+        canvas.style.cursor = (hoverIdx >= 0) ? 'pointer' : 'default';
+
+        /* ---- Update target angles based on hover (only if no selection) ---- */
+
+        if (selected < 0) {
+          if (hoverIdx >= 0) {
+            const hovAngle = BASE_ANGLES[hoverIdx];
+            for (let i = 0; i < 4; i++) {
+              if (i === hoverIdx) {
+                targetAngles[i] = BASE_ANGLES[i];
+              } else {
+                const diff = Math.abs(i - hoverIdx);
+                const isOpposite = diff === 2;
+                if (isOpposite) {
+                  targetAngles[i] = hovAngle + Math.PI;
+                } else {
+                  const sign = wrapAngleDelta(BASE_ANGLES[i], hovAngle) > 0 ? 1 : -1;
+                  targetAngles[i] = hovAngle + sign * (Math.PI / 2 + Math.PI / 8);
+                }
+              }
+            }
+          } else {
+            for (let i = 0; i < 4; i++) {
+              targetAngles[i] = BASE_ANGLES[i];
+            }
+          }
         }
 
-        // Draw node square
-        ctx.fillStyle = `rgba(${nodeColor.r}, ${nodeColor.g}, ${nodeColor.b}, ${nodeAlpha})`;
-        ctx.fillRect(
-          pos.x - nodeSize / 2,
-          pos.y - nodeSize / 2,
-          nodeSize,
-          nodeSize,
-        );
+        /* ---- Lerp angles and radii ---- */
 
-        if (isSelected || isHoveredWhileSelected) {
+        for (let i = 0; i < 4; i++) {
+          const delta = wrapAngleDelta(targetAngles[i], currentAngles[i]);
+          currentAngles[i] += delta * 0.06;
+        }
+
+        for (let i = 0; i < 4; i++) {
+          const target = selected >= 0
+            ? (selected === i ? 1.15 : 0.92)
+            : (hoverIdx === i ? 1.06 : 1.0);
+          radii[i] += (target - radii[i]) * 0.06;
+        }
+
+        // Recompute positions after lerp
+        for (let i = 0; i < 4; i++) {
+          nodePositions[i] = {
+            x: cx + Math.cos(currentAngles[i]) * radius * radii[i],
+            y: cy + Math.sin(currentAngles[i]) * radius * radii[i],
+          };
+        }
+
+        /* ---- Draw rays and nodes ---- */
+
+        for (let i = 0; i < optCount; i++) {
+          const pos = nodePositions[i];
+          const isSelected = selected === i;
+          const isHovered = hoverIdx === i;
+          const hasSelection = selected >= 0;
+          const isHoveredWhileSelected = isHovered && hasSelection && !isSelected;
+
+          let nodeSize: number;
+          let nodeAlpha: number;
+          let nodeColor: typeof ACCENT;
+
+          if (isSelected) {
+            nodeColor = ACCENT; nodeSize = 12; nodeAlpha = 0.9;
+          } else if (isHoveredWhileSelected) {
+            nodeColor = ACCENT; nodeSize = 6; nodeAlpha = 0.35;
+          } else if (isHovered && !hasSelection) {
+            nodeColor = ACCENT; nodeSize = 9; nodeAlpha = 0.65;
+          } else if (hasSelection) {
+            nodeColor = GREY; nodeSize = 5; nodeAlpha = 0.15;
+          } else {
+            nodeColor = { r: 160, g: 160, b: 160 }; nodeSize = 7; nodeAlpha = 0.50;
+          }
+
+          // Ray from center to node
+          const rayAlpha = isSelected ? 0.6 : (isHovered && !hasSelection) ? 0.35 : isHoveredWhileSelected ? 0.12 : hasSelection ? 0.06 : 0.25;
+
+          if (isSelected) {
+            ctx.shadowColor = `rgba(${ACCENT.r}, ${ACCENT.g}, ${ACCENT.b}, 0.6)`;
+            ctx.shadowBlur = 18;
+          }
+
+          ctx.beginPath();
+          ctx.moveTo(cx, cy);
+          ctx.lineTo(pos.x, pos.y);
+          const rayColor = (!isSelected && !isHovered && !hasSelection) ? { r: 160, g: 160, b: 160 } : nodeColor;
+          ctx.strokeStyle = `rgba(${rayColor.r}, ${rayColor.g}, ${rayColor.b}, ${rayAlpha})`;
+          ctx.lineWidth = isSelected ? 1.5 : 0.6;
+          ctx.stroke();
+
+          if (isSelected) {
+            ctx.stroke(); // double-stroke for glow
+          }
+
           ctx.shadowColor = 'transparent';
           ctx.shadowBlur = 0;
+
+          // Node glow
+          if (isSelected || isHoveredWhileSelected) {
+            ctx.shadowColor = `rgba(${ACCENT.r}, ${ACCENT.g}, ${ACCENT.b}, ${isSelected ? 0.5 : 0.3})`;
+            ctx.shadowBlur = isSelected ? 14 : 8;
+          }
+
+          // Draw node square
+          ctx.fillStyle = `rgba(${nodeColor.r}, ${nodeColor.g}, ${nodeColor.b}, ${nodeAlpha})`;
+          ctx.fillRect(pos.x - nodeSize / 2, pos.y - nodeSize / 2, nodeSize, nodeSize);
+
+          if (isSelected || isHoveredWhileSelected) {
+            ctx.shadowColor = 'transparent';
+            ctx.shadowBlur = 0;
+          }
+
+          /* ---- Response text near node ---- */
+
+          const baseCos = Math.cos(BASE_ANGLES[i]);
+          const baseSin = Math.sin(BASE_ANGLES[i]);
+
+          const tintTarget = (isSelected || isHovered) ? 1 : 0;
+          tints[i] += (tintTarget - tints[i]) * 0.08;
+          const tint = tints[i];
+
+          const textAlpha = isSelected ? 0.90 : isHoveredWhileSelected ? 0.55 : (isHovered && !hasSelection) ? 0.70 : hasSelection ? 0.25 : 0.60;
+          ctx.font = '400 12px "Kosugi", sans-serif';
+          const labelR = 200 + (ACCENT.r - 200) * tint;
+          const labelG = 200 + (ACCENT.g - 200) * tint;
+          const labelB = 200 + (ACCENT.b - 200) * tint;
+          ctx.fillStyle = `rgba(${labelR | 0}, ${labelG | 0}, ${labelB | 0}, ${textAlpha})`;
+
+          const lineHeight = 15;
+          const maxWidth = 200;
+          let textX: number;
+
+          const isRightAligned = (baseSin < -0.3 && baseCos < 0.3) || (baseCos < -0.3 && Math.abs(baseSin) < 0.7) || (baseSin > 0.3 && Math.abs(baseCos) < 0.7);
+
+          if (isRightAligned) {
+            ctx.textAlign = 'right';
+            textX = pos.x - 20;
+          } else {
+            ctx.textAlign = 'left';
+            textX = pos.x + 20;
+          }
+
+          const lines = wrapText(ctx, options[i].text, maxWidth);
+          const blockHeight = (lines.length - 1) * lineHeight;
+          const blockStartY = pos.y - blockHeight / 2;
+
+          for (let li = 0; li < lines.length; li++) {
+            ctx.fillText(lines[li], textX, blockStartY + li * lineHeight);
+          }
         }
 
-        /* ---- Response text near node ---- */
+        /* ---- Center point ---- */
 
-        // Use BASE angles (static) for justification so it NEVER changes
-        const baseCos = Math.cos(BASE_ANGLES[i]);
-        const baseSin = Math.sin(BASE_ANGLES[i]);
-
-        // Lerp tint toward target (gradual color shift)
-        const tintTarget = (isSelected || isHovered) ? 1 : 0;
-        const tints = nodeTintRef.current;
-        tints[i] += (tintTarget - tints[i]) * 0.08;
-        const tint = tints[i];
-
-        const textAlpha = isSelected ? 0.85 : isHoveredWhileSelected ? 0.45 : (isHovered && !hasSelection) ? 0.60 : hasSelection ? 0.18 : 0.50;
-        ctx.font = '400 11px "Kosugi", sans-serif';
-        // Blend between grey (200) and ACCENT based on lerped tint
-        const labelR = 200 + (ACCENT.r - 200) * tint;
-        const labelG = 200 + (ACCENT.g - 200) * tint;
-        const labelB = 200 + (ACCENT.b - 200) * tint;
-        ctx.fillStyle = `rgba(${labelR | 0}, ${labelG | 0}, ${labelB | 0}, ${textAlpha})`;
-
-        // Determine text position and alignment from BASE angles (never shifts)
-        const lineHeight = 15;
-        const maxWidth = 200;
-        let textX: number;
-
-        const isRightAligned = (baseSin < -0.3 && baseCos < 0.3) || (baseCos < -0.3 && Math.abs(baseSin) < 0.7) || (baseSin > 0.3 && Math.abs(baseCos) < 0.7);
-
-        if (isRightAligned) {
-          ctx.textAlign = 'right';
-          textX = pos.x - 20;
-        } else {
-          ctx.textAlign = 'left';
-          textX = pos.x + 20;
-        }
-
-        const lines = wrapText(ctx, options[i].text, maxWidth);
-
-        // Vertically center the text block on the node
-        const blockHeight = (lines.length - 1) * lineHeight;
-        const blockStartY = pos.y - blockHeight / 2;
-
-        for (let li = 0; li < lines.length; li++) {
-          ctx.fillText(lines[li], textX, blockStartY + li * lineHeight);
-        }
+        ctx.fillStyle = `rgba(${GREY.r}, ${GREY.g}, ${GREY.b}, 0.12)`;
+        ctx.fillRect(cx - 1.5, cy - 1.5, 3, 3);
       }
-
-      /* ---- Center point ---- */
-
-      ctx.fillStyle = `rgba(${GREY.r}, ${GREY.g}, ${GREY.b}, 0.12)`;
-      ctx.fillRect(cx - 1.5, cy - 1.5, 3, 3);
 
       animRef.current = requestAnimationFrame(draw);
     }

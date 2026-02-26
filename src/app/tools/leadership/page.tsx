@@ -49,18 +49,18 @@ const STEPS = [
 export default function LeadershipIntroPage() {
   return (
     <>
-      {/* ---- Hero ---- */}
-      <section className="relative min-h-[85vh] flex items-start overflow-hidden">
+      {/* ---- Hero + Path Selector (single viewport) ---- */}
+      <section className="relative min-h-screen flex flex-col overflow-hidden">
         {/* AmbientBurst background */}
         <AmbientBurst className="absolute inset-0 opacity-40" />
 
-        <div className="relative z-10 max-w-[1400px] w-full mx-auto px-6 md:px-10 pt-40 md:pt-52 pb-32">
+        <div className="relative z-10 max-w-[1400px] w-full mx-auto px-6 md:px-10 pt-28 md:pt-36">
           <FadeInUp>
-            <SectionLabel label="Leadership Tool" className="mb-6" />
+            <SectionLabel label="Leadership Tool" className="mb-5" />
           </FadeInUp>
 
           <FadeInUp delay={0.08}>
-            <h1 className="font-heading font-bold uppercase leading-[0.92] tracking-tight text-ops-text-primary text-5xl md:text-7xl lg:text-8xl">
+            <h1 className="font-heading font-bold uppercase leading-[0.92] tracking-tight text-ops-text-primary text-3xl sm:text-5xl md:text-7xl lg:text-8xl">
               Leadership
               <br />
               Assessment
@@ -68,22 +68,22 @@ export default function LeadershipIntroPage() {
           </FadeInUp>
 
           <FadeInUp delay={0.16}>
-            <p className="mt-6 font-heading font-light text-lg md:text-xl text-ops-text-secondary max-w-xl">
+            <p className="mt-4 font-heading font-light text-base md:text-lg text-ops-text-secondary max-w-xl">
               Discover your leadership archetype. Understand your strengths, blind spots, and the path forward.
             </p>
           </FadeInUp>
         </div>
-      </section>
 
-      {/* ---- Version Selection — PathSelector ---- */}
-      <section className="max-w-[1400px] mx-auto px-6 md:px-10 py-24 md:py-32">
-        <FadeInUp>
-          <SectionLabel label="Choose Your Path" className="mb-10" />
-        </FadeInUp>
+        {/* Path Selector — fills remaining space */}
+        <div className="relative z-10 flex-1 max-w-[1400px] w-full mx-auto px-6 md:px-10 pt-6 md:pt-10 pb-8">
+          <FadeInUp delay={0.24}>
+            <SectionLabel label="Choose Your Path" className="mb-4 md:mb-6" />
+          </FadeInUp>
 
-        <FadeInUp delay={0.06}>
-          <PathSelector />
-        </FadeInUp>
+          <FadeInUp delay={0.30}>
+            <PathSelector />
+          </FadeInUp>
+        </div>
       </section>
 
       <div className="max-w-[1400px] mx-auto px-6 md:px-10">

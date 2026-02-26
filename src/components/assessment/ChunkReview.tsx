@@ -123,21 +123,37 @@ export default function ChunkReview({
       className="h-full overflow-y-auto"
     >
       <div className="pl-[6%] md:pl-[8%] lg:pl-[10%] pr-[6%] md:pr-[8%] lg:pr-[10%] py-8 md:py-12">
-        {/* Section label */}
-        <motion.span
-          variants={itemVariants}
-          className="block font-caption text-[10px] uppercase tracking-[0.25em] text-ops-accent mb-6"
-        >
-          [ Section Review ]
-        </motion.span>
+        {/* Header row — title + continue button */}
+        <div className="flex items-start justify-between gap-4 mb-3">
+          <div>
+            {/* Section label */}
+            <motion.span
+              variants={itemVariants}
+              className="block font-caption text-[10px] uppercase tracking-[0.25em] text-ops-accent mb-6"
+            >
+              [ Section Review ]
+            </motion.span>
 
-        {/* Title */}
-        <motion.h2
-          variants={itemVariants}
-          className="font-heading font-bold uppercase text-ops-text-primary text-2xl md:text-3xl tracking-tight mb-3"
-        >
-          Section {chunkNumber} Complete
-        </motion.h2>
+            {/* Title */}
+            <motion.h2
+              variants={itemVariants}
+              className="font-heading font-bold uppercase text-ops-text-primary text-2xl md:text-3xl tracking-tight"
+            >
+              Section {chunkNumber} Complete
+            </motion.h2>
+          </div>
+
+          {/* Confirm button — top right */}
+          <motion.div variants={itemVariants} className="flex-shrink-0 mt-6">
+            <button
+              type="button"
+              onClick={onConfirm}
+              className="font-caption uppercase tracking-[0.2em] text-[11px] text-ops-background bg-white rounded-[3px] px-6 py-2.5 cursor-pointer transition-all duration-200 hover:bg-white/90"
+            >
+              Continue
+            </button>
+          </motion.div>
+        </div>
 
         {/* Subtitle */}
         <motion.p
@@ -196,19 +212,8 @@ export default function ChunkReview({
           );
         })}
 
-        {/* Confirm button */}
-        <motion.div
-          variants={itemVariants}
-          className="mt-8"
-        >
-          <button
-            type="button"
-            onClick={onConfirm}
-            className="font-caption uppercase tracking-[0.2em] text-[11px] text-ops-background bg-white rounded-[3px] px-8 py-3 cursor-pointer transition-all duration-200 hover:bg-white/90"
-          >
-            Confirm & Continue
-          </button>
-        </motion.div>
+        {/* Spacer at bottom */}
+        <div className="h-8" />
       </div>
     </motion.div>
   );
