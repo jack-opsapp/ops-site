@@ -328,19 +328,19 @@
     "options": null,
     "scoring_weights": {
       "1": {
-        "vision": 100
+        "vision": 0
       },
       "2": {
-        "vision": 85
+        "vision": 15
       },
       "3": {
-        "vision": 65
+        "vision": 50
       },
       "4": {
-        "vision": 35
+        "vision": 85
       },
       "5": {
-        "vision": 0
+        "vision": 100
       }
     },
     "difficulty": 0.6,
@@ -891,7 +891,7 @@
     "dimension": "vision",
     "secondary_dimension": null,
     "type": "situational",
-    "text": "I have budget left this quarter. Do I invest in fixing a current bottleneck or fund research into a method that could transform next year's results?",
+    "text": "I have budget left this quarter. Do I fix a current bottleneck, fund research into a method that could transform next year's results, or invest in a team development initiative?",
     "options": [
       {
         "key": "a",
@@ -1299,7 +1299,7 @@
     "dimension": "vision",
     "secondary_dimension": null,
     "type": "situational",
-    "text": "My team hits their quarterly targets, but I notice the wins came from a few lucky breaks rather than a repeatable system. Most people else is celebrating.",
+    "text": "My team hits their quarterly targets, but I notice the wins came from a few lucky breaks rather than a repeatable system. Everyone else is celebrating.",
     "options": [
       {
         "key": "a",
@@ -1569,7 +1569,7 @@
     "dimension": "vision",
     "secondary_dimension": null,
     "type": "situational",
-    "text": "My team's workload has been manageable, but I see three separate projects converging in the same month six weeks from now. Few people else has flagged it yet.",
+    "text": "My team's workload has been manageable, but I see three separate projects converging in the same month six weeks from now. No one else has flagged it yet.",
     "options": [
       {
         "key": "a",
@@ -1773,7 +1773,7 @@
     "dimension": "vision",
     "secondary_dimension": null,
     "type": "situational",
-    "text": "My company is growing fast. I can see that the processes that work at my current size will break at double the headcount, but most people is focused on hiring.",
+    "text": "My company is growing fast. I can see that the processes that work at my current size will break at double the headcount, but most people are focused on hiring.",
     "options": [
       {
         "key": "a",

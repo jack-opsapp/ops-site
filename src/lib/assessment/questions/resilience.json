@@ -1637,7 +1637,7 @@
     "dimension": "resilience",
     "secondary_dimension": null,
     "type": "situational",
-    "text": "I've had three consecutive initiatives fail over six months. A new opportunity comes up that requires I to pitch leadership again. My honest reaction is:",
+    "text": "I've had three consecutive initiatives fail over six months. A new opportunity comes up that requires me to pitch leadership again. My honest reaction is:",
     "options": [
       {
         "key": "a",
@@ -1908,7 +1908,7 @@
     "dimension": "resilience",
     "secondary_dimension": null,
     "type": "situational",
-    "text": "I've just watched a competitor launch something strikingly similar to what my team has been building for months. They beat I to market. In the team debrief, I:",
+    "text": "I've just watched a competitor launch something strikingly similar to what my team has been building for months. They beat me to market. In the team debrief, I:",
     "options": [
       {
         "key": "a",
@@ -2438,7 +2438,7 @@
     "dimension": "resilience",
     "secondary_dimension": null,
     "type": "forced_choice",
-    "text": "When everything falls apart at once and people are looking to me for direction, what keeps I steady is:",
+    "text": "When everything falls apart at once and people are looking to me for direction, what keeps me steady is:",
     "options": [
       {
         "key": "a",

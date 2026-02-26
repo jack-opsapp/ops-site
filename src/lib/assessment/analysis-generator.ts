@@ -64,12 +64,13 @@ You must respond with valid JSON matching this exact structure:
   "team_dynamics": "How they affect the people around them. What teammates experience.",
   "deep_insight": "Analyze the full set of individual responses to find one non-obvious pattern. Something the person wouldn't expect the test to catch."`;
 
-  if (isDeep) {
-    prompt += `\n\nThis is a DEEP assessment. Also include:
+  // Dimensional deep dive for ALL versions (provides dimension descriptions for the sphere)
+  prompt += `\n\nAlso include:
   "dimensional_deep_dive": { "drive": "paragraph", "resilience": "paragraph", "vision": "paragraph", "connection": "paragraph", "adaptability": "paragraph", "integrity": "paragraph" }
 
-Each dimensional_deep_dive paragraph should explain what their specific score in that dimension means for their leadership — not a generic description of the dimension.`;
+Each dimensional_deep_dive paragraph should explain what their specific score in that dimension means for their leadership — not a generic description of the dimension.${isDeep ? ' Be thorough — 3-4 sentences per dimension.' : ' Keep each to 1-2 sentences.'}`;
 
+  if (isDeep) {
     // Population comparison is included in the user message if norms data is available.
     prompt += `\n\nIf population norms data is provided, also include:
   "population_comparison": { "drive": { "score": number, "percentile": number }, ... }
@@ -143,7 +144,7 @@ function buildFallbackAnalysis(input: AnalysisInput): AIAnalysis {
   const bottomDim = sorted[sorted.length - 1];
 
   return {
-    headline: `The ${archetype.name}`,
+    headline: archetype.name,
     summary: archetype.description_template,
     strengths,
     blind_spots: blindSpots,
@@ -196,24 +197,25 @@ function parseAnalysisResponse(raw: string, version: AssessmentVersion): AIAnaly
       deep_insight: parsed.deep_insight,
     };
 
-    // Deep version optional fields
-    if (version === 'deep') {
-      if (parsed.dimensional_deep_dive && typeof parsed.dimensional_deep_dive === 'object') {
-        const dive: Record<string, string> = {};
-        let valid = true;
-        for (const dim of DIMENSIONS) {
-          if (typeof parsed.dimensional_deep_dive[dim] === 'string') {
-            dive[dim] = parsed.dimensional_deep_dive[dim];
-          } else {
-            valid = false;
-            break;
-          }
-        }
-        if (valid) {
-          analysis.dimensional_deep_dive = dive as Record<Dimension, string>;
+    // Dimensional deep dive (available for all versions)
+    if (parsed.dimensional_deep_dive && typeof parsed.dimensional_deep_dive === 'object') {
+      const dive: Record<string, string> = {};
+      let valid = true;
+      for (const dim of DIMENSIONS) {
+        if (typeof parsed.dimensional_deep_dive[dim] === 'string') {
+          dive[dim] = parsed.dimensional_deep_dive[dim];
+        } else {
+          valid = false;
+          break;
         }
       }
+      if (valid) {
+        analysis.dimensional_deep_dive = dive as Record<Dimension, string>;
+      }
+    }
 
+    // Deep version optional fields
+    if (version === 'deep') {
       if (parsed.population_comparison && typeof parsed.population_comparison === 'object') {
         const comp: Record<string, { score: number; percentile: number }> = {};
         let valid = true;

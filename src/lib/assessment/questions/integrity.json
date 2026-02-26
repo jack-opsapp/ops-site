@@ -1231,7 +1231,7 @@
     "dimension": "integrity",
     "secondary_dimension": null,
     "type": "situational",
-    "text": "I promised my team I'd fight for their budget increase in the leadership meeting. During the meeting, I realize the CFO is in a hostile mood and pushing back hard. Raising the topic will likely fail and could cost I political capital.",
+    "text": "I promised my team I'd fight for their budget increase in the leadership meeting. During the meeting, I realize the CFO is in a hostile mood and pushing back hard. Raising the topic will likely fail and could cost me political capital.",
     "options": [
       {
         "key": "a",
@@ -1638,7 +1638,7 @@
     "dimension": "integrity",
     "secondary_dimension": null,
     "type": "situational",
-    "text": "My team's monthly report has consistently included a metric that makes my department look good but doesn't actually reflect real performance. Few people has questioned it. I've just taken over the report.",
+    "text": "My team's monthly report has consistently included a metric that makes my department look good but doesn't actually reflect real performance. No one has questioned it. I've just taken over the report.",
     "options": [
       {
         "key": "a",
@@ -1706,7 +1706,7 @@
     "dimension": "integrity",
     "secondary_dimension": null,
     "type": "situational",
-    "text": "My company's expense policy says receipts are required for anything over $25. I spent $40 on a legitimate business lunch but lost the receipt. I know few people checks these closely.",
+    "text": "My company's expense policy says receipts are required for anything over $25. I spent $40 on a legitimate business lunch but lost the receipt. I know nobody checks these closely.",
     "options": [
       {
         "key": "a",
@@ -1976,7 +1976,7 @@
     "dimension": "integrity",
     "secondary_dimension": null,
     "type": "situational",
-    "text": "I've built a strong relationship with a client over two years. They ask I off the record whether my company is planning to raise prices next year. I know the answer is yes, but the announcement hasn't been made yet.",
+    "text": "I've built a strong relationship with a client over two years. They ask me off the record whether my company is planning to raise prices next year. I know the answer is yes, but the announcement hasn't been made yet.",
     "options": [
       {
         "key": "a",

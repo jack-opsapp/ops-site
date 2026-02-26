@@ -861,19 +861,19 @@
     "options": null,
     "scoring_weights": {
       "1": {
-        "drive": 100
+        "drive": 0
       },
       "2": {
-        "drive": 85
+        "drive": 15
       },
       "3": {
-        "drive": 65
+        "drive": 50
       },
       "4": {
-        "drive": 35
+        "drive": 85
       },
       "5": {
-        "drive": 0
+        "drive": 100
       }
     },
     "difficulty": 0.51,
@@ -890,7 +890,7 @@
     "dimension": "drive",
     "secondary_dimension": null,
     "type": "situational",
-    "text": "I've been in my role for six months and notice that a key client onboarding process has several manual steps that waste hours each week. Few people has complained about it. What do I do?",
+    "text": "I've been in my role for six months and notice that a key client onboarding process has several manual steps that waste hours each week. No one has complained about it. What do I do?",
     "options": [
       {
         "key": "a",
@@ -1162,7 +1162,7 @@
     "dimension": "drive",
     "secondary_dimension": null,
     "type": "situational",
-    "text": "I've been eyeing a director-level role that just opened up. I meet most of the requirements but are missing experience in one key area. What do I do?",
+    "text": "I've been eyeing a director-level role that just opened up. I meet most of the requirements but am missing experience in one key area. What do I do?",
     "options": [
       {
         "key": "a",
@@ -2349,7 +2349,7 @@
     "dimension": "drive",
     "secondary_dimension": null,
     "type": "forced_choice",
-    "text": "I'm choosing between two vacation styles. Which sounds more like I:",
+    "text": "I'm choosing between two vacation styles. Which sounds more like me:",
     "options": [
       {
         "key": "a",
@@ -2393,7 +2393,7 @@
     "dimension": "drive",
     "secondary_dimension": null,
     "type": "forced_choice",
-    "text": "Two people I respect give I opposite advice: one says 'go faster,' the other says 'go deeper.' I lean toward:",
+    "text": "Two people I respect give me opposite advice: one says 'go faster,' the other says 'go deeper.' I lean toward:",
     "options": [
       {
         "key": "a",
@@ -2437,7 +2437,7 @@
     "dimension": "drive",
     "secondary_dimension": null,
     "type": "forced_choice",
-    "text": "I find out a peer who started the same role as I just got promoted. My honest reaction:",
+    "text": "I find out a peer who started the same role as me just got promoted. My honest reaction:",
     "options": [
       {
         "key": "a",

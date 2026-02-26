@@ -10,8 +10,11 @@ import type {
   DimensionScore,
   ValidityFlags,
   PoolQuestion,
+  SubDimension,
+  DimensionSubScores,
+  SubScore,
 } from './types';
-import { DIMENSIONS } from './types';
+import { DIMENSIONS, SUB_DIMENSIONS } from './types';
 
 /* ------------------------------------------------------------------ */
 /*  1. initializeScoreProfile                                          */
@@ -321,4 +324,92 @@ export function getConfidenceLevel(se: number): 'high' | 'medium' | 'low' {
   if (se < 0.1) return 'high';
   if (se <= 0.2) return 'medium';
   return 'low';
+}
+
+/* ------------------------------------------------------------------ */
+/*  7. computeSubScores                                                */
+/* ------------------------------------------------------------------ */
+
+/** Display labels for sub-dimensions (lowercase key → title-case label). */
+const SUB_DIMENSION_LABELS: Record<SubDimension, string> = {
+  initiative: 'Initiative',
+  urgency: 'Urgency',
+  ambition: 'Ambition',
+  recovery: 'Recovery',
+  composure: 'Composure',
+  strategy: 'Strategy',
+  foresight: 'Foresight',
+  innovation: 'Innovation',
+  empathy: 'Empathy',
+  trust: 'Trust',
+  flexibility: 'Flexibility',
+  learning: 'Learning',
+  consistency: 'Consistency',
+  transparency: 'Transparency',
+  ethics: 'Ethics',
+};
+
+/**
+ * Deterministically computes sub-dimension scores from questions + answers.
+ *
+ * For each dimension, groups answered questions by `sub_dimension`, then
+ * averages the parent-dimension score contribution across those questions.
+ * The result is a 0-100 score per sub-dimension.
+ *
+ * Questions without a `sub_dimension` are skipped.
+ */
+export function computeSubScores(
+  questions: PoolQuestion[],
+  answers: { question_id: string; answer_value: number | string }[],
+  scoreProfile: ScoreProfile,
+): DimensionSubScores {
+  const questionMap = new Map(questions.map((q) => [q.id, q]));
+
+  // Accumulate per sub-dimension: sum of contribution scores + count
+  const accum = new Map<SubDimension, { sum: number; count: number; dim: Dimension }>();
+
+  for (const answer of answers) {
+    const question = questionMap.get(answer.question_id);
+    if (!question || !question.sub_dimension) continue;
+
+    const contributions = scoreResponse(question, answer.answer_value);
+    const parentDim = question.dimension;
+    const contribution = contributions[parentDim];
+
+    const existing = accum.get(question.sub_dimension);
+    if (existing) {
+      existing.sum += contribution;
+      existing.count += 1;
+    } else {
+      accum.set(question.sub_dimension, { sum: contribution, count: 1, dim: parentDim });
+    }
+  }
+
+  // Build result: for each dimension, produce sub-scores
+  const result = {} as DimensionSubScores;
+
+  for (const dim of DIMENSIONS) {
+    const subs = SUB_DIMENSIONS[dim];
+    const parentScore = scoreProfile[dim].score;
+
+    result[dim] = subs.map((subKey): SubScore => {
+      const data = accum.get(subKey);
+
+      if (data && data.count > 0) {
+        // Average contribution, clamped to 0-100
+        const avg = data.sum / data.count;
+        const score = Math.round(Math.max(0, Math.min(100, avg)));
+        return { label: SUB_DIMENSION_LABELS[subKey], score };
+      }
+
+      // No direct data — derive from parent score with slight variance
+      // Use a deterministic offset based on sub-dimension index
+      const idx = subs.indexOf(subKey);
+      const variance = (idx - (subs.length - 1) / 2) * 4;
+      const score = Math.round(Math.max(0, Math.min(100, parentScore + variance)));
+      return { label: SUB_DIMENSION_LABELS[subKey], score };
+    });
+  }
+
+  return result;
 }
