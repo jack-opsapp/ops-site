@@ -37,6 +37,7 @@ interface QuestionFrameProps {
   nextQuestionAnswered?: boolean;
   onSaveAnswer?: (value: number | string) => void;
   onCompleteSection?: () => void;
+  hideStepDots?: boolean;
 }
 
 const EASE = [0.22, 1, 0.36, 1] as const;
@@ -98,6 +99,7 @@ export default function QuestionFrame({
   nextQuestionAnswered = false,
   onSaveAnswer,
   onCompleteSection,
+  hideStepDots = false,
 }: QuestionFrameProps) {
   const [selectionMade, setSelectionMade] = useState(false);
 
@@ -127,19 +129,23 @@ export default function QuestionFrame({
         {/* Spacer — pushes content down from the top */}
         <div className="h-[6vh] md:h-[8vh]" />
 
-        {/* Step dots — just above section title */}
-        <motion.div
-          variants={childVariants}
-          className="px-6 md:px-10 lg:px-16 pb-5"
-          style={fadeStyle}
-        >
-          <StepDots
-            totalSteps={totalQuestionsInChunk}
-            currentStep={questionIndex}
-            completedSteps={completedSteps}
-            onNavigate={onNavigateToStep}
-          />
-        </motion.div>
+        {/* Step dots — just above section title (hidden when rendered externally) */}
+        {!hideStepDots && (
+          <motion.div
+            variants={childVariants}
+            className="px-6 md:px-10 lg:px-16 pb-5"
+            style={fadeStyle}
+          >
+            <StepDots
+              totalSteps={totalQuestionsInChunk}
+              currentStep={questionIndex}
+              completedSteps={completedSteps}
+              onNavigate={onNavigateToStep}
+            />
+          </motion.div>
+        )}
+        {/* Spacer to preserve layout when StepDots are rendered externally */}
+        {hideStepDots && <div className="pb-5" />}
 
         {/* Question prompt */}
         <motion.div
