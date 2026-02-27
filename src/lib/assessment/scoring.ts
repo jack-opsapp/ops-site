@@ -275,6 +275,22 @@ export function computeValidityFlags(
     straightLinePct = maxFreq / likertAnswers.length;
   }
 
+  /* ---------- acquiescence_bias ---------- */
+  // % of likert responses at 4 or 5 (agreement bias regardless of content)
+  let acquiescenceBias = 0;
+  if (likertAnswers.length > 0) {
+    const highCount = likertAnswers.filter((v) => v >= 4).length;
+    acquiescenceBias = highCount / likertAnswers.length;
+  }
+
+  /* ---------- extreme_response_pct ---------- */
+  // % of likert responses at extremes (1 or 5)
+  let extremeResponsePct = 0;
+  if (likertAnswers.length > 0) {
+    const extremeCount = likertAnswers.filter((v) => v === 1 || v === 5).length;
+    extremeResponsePct = extremeCount / likertAnswers.length;
+  }
+
   /* ---------- fast_response_pct ---------- */
   let fastCount = 0;
   const totalResponses = allResponses.length;
@@ -291,13 +307,17 @@ export function computeValidityFlags(
   if (
     inconsistencyIndex > 2.5 ||
     impressionManagement > 0.75 ||
-    straightLinePct > 0.7
+    straightLinePct > 0.6 ||
+    acquiescenceBias > 0.85 ||
+    extremeResponsePct > 0.8
   ) {
     overallReliability = 'low';
   } else if (
     inconsistencyIndex < 1.5 &&
     impressionManagement < 0.5 &&
-    straightLinePct < 0.5
+    straightLinePct < 0.4 &&
+    acquiescenceBias < 0.65 &&
+    extremeResponsePct < 0.5
   ) {
     overallReliability = 'high';
   } else {
@@ -309,6 +329,8 @@ export function computeValidityFlags(
     impression_management: impressionManagement,
     straight_line_pct: straightLinePct,
     fast_response_pct: fastResponsePct,
+    acquiescence_bias: acquiescenceBias,
+    extreme_response_pct: extremeResponsePct,
     overall_reliability: overallReliability,
   };
 }

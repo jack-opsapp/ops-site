@@ -104,6 +104,8 @@ export interface ValidityFlags {
   impression_management: number;
   straight_line_pct: number;
   fast_response_pct: number;
+  acquiescence_bias: number;
+  extreme_response_pct: number;
   overall_reliability: 'high' | 'medium' | 'low';
 }
 
