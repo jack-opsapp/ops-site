@@ -10,12 +10,7 @@ import GradientOverlay from '@/components/ui/GradientOverlay';
 
 const APP_STORE_URL = 'https://apps.apple.com/us/app/ops-job-crew-management/id6746662078';
 
-/**
- * To add a hero background image:
- * 1. Place image in /public/images/heroes/ (e.g. home-hero.jpg)
- * 2. Set HERO_IMAGE below to the filename
- */
-const HERO_IMAGE: string | null = null; // e.g. 'home-hero.jpg'
+const HERO_IMAGE = '/images/hero-home.png';
 
 export default function Hero() {
   return (
@@ -23,11 +18,11 @@ export default function Hero() {
       {/* Optional background image */}
       {HERO_IMAGE && (
         <Image
-          src={`/images/heroes/${HERO_IMAGE}`}
+          src={HERO_IMAGE}
           alt=""
           fill
           priority
-          className="object-cover"
+          className="object-cover opacity-[0.12]"
         />
       )}
 
