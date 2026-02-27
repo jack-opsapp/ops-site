@@ -54,7 +54,7 @@ export default function LeadershipIntroPage() {
         {/* AmbientBurst background */}
         <AmbientBurst className="absolute inset-0 opacity-40" />
 
-        <div className="relative z-10 max-w-[1400px] w-full mx-auto px-6 md:px-10 pt-28 md:pt-36">
+        <div className="relative z-10 max-w-[1400px] w-full mx-auto px-6 md:px-10 pt-20 md:pt-24">
           <FadeInUp>
             <SectionLabel label="Leadership Tool" className="mb-5" />
           </FadeInUp>
