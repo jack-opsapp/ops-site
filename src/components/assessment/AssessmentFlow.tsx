@@ -273,6 +273,23 @@ function reducer(state: FlowState, action: FlowAction): FlowState {
           totalChunks: action.totalChunks,
         };
       }
+      // If animation already finished, go straight to questioning
+      if (state.chunkAnimDone && action.questions) {
+        return {
+          ...state,
+          phase: 'questioning',
+          questions: action.questions,
+          nextQuestions: null,
+          questionIndex: 0,
+          questionStartTime: Date.now(),
+          chunkAnimDone: false,
+          chunkApiDone: false,
+          chunkResponses: [],
+          savedAnswers: new Map(),
+          currentChunk: action.currentChunk,
+          totalChunks: action.totalChunks,
+        };
+      }
       return {
         ...state,
         phase: 'chunk_transition',
@@ -932,30 +949,13 @@ export default function AssessmentFlow({ version, resumeData, upgradeFromToken }
           </motion.div>
         )}
 
-        {/* Submitting chunk — galaxy starts building immediately */}
-        {state.phase === 'submitting_chunk' && (
-          <motion.div
-            key="submitting"
-            {...phaseVariants}
-            className="flex-1 h-full"
-          >
-            <ChunkTransition
-              chunkNumber={state.currentChunk}
-              totalChunks={state.totalChunks}
-              onComplete={() => {}}
-              galaxyOnly
-            />
-          </motion.div>
-        )}
-
-        {/* Chunk transition — continues galaxy from submitting phase */}
-        {state.phase === 'chunk_transition' && (
+        {/* Chunk submitting + transition — single mount so galaxy + text stay continuous */}
+        {(state.phase === 'submitting_chunk' || state.phase === 'chunk_transition') && (
           <motion.div key="chunk-transition" {...phaseVariants} className="flex-1 h-full">
             <ChunkTransition
               chunkNumber={state.currentChunk}
               totalChunks={state.totalChunks}
               onComplete={handleChunkTransitionComplete}
-              elapsedOffset={chunkGalaxyOffsetRef.current}
             />
           </motion.div>
         )}

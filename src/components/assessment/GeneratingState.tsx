@@ -269,8 +269,9 @@ export default function GeneratingState() {
   const geomRef = useRef<ReturnType<typeof computeGeometry> | null>(null);
   const animRef = useRef<number>(0);
   const mouseRef = useRef({ x: -9999, y: -9999 });
-  const [hoveredNode, setHoveredNode] = useState<{ index: number; x: number; y: number } | null>(null);
-  const hoveredNodeRef = useRef<{ index: number; x: number; y: number } | null>(null);
+  const [hoveredNodeIndex, setHoveredNodeIndex] = useState<number | null>(null);
+  const hoveredNodeRef = useRef<number | null>(null);
+  const labelElRef = useRef<HTMLDivElement>(null);
 
   if (!starsRef.current) starsRef.current = generateStarfield();
   if (!geomRef.current) geomRef.current = computeGeometry();
@@ -461,16 +462,20 @@ export default function GeneratingState() {
           }
         }
 
-        const prev = hoveredNodeRef.current;
-        if (closestNode && (!prev || prev.index !== closestNode.index)) {
-          hoveredNodeRef.current = { index: closestNode.index, x: closestNode.x, y: closestNode.y };
-          setHoveredNode({ index: closestNode.index, x: closestNode.x, y: closestNode.y });
-        } else if (closestNode && prev) {
-          // Update position without triggering re-render unless node changed
-          hoveredNodeRef.current = { index: prev.index, x: closestNode.x, y: closestNode.y };
-        } else if (!closestNode && prev) {
+        // Update label DOM element position directly every frame
+        const labelEl = labelElRef.current;
+        if (closestNode) {
+          if (hoveredNodeRef.current !== closestNode.index) {
+            hoveredNodeRef.current = closestNode.index;
+            setHoveredNodeIndex(closestNode.index);
+          }
+          if (labelEl) {
+            labelEl.style.left = `${closestNode.x}px`;
+            labelEl.style.top = `${closestNode.y - 22}px`;
+          }
+        } else if (hoveredNodeRef.current !== null) {
           hoveredNodeRef.current = null;
-          setHoveredNode(null);
+          setHoveredNodeIndex(null);
         }
       }
 
@@ -570,21 +575,20 @@ export default function GeneratingState() {
         <canvas ref={canvasRef} style={{ display: 'block', width: '100%', height: '100%' }} />
       </div>
 
-      {/* Node hover label */}
-      {hoveredNode && (
-        <div
-          className="absolute z-20 pointer-events-none"
-          style={{
-            left: hoveredNode.x,
-            top: hoveredNode.y - 22,
-            transform: 'translateX(-50%)',
-          }}
-        >
-          <span className="font-caption text-[9px] uppercase tracking-[0.25em] text-ops-accent/80 whitespace-nowrap">
-            {DIM_LABELS[hoveredNode.index]}
-          </span>
-        </div>
-      )}
+      {/* Node hover label — positioned directly by draw loop via ref */}
+      <div
+        ref={labelElRef}
+        className="absolute z-20 pointer-events-none"
+        style={{
+          transform: 'translateX(-50%)',
+          opacity: hoveredNodeIndex !== null ? 1 : 0,
+          transition: 'opacity 150ms ease',
+        }}
+      >
+        <span className="font-caption text-[9px] uppercase tracking-[0.25em] text-ops-accent/80 whitespace-nowrap">
+          {hoveredNodeIndex !== null ? DIM_LABELS[hoveredNodeIndex] : ''}
+        </span>
+      </div>
 
       <div className="relative z-10 pointer-events-none text-center">
         <motion.p

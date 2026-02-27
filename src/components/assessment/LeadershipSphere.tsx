@@ -1245,6 +1245,11 @@ export default function LeadershipSphere({
         style={{ display: 'block', width: '100%', height: '100%' }}
       />
 
+      {/* Navigation hint — top left */}
+      <p className="absolute top-2 left-2 font-caption text-[9px] uppercase tracking-[0.2em] text-ops-text-secondary/30 pointer-events-none">
+        Drag to navigate, click a node to see details
+      </p>
+
       {/* Description panel — mobile: below sphere; desktop: bottom-left overlay */}
       <div
         className="absolute z-20 left-2 right-2 bottom-0 translate-y-[85%] md:translate-y-0 md:bottom-4 md:left-4 md:right-auto md:max-w-[320px] rounded-[3px] p-3 md:p-5 border border-white/[0.08]"
@@ -1286,17 +1291,17 @@ export default function LeadershipSphere({
               <div className="flex flex-wrap gap-x-3 gap-y-1 md:block md:space-y-1.5">
                 {focusedSubScores.map((sub, i) => {
                   const c = SUB_NODE_COLORS[i % SUB_NODE_COLORS.length];
-                  const isActive = !isQuick && selectedSubIndex === i;
+                  const isActive = selectedSubIndex === i;
                   return (
                     <div
                       key={sub.label}
                       className="flex items-center gap-1.5 md:gap-2 text-[10px] md:text-xs"
                       style={{
-                        opacity: isQuick ? 0.45 : (selectedSubIndex !== null && !isActive ? 0.4 : 1),
+                        opacity: selectedSubIndex !== null && !isActive ? 0.4 : 1,
                         transition: 'opacity 300ms ease',
-                        cursor: isQuick ? 'default' : 'pointer',
+                        cursor: 'pointer',
                       }}
-                      onClick={isQuick ? undefined : () => {
+                      onClick={() => {
                         const newIdx = selectedSubIndex === i ? null : i;
                         selectedSubRef.current = newIdx;
                         setSelectedSubIndex(newIdx);
@@ -1350,7 +1355,7 @@ export default function LeadershipSphere({
                 })()}
               </div>
             )}
-            {!isQuick && selectedSub?.description && selectedSubColor && (
+            {selectedSub && selectedSubColor && (
               <div
                 className="hidden md:block mt-3 pt-3"
                 style={{
@@ -1358,15 +1363,25 @@ export default function LeadershipSphere({
                   transition: 'all 300ms ease',
                 }}
               >
-                <p
-                  className="font-heading font-semibold uppercase tracking-[0.15em] text-xs mb-1"
-                  style={{ color: `rgb(${selectedSubColor.r}, ${selectedSubColor.g}, ${selectedSubColor.b})` }}
-                >
-                  {selectedSub.label}
-                </p>
-                <p className="font-body text-ops-text-secondary text-xs leading-relaxed">
-                  {selectedSub.description}
-                </p>
+                <div className="flex items-baseline gap-2 mb-1">
+                  <p
+                    className="font-heading font-semibold uppercase tracking-[0.15em] text-xs"
+                    style={{ color: `rgb(${selectedSubColor.r}, ${selectedSubColor.g}, ${selectedSubColor.b})` }}
+                  >
+                    {selectedSub.label}
+                  </p>
+                  <span
+                    className="font-heading font-semibold text-sm"
+                    style={{ color: `rgb(${selectedSubColor.r}, ${selectedSubColor.g}, ${selectedSubColor.b})` }}
+                  >
+                    {selectedSub.score}
+                  </span>
+                </div>
+                {selectedSub.description && (
+                  <p className="font-body text-ops-text-secondary text-xs leading-relaxed">
+                    {selectedSub.description}
+                  </p>
+                )}
               </div>
             )}
           </>

@@ -170,6 +170,15 @@ export default async function ResultsPage({ params }: PageProps) {
                 <span className="sm:hidden">Continue Full Assessment</span>
               </Link>
             </FadeInUp>
+
+            <FadeInUp>
+              <Link
+                href="/tools/leadership/assess"
+                className="w-full sm:w-auto inline-flex items-center justify-center font-caption uppercase tracking-[0.15em] text-xs px-8 py-3.5 rounded-[3px] transition-all duration-200 border border-ops-border text-ops-text-secondary hover:border-ops-border-hover hover:text-ops-text-primary mt-3"
+              >
+                Take the Test Again
+              </Link>
+            </FadeInUp>
           </div>
         </section>
       )}
