@@ -19,7 +19,8 @@ export default function CompanyPage() {
       <BottomCTA
         heading="JOIN THE TRADES THAT RUN ON OPS"
         buttonText="GET OPS"
-        buttonHref="/login?mode=signup"
+        buttonHref="https://app.opsapp.co"
+        external
       />
     </>
   );

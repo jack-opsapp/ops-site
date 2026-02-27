@@ -78,7 +78,7 @@ export default function MobileMenu({ isOpen, onClose }: MobileMenuProps) {
             transition={{ delay: 0.35, duration: 0.3 }}
             className="px-12 pb-12"
           >
-            <Button variant="solid" href="/login?mode=signup" className="w-full">
+            <Button variant="solid" href="https://app.opsapp.co" external className="w-full">
               GET OPS
             </Button>
           </motion.div>
