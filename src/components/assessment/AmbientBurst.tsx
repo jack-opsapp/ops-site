@@ -286,7 +286,7 @@ export default function AmbientBurst({ className }: AmbientBurstProps) {
     <div
       ref={containerRef}
       className={className}
-      style={{ position: 'relative' }}
+      style={{ position: 'absolute', inset: 0 }}
     >
       <canvas
         ref={canvasRef}
