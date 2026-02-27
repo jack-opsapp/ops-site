@@ -173,6 +173,81 @@ export function SeoIllustration({ isActive = false }: IllustrationProps) {
  * CalculatorIllustration — Calculator outline with number rows + output display
  * On hover: numbers cascade in, display shows result
  */
+/**
+ * CoursesIllustration — Book/graduation cap + progress bars
+ * On hover: progress bars fill, cap shifts up
+ */
+export function CoursesIllustration({ isActive = false }: IllustrationProps) {
+  return (
+    <motion.svg
+      viewBox="0 0 160 120"
+      fill="none"
+      stroke="currentColor"
+      strokeWidth="1"
+      className="text-white/25 w-full h-full"
+    >
+      {/* Book */}
+      <rect x="25" y="30" width="50" height="60" rx="2" />
+      <line x1="50" y1="30" x2="50" y2="90" opacity={0.4} />
+      {/* Book spine detail */}
+      <line x1="30" y1="45" x2="46" y2="45" opacity={0.3} />
+      <line x1="30" y1="52" x2="43" y2="52" opacity={0.3} />
+      <line x1="54" y1="45" x2="70" y2="45" opacity={0.3} />
+      <line x1="54" y1="52" x2="67" y2="52" opacity={0.3} />
+
+      {/* Graduation cap */}
+      <motion.g
+        animate={{ y: isActive ? -4 : 0, opacity: isActive ? 0.8 : 0.4 }}
+        transition={{ duration: 0.5, ease: [0.22, 1, 0.36, 1] }}
+      >
+        <polygon points="50,12 72,22 50,32 28,22" />
+        <line x1="50" y1="32" x2="50" y2="24" />
+        <line x1="68" y1="23" x2="68" y2="34" />
+        <circle cx="68" cy="35" r="1.5" fill="currentColor" stroke="none" />
+      </motion.g>
+
+      {/* Progress bars */}
+      <rect x="90" y="40" width="50" height="5" rx="1" opacity={0.3} />
+      <motion.rect
+        x="90" y="40" height="5" rx="1"
+        animate={{ width: isActive ? 50 : 0 }}
+        transition={{ duration: 0.5, ease: [0.22, 1, 0.36, 1], delay: 0 }}
+        fill="currentColor" stroke="none" opacity={0.5}
+      />
+
+      <rect x="90" y="54" width="50" height="5" rx="1" opacity={0.3} />
+      <motion.rect
+        x="90" y="54" height="5" rx="1"
+        animate={{ width: isActive ? 35 : 0 }}
+        transition={{ duration: 0.5, ease: [0.22, 1, 0.36, 1], delay: 0.1 }}
+        fill="currentColor" stroke="none" opacity={0.5}
+      />
+
+      <rect x="90" y="68" width="50" height="5" rx="1" opacity={0.3} />
+      <motion.rect
+        x="90" y="68" height="5" rx="1"
+        animate={{ width: isActive ? 20 : 0 }}
+        transition={{ duration: 0.5, ease: [0.22, 1, 0.36, 1], delay: 0.2 }}
+        fill="currentColor" stroke="none" opacity={0.5}
+      />
+
+      {/* Completion label */}
+      <motion.text
+        x="115" y="88"
+        textAnchor="middle"
+        fontSize="8"
+        fontFamily="monospace"
+        fill="currentColor"
+        stroke="none"
+        animate={{ opacity: isActive ? 0.6 : 0 }}
+        transition={{ duration: 0.3, delay: 0.4 }}
+      >
+        3 / 5
+      </motion.text>
+    </motion.svg>
+  );
+}
+
 export function CalculatorIllustration({ isActive = false }: IllustrationProps) {
   const buttonPositions = [
     // Row 1

@@ -16,6 +16,7 @@ interface ToolCardProps {
   description: string;
   status: 'available' | 'development';
   href?: string;
+  external?: boolean;
   illustration: React.ReactNode;
 }
 
@@ -24,6 +25,7 @@ export default function ToolCard({
   description,
   status,
   href,
+  external,
   illustration,
 }: ToolCardProps) {
   const [isHovered, setIsHovered] = useState(false);
@@ -68,8 +70,8 @@ export default function ToolCard({
           {/* CTA button for available tools */}
           {status === 'available' && href && (
             <div className="mt-4">
-              <Button variant="ghost" href={href}>
-                TRY IT
+              <Button variant="ghost" href={href} external={external}>
+                {external ? 'EXPLORE' : 'TRY IT'}
               </Button>
             </div>
           )}

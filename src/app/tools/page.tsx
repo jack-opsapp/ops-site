@@ -11,6 +11,7 @@ import ToolsHero from '@/components/tools/ToolsHero';
 import ToolCard from '@/components/tools/ToolCard';
 import {
   LeadershipIllustration,
+  CoursesIllustration,
   SeoIllustration,
   CalculatorIllustration,
 } from '@/components/tools/ToolIllustrations';
@@ -30,6 +31,15 @@ const tools = [
     status: 'available' as const,
     href: '/tools/leadership',
     illustration: <LeadershipIllustration />,
+  },
+  {
+    name: 'COURSES',
+    description:
+      'Practical, no-fluff courses built for trades professionals. Pricing, estimating, leadership, and more.',
+    status: 'available' as const,
+    href: 'https://learn.opsapp.co',
+    external: true,
+    illustration: <CoursesIllustration />,
   },
   {
     name: 'AI SEO ANALYSIS',
@@ -59,7 +69,7 @@ export default function ToolsPage() {
             <SectionLabel label="TOOLS" className="mb-10" />
           </FadeInUp>
 
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
             {tools.map((tool, index) => (
               <FadeInUp key={tool.name} delay={index * 0.08}>
                 <ToolCard
@@ -67,6 +77,7 @@ export default function ToolsPage() {
                   description={tool.description}
                   status={tool.status}
                   href={'href' in tool ? tool.href : undefined}
+                  external={'external' in tool && tool.external ? true : undefined}
                   illustration={tool.illustration}
                 />
               </FadeInUp>

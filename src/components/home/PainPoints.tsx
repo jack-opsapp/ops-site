@@ -63,18 +63,22 @@ export default function PainPoints() {
           </h2>
         </FadeInUp>
 
-        {/* Pain point cards grid */}
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mt-12">
-          {painPoints.map((point, i) => (
-            <FadeInUp key={point.variant} delay={i * 0.1}>
-              <PainPointCard
-                title={point.title}
-                bullets={point.bullets}
-                forLine={point.forLine}
-                variant={point.variant}
-              />
-            </FadeInUp>
-          ))}
+        {/* Pain point cards — carousel on mobile, grid on desktop */}
+        <div className="mt-12 -mx-6 px-6 md:mx-0 md:px-0">
+          <div className="flex gap-4 overflow-x-auto snap-x snap-mandatory pb-4 md:grid md:grid-cols-3 md:gap-6 md:overflow-visible md:snap-none md:pb-0 scrollbar-hide">
+            {painPoints.map((point, i) => (
+              <FadeInUp key={point.variant} delay={i * 0.1}>
+                <div className="min-w-[280px] w-[85vw] max-w-[340px] snap-center shrink-0 md:min-w-0 md:w-auto md:max-w-none md:snap-align-none">
+                  <PainPointCard
+                    title={point.title}
+                    bullets={point.bullets}
+                    forLine={point.forLine}
+                    variant={point.variant}
+                  />
+                </div>
+              </FadeInUp>
+            ))}
+          </div>
         </div>
 
         {/* Resolution callout */}

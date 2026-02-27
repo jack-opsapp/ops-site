@@ -18,7 +18,7 @@ export default function Card({
     <div
       className={`
         bg-ops-surface border border-ops-border rounded-[3px]
-        ${hoverable ? 'transition-[border-color] duration-300 hover:border-ops-border-hover' : ''}
+        ${hoverable ? 'transition-all duration-300 hover:border-ops-border-hover hover:-translate-y-1' : ''}
         ${className}
       `}
     >
