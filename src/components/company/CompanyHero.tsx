@@ -6,11 +6,30 @@
  * No CTA — this is a story page.
  */
 
+import Image from 'next/image';
 import { GradientOverlay } from '@/components/ui';
+
+/**
+ * To add a hero background image:
+ * 1. Place image in /public/images/heroes/ (e.g. company-hero.jpg)
+ * 2. Set HERO_IMAGE below to the filename
+ */
+const HERO_IMAGE: string | null = null;
 
 export default function CompanyHero() {
   return (
     <section className="relative min-h-screen w-full overflow-hidden bg-ops-background">
+      {/* Optional background image */}
+      {HERO_IMAGE && (
+        <Image
+          src={`/images/heroes/${HERO_IMAGE}`}
+          alt=""
+          fill
+          priority
+          className="object-cover"
+        />
+      )}
+
       {/* Layered CSS gradients for atmospheric depth */}
       <div className="absolute inset-0 bg-gradient-to-br from-[#111111] via-ops-background to-[#060608]" />
       <div className="absolute inset-0 bg-gradient-to-tr from-[#0A0A0A] via-transparent to-[#0D1117]/20" />

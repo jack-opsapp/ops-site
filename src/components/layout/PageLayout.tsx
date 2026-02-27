@@ -12,8 +12,8 @@ export default function PageLayout({ children }: { children: React.ReactNode }) 
       <main>{children}</main>
       <Footer />
 
-      {/* Ambient page-edge glows — fixed, pointer-events-none */}
-      <div className="pointer-events-none fixed inset-0 z-0 overflow-hidden" aria-hidden="true">
+      {/* Ambient page-edge glows — absolute, pointer-events-none */}
+      <div className="pointer-events-none absolute inset-0 z-0 overflow-hidden" aria-hidden="true">
         {/* Left edge — blue, upper third */}
         <div
           className="absolute"

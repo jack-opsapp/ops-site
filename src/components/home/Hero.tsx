@@ -4,14 +4,33 @@
  * Copy aligned to try-ops authority
  */
 
+import Image from 'next/image';
 import Button from '@/components/ui/Button';
 import GradientOverlay from '@/components/ui/GradientOverlay';
 
 const APP_STORE_URL = 'https://apps.apple.com/us/app/ops-job-crew-management/id6746662078';
 
+/**
+ * To add a hero background image:
+ * 1. Place image in /public/images/heroes/ (e.g. home-hero.jpg)
+ * 2. Set HERO_IMAGE below to the filename
+ */
+const HERO_IMAGE: string | null = null; // e.g. 'home-hero.jpg'
+
 export default function Hero() {
   return (
     <section className="relative min-h-screen w-full overflow-hidden bg-ops-background">
+      {/* Optional background image */}
+      {HERO_IMAGE && (
+        <Image
+          src={`/images/heroes/${HERO_IMAGE}`}
+          alt=""
+          fill
+          priority
+          className="object-cover"
+        />
+      )}
+
       {/* Background: subtle dark gradient with noise texture feel */}
       <div className="absolute inset-0 bg-gradient-to-br from-[#0f0f0f] via-ops-background to-[#060606]" />
       <div className="absolute inset-0 bg-gradient-to-t from-ops-background/80 via-transparent to-transparent" />

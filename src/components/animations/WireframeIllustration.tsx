@@ -26,7 +26,7 @@ interface WireframeIllustrationProps {
 
 function MessagesIllustration({ isActive, size }: { isActive: boolean; size: number }) {
   const [phase, setPhase] = useState(0);
-  // Phases: 0=idle, 1=bubble1, 2=dots, 3=question, 4=bubble2, 5=bubble3, 6=chaos
+  // Phases: 0=idle, 1=bubble1, 2=dots1, 3=?1, 4=bubble2, 5=dots2, 6=?2, 7=bubble3, 8=chaos
 
   useEffect(() => {
     if (!isActive) {
@@ -34,16 +34,30 @@ function MessagesIllustration({ isActive, size }: { isActive: boolean; size: num
       return;
     }
 
-    setPhase(1);
-    const timers: ReturnType<typeof setTimeout>[] = [];
+    let timers: ReturnType<typeof setTimeout>[] = [];
+    let interval: ReturnType<typeof setInterval>;
 
-    timers.push(setTimeout(() => setPhase(2), 400));   // typing dots
-    timers.push(setTimeout(() => setPhase(3), 800));   // ? confusion
-    timers.push(setTimeout(() => setPhase(4), 1200));  // bubble 2
-    timers.push(setTimeout(() => setPhase(5), 1800));  // bubble 3
-    timers.push(setTimeout(() => setPhase(6), 2400));  // chaos jitter
+    const runSequence = () => {
+      timers.forEach(clearTimeout);
+      timers = [];
 
-    return () => timers.forEach(clearTimeout);
+      setPhase(1);                                               // Bubble 1 appears
+      timers.push(setTimeout(() => setPhase(2), 500));           // "..." typing for bubble 2
+      timers.push(setTimeout(() => setPhase(3), 900));           // "?" confusion
+      timers.push(setTimeout(() => setPhase(4), 1300));          // Bubble 2 appears
+      timers.push(setTimeout(() => setPhase(5), 1800));          // "..." typing for bubble 3
+      timers.push(setTimeout(() => setPhase(6), 2200));          // "?" confusion
+      timers.push(setTimeout(() => setPhase(7), 2600));          // Bubble 3 appears
+      timers.push(setTimeout(() => setPhase(8), 3000));          // Chaos jitter + "?" everywhere
+    };
+
+    runSequence();
+    interval = setInterval(runSequence, 4500);
+
+    return () => {
+      clearInterval(interval);
+      timers.forEach(clearTimeout);
+    };
   }, [isActive]);
 
   const bubbleSpring = { type: 'spring' as const, stiffness: 180, damping: 14 };
@@ -65,6 +79,12 @@ function MessagesIllustration({ isActive, size }: { isActive: boolean; size: num
     rotate: [0, seed % 3 - 1.5, -(seed % 3 - 1.5), seed % 2 - 1, 0],
   });
 
+  // When inactive, show all bubbles. When active, reveal sequentially.
+  const showBubble1 = !isActive || phase >= 1;
+  const showBubble2 = !isActive || phase >= 4;
+  const showBubble3 = !isActive || phase >= 7;
+  const jittering = isActive && phase >= 8;
+
   return (
     <motion.svg
       width={size}
@@ -77,98 +97,115 @@ function MessagesIllustration({ isActive, size }: { isActive: boolean; size: num
     >
       {/* Bubble 1 — left side */}
       <motion.g
-        initial={isActive ? { opacity: 0, scale: 0.7, y: 10 } : { opacity: 1, scale: 1, y: 0 }}
+        style={{ transformOrigin: '65px 58px' }}
         animate={
-          phase >= 6
+          jittering
             ? jitterBubble(1)
-            : phase >= 1
-            ? { opacity: 1, scale: 1, y: 0 }
-            : { opacity: 1, scale: 1, y: 0 }
+            : { opacity: showBubble1 ? 1 : 0, scale: showBubble1 ? 1 : 0.5 }
         }
-        transition={phase >= 6 ? { duration: 0.8, repeat: Infinity, repeatType: 'mirror' } : bubbleSpring}
+        transition={jittering ? { duration: 0.8, repeat: Infinity, repeatType: 'mirror' } : bubbleSpring}
       >
         <motion.rect x="20" y="40" width="90" height="36" rx="4" />
-        {/* Text lines inside bubble */}
         <motion.line x1="30" y1="52" x2="80" y2="52" strokeWidth="1" />
         <motion.line x1="30" y1="60" x2="68" y2="60" strokeWidth="1" />
-        {/* Tail */}
         <motion.path d="M30 76 L24 86 L42 76" strokeWidth="1" />
       </motion.g>
 
-      {/* Typing dots — appear in phase 2 */}
-      <motion.g
-        initial={{ opacity: 0 }}
-        animate={phase >= 2 && phase < 4 ? { opacity: 1 } : { opacity: 0 }}
-        transition={{ duration: 0.3 }}
-      >
-        <motion.circle cx="30" cy="100" r="2" fill="currentColor"
-          animate={phase >= 2 ? { opacity: [0.3, 1, 0.3] } : {}}
-          transition={{ duration: 0.8, repeat: Infinity, delay: 0 }}
-        />
-        <motion.circle cx="40" cy="100" r="2" fill="currentColor"
-          animate={phase >= 2 ? { opacity: [0.3, 1, 0.3] } : {}}
-          transition={{ duration: 0.8, repeat: Infinity, delay: 0.2 }}
-        />
-        <motion.circle cx="50" cy="100" r="2" fill="currentColor"
-          animate={phase >= 2 ? { opacity: [0.3, 1, 0.3] } : {}}
-          transition={{ duration: 0.8, repeat: Infinity, delay: 0.4 }}
-        />
-      </motion.g>
+      {/* "..." typing indicator before bubble 2 */}
+      {isActive && phase === 2 && (
+        <motion.g>
+          {[0, 1, 2].map((i) => (
+            <motion.circle
+              key={i}
+              cx={120 + i * 14}
+              cy={100}
+              r="3"
+              fill="currentColor"
+              stroke="none"
+              animate={{ opacity: [0.2, 0.8, 0.2] }}
+              transition={{ duration: 0.6, repeat: Infinity, delay: i * 0.15 }}
+            />
+          ))}
+        </motion.g>
+      )}
 
-      {/* Question mark — appears in phase 3 */}
-      <motion.text
-        x="160"
-        y="55"
-        fontSize="24"
-        fill="currentColor"
-        stroke="none"
-        initial={{ opacity: 0, scale: 0.5 }}
-        animate={
-          phase >= 6
-            ? jitterText(3.7, 0.8)
-            : phase >= 3
-            ? { opacity: 0.8, scale: 1 }
-            : { opacity: 0, scale: 0.5 }
-        }
-        transition={phase >= 6 ? { duration: 1, repeat: Infinity, repeatType: 'mirror' } : bubbleSpring}
-      >
-        ?
-      </motion.text>
+      {/* "?" before bubble 2 */}
+      {isActive && phase === 3 && (
+        <motion.text
+          x="140"
+          y="106"
+          fontSize="20"
+          fill="currentColor"
+          stroke="none"
+          textAnchor="middle"
+          initial={{ opacity: 0, scale: 0.3 }}
+          animate={{ opacity: 0.7, scale: 1 }}
+          transition={{ type: 'spring', stiffness: 200, damping: 12 }}
+        >
+          ?
+        </motion.text>
+      )}
 
       {/* Bubble 2 — right side */}
       <motion.g
-        initial={isActive ? { opacity: 0, scale: 0.7, y: 10 } : { opacity: 1, scale: 1, y: 0 }}
+        style={{ transformOrigin: '135px 108px' }}
         animate={
-          phase >= 6
+          jittering
             ? jitterBubble(2.3)
-            : phase >= 4
-            ? { opacity: 1, scale: 1, y: 0 }
-            : isActive
-            ? { opacity: 0, scale: 0.7, y: 10 }
-            : { opacity: 1, scale: 1, y: 0 }
+            : { opacity: showBubble2 ? 1 : 0, scale: showBubble2 ? 1 : 0.5 }
         }
-        transition={phase >= 6 ? { duration: 0.7, repeat: Infinity, repeatType: 'mirror' } : bubbleSpring}
+        transition={jittering ? { duration: 0.7, repeat: Infinity, repeatType: 'mirror' } : bubbleSpring}
       >
         <motion.rect x="90" y="90" width="90" height="36" rx="4" />
         <motion.line x1="100" y1="102" x2="155" y2="102" strokeWidth="1" />
         <motion.line x1="100" y1="110" x2="140" y2="110" strokeWidth="1" />
-        {/* Tail — right side */}
         <motion.path d="M168 126 L176 136 L158 126" strokeWidth="1" />
       </motion.g>
 
+      {/* "..." typing indicator before bubble 3 */}
+      {isActive && phase === 5 && (
+        <motion.g>
+          {[0, 1, 2].map((i) => (
+            <motion.circle
+              key={i}
+              cx={30 + i * 14}
+              cy={150}
+              r="3"
+              fill="currentColor"
+              stroke="none"
+              animate={{ opacity: [0.2, 0.8, 0.2] }}
+              transition={{ duration: 0.6, repeat: Infinity, delay: i * 0.15 }}
+            />
+          ))}
+        </motion.g>
+      )}
+
+      {/* "?" before bubble 3 */}
+      {isActive && phase === 6 && (
+        <motion.text
+          x="50"
+          y="156"
+          fontSize="20"
+          fill="currentColor"
+          stroke="none"
+          textAnchor="middle"
+          initial={{ opacity: 0, scale: 0.3 }}
+          animate={{ opacity: 0.7, scale: 1 }}
+          transition={{ type: 'spring', stiffness: 200, damping: 12 }}
+        >
+          ?
+        </motion.text>
+      )}
+
       {/* Bubble 3 — bottom left, overlapping */}
       <motion.g
-        initial={isActive ? { opacity: 0, scale: 0.7, y: 10 } : { opacity: 1, scale: 1, y: 0 }}
+        style={{ transformOrigin: '60px 154px' }}
         animate={
-          phase >= 6
+          jittering
             ? jitterBubble(4.1)
-            : phase >= 5
-            ? { opacity: 1, scale: 1, y: 0 }
-            : isActive
-            ? { opacity: 0, scale: 0.7, y: 10 }
-            : { opacity: 1, scale: 1, y: 0 }
+            : { opacity: showBubble3 ? 1 : 0, scale: showBubble3 ? 1 : 0.5 }
         }
-        transition={phase >= 6 ? { duration: 0.9, repeat: Infinity, repeatType: 'mirror' } : bubbleSpring}
+        transition={jittering ? { duration: 0.9, repeat: Infinity, repeatType: 'mirror' } : bubbleSpring}
       >
         <motion.rect x="10" y="136" width="100" height="36" rx="4" />
         <motion.line x1="20" y1="148" x2="85" y2="148" strokeWidth="1" />
@@ -176,23 +213,33 @@ function MessagesIllustration({ isActive, size }: { isActive: boolean; size: num
         <motion.path d="M24 172 L18 182 L36 172" strokeWidth="1" />
       </motion.g>
 
-      {/* Extra question mark in chaos */}
-      <motion.text
-        x="130"
-        y="170"
-        fontSize="18"
-        fill="currentColor"
-        stroke="none"
-        initial={{ opacity: 0, scale: 0.5 }}
-        animate={
-          phase >= 6
-            ? jitterText(5.2, 0.6)
-            : { opacity: 0, scale: 0.5 }
-        }
-        transition={phase >= 6 ? { duration: 0.6, repeat: Infinity, repeatType: 'mirror' } : bubbleSpring}
-      >
-        ?
-      </motion.text>
+      {/* Chaos "?" marks — scattered during jitter phase */}
+      {isActive && phase >= 8 && (
+        <>
+          <motion.text
+            x="160"
+            y="55"
+            fontSize="24"
+            fill="currentColor"
+            stroke="none"
+            animate={{ opacity: [0, 0.7, 0.7, 0] }}
+            transition={{ duration: 1.2, repeat: Infinity }}
+          >
+            ?
+          </motion.text>
+          <motion.text
+            x="130"
+            y="170"
+            fontSize="18"
+            fill="currentColor"
+            stroke="none"
+            animate={{ opacity: [0, 0, 0.6, 0.6, 0] }}
+            transition={{ duration: 1.4, repeat: Infinity, delay: 0.2 }}
+          >
+            ?
+          </motion.text>
+        </>
+      )}
     </motion.svg>
   );
 }
@@ -357,12 +404,13 @@ function AppsIllustration({ isActive, size }: { isActive: boolean; size: number 
     return toolPositions[tool].spread;
   };
 
-  // Dollar sign positions (in gaps between scattered tools)
+  // Dollar sign positions (in gaps between scattered tools) — each with unique feel
   const dollarSigns = [
-    { x: 90, y: 60, delay: 0.3 },
-    { x: 70, y: 120, delay: 0.6 },
-    { x: 130, y: 100, delay: 0.9 },
-    { x: 100, y: 150, delay: 1.2 },
+    { x: 90, y: 60, delay: 0.3, finalOpacity: 0.55, finalScale: 0.9, rotate: -8 },
+    { x: 70, y: 120, delay: 0.6, finalOpacity: 0.65, finalScale: 1.15, rotate: 6 },
+    { x: 130, y: 100, delay: 0.9, finalOpacity: 0.5, finalScale: 0.8, rotate: -12 },
+    { x: 100, y: 150, delay: 1.2, finalOpacity: 0.6, finalScale: 1.05, rotate: 10 },
+    { x: 100, y: 90, delay: 0.5, finalOpacity: 0.7, finalScale: 0.95, rotate: -5 },
   ];
 
   return (
@@ -370,6 +418,7 @@ function AppsIllustration({ isActive, size }: { isActive: boolean; size: number 
       width={size}
       height={size}
       viewBox="0 0 200 200"
+      overflow="visible"
       fill="none"
       stroke="currentColor"
       strokeWidth="1.5"
@@ -424,7 +473,7 @@ function AppsIllustration({ isActive, size }: { isActive: boolean; size: number 
         <motion.line x1="6" y1="14" x2="18" y2="14" strokeWidth="1" />
       </motion.g>
 
-      {/* Dollar signs — appear in gaps after spread */}
+      {/* Dollar signs — appear in gaps after spread, each with unique character */}
       {dollarSigns.map((ds, i) => (
         <motion.text
           key={i}
@@ -433,16 +482,22 @@ function AppsIllustration({ isActive, size }: { isActive: boolean; size: number 
           fontSize="16"
           fill="currentColor"
           stroke="none"
-          initial={{ opacity: 0, scale: 0.5 }}
+          textAnchor="middle"
+          dominantBaseline="central"
+          initial={{ opacity: 0, scale: 0.3 }}
           animate={
             isActive
-              ? { opacity: 0.5, scale: 1 }
-              : { opacity: 0, scale: 0.5 }
+              ? {
+                  opacity: [0, ds.finalOpacity],
+                  scale: [0.3, ds.finalScale],
+                  rotate: [0, ds.rotate],
+                }
+              : { opacity: 0, scale: 0.3, rotate: 0 }
           }
           transition={{
             type: 'spring',
             stiffness: 120,
-            damping: 14,
+            damping: 10,
             delay: isActive ? ds.delay : 0,
           }}
         >

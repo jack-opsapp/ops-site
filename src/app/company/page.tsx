@@ -21,6 +21,8 @@ export default function CompanyPage() {
         buttonText="GET OPS"
         buttonHref="https://app.opsapp.co"
         external
+        showNewsletter
+        newsletterSource="company-cta"
       />
     </>
   );

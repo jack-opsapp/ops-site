@@ -31,6 +31,9 @@ export default function Navigation() {
   const [mobileOpen, setMobileOpen] = useState(false);
   const pathname = usePathname();
 
+  // Light-background pages need inverted nav colors before scroll
+  const isLightPage = pathname === '/legal';
+
   // Scroll listener — solidify nav on scroll
   useEffect(() => {
     const handleScroll = () => setScrolled(window.scrollY > 40);
@@ -76,7 +79,9 @@ export default function Navigation() {
               alt="OPS"
               width={48}
               height={20}
-              className="object-contain"
+              className={`object-contain transition-all duration-300 ${
+                isLightPage && !scrolled ? 'invert' : ''
+              }`}
               priority
             />
           </Link>
@@ -87,10 +92,14 @@ export default function Navigation() {
               <Link
                 key={link.label}
                 href={link.href}
-                className={`font-caption uppercase tracking-[0.15em] text-[11px] transition-colors hover:text-ops-text-primary ${
-                  pathname === link.href
-                    ? 'text-ops-text-primary'
-                    : 'text-ops-text-secondary'
+                className={`font-caption uppercase tracking-[0.15em] text-[11px] transition-colors ${
+                  isLightPage && !scrolled
+                    ? pathname === link.href
+                      ? 'text-ops-text-dark hover:text-ops-text-dark'
+                      : 'text-ops-text-dark/60 hover:text-ops-text-dark'
+                    : pathname === link.href
+                      ? 'text-ops-text-primary hover:text-ops-text-primary'
+                      : 'text-ops-text-secondary hover:text-ops-text-primary'
                 }`}
               >
                 {link.label}
@@ -124,7 +133,9 @@ export default function Navigation() {
           {/* Hamburger — mobile only */}
           <button
             onClick={() => setMobileOpen(true)}
-            className="lg:hidden text-ops-text-primary p-2 cursor-pointer"
+            className={`lg:hidden p-2 cursor-pointer transition-colors duration-300 ${
+              isLightPage && !scrolled ? 'text-ops-text-dark' : 'text-ops-text-primary'
+            }`}
             aria-label="Open menu"
           >
             <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5">

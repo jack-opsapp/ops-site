@@ -65,6 +65,8 @@ export default function ResourcesPage() {
         buttonText="GET OPS"
         buttonHref="https://apps.apple.com/app/ops-app/id6504890498"
         external
+        showNewsletter
+        newsletterSource="resources-cta"
       />
     </>
   );
