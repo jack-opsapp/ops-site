@@ -40,7 +40,7 @@ const AMBIENT_LINE_COUNT = 80;
 const MIN_VECTOR_LENGTH = 0.3;
 const MAX_VECTOR_LENGTH = 0.9;
 
-const SUB_NODE_COLORS = [
+export const SUB_NODE_COLORS = [
   { r: 200, g: 160, b: 80  },  // warm amber  #C8A050
   { r: 160, g: 100, b: 130 },  // dusty rose   #A06482
   { r: 80,  g: 170, b: 155 },  // teal          #50AA9B
@@ -119,6 +119,7 @@ interface LeadershipSphereProps {
   dimensionDescriptions?: Record<Dimension, string>;
   version?: AssessmentVersion;
   focusDimension?: Dimension | null;
+  focusSubIndex?: number | null;
   onDimensionClick?: (dimension: Dimension) => void;
   className?: string;
 }
@@ -245,6 +246,7 @@ export default function LeadershipSphere({
   dimensionDescriptions,
   version = 'deep',
   focusDimension: externalFocusDimension,
+  focusSubIndex: externalFocusSubIndex,
   onDimensionClick,
   className,
 }: LeadershipSphereProps) {
@@ -318,6 +320,18 @@ export default function LeadershipSphere({
       focusTargetTiltRef.current = Math.atan2(dir.dy, Math.sqrt(dir.dx * dir.dx + dir.dz * dir.dz));
     }
   }, [externalFocusDimension]);
+
+  // External sub-node index synchronization
+  useEffect(() => {
+    if (externalFocusSubIndex === undefined) return;
+    if (externalFocusSubIndex === null) {
+      selectedSubRef.current = null;
+      setSelectedSubIndex(null);
+    } else {
+      selectedSubRef.current = externalFocusSubIndex;
+      setSelectedSubIndex(externalFocusSubIndex);
+    }
+  }, [externalFocusSubIndex]);
 
   // Generate ambient lines once
   if (!ambientRef.current) {

@@ -47,8 +47,10 @@ function buildSystemPrompt(input: AnalysisInput): string {
 CRITICAL RULE: Be brutally honest. Your job is to tell the truth, not to make people feel good. A flattering report that ignores real weaknesses is worthless — it actively harms the person by reinforcing blind spots.
 
 Principles:
+- ALWAYS reference specific scores by number. Don't say "you scored well in drive" — say "your drive score of 72 puts you in genuine strength territory." Ground every claim in the data.
+- In the summary, call out the highest and lowest scores by name and number. The reader should immediately know where they stand.
 - If scores are mediocre, say so. A 50 is average, not "solid." A 60 is slightly above average, not "strong."
-- Blind spots should sting. If someone scored low in a dimension, explain what that actually costs them in real leadership situations.
+- Blind spots should sting. If someone scored low in a dimension, explain what that actually costs them in real leadership situations. Reference the score.
 - Do NOT hedge every negative with a positive. If the pattern is mostly negative, the summary should reflect that.
 - Low scores in integrity, connection, or adaptability are serious leadership liabilities — treat them that way.
 - High scores only in "drive" with low everything else often signals a bulldozer, not a leader. Say it.

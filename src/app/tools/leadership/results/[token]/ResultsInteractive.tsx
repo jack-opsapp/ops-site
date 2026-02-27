@@ -1,8 +1,8 @@
 /**
  * ResultsInteractive — Client wrapper for interactive results elements
  *
- * Manages shared state between score dimension chips and the sphere.
- * Handles scroll-to-section interactions for badges.
+ * Manages shared state between score dimension chips, sub-dimension tags,
+ * and the sphere. Handles scroll-to-section interactions for badges.
  */
 
 'use client';
@@ -10,7 +10,7 @@
 import { useState, useCallback } from 'react';
 import type { Dimension, SimpleScores, DimensionSubScores, AssessmentVersion } from '@/lib/assessment/types';
 import { DIMENSIONS } from '@/lib/assessment/types';
-import LeadershipSphere from '@/components/assessment/LeadershipSphere';
+import LeadershipSphere, { SUB_NODE_COLORS } from '@/components/assessment/LeadershipSphere';
 import { FadeInUp } from '@/components/ui';
 
 /** Scroll to element with offset to avoid being hidden behind fixed header */
@@ -40,16 +40,33 @@ export default function ResultsInteractive({
   secondaryArchetypeName,
   strengths,
 }: ResultsInteractiveProps) {
+  const isDeep = version === 'deep';
   const [focusDimension, setFocusDimension] = useState<Dimension | null>(null);
+  const [focusSubIndex, setFocusSubIndex] = useState<number | null>(null);
+  const [hoveredSub, setHoveredSub] = useState<{ dim: Dimension; index: number } | null>(null);
 
   const handleDimensionChipClick = useCallback((dim: Dimension) => {
-    setFocusDimension((prev) => prev === dim ? null : dim);
-    // Scroll sphere into view
+    setFocusDimension((prev) => {
+      if (prev === dim) {
+        setFocusSubIndex(null);
+        return null;
+      }
+      setFocusSubIndex(null);
+      return dim;
+    });
     document.getElementById('results-sphere')?.scrollIntoView({ behavior: 'smooth', block: 'center' });
   }, []);
 
+  const handleSubTagClick = useCallback((dim: Dimension, subIndex: number) => {
+    // Focus on parent dimension and select the sub-node
+    setFocusDimension(dim);
+    setFocusSubIndex((prev) => prev === subIndex && focusDimension === dim ? null : subIndex);
+    document.getElementById('results-sphere')?.scrollIntoView({ behavior: 'smooth', block: 'center' });
+  }, [focusDimension]);
+
   const handleDimensionFromSphere = useCallback((dim: Dimension) => {
     setFocusDimension(dim);
+    setFocusSubIndex(null);
   }, []);
 
   return (
@@ -74,7 +91,7 @@ export default function ResultsInteractive({
 
       {/* Score chips — tap orients the sphere */}
       <FadeInUp>
-        <div className="flex flex-wrap gap-2 mb-6">
+        <div className="flex flex-wrap gap-2 mb-2">
           {DIMENSIONS.map((dim) => (
             <button
               key={dim}
@@ -97,6 +114,69 @@ export default function ResultsInteractive({
         </div>
       </FadeInUp>
 
+      {/* Sub-dimension tags — deep version only */}
+      {isDeep && subScores && (
+        <FadeInUp delay={0.06}>
+          <div className="flex flex-wrap gap-1.5 mb-6">
+            {DIMENSIONS.map((dim) => {
+              const subs = subScores[dim];
+              if (!subs) return null;
+              return subs.map((sub, i) => {
+                const color = SUB_NODE_COLORS[i % SUB_NODE_COLORS.length];
+                const isHovered = hoveredSub?.dim === dim && hoveredSub?.index === i;
+                const isActive = focusDimension === dim && focusSubIndex === i;
+                return (
+                  <button
+                    key={`${dim}-${sub.label}`}
+                    type="button"
+                    onClick={() => handleSubTagClick(dim, i)}
+                    onMouseEnter={() => setHoveredSub({ dim, index: i })}
+                    onMouseLeave={() => setHoveredSub(null)}
+                    className="inline-flex items-center gap-1 font-body text-[10px] px-2 py-0.5 rounded-[3px] border transition-all duration-200 cursor-pointer"
+                    style={{
+                      borderColor: isActive
+                        ? `rgba(${color.r}, ${color.g}, ${color.b}, 0.5)`
+                        : isHovered
+                          ? `rgba(${color.r}, ${color.g}, ${color.b}, 0.3)`
+                          : 'rgba(255, 255, 255, 0.06)',
+                      color: isActive || isHovered
+                        ? `rgb(${color.r}, ${color.g}, ${color.b})`
+                        : 'rgba(255, 255, 255, 0.4)',
+                      backgroundColor: isActive
+                        ? `rgba(${color.r}, ${color.g}, ${color.b}, 0.06)`
+                        : 'transparent',
+                    }}
+                  >
+                    <span
+                      className="inline-block w-1 h-1 rounded-full flex-shrink-0 transition-colors duration-200"
+                      style={{
+                        backgroundColor: isActive || isHovered
+                          ? `rgb(${color.r}, ${color.g}, ${color.b})`
+                          : 'rgba(255, 255, 255, 0.2)',
+                      }}
+                    />
+                    {sub.label}
+                    <span
+                      className="font-heading font-semibold text-[10px] transition-colors duration-200"
+                      style={{
+                        color: isActive || isHovered
+                          ? `rgb(${color.r}, ${color.g}, ${color.b})`
+                          : 'rgba(255, 255, 255, 0.25)',
+                      }}
+                    >
+                      {sub.score}
+                    </span>
+                  </button>
+                );
+              });
+            })}
+          </div>
+        </FadeInUp>
+      )}
+
+      {/* Spacer for quick version (no sub-tags) */}
+      {!isDeep && <div className="mb-4" />}
+
       {/* Sphere — overflow-visible so mobile popup can extend below */}
       <FadeInUp>
         <div id="results-sphere" className="h-[350px] sm:h-[450px] md:h-[600px] w-full" style={{ overflow: 'visible' }}>
@@ -106,6 +186,7 @@ export default function ResultsInteractive({
             dimensionDescriptions={dimensionDescriptions}
             version={version}
             focusDimension={focusDimension}
+            focusSubIndex={focusSubIndex}
             onDimensionClick={handleDimensionFromSphere}
             className="w-full h-full"
           />
