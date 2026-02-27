@@ -63,7 +63,7 @@ export default function ResourcesPage() {
         heading="START RUNNING YOUR OPERATION"
         subtext="Download OPS today."
         buttonText="GET OPS"
-        buttonHref="https://apps.apple.com/app/ops-app/id6504890498"
+        buttonHref="https://apps.apple.com/us/app/ops-job-crew-management/id6746662078"
         external
         showNewsletter
         newsletterSource="resources-cta"

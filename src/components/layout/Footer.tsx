@@ -36,7 +36,7 @@ const columns = [
   {
     title: 'CONNECT',
     links: [
-      { label: 'App Store', href: 'https://apps.apple.com/app/ops-app/id6504890498', external: true },
+      { label: 'App Store', href: 'https://apps.apple.com/us/app/ops-job-crew-management/id6746662078', external: true },
       { label: 'Web App', href: 'https://app.opsapp.co', external: true },
       { label: 'Instagram', href: 'https://instagram.com/ops.app.co', external: true },
       { label: 'LinkedIn', href: 'https://linkedin.com/company/ops-app', external: true },

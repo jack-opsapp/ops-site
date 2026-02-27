@@ -12,7 +12,7 @@ const links = [
   {
     title: 'GETTING STARTED',
     description: 'Download OPS and set up your crew in minutes.',
-    href: 'https://apps.apple.com/app/ops-app/id6504890498',
+    href: 'https://apps.apple.com/us/app/ops-job-crew-management/id6746662078',
     external: true,
   },
   {
