@@ -16,10 +16,10 @@ import { legalDocuments } from '@/lib/legal-content';
 export const metadata: Metadata = {
   title: 'Legal',
   description:
-    'OPS Terms of Service, Privacy Policy, and End User License Agreement.',
+    'OPS Terms of Service, Privacy Policy, End User License Agreement, and Data Processing Agreement.',
 };
 
-const VALID_TABS = ['terms', 'privacy', 'eula'] as const;
+const VALID_TABS = ['terms', 'privacy', 'eula', 'dpa'] as const;
 
 export default async function LegalPage({
   searchParams,

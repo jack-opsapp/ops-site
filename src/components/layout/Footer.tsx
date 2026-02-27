@@ -6,6 +6,7 @@
 
 import Link from 'next/link';
 import Image from 'next/image';
+import NewsletterSignup from '@/components/shared/NewsletterSignup';
 
 const columns = [
   {
@@ -88,8 +89,21 @@ export default function Footer() {
           ))}
         </div>
 
+        {/* Newsletter */}
+        <div className="mt-14 pt-8 border-t border-ops-border">
+          <div className="max-w-md">
+            <h3 className="font-caption text-ops-text-secondary uppercase tracking-[0.15em] text-[11px] mb-2">
+              Stay in the loop
+            </h3>
+            <p className="font-body text-ops-text-secondary/60 text-xs mb-4">
+              Product updates and what we&apos;re building — once a month.
+            </p>
+            <NewsletterSignup source="footer" compact />
+          </div>
+        </div>
+
         {/* Bottom bar */}
-        <div className="mt-16 pt-6 border-t border-ops-border flex flex-col md:flex-row items-start md:items-center justify-between gap-4">
+        <div className="mt-10 pt-6 border-t border-ops-border flex flex-col md:flex-row items-start md:items-center justify-between gap-4">
           <div className="flex items-center gap-4">
             <Image
               src="/images/ops-logo-white.png"

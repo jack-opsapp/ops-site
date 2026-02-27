@@ -1,6 +1,9 @@
 import type { Metadata } from 'next';
+import { Analytics } from '@vercel/analytics/next';
+import { SpeedInsights } from '@vercel/speed-insights/next';
 import { mohave, kosugi } from '@/lib/fonts';
 import PageLayout from '@/components/layout/PageLayout';
+import GoogleAnalytics from '@/components/layout/GoogleAnalytics';
 import './globals.css';
 
 export const metadata: Metadata = {
@@ -30,6 +33,9 @@ export default function RootLayout({
     <html lang="en" className={`${mohave.variable} ${kosugi.variable}`}>
       <body className="font-body antialiased">
         <PageLayout>{children}</PageLayout>
+        <Analytics />
+        <SpeedInsights />
+        <GoogleAnalytics />
       </body>
     </html>
   );

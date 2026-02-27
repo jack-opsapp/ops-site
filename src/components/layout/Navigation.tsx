@@ -115,7 +115,7 @@ export default function Navigation() {
                 />
               </div>
             ) : (
-              <Button variant="solid" href="https://app.opsapp.co" external>
+              <Button variant="solid" href="/login?mode=signup">
                 GET OPS
               </Button>
             )}

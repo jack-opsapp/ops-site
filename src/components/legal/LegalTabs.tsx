@@ -14,6 +14,7 @@ const tabs = [
   { key: 'terms', label: 'TERMS' },
   { key: 'privacy', label: 'PRIVACY' },
   { key: 'eula', label: 'EULA' },
+  { key: 'dpa', label: 'DPA' },
 ] as const;
 
 interface LegalTabsProps {
