@@ -122,6 +122,8 @@ interface LeadershipSphereProps {
   focusSubIndex?: number | null;
   onDimensionClick?: (dimension: Dimension) => void;
   comparisonScores?: SimpleScores;
+  showAverages?: boolean;
+  onToggleAverages?: () => void;
   className?: string;
 }
 
@@ -250,6 +252,8 @@ export default function LeadershipSphere({
   focusSubIndex: externalFocusSubIndex,
   onDimensionClick,
   comparisonScores,
+  showAverages,
+  onToggleAverages,
   className,
 }: LeadershipSphereProps) {
   const isQuick = version === 'quick';
@@ -922,26 +926,21 @@ export default function LeadershipSphere({
           compNodes.set(dim, { dim, sx: p.sx, sy: p.sy, z: r3.z, score });
         }
 
-        // Draw comparison mesh — thin white dashed lines
-        ctx.setLineDash([3, 5]);
-        for (const [dimA, dimB] of MESH_PAIRS) {
-          const a = compNodes.get(dimA)!;
-          const b = compNodes.get(dimB)!;
-          ctx.beginPath();
-          ctx.moveTo(a.sx, a.sy);
-          ctx.lineTo(b.sx, b.sy);
-          ctx.strokeStyle = 'rgba(255, 255, 255, 0.14)';
-          ctx.lineWidth = 0.4;
-          ctx.stroke();
-        }
-        ctx.setLineDash([]);
-
-        // Draw comparison nodes and labels — sorted back-to-front
+        // Draw comparison rays and nodes — sorted back-to-front
         const compSorted = Array.from(compNodes.values()).sort((a, b) => a.z - b.z);
 
         for (const cn of compSorted) {
           const depthNorm = maxZ > 0 ? (cn.z / maxZ + 1) / 2 : 0.5;
+          const rayAlpha = 0.08 + depthNorm * 0.12;
           const nodeAlpha = 0.3 + depthNorm * 0.25;
+
+          // Ray from center to comparison node
+          ctx.beginPath();
+          ctx.moveTo(ecx, ecy);
+          ctx.lineTo(cn.sx, cn.sy);
+          ctx.strokeStyle = `rgba(255, 255, 255, ${rayAlpha})`;
+          ctx.lineWidth = 0.6;
+          ctx.stroke();
 
           // Small white square (4px)
           const nodeSize = 4 * (FOCAL_LENGTH / (FOCAL_LENGTH - cn.z));
@@ -1294,6 +1293,7 @@ export default function LeadershipSphere({
   /* ---- Description panel data ---- */
 
   const focusedScore = focusedDimState ? scores[focusedDimState] : 0;
+  const focusedAvgScore = focusedDimState && comparisonScores ? comparisonScores[focusedDimState] : null;
   const focusedSubScores = focusedDimState && subScores ? subScores[focusedDimState] : null;
   const focusedDescription = focusedDimState && dimensionDescriptions
     ? dimensionDescriptions[focusedDimState]
@@ -1320,10 +1320,32 @@ export default function LeadershipSphere({
         style={{ display: 'block', width: '100%', height: '100%' }}
       />
 
-      {/* Navigation hint — top left */}
-      <p className="absolute top-2 left-2 font-caption text-[9px] uppercase tracking-[0.2em] text-ops-text-secondary/30 pointer-events-none">
-        Drag to navigate, click a node to see details
-      </p>
+      {/* Navigation hint + average toggle — top left */}
+      <div className="absolute top-2 left-2 flex flex-col gap-2">
+        <p className="font-caption text-[9px] uppercase tracking-[0.2em] text-ops-text-secondary/30 pointer-events-none">
+          Drag to navigate, click a node to see details
+        </p>
+        {onToggleAverages && (
+          <button
+            type="button"
+            onClick={onToggleAverages}
+            onMouseDown={(e) => e.stopPropagation()}
+            onTouchStart={(e) => e.stopPropagation()}
+            className={`inline-flex items-center gap-2 font-caption uppercase tracking-[0.15em] text-[10px] px-3 py-1.5 rounded-[3px] border transition-all duration-200 cursor-pointer w-fit ${
+              showAverages
+                ? 'border-white/50 text-white bg-white/10'
+                : 'border-ops-border text-ops-text-secondary/50 hover:border-ops-border-hover hover:text-ops-text-secondary'
+            }`}
+          >
+            <span
+              className={`inline-block w-1.5 h-1.5 rounded-full transition-colors duration-200 ${
+                showAverages ? 'bg-white' : 'bg-ops-text-secondary/30'
+              }`}
+            />
+            Population Average
+          </button>
+        )}
+      </div>
 
       {/* Description panel — mobile: below sphere; desktop: bottom-left overlay */}
       <div
@@ -1350,12 +1372,19 @@ export default function LeadershipSphere({
               >
                 {DIMENSION_LABELS[focusedDimState]}
               </p>
-              <p
-                className="font-heading font-semibold text-xl md:text-3xl md:mb-3"
-                style={{ color: `rgb(${ACCENT.r}, ${ACCENT.g}, ${ACCENT.b})` }}
-              >
-                {focusedScore}
-              </p>
+              <div className="flex items-baseline gap-3 md:mb-3">
+                <p
+                  className="font-heading font-semibold text-xl md:text-3xl"
+                  style={{ color: `rgb(${ACCENT.r}, ${ACCENT.g}, ${ACCENT.b})` }}
+                >
+                  {focusedScore}
+                </p>
+                {focusedAvgScore !== null && (
+                  <span className="font-body text-xs text-white/40">
+                    avg <span className="font-heading font-semibold text-sm text-white/60">{focusedAvgScore}</span>
+                  </span>
+                )}
+              </div>
             </div>
             {focusedDescription && (
               <p className="hidden md:block font-body text-ops-text-secondary text-sm mb-4 leading-relaxed">

@@ -114,19 +114,6 @@ export default function ResultsInteractive({
               </span>
             </button>
           ))}
-          {averageScores && (
-            <button
-              type="button"
-              onClick={() => setShowAverages((prev) => !prev)}
-              className={`inline-flex items-center font-caption uppercase tracking-[0.1em] text-[10px] px-2.5 py-1 rounded-[3px] border transition-colors cursor-pointer ${
-                showAverages
-                  ? 'border-white/40 text-white bg-white/5'
-                  : 'border-ops-border text-ops-text-secondary hover:border-ops-border-hover'
-              }`}
-            >
-              AVG
-            </button>
-          )}
         </div>
       </FadeInUp>
 
@@ -205,10 +192,83 @@ export default function ResultsInteractive({
             focusSubIndex={focusSubIndex}
             onDimensionClick={handleDimensionFromSphere}
             comparisonScores={showAverages ? averageScores : undefined}
+            showAverages={showAverages}
+            onToggleAverages={averageScores ? () => setShowAverages((prev) => !prev) : undefined}
             className="w-full h-full"
           />
         </div>
       </FadeInUp>
+
+      {/* Score comparison bars — user vs population average */}
+      {averageScores && (
+        <FadeInUp>
+          <div className="mt-10 mb-6">
+            <p className="font-caption text-ops-text-secondary/40 uppercase tracking-[0.2em] text-[9px] mb-4">
+              [ Your Scores vs. Population Average ]
+            </p>
+            <div className="space-y-3">
+              {DIMENSIONS.map((dim) => {
+                const userScore = scores[dim];
+                const avgScore = averageScores[dim];
+                const diff = userScore - avgScore;
+                return (
+                  <div key={dim} className="group">
+                    <div className="flex items-center justify-between mb-1">
+                      <button
+                        type="button"
+                        onClick={() => handleDimensionChipClick(dim)}
+                        className="font-caption uppercase tracking-[0.1em] text-[10px] text-ops-text-secondary hover:text-ops-text-primary transition-colors cursor-pointer"
+                      >
+                        {dim}
+                      </button>
+                      <div className="flex items-center gap-3 font-heading text-xs">
+                        <span className="text-ops-accent font-semibold">{userScore}</span>
+                        <span className="text-white/25">|</span>
+                        <span className="text-white/40">{avgScore}</span>
+                        <span className={`font-semibold text-[10px] ${
+                          diff > 0 ? 'text-white/60' : diff < 0 ? 'text-white/30' : 'text-white/25'
+                        }`}>
+                          {diff > 0 ? `+${diff}` : diff === 0 ? '—' : `${diff}`}
+                        </span>
+                      </div>
+                    </div>
+                    <div className="relative h-1.5 rounded-full bg-white/[0.04]">
+                      {/* Average marker */}
+                      <div
+                        className="absolute top-0 h-full rounded-full bg-white/10"
+                        style={{ width: `${avgScore}%` }}
+                      />
+                      {/* User bar */}
+                      <div
+                        className="absolute top-0 h-full rounded-full transition-all duration-500"
+                        style={{
+                          width: `${userScore}%`,
+                          backgroundColor: `rgba(89, 119, 148, ${0.4 + (userScore / 100) * 0.4})`,
+                        }}
+                      />
+                      {/* Average tick mark */}
+                      <div
+                        className="absolute top-[-2px] w-px h-[calc(100%+4px)] bg-white/30"
+                        style={{ left: `${avgScore}%` }}
+                      />
+                    </div>
+                  </div>
+                );
+              })}
+            </div>
+            <div className="flex items-center gap-4 mt-4">
+              <div className="flex items-center gap-1.5">
+                <span className="inline-block w-3 h-1 rounded-full" style={{ backgroundColor: 'rgba(89, 119, 148, 0.6)' }} />
+                <span className="font-body text-[9px] text-ops-text-secondary/40">You</span>
+              </div>
+              <div className="flex items-center gap-1.5">
+                <span className="inline-block w-px h-2.5 bg-white/30" />
+                <span className="font-body text-[9px] text-ops-text-secondary/40">Average</span>
+              </div>
+            </div>
+          </div>
+        </FadeInUp>
+      )}
 
       {/* Strength badges — tap scrolls to strengths section */}
       {strengths && strengths.length > 0 && (
