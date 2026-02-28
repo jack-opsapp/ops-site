@@ -74,20 +74,49 @@ export default function ResultsInteractive({
 
   return (
     <>
-      {/* Archetype badge — tap scrolls to analysis */}
+      {/* Archetype + strengths — grouped with titles */}
       <FadeInUp>
-        <div className="flex flex-wrap items-center gap-3 mb-6">
-          <button
-            type="button"
-            onClick={() => scrollToWithOffset('results-analysis')}
-            className="inline-flex items-center font-caption uppercase tracking-[0.15em] text-[10px] px-3 py-1 rounded-[3px] border border-ops-accent/30 text-ops-accent bg-ops-accent/5 cursor-pointer hover:bg-ops-accent/10 transition-colors"
-          >
-            {archetypeName}
-          </button>
-          {secondaryArchetypeName && (
-            <span className="font-body text-ops-text-secondary text-xs">
-              with traits of <span className="text-ops-text-primary/70">{secondaryArchetypeName}</span>
-            </span>
+        <div className="flex flex-wrap gap-x-8 gap-y-4 mb-6">
+          {/* Primary archetype group */}
+          <div>
+            <p className="font-caption text-ops-text-secondary/30 uppercase tracking-[0.2em] text-[8px] mb-1.5">
+              Archetype
+            </p>
+            <div className="flex flex-wrap items-center gap-3">
+              <button
+                type="button"
+                onClick={() => scrollToWithOffset('results-analysis')}
+                className="inline-flex items-center font-caption uppercase tracking-[0.15em] text-[10px] px-3 py-1 rounded-[3px] border border-ops-accent/30 text-ops-accent bg-ops-accent/5 cursor-pointer hover:bg-ops-accent/10 transition-colors"
+              >
+                {archetypeName}
+              </button>
+              {secondaryArchetypeName && (
+                <span className="font-body text-ops-text-secondary text-xs">
+                  with traits of <span className="text-ops-text-primary/70">{secondaryArchetypeName}</span>
+                </span>
+              )}
+            </div>
+          </div>
+
+          {/* Key strengths group */}
+          {strengths && strengths.length > 0 && (
+            <div>
+              <p className="font-caption text-ops-text-secondary/30 uppercase tracking-[0.2em] text-[8px] mb-1.5">
+                Key Strengths
+              </p>
+              <div className="flex flex-wrap gap-2">
+                {strengths.slice(0, 3).map((s) => (
+                  <button
+                    key={s.title}
+                    type="button"
+                    onClick={() => scrollToWithOffset('results-strengths')}
+                    className="font-body text-ops-text-secondary/60 text-[11px] px-3 py-1 rounded-[3px] border border-ops-border/50 cursor-pointer hover:border-ops-border hover:text-ops-text-secondary/80 transition-colors"
+                  >
+                    {s.title}
+                  </button>
+                ))}
+              </div>
+            </div>
           )}
         </div>
       </FadeInUp>
@@ -270,23 +299,6 @@ export default function ResultsInteractive({
         </FadeInUp>
       )}
 
-      {/* Strength badges — tap scrolls to strengths section */}
-      {strengths && strengths.length > 0 && (
-        <FadeInUp>
-          <div className="flex flex-wrap gap-2 mt-4">
-            {strengths.slice(0, 3).map((s) => (
-              <button
-                key={s.title}
-                type="button"
-                onClick={() => scrollToWithOffset('results-strengths')}
-                className="font-body text-ops-text-secondary/60 text-[11px] px-3 py-1 rounded-[3px] border border-ops-border/50 cursor-pointer hover:border-ops-border hover:text-ops-text-secondary/80 transition-colors"
-              >
-                {s.title}
-              </button>
-            ))}
-          </div>
-        </FadeInUp>
-      )}
     </>
   );
 }
