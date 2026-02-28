@@ -105,6 +105,7 @@ export default async function ResultsPage({ params }: PageProps) {
             archetypeName={data.archetype.name}
             secondaryArchetypeName={data.secondary_archetype?.name}
             strengths={data.analysis.strengths}
+            averageScores={data.population_averages ?? undefined}
           />
         </div>
       </section>

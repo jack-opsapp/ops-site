@@ -240,4 +240,5 @@ export interface AssessmentResult {
   first_name: string;
   completed_at: string;
   norms: Record<Dimension, { percentile: number }> | null;
+  population_averages: SimpleScores | null;
 }

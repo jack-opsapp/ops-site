@@ -29,6 +29,7 @@ interface ResultsInteractiveProps {
   archetypeName: string;
   secondaryArchetypeName?: string;
   strengths?: { title: string; description: string }[];
+  averageScores?: SimpleScores;
 }
 
 export default function ResultsInteractive({
@@ -39,11 +40,13 @@ export default function ResultsInteractive({
   archetypeName,
   secondaryArchetypeName,
   strengths,
+  averageScores,
 }: ResultsInteractiveProps) {
   const isDeep = version === 'deep';
   const [focusDimension, setFocusDimension] = useState<Dimension | null>(null);
   const [focusSubIndex, setFocusSubIndex] = useState<number | null>(null);
   const [hoveredSub, setHoveredSub] = useState<{ dim: Dimension; index: number } | null>(null);
+  const [showAverages, setShowAverages] = useState(false);
 
   const handleDimensionChipClick = useCallback((dim: Dimension) => {
     setFocusDimension((prev) => {
@@ -111,6 +114,19 @@ export default function ResultsInteractive({
               </span>
             </button>
           ))}
+          {averageScores && (
+            <button
+              type="button"
+              onClick={() => setShowAverages((prev) => !prev)}
+              className={`inline-flex items-center font-caption uppercase tracking-[0.1em] text-[10px] px-2.5 py-1 rounded-[3px] border transition-colors cursor-pointer ${
+                showAverages
+                  ? 'border-white/40 text-white bg-white/5'
+                  : 'border-ops-border text-ops-text-secondary hover:border-ops-border-hover'
+              }`}
+            >
+              AVG
+            </button>
+          )}
         </div>
       </FadeInUp>
 
@@ -188,6 +204,7 @@ export default function ResultsInteractive({
             focusDimension={focusDimension}
             focusSubIndex={focusSubIndex}
             onDimensionClick={handleDimensionFromSphere}
+            comparisonScores={showAverages ? averageScores : undefined}
             className="w-full h-full"
           />
         </div>

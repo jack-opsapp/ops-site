@@ -555,10 +555,12 @@ export async function getResults(
     .eq('segment', 'all');
 
   let normsRecord: Record<Dimension, { percentile: number }> | null = null;
+  let medianScores: SimpleScores | null = null;
 
   if (norms && norms.length > 0) {
     const simpleScores = session.scores as SimpleScores;
     normsRecord = {} as Record<Dimension, { percentile: number }>;
+    medianScores = {} as SimpleScores;
 
     for (const norm of norms) {
       const dim = norm.dimension as Dimension;
@@ -578,6 +580,7 @@ export async function getResults(
       }
 
       normsRecord[dim] = { percentile };
+      medianScores[dim] = percentileMap['50'] ?? 50;
     }
   }
 
@@ -616,6 +619,7 @@ export async function getResults(
     first_name: session.first_name as string,
     completed_at: session.completed_at as string,
     norms: normsRecord,
+    population_averages: medianScores,
   };
 }
 

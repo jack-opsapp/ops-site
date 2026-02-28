@@ -121,6 +121,7 @@ interface LeadershipSphereProps {
   focusDimension?: Dimension | null;
   focusSubIndex?: number | null;
   onDimensionClick?: (dimension: Dimension) => void;
+  comparisonScores?: SimpleScores;
   className?: string;
 }
 
@@ -248,6 +249,7 @@ export default function LeadershipSphere({
   focusDimension: externalFocusDimension,
   focusSubIndex: externalFocusSubIndex,
   onDimensionClick,
+  comparisonScores,
   className,
 }: LeadershipSphereProps) {
   const isQuick = version === 'quick';
@@ -272,6 +274,7 @@ export default function LeadershipSphere({
   const scoresRef = useRef(scores);
   const subScoresRef = useRef(subScores);
   const onClickRef = useRef(onDimensionClick);
+  const comparisonScoresRef = useRef(comparisonScores);
 
   // Focus mode refs
   const focusedDimRef = useRef<Dimension | null>(null);
@@ -297,6 +300,7 @@ export default function LeadershipSphere({
 
   // Keep refs in sync with props
   scoresRef.current = scores;
+  comparisonScoresRef.current = comparisonScores;
   subScoresRef.current = subScores;
   onClickRef.current = onDimensionClick;
   isQuickRef.current = isQuick;
@@ -897,6 +901,63 @@ export default function LeadershipSphere({
         ctx.stroke();
       }
       ctx.setLineDash([]);
+
+      /* ---- Phase 5b: Comparison overlay (population averages) ---- */
+
+      const currentComparison = comparisonScoresRef.current;
+
+      if (currentComparison) {
+        // Compute comparison node positions
+        const compNodes: Map<Dimension, { dim: Dimension; sx: number; sy: number; z: number; score: number }> = new Map();
+
+        for (const dim of DIMENSIONS) {
+          const dir = DIMENSION_DIRS[dim];
+          const score = currentComparison[dim];
+          const vectorLength = MIN_VECTOR_LENGTH + (score / 100) * (MAX_VECTOR_LENGTH - MIN_VECTOR_LENGTH);
+          const ex = dir.dx * radius * vectorLength;
+          const ey = dir.dy * radius * vectorLength;
+          const ez = dir.dz * radius * vectorLength;
+          const r3 = rotate(ex, ey, ez, finalYaw, finalTilt);
+          const p = project(r3.x, r3.y, r3.z, ecx, ecy);
+          compNodes.set(dim, { dim, sx: p.sx, sy: p.sy, z: r3.z, score });
+        }
+
+        // Draw comparison mesh — thin white dashed lines
+        ctx.setLineDash([3, 5]);
+        for (const [dimA, dimB] of MESH_PAIRS) {
+          const a = compNodes.get(dimA)!;
+          const b = compNodes.get(dimB)!;
+          ctx.beginPath();
+          ctx.moveTo(a.sx, a.sy);
+          ctx.lineTo(b.sx, b.sy);
+          ctx.strokeStyle = 'rgba(255, 255, 255, 0.14)';
+          ctx.lineWidth = 0.4;
+          ctx.stroke();
+        }
+        ctx.setLineDash([]);
+
+        // Draw comparison nodes and labels — sorted back-to-front
+        const compSorted = Array.from(compNodes.values()).sort((a, b) => a.z - b.z);
+
+        for (const cn of compSorted) {
+          const depthNorm = maxZ > 0 ? (cn.z / maxZ + 1) / 2 : 0.5;
+          const nodeAlpha = 0.3 + depthNorm * 0.25;
+
+          // Small white square (4px)
+          const nodeSize = 4 * (FOCAL_LENGTH / (FOCAL_LENGTH - cn.z));
+          ctx.fillStyle = `rgba(255, 255, 255, ${nodeAlpha})`;
+          ctx.fillRect(cn.sx - nodeSize / 2, cn.sy - nodeSize / 2, nodeSize, nodeSize);
+
+          // Score label
+          const dir = DIMENSION_DIRS[cn.dim];
+          const labelOffsetY = dir.dy < 0 ? -10 : 14;
+          ctx.font = '400 10px "Mohave", sans-serif';
+          ctx.textAlign = 'center';
+          ctx.textBaseline = dir.dy < 0 ? 'bottom' : 'top';
+          ctx.fillStyle = `rgba(255, 255, 255, ${nodeAlpha * 0.9})`;
+          ctx.fillText(`${cn.score}`, cn.sx, cn.sy + labelOffsetY);
+        }
+      }
 
       /* ---- Phase 6: Sort dimensions back-to-front ---- */
 
