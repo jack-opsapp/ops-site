@@ -294,10 +294,11 @@ export function computeValidityFlags(
   }
 
   // Adjust acquiescence bias based on reverse-item discrimination.
-  // If we have enough reverse items (>=3) and the person discriminates well,
+  // If we have ANY reverse items and the person discriminates well,
   // their high agreement rate reflects genuine trait expression, not bias.
+  // (Quick assessments may have only 1-2 reverse items — still informative.)
   let acquiescenceBias = rawAgreementRate;
-  if (reverseLikertAnswers.length >= 3 && reverseDiscriminationRate > 0.5) {
+  if (reverseLikertAnswers.length >= 1 && reverseDiscriminationRate > 0.5) {
     // Person correctly disagrees with most reverse items — high agreement on
     // forward items is substantive. Scale down the concern proportionally.
     // At 100% discrimination rate → reduce bias indicator by 50%
@@ -342,7 +343,12 @@ export function computeValidityFlags(
   // This mitigates straight-line and acquiescence concerns.
   const adequateResponseTime = fastResponsePct < 0.3;
 
-  // If response times are adequate, reduce straight-line concern.
+  // Store the raw straight-line pct before any mitigation adjustments.
+  // The AI prompt should see the raw observed value; the adjusted value
+  // is used for overall_reliability thresholds only.
+  const rawStraightLinePct = straightLinePct;
+
+  // If response times are adequate, reduce straight-line concern for reliability scoring.
   // Consistent answers + adequate time = genuine consistency, not disengagement.
   if (adequateResponseTime && straightLinePct > 0.4) {
     straightLinePct = straightLinePct * 0.75;
@@ -373,7 +379,7 @@ export function computeValidityFlags(
   return {
     inconsistency_index: inconsistencyIndex,
     impression_management: impressionManagement,
-    straight_line_pct: straightLinePct,
+    straight_line_pct: rawStraightLinePct, // raw observed value — AI and prompt see the real number
     fast_response_pct: fastResponsePct,
     acquiescence_bias: acquiescenceBias,
     extreme_response_pct: extremeResponsePct,

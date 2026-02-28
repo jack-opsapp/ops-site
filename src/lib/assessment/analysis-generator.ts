@@ -126,7 +126,10 @@ Format:
 
   // Check for mitigating factors first
   const hasAdequateTime = flags.adequate_response_time ?? (flags.fast_response_pct < 0.3);
-  const hasReverseDiscrimination = (flags.reverse_discrimination_rate ?? 0) > 0.5;
+  // Only trust reverse discrimination if the field was computed (i.e., at least 1 reverse item existed).
+  // This matches the guard in scoring.ts: `reverseLikertAnswers.length >= 1 && rate > 0.5`
+  const hasReverseDiscrimination =
+    flags.reverse_discrimination_rate !== undefined && flags.reverse_discrimination_rate > 0.5;
 
   if (hasAdequateTime) {
     mitigations.push('Response times indicate the respondent spent adequate time on most items (>2 seconds per item), suggesting engaged rather than mechanical responding.');
