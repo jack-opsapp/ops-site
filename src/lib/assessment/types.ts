@@ -107,6 +107,12 @@ export interface ValidityFlags {
   acquiescence_bias: number;
   extreme_response_pct: number;
   overall_reliability: 'high' | 'medium' | 'low';
+  /** % of reverse-scored items where respondent correctly disagreed (raw 1 or 2). High = content-discriminating. */
+  reverse_discrimination_rate?: number;
+  /** Formal acquiescence index: average of all raw (unreversed) likert answers. Midpoint (3.0) = no bias. */
+  acquiescence_index?: number;
+  /** Whether respondent had adequate response times (>2s) on most items */
+  adequate_response_time?: boolean;
 }
 
 /* ------------------------------------------------------------------ */

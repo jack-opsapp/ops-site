@@ -175,6 +175,12 @@ export function scoreBatch(
 /**
  * Computes validity / reliability indicators from all responses in a
  * session.
+ *
+ * Uses research-backed psychometric methods:
+ * - Formal acquiescence index (balanced forward/reverse item comparison)
+ * - Reverse-item discrimination rate (distinguishes genuine agreement from yea-saying)
+ * - Response time as mitigating factor (engaged respondents get benefit of the doubt)
+ * - Multiple validity indices in combination (no single index invalidates alone)
  */
 export function computeValidityFlags(
   allResponses: {
@@ -184,8 +190,7 @@ export function computeValidityFlags(
   }[],
   questions: PoolQuestion[],
 ): ValidityFlags {
-  /* ---------- inconsistency_index ---------- */
-  // Build a map of question_id -> response for fast lookup
+  /* ---------- setup ---------- */
   const responseMap = new Map<
     string,
     { question_id: string; answer_value: number | string; response_time_ms: number | null }
@@ -194,13 +199,12 @@ export function computeValidityFlags(
     responseMap.set(r.question_id, r);
   }
 
-  // Build a map of question_id -> PoolQuestion
   const questionMap = new Map<string, PoolQuestion>();
   for (const q of questions) {
     questionMap.set(q.id, q);
   }
 
-  // Group questions by validity_pair_id
+  /* ---------- inconsistency_index ---------- */
   const pairGroups = new Map<string, PoolQuestion[]>();
   for (const q of questions) {
     if (q.validity_pair_id) {
@@ -214,7 +218,6 @@ export function computeValidityFlags(
   let pairCount = 0;
   for (const [, group] of pairGroups) {
     if (group.length < 2) continue;
-    // Compare the first two members of each pair
     const qA = group[0];
     const qB = group[1];
     const rA = responseMap.get(qA.id);
@@ -223,18 +226,14 @@ export function computeValidityFlags(
 
     let valA = typeof rA.answer_value === 'number' ? rA.answer_value : Number(rA.answer_value);
     let valB = typeof rB.answer_value === 'number' ? rB.answer_value : Number(rB.answer_value);
+    if (isNaN(valA) || isNaN(valB)) continue;
 
-    if (isNaN(valA) || isNaN(valB)) continue; // non-Likert pair — skip
-
-    // Account for reverse scoring: if a question is reverse scored,
-    // invert on a 1-5 scale (1↔5, 2↔4, 3→3)
     if (qA.reverse_scored) valA = 6 - valA;
     if (qB.reverse_scored) valB = 6 - valB;
 
     pairDeltaSum += Math.abs(valA - valB);
     pairCount++;
   }
-
   const inconsistencyIndex = pairCount > 0 ? pairDeltaSum / pairCount : 0;
 
   /* ---------- impression_management ---------- */
@@ -246,24 +245,70 @@ export function computeValidityFlags(
     const resp = responseMap.get(q.id);
     if (!resp) continue;
     const val = typeof resp.answer_value === 'number' ? resp.answer_value : Number(resp.answer_value);
-    if (val === 4 || val === 5) {
-      imHighCount++;
-    }
+    if (val === 4 || val === 5) imHighCount++;
   }
   const impressionManagement = imTotal > 0 ? imHighCount / imTotal : 0;
 
-  /* ---------- straight_line_pct ---------- */
+  /* ---------- likert answer extraction ---------- */
   const likertAnswers: number[] = [];
+  const forwardLikertAnswers: number[] = [];
+  const reverseLikertAnswers: number[] = []; // raw (unreversed) answers to reverse-scored items
   for (const resp of allResponses) {
     const q = questionMap.get(resp.question_id);
     if (!q || q.type !== 'likert') continue;
     const val = typeof resp.answer_value === 'number' ? resp.answer_value : Number(resp.answer_value);
-    if (!isNaN(val)) likertAnswers.push(val);
+    if (isNaN(val)) continue;
+    likertAnswers.push(val);
+    if (q.reverse_scored) {
+      reverseLikertAnswers.push(val);
+    } else {
+      forwardLikertAnswers.push(val);
+    }
   }
 
+  /* ---------- reverse_discrimination_rate ---------- */
+  // % of reverse-scored items where respondent correctly disagreed (raw 1 or 2).
+  // High rate = person is reading and discriminating, not yea-saying.
+  let reverseDiscriminationRate = 0;
+  if (reverseLikertAnswers.length > 0) {
+    const correctDisagree = reverseLikertAnswers.filter((v) => v <= 2).length;
+    reverseDiscriminationRate = correctDisagree / reverseLikertAnswers.length;
+  }
+
+  /* ---------- acquiescence_index (formal) ---------- */
+  // Average of all raw (unreversed) likert answers.
+  // On a 1-5 scale, midpoint = 3.0. Values above 3.0 indicate acquiescence.
+  // A genuinely agreeable person: forward answers ~4-5, reverse answers ~1-2 → avg ≈ 3.0
+  // A yea-sayer: forward answers ~4-5, reverse answers ~4-5 → avg ≈ 4.5
+  let acquiescenceIndex = 3.0; // default to midpoint (neutral)
+  if (likertAnswers.length > 0) {
+    const sum = likertAnswers.reduce((a, b) => a + b, 0);
+    acquiescenceIndex = sum / likertAnswers.length;
+  }
+
+  /* ---------- acquiescence_bias (adjusted) ---------- */
+  // Raw agreement rate: % of likert at 4 or 5
+  let rawAgreementRate = 0;
+  if (likertAnswers.length > 0) {
+    rawAgreementRate = likertAnswers.filter((v) => v >= 4).length / likertAnswers.length;
+  }
+
+  // Adjust acquiescence bias based on reverse-item discrimination.
+  // If we have enough reverse items (>=3) and the person discriminates well,
+  // their high agreement rate reflects genuine trait expression, not bias.
+  let acquiescenceBias = rawAgreementRate;
+  if (reverseLikertAnswers.length >= 3 && reverseDiscriminationRate > 0.5) {
+    // Person correctly disagrees with most reverse items — high agreement on
+    // forward items is substantive. Scale down the concern proportionally.
+    // At 100% discrimination rate → reduce bias indicator by 50%
+    // At 50% discrimination rate → no reduction
+    const reductionFactor = 1 - (reverseDiscriminationRate - 0.5) * 1.0;
+    acquiescenceBias = rawAgreementRate * Math.max(0.5, reductionFactor);
+  }
+
+  /* ---------- straight_line_pct ---------- */
   let straightLinePct = 0;
   if (likertAnswers.length > 0) {
-    // Find the most common answer
     const freq = new Map<number, number>();
     for (const v of likertAnswers) {
       freq.set(v, (freq.get(v) ?? 0) + 1);
@@ -275,16 +320,7 @@ export function computeValidityFlags(
     straightLinePct = maxFreq / likertAnswers.length;
   }
 
-  /* ---------- acquiescence_bias ---------- */
-  // % of likert responses at 4 or 5 (agreement bias regardless of content)
-  let acquiescenceBias = 0;
-  if (likertAnswers.length > 0) {
-    const highCount = likertAnswers.filter((v) => v >= 4).length;
-    acquiescenceBias = highCount / likertAnswers.length;
-  }
-
   /* ---------- extreme_response_pct ---------- */
-  // % of likert responses at extremes (1 or 5)
   let extremeResponsePct = 0;
   if (likertAnswers.length > 0) {
     const extremeCount = likertAnswers.filter((v) => v === 1 || v === 5).length;
@@ -301,24 +337,34 @@ export function computeValidityFlags(
   }
   const fastResponsePct = totalResponses > 0 ? fastCount / totalResponses : 0;
 
+  /* ---------- adequate_response_time ---------- */
+  // If >70% of responses had adequate time (>=2s), the respondent was engaged.
+  // This mitigates straight-line and acquiescence concerns.
+  const adequateResponseTime = fastResponsePct < 0.3;
+
+  // If response times are adequate, reduce straight-line concern.
+  // Consistent answers + adequate time = genuine consistency, not disengagement.
+  if (adequateResponseTime && straightLinePct > 0.4) {
+    straightLinePct = straightLinePct * 0.75;
+  }
+
   /* ---------- overall_reliability ---------- */
+  // Use the adjusted acquiescence bias (which accounts for reverse discrimination)
+  // and the adjusted straight-line pct (which accounts for response time).
   let overallReliability: 'high' | 'medium' | 'low';
 
-  if (
-    inconsistencyIndex > 2.5 ||
-    impressionManagement > 0.75 ||
-    straightLinePct > 0.6 ||
-    acquiescenceBias > 0.85 ||
-    extremeResponsePct > 0.8
-  ) {
+  // Count how many flags are elevated (use multiple indices in combination)
+  let flagCount = 0;
+  if (inconsistencyIndex > 2.0) flagCount++;
+  if (impressionManagement > 0.7) flagCount++;
+  if (straightLinePct > 0.6) flagCount++;
+  if (acquiescenceBias > 0.8) flagCount++;
+  if (extremeResponsePct > 0.7) flagCount++;
+  if (fastResponsePct > 0.5) flagCount++;
+
+  if (flagCount >= 3 || inconsistencyIndex > 3.0 || (acquiescenceBias > 0.85 && !adequateResponseTime)) {
     overallReliability = 'low';
-  } else if (
-    inconsistencyIndex < 1.5 &&
-    impressionManagement < 0.5 &&
-    straightLinePct < 0.4 &&
-    acquiescenceBias < 0.65 &&
-    extremeResponsePct < 0.5
-  ) {
+  } else if (flagCount === 0 && inconsistencyIndex < 1.5 && acquiescenceBias < 0.65) {
     overallReliability = 'high';
   } else {
     overallReliability = 'medium';
@@ -332,6 +378,9 @@ export function computeValidityFlags(
     acquiescence_bias: acquiescenceBias,
     extreme_response_pct: extremeResponsePct,
     overall_reliability: overallReliability,
+    reverse_discrimination_rate: reverseDiscriminationRate,
+    acquiescence_index: acquiescenceIndex,
+    adequate_response_time: adequateResponseTime,
   };
 }
 
