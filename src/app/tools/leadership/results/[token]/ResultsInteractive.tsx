@@ -11,6 +11,7 @@ import { useState, useCallback } from 'react';
 import type { Dimension, SimpleScores, DimensionSubScores, AssessmentVersion } from '@/lib/assessment/types';
 import { DIMENSIONS } from '@/lib/assessment/types';
 import LeadershipSphere, { SUB_NODE_COLORS } from '@/components/assessment/LeadershipSphere';
+import ResultsHero from '@/components/assessment/ResultsHero';
 import { FadeInUp } from '@/components/ui';
 
 /** Scroll to element with offset to avoid being hidden behind fixed header */
@@ -30,6 +31,8 @@ interface ResultsInteractiveProps {
   secondaryArchetypeName?: string;
   strengths?: { title: string; description: string }[];
   averageScores?: SimpleScores;
+  firstName: string;
+  tagline: string;
 }
 
 export default function ResultsInteractive({
@@ -41,6 +44,8 @@ export default function ResultsInteractive({
   secondaryArchetypeName,
   strengths,
   averageScores,
+  firstName,
+  tagline,
 }: ResultsInteractiveProps) {
   const isDeep = version === 'deep';
   const [focusDimension, setFocusDimension] = useState<Dimension | null>(null);
@@ -74,9 +79,13 @@ export default function ResultsInteractive({
 
   return (
     <>
-      {/* Archetype + strengths — grouped with titles */}
-      <FadeInUp>
-        <div className="flex flex-wrap gap-x-8 gap-y-4 mb-6">
+      {/* Hero with badges inline */}
+      <ResultsHero
+        archetypeName={archetypeName}
+        tagline={tagline}
+        firstName={firstName}
+      >
+        <div className="flex flex-wrap gap-x-8 gap-y-4">
           {/* Primary archetype group */}
           <div>
             <p className="font-caption text-ops-text-secondary/30 uppercase tracking-[0.2em] text-[8px] mb-1.5">
@@ -118,33 +127,40 @@ export default function ResultsInteractive({
               </div>
             </div>
           )}
-        </div>
-      </FadeInUp>
 
-      {/* Score chips — tap orients the sphere */}
-      <FadeInUp>
-        <div className="flex flex-wrap gap-2 mb-2">
-          {DIMENSIONS.map((dim) => (
-            <button
-              key={dim}
-              type="button"
-              onClick={() => handleDimensionChipClick(dim)}
-              className={`inline-flex items-center gap-1.5 font-caption uppercase tracking-[0.1em] text-[10px] px-2.5 py-1 rounded-[3px] border transition-colors cursor-pointer ${
-                focusDimension === dim
-                  ? 'border-ops-accent/50 text-ops-accent bg-ops-accent/5'
-                  : 'border-ops-border text-ops-text-secondary hover:border-ops-border-hover'
-              }`}
-            >
-              {dim}
-              <span className={`font-heading font-semibold text-xs ${
-                focusDimension === dim ? 'text-ops-accent' : 'text-ops-text-primary'
-              }`}>
-                {scores[dim]}
-              </span>
-            </button>
-          ))}
+          {/* Scores group */}
+          <div>
+            <p className="font-caption text-ops-text-secondary/30 uppercase tracking-[0.2em] text-[8px] mb-1.5">
+              Scores
+            </p>
+            <div className="flex flex-wrap gap-2">
+              {DIMENSIONS.map((dim) => (
+                <button
+                  key={dim}
+                  type="button"
+                  onClick={() => handleDimensionChipClick(dim)}
+                  className={`inline-flex items-center gap-1.5 font-caption uppercase tracking-[0.1em] text-[10px] px-2.5 py-1 rounded-[3px] border transition-colors cursor-pointer ${
+                    focusDimension === dim
+                      ? 'border-ops-accent/50 text-ops-accent bg-ops-accent/5'
+                      : 'border-ops-border text-ops-text-secondary hover:border-ops-border-hover'
+                  }`}
+                >
+                  {dim}
+                  <span className={`font-heading font-semibold text-xs ${
+                    focusDimension === dim ? 'text-ops-accent' : 'text-ops-text-primary'
+                  }`}>
+                    {scores[dim]}
+                  </span>
+                </button>
+              ))}
+            </div>
+          </div>
         </div>
-      </FadeInUp>
+      </ResultsHero>
+
+      {/* Sphere section */}
+      <section id="results-content" className="py-8 md:py-16">
+        <div className="max-w-[1100px] mx-auto px-6 md:px-10">
 
       {/* Sub-dimension tags — deep version only */}
       {isDeep && subScores && (
@@ -299,6 +315,8 @@ export default function ResultsInteractive({
         </FadeInUp>
       )}
 
+        </div>
+      </section>
     </>
   );
 }

@@ -13,7 +13,6 @@ import { getResults } from '@/lib/assessment/actions';
 import type { AssessmentResult, Dimension } from '@/lib/assessment/types';
 import { FadeInUp } from '@/components/ui';
 import BottomCTA from '@/components/shared/BottomCTA';
-import ResultsHero from '@/components/assessment/ResultsHero';
 import ResultsAnalysis from '@/components/assessment/ResultsAnalysis';
 import ResultsShareBar from '@/components/assessment/ResultsShareBar';
 import ResultsInteractive from './ResultsInteractive';
@@ -87,28 +86,19 @@ export default async function ResultsPage({ params }: PageProps) {
 
   return (
     <>
-      {/* Hero — Archetype reveal */}
-      <ResultsHero
+      {/* Hero + Sphere — ResultsInteractive renders both */}
+      <ResultsInteractive
+        scores={data.scores}
+        subScores={data.analysis.sub_scores}
+        dimensionDescriptions={dimensionDescriptions}
+        version={data.version}
         archetypeName={data.archetype.name}
-        tagline={data.archetype.tagline}
+        secondaryArchetypeName={data.secondary_archetype?.name}
+        strengths={data.analysis.strengths}
+        averageScores={data.population_averages ?? undefined}
         firstName={data.first_name}
+        tagline={data.archetype.tagline}
       />
-
-      {/* Leadership Sphere — Interactive 3D visualization */}
-      <section id="results-content" className="py-8 md:py-16">
-        <div className="max-w-[1100px] mx-auto px-6 md:px-10">
-          <ResultsInteractive
-            scores={data.scores}
-            subScores={data.analysis.sub_scores}
-            dimensionDescriptions={dimensionDescriptions}
-            version={data.version}
-            archetypeName={data.archetype.name}
-            secondaryArchetypeName={data.secondary_archetype?.name}
-            strengths={data.analysis.strengths}
-            averageScores={data.population_averages ?? undefined}
-          />
-        </div>
-      </section>
 
       {/* AI Analysis — expandable sections */}
       <ResultsAnalysis analysis={data.analysis} />

@@ -14,6 +14,7 @@ interface ResultsHeroProps {
   archetypeName: string;
   tagline: string;
   firstName: string;
+  children?: React.ReactNode;
 }
 
 const containerVariants = {
@@ -34,7 +35,7 @@ const itemVariants = {
   },
 };
 
-export default function ResultsHero({ archetypeName, tagline, firstName }: ResultsHeroProps) {
+export default function ResultsHero({ archetypeName, tagline, firstName, children }: ResultsHeroProps) {
   return (
     <section className="relative min-h-[70vh] md:min-h-[85vh] flex items-center overflow-hidden text-left">
       {/* AmbientBurst background */}
@@ -77,33 +78,12 @@ export default function ResultsHero({ archetypeName, tagline, firstName }: Resul
           {tagline}
         </motion.p>
 
-        {/* Down arrow — scrolls to first section */}
-        <motion.div
-          variants={itemVariants}
-          className="mt-16"
-        >
-          <button
-            type="button"
-            onClick={() => document.getElementById('results-sphere')?.scrollIntoView({ behavior: 'smooth', block: 'center' })}
-            className="cursor-pointer opacity-20 hover:opacity-40 transition-opacity duration-300"
-            aria-label="Scroll to results"
-          >
-            <motion.div
-              animate={{ y: [0, 6, 0] }}
-              transition={{ duration: 2, repeat: Infinity, ease: 'easeInOut' }}
-            >
-              <svg width="16" height="24" viewBox="0 0 16 24" fill="none">
-                <path
-                  d="M8 2L8 20M8 20L2 14M8 20L14 14"
-                  stroke="white"
-                  strokeWidth="1.5"
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                />
-              </svg>
-            </motion.div>
-          </button>
-        </motion.div>
+        {/* Badge slot — replaces down arrow */}
+        {children && (
+          <motion.div variants={itemVariants} className="mt-12">
+            {children}
+          </motion.div>
+        )}
       </motion.div>
     </section>
   );

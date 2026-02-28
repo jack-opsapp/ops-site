@@ -1322,7 +1322,7 @@ export default function LeadershipSphere({
 
       {/* Navigation hint + average toggle — top left */}
       <div className="absolute top-2 left-2 flex flex-col gap-2">
-        <p className="font-caption text-[9px] uppercase tracking-[0.2em] text-ops-text-secondary/30 pointer-events-none">
+        <p className="font-caption text-[9px] uppercase tracking-[0.2em] text-ops-text-secondary/60 pointer-events-none">
           Drag to navigate, click a node to see details
         </p>
         {onToggleAverages && (
