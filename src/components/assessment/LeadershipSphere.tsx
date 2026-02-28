@@ -1290,21 +1290,6 @@ export default function LeadershipSphere({
     };
   }, [resize]);
 
-  /* ---- Description panel data ---- */
-
-  const focusedScore = focusedDimState ? scores[focusedDimState] : 0;
-  const focusedAvgScore = focusedDimState && comparisonScores ? comparisonScores[focusedDimState] : null;
-  const focusedSubScores = focusedDimState && subScores ? subScores[focusedDimState] : null;
-  const focusedDescription = focusedDimState && dimensionDescriptions
-    ? dimensionDescriptions[focusedDimState]
-    : null;
-  const selectedSub = focusedSubScores && selectedSubIndex !== null
-    ? focusedSubScores[selectedSubIndex] ?? null
-    : null;
-  const selectedSubColor = selectedSubIndex !== null
-    ? SUB_NODE_COLORS[selectedSubIndex % SUB_NODE_COLORS.length]
-    : null;
-
   return (
     <div
       ref={containerRef}
@@ -1313,7 +1298,7 @@ export default function LeadershipSphere({
       onMouseMove={handleMouseMove}
       onMouseLeave={handleMouseLeave}
       onMouseUp={handleMouseUp}
-      style={{ position: 'relative', cursor: 'grab', overflow: 'visible' }}
+      style={{ position: 'relative', cursor: 'grab' }}
     >
       <canvas
         ref={canvasRef}
@@ -1344,151 +1329,6 @@ export default function LeadershipSphere({
             />
             Population Average
           </button>
-        )}
-      </div>
-
-      {/* Description panel — mobile: below sphere; desktop: bottom-left overlay */}
-      <div
-        className="absolute z-20 left-2 right-2 bottom-0 translate-y-[85%] md:translate-y-0 md:bottom-4 md:left-4 md:right-auto md:max-w-[320px] rounded-[3px] p-3 md:p-5 border border-white/[0.08]"
-        onMouseDown={(e) => e.stopPropagation()}
-        onTouchStart={(e) => e.stopPropagation()}
-        style={{
-          background: 'rgba(20, 20, 22, 0.45)',
-          backdropFilter: 'blur(40px) saturate(1.4)',
-          WebkitBackdropFilter: 'blur(40px) saturate(1.4)',
-          opacity: focusedDimState ? 1 : 0,
-          transition: 'all 500ms ease',
-          pointerEvents: focusedDimState ? 'auto' : 'none',
-          cursor: 'default',
-        }}
-      >
-        {focusedDimState && (
-          <>
-            {/* Mobile: compact horizontal header. Desktop: stacked */}
-            <div className="flex items-baseline gap-3 md:block mb-1 md:mb-0">
-              <p
-                className="font-heading font-semibold uppercase tracking-[0.15em] text-xs md:mb-1"
-                style={{ color: `rgb(${ACCENT.r}, ${ACCENT.g}, ${ACCENT.b})` }}
-              >
-                {DIMENSION_LABELS[focusedDimState]}
-              </p>
-              <div className="flex items-baseline gap-3 md:mb-3">
-                <p
-                  className="font-heading font-semibold text-xl md:text-3xl"
-                  style={{ color: `rgb(${ACCENT.r}, ${ACCENT.g}, ${ACCENT.b})` }}
-                >
-                  {focusedScore}
-                </p>
-                {focusedAvgScore !== null && (
-                  <span className="font-body text-xs text-white/40">
-                    avg <span className="font-heading font-semibold text-sm text-white/60">{focusedAvgScore}</span>
-                  </span>
-                )}
-              </div>
-            </div>
-            {focusedDescription && (
-              <p className="hidden md:block font-body text-ops-text-secondary text-sm mb-4 leading-relaxed">
-                {focusedDescription}
-              </p>
-            )}
-            {focusedSubScores && focusedSubScores.length > 0 && (
-              <div className="flex flex-wrap gap-x-3 gap-y-1 md:block md:space-y-1.5">
-                {focusedSubScores.map((sub, i) => {
-                  const c = SUB_NODE_COLORS[i % SUB_NODE_COLORS.length];
-                  const isActive = selectedSubIndex === i;
-                  return (
-                    <div
-                      key={sub.label}
-                      className="flex items-center gap-1.5 md:gap-2 text-[10px] md:text-xs"
-                      style={{
-                        opacity: selectedSubIndex !== null && !isActive ? 0.4 : 1,
-                        transition: 'opacity 300ms ease',
-                        cursor: 'pointer',
-                      }}
-                      onClick={() => {
-                        const newIdx = selectedSubIndex === i ? null : i;
-                        selectedSubRef.current = newIdx;
-                        setSelectedSubIndex(newIdx);
-                      }}
-                    >
-                      <span
-                        className="inline-block w-1.5 h-1.5 md:w-2 md:h-2 rounded-[1px] flex-shrink-0"
-                        style={{ background: `rgb(${c.r}, ${c.g}, ${c.b})` }}
-                      />
-                      <span className="font-body text-ops-text-secondary">
-                        {sub.label}
-                      </span>
-                      {isQuick ? (
-                        <span
-                          className="font-body italic text-[9px] md:text-[10px] hidden md:inline"
-                          style={{ color: `rgba(${c.r}, ${c.g}, ${c.b}, 0.5)` }}
-                        >
-                          n/a
-                        </span>
-                      ) : (
-                        <>
-                          <span className="text-ops-text-secondary">:</span>
-                          <span
-                            className="font-heading font-semibold"
-                            style={{ color: `rgb(${c.r}, ${c.g}, ${c.b})` }}
-                          >
-                            {sub.score}
-                          </span>
-                        </>
-                      )}
-                    </div>
-                  );
-                })}
-                {isQuick && (() => {
-                  const hovColor = hoveredSubIndex !== null
-                    ? SUB_NODE_COLORS[hoveredSubIndex % SUB_NODE_COLORS.length]
-                    : null;
-                  return (
-                    <p
-                      className="hidden md:block font-body text-[10px] mt-3"
-                      style={{
-                        color: hovColor
-                          ? `rgb(${hovColor.r}, ${hovColor.g}, ${hovColor.b})`
-                          : 'rgba(255, 255, 255, 0.75)',
-                        transition: 'color 300ms ease',
-                      }}
-                    >
-                      Complete the deep assessment for comprehensive insight.
-                    </p>
-                  );
-                })()}
-              </div>
-            )}
-            {selectedSub && selectedSubColor && (
-              <div
-                className="hidden md:block mt-3 pt-3"
-                style={{
-                  borderTop: `1px solid rgba(${selectedSubColor.r}, ${selectedSubColor.g}, ${selectedSubColor.b}, 0.2)`,
-                  transition: 'all 300ms ease',
-                }}
-              >
-                <div className="flex items-baseline gap-2 mb-1">
-                  <p
-                    className="font-heading font-semibold uppercase tracking-[0.15em] text-xs"
-                    style={{ color: `rgb(${selectedSubColor.r}, ${selectedSubColor.g}, ${selectedSubColor.b})` }}
-                  >
-                    {selectedSub.label}
-                  </p>
-                  <span
-                    className="font-heading font-semibold text-sm"
-                    style={{ color: `rgb(${selectedSubColor.r}, ${selectedSubColor.g}, ${selectedSubColor.b})` }}
-                  >
-                    {selectedSub.score}
-                  </span>
-                </div>
-                {selectedSub.description && (
-                  <p className="font-body text-ops-text-secondary text-xs leading-relaxed">
-                    {selectedSub.description}
-                  </p>
-                )}
-              </div>
-            )}
-          </>
         )}
       </div>
     </div>

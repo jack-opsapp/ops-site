@@ -13,7 +13,6 @@ import { getResults } from '@/lib/assessment/actions';
 import type { AssessmentResult, Dimension } from '@/lib/assessment/types';
 import { FadeInUp } from '@/components/ui';
 import BottomCTA from '@/components/shared/BottomCTA';
-import ResultsAnalysis from '@/components/assessment/ResultsAnalysis';
 import ResultsShareBar from '@/components/assessment/ResultsShareBar';
 import ResultsInteractive from './ResultsInteractive';
 
@@ -85,8 +84,8 @@ export default async function ResultsPage({ params }: PageProps) {
       : undefined;
 
   return (
-    <>
-      {/* Hero + Sphere — ResultsInteractive renders both */}
+    <div className="snap-y snap-proximity">
+      {/* Hero + Sphere + Analysis — ResultsInteractive renders all */}
       <ResultsInteractive
         scores={data.scores}
         subScores={data.analysis.sub_scores}
@@ -98,10 +97,8 @@ export default async function ResultsPage({ params }: PageProps) {
         averageScores={data.population_averages ?? undefined}
         firstName={data.first_name}
         tagline={data.archetype.tagline}
+        analysis={data.analysis}
       />
-
-      {/* AI Analysis — expandable sections */}
-      <ResultsAnalysis analysis={data.analysis} />
 
       {/* Share bar */}
       <ResultsShareBar token={token} />
@@ -181,6 +178,6 @@ export default async function ResultsPage({ params }: PageProps) {
         buttonText="Explore the Platform"
         buttonHref="/platform"
       />
-    </>
+    </div>
   );
 }
