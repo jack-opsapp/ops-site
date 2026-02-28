@@ -8,21 +8,14 @@
 
 'use client';
 
-import { useState, useCallback } from 'react';
+import { useState, useCallback, useEffect, useRef } from 'react';
+import { motion, AnimatePresence } from 'framer-motion';
 import type { Dimension, SimpleScores, DimensionSubScores, AssessmentVersion, AIAnalysis } from '@/lib/assessment/types';
 import { DIMENSIONS } from '@/lib/assessment/types';
 import LeadershipSphere, { SUB_NODE_COLORS } from '@/components/assessment/LeadershipSphere';
 import ResultsHero from '@/components/assessment/ResultsHero';
 import ResultsAnalysis from '@/components/assessment/ResultsAnalysis';
 import { FadeInUp } from '@/components/ui';
-
-/** Scroll to element with offset to avoid being hidden behind fixed header */
-function scrollToWithOffset(elementId: string, offset = 80) {
-  const el = document.getElementById(elementId);
-  if (!el) return;
-  const y = el.getBoundingClientRect().top + window.scrollY - offset;
-  window.scrollTo({ top: y, behavior: 'smooth' });
-}
 
 type ResultsView = 'sphere' | 'analysis';
 
@@ -47,6 +40,7 @@ interface ResultsInteractiveProps {
   firstName: string;
   tagline: string;
   analysis: AIAnalysis;
+  token: string;
 }
 
 export default function ResultsInteractive({
@@ -61,13 +55,44 @@ export default function ResultsInteractive({
   firstName,
   tagline,
   analysis,
+  token,
 }: ResultsInteractiveProps) {
   const isDeep = version === 'deep';
+  const contentRef = useRef<HTMLElement>(null);
   const [focusDimension, setFocusDimension] = useState<Dimension | null>(null);
   const [focusSubIndex, setFocusSubIndex] = useState<number | null>(null);
   const [hoveredSub, setHoveredSub] = useState<{ dim: Dimension; index: number } | null>(null);
   const [showAverages, setShowAverages] = useState(false);
   const [activeView, setActiveView] = useState<ResultsView>('sphere');
+  const [copied, setCopied] = useState(false);
+
+  const handleCopy = useCallback(async () => {
+    const url = `${window.location.origin}/tools/leadership/results/${token}`;
+    try {
+      await navigator.clipboard.writeText(url);
+    } catch {
+      const textarea = document.createElement('textarea');
+      textarea.value = url;
+      document.body.appendChild(textarea);
+      textarea.select();
+      document.execCommand('copy');
+      document.body.removeChild(textarea);
+    }
+    setCopied(true);
+    setTimeout(() => setCopied(false), 2000);
+  }, [token]);
+
+  // Apply scroll-snap-type on <html> so the viewport becomes the snap container
+  useEffect(() => {
+    const html = document.documentElement;
+    html.style.scrollSnapType = 'y proximity';
+    return () => { html.style.scrollSnapType = ''; };
+  }, []);
+
+  /** Scroll so the content section is vertically centered in the viewport */
+  const scrollToContentCenter = useCallback(() => {
+    contentRef.current?.scrollIntoView({ behavior: 'smooth', block: 'center' });
+  }, []);
 
   const handleDimensionChipClick = useCallback((dim: Dimension) => {
     setFocusDimension((prev) => {
@@ -79,15 +104,15 @@ export default function ResultsInteractive({
       return dim;
     });
     setActiveView('sphere');
-    document.getElementById('results-sphere')?.scrollIntoView({ behavior: 'smooth', block: 'center' });
-  }, []);
+    scrollToContentCenter();
+  }, [scrollToContentCenter]);
 
   const handleSubTagClick = useCallback((dim: Dimension, subIndex: number) => {
     setFocusDimension(dim);
     setFocusSubIndex((prev) => prev === subIndex && focusDimension === dim ? null : subIndex);
     setActiveView('sphere');
-    document.getElementById('results-sphere')?.scrollIntoView({ behavior: 'smooth', block: 'center' });
-  }, [focusDimension]);
+    scrollToContentCenter();
+  }, [focusDimension, scrollToContentCenter]);
 
   const handleDimensionFromSphere = useCallback((dim: Dimension) => {
     setFocusDimension(dim);
@@ -100,7 +125,7 @@ export default function ResultsInteractive({
   return (
     <>
       {/* Hero with badges inline */}
-      <div className="snap-start">
+      <div style={{ scrollSnapAlign: 'start' }}>
         <ResultsHero
           archetypeName={archetypeName}
           tagline={tagline}
@@ -117,7 +142,7 @@ export default function ResultsInteractive({
                   type="button"
                   onClick={() => {
                     setActiveView('analysis');
-                    scrollToWithOffset('results-content');
+                    scrollToContentCenter();
                   }}
                   className="inline-flex items-center font-caption uppercase tracking-[0.15em] text-[10px] px-3 py-1 rounded-[3px] border border-ops-accent/30 text-ops-accent bg-ops-accent/5 cursor-pointer hover:bg-ops-accent/10 transition-colors"
                 >
@@ -144,7 +169,7 @@ export default function ResultsInteractive({
                       type="button"
                       onClick={() => {
                         setActiveView('analysis');
-                        scrollToWithOffset('results-content');
+                        scrollToContentCenter();
                       }}
                       className="font-body text-ops-text-secondary/60 text-[11px] px-3 py-1 rounded-[3px] border border-ops-border/50 cursor-pointer hover:border-ops-border hover:text-ops-text-secondary/80 transition-colors"
                     >
@@ -187,33 +212,70 @@ export default function ResultsInteractive({
       </div>
 
       {/* Main content section */}
-      <section id="results-content" className="snap-start py-8 md:py-16">
+      <section ref={contentRef} id="results-content" className="py-8 md:py-16" style={{ scrollSnapAlign: 'center' }}>
         <div className="max-w-[1100px] mx-auto px-6 md:px-10">
 
-          {/* View toggle */}
+          {/* View toggle + Share */}
           <FadeInUp>
-            <div className="flex items-center gap-1 mb-6 p-0.5 rounded-[3px] border border-ops-border/50 w-fit">
+            <div className="flex items-center justify-between mb-6">
+              <div className="flex items-center gap-1 p-0.5 rounded-[3px] border border-ops-border/50 w-fit">
+                <button
+                  type="button"
+                  onClick={() => setActiveView('sphere')}
+                  className={`font-caption uppercase tracking-[0.15em] text-[10px] px-4 py-1.5 rounded-[2px] transition-all duration-200 cursor-pointer ${
+                    activeView === 'sphere'
+                      ? 'bg-white/10 text-white'
+                      : 'text-ops-text-secondary/50 hover:text-ops-text-secondary'
+                  }`}
+                >
+                  Scores
+                </button>
+                <button
+                  type="button"
+                  onClick={() => setActiveView('analysis')}
+                  className={`font-caption uppercase tracking-[0.15em] text-[10px] px-4 py-1.5 rounded-[2px] transition-all duration-200 cursor-pointer ${
+                    activeView === 'analysis'
+                      ? 'bg-white/10 text-white'
+                      : 'text-ops-text-secondary/50 hover:text-ops-text-secondary'
+                  }`}
+                >
+                  Analysis
+                </button>
+              </div>
+
               <button
                 type="button"
-                onClick={() => setActiveView('sphere')}
-                className={`font-caption uppercase tracking-[0.15em] text-[10px] px-4 py-1.5 rounded-[2px] transition-all duration-200 cursor-pointer ${
-                  activeView === 'sphere'
-                    ? 'bg-white/10 text-white'
-                    : 'text-ops-text-secondary/50 hover:text-ops-text-secondary'
-                }`}
+                onClick={handleCopy}
+                className="inline-flex items-center gap-2 font-caption uppercase tracking-[0.15em] text-[10px] px-3 py-1.5 rounded-[3px] transition-all duration-200 cursor-pointer text-ops-text-secondary/50 hover:text-ops-text-secondary border border-ops-border/50 hover:border-ops-border"
               >
-                Scores
-              </button>
-              <button
-                type="button"
-                onClick={() => setActiveView('analysis')}
-                className={`font-caption uppercase tracking-[0.15em] text-[10px] px-4 py-1.5 rounded-[2px] transition-all duration-200 cursor-pointer ${
-                  activeView === 'analysis'
-                    ? 'bg-white/10 text-white'
-                    : 'text-ops-text-secondary/50 hover:text-ops-text-secondary'
-                }`}
-              >
-                Analysis
+                <svg width="12" height="12" viewBox="0 0 14 14" fill="none" stroke="currentColor" strokeWidth="1.2">
+                  <path d="M5.8 8.2a3 3 0 0 0 4.2 0l2-2a3 3 0 0 0-4.2-4.2l-1.1 1" />
+                  <path d="M8.2 5.8a3 3 0 0 0-4.2 0l-2 2a3 3 0 0 0 4.2 4.2l1.1-1" />
+                </svg>
+                <AnimatePresence mode="wait">
+                  {copied ? (
+                    <motion.span
+                      key="copied"
+                      initial={{ opacity: 0, y: 3 }}
+                      animate={{ opacity: 1, y: 0 }}
+                      exit={{ opacity: 0, y: -3 }}
+                      transition={{ duration: 0.12 }}
+                      className="text-ops-accent"
+                    >
+                      Copied
+                    </motion.span>
+                  ) : (
+                    <motion.span
+                      key="share"
+                      initial={{ opacity: 0, y: 3 }}
+                      animate={{ opacity: 1, y: 0 }}
+                      exit={{ opacity: 0, y: -3 }}
+                      transition={{ duration: 0.12 }}
+                    >
+                      Share
+                    </motion.span>
+                  )}
+                </AnimatePresence>
               </button>
             </div>
           </FadeInUp>
