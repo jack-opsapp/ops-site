@@ -88,6 +88,27 @@ You must respond with valid JSON matching this exact structure:
 
 Each dimensional_deep_dive paragraph should explain what their specific score in that dimension means for their leadership. State the score, place it in the interpretation range, and describe the practical implications.${isDeep ? ' Be thorough — 3-4 sentences per dimension.' : ' Keep each to 1-2 sentences.'}`;
 
+  // Quick version: instruct the AI to add confidence disclaimers
+  if (!isDeep) {
+    prompt += `
+
+IMPORTANT — LIMITED DATA DISCLAIMER (quick assessment only):
+This assessment is based on only 15 questions across 6 dimensions (~2-3 questions per dimension). This is a directional snapshot, not a precise measurement.
+
+You MUST add a brief confidence disclaimer to any section where you feel the data is insufficient to make a strong claim. Examples of when to disclaim:
+- A dimension score is based on very few items and could easily shift with more data
+- A claimed blind spot or strength rests on a narrow evidence base
+- A behavioral prediction (under_pressure, team_dynamics) is more speculative than certain
+- Sub-dimension scores are extrapolated from limited items
+
+How to disclaim: weave it naturally into your writing. Don't use a separate disclaimer section. Say things like:
+- "Based on the limited quick assessment data, this score should be treated as directional — the full assessment would give a more reliable read here."
+- "With only a few items measuring this dimension, there's meaningful uncertainty in this score."
+- "This pattern is suggestive but would need the full assessment to confirm."
+
+Do NOT disclaim everything — that would be useless. Use your judgment. If a score is extreme (very high or very low) and consistent with other signals, you can be more confident. If a score is middling and based on 2 items, flag the uncertainty. The goal is honest calibration, not hedging.`;
+  }
+
   if (isDeep) {
     prompt += `\n\nIf population norms data is provided, also include:
   "population_comparison": { "drive": { "score": number, "percentile": number }, ... }
