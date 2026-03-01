@@ -31,11 +31,11 @@ export default async function Hero() {
           alt=""
           fill
           priority
-          className="object-cover opacity-[0.12]"
+          className="object-cover opacity-[0.35]"
         />
       )}
 
-      <div className="absolute inset-0 bg-gradient-to-t from-ops-background/80 via-transparent to-transparent" />
+      <div className="absolute inset-0 bg-gradient-to-t from-ops-background via-ops-background/40 to-transparent" />
 
       {/* Subtle noise grain via repeating micro-gradient */}
       <div
