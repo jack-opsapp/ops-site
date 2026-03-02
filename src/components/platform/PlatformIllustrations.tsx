@@ -1238,7 +1238,7 @@ export function PhotoMarkupIllustration() {
           {/* Dimension text */}
           <motion.text
             x={iso((DX + W) / 2, 0, -25)[0]}
-            y={iso((DX + W) / 2, 0, -25)[1] - 5}
+            y={iso((DX + W) / 2, 0, -25)[1] + 12}
             textAnchor="middle" fontSize="9"
             fontFamily="var(--font-kosugi)" fill={mk}
             animate={{ opacity: p >= 5 ? 0.8 : 0 }}
