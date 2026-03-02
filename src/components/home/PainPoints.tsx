@@ -1,12 +1,13 @@
 /**
  * PainPoints — "The Problem" section
  *
- * Three animated pain-point cards with bullet format,
- * plus resolution callout.
+ * Server component for i18n data fetching.
+ * Delegates card layout/animations to PainPointsClient.
  */
 
 import { SectionLabel, FadeInUp } from '@/components/ui';
-import PainPointCard from './PainPointCard';
+import PainPointsClient from './PainPointsClient';
+import type { PainPointData } from './PainPointsClient';
 import { getTDict } from '@/i18n/server';
 
 export default async function PainPoints() {
@@ -20,24 +21,24 @@ export default async function PainPoints() {
     return Array.isArray(value) ? (value as string[]) : [];
   };
 
-  const painPoints = [
+  const painPoints: PainPointData[] = [
     {
       title: t('painPoints.card1.title'),
       bullets: tArr('painPoints.card1.bullets'),
       forLine: t('painPoints.card1.forLine'),
-      variant: 'messages' as const,
+      variant: 'messages',
     },
     {
       title: t('painPoints.card2.title'),
       bullets: tArr('painPoints.card2.bullets'),
       forLine: t('painPoints.card2.forLine'),
-      variant: 'dashboard' as const,
+      variant: 'dashboard',
     },
     {
       title: t('painPoints.card3.title'),
       bullets: tArr('painPoints.card3.bullets'),
       forLine: t('painPoints.card3.forLine'),
-      variant: 'apps' as const,
+      variant: 'apps',
     },
   ];
 
@@ -59,32 +60,11 @@ export default async function PainPoints() {
           </h2>
         </FadeInUp>
 
-        {/* Pain point cards — carousel on mobile, grid on desktop */}
-        <div className="mt-12 -mx-6 px-6 md:mx-0 md:px-0">
-          <div className="flex gap-4 overflow-x-auto snap-x snap-mandatory pb-4 md:grid md:grid-cols-3 md:gap-6 md:overflow-visible md:snap-none md:pb-0 scrollbar-hide">
-            {painPoints.map((point, i) => (
-              <FadeInUp key={point.variant} delay={i * 0.1}>
-                <div className="min-w-[280px] w-[85vw] max-w-[340px] snap-center shrink-0 md:min-w-0 md:w-auto md:max-w-none md:snap-align-none">
-                  <PainPointCard
-                    title={point.title}
-                    bullets={point.bullets}
-                    forLine={point.forLine}
-                    variant={point.variant}
-                  />
-                </div>
-              </FadeInUp>
-            ))}
-          </div>
-        </div>
-
-        {/* Resolution callout */}
-        <FadeInUp delay={0.3}>
-          <div className="border-t-2 border-ops-border pt-6 mt-16 max-w-[700px]">
-            <p className="font-heading font-light text-lg text-ops-text-primary leading-relaxed">
-              {t('painPoints.resolution')}
-            </p>
-          </div>
-        </FadeInUp>
+        {/* Cards + resolution — client component for mobile interactivity */}
+        <PainPointsClient
+          painPoints={painPoints}
+          resolution={t('painPoints.resolution')}
+        />
       </div>
     </section>
   );
