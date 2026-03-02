@@ -1044,7 +1044,7 @@ export function PhotoMarkupIllustration() {
 
   /* ── Annotation screen coords ── */
   const dc = iso((DX + W) / 2, DZ / 2);
-  const LX = 52, LY = 166;
+  const LX = 135, LY = 255;
 
   return (
     <Container innerRef={ref} onHover={replay}>
@@ -1174,16 +1174,16 @@ export function PhotoMarkupIllustration() {
           filter="url(#pmGlow)"
         />
 
-        {/* ═══ Phase 3 — Arrow loops downward + arrowhead ═══ */}
+        {/* ═══ Phase 3 — Arrow from label up to circle + arrowhead ═══ */}
         <motion.path
-          d={`M${dc[0] - 25},${dc[1] + 5} Q180,255 ${LX + 78},${LY + 4}`}
+          d={`M${LX + 39},${LY - 14} Q${dc[0] - 35},${LY - 5} ${dc[0]},${dc[1] + 17}`}
           stroke={mk} strokeWidth="2" strokeLinecap="round"
           animate={{ pathLength: p >= 3 ? 1 : 0, opacity: p >= 3 ? 0.85 : 0 }}
           transition={{ pathLength: { duration: 0.5, ease: drawEase }, opacity: { duration: 0.2 } }}
           filter="url(#pmGlow)"
         />
         <motion.path
-          d={`M${LX + 86},${LY + 9} L${LX + 78},${LY + 4} L${LX + 79},${LY + 14}`}
+          d={`M${dc[0] + 6},${dc[1] + 25} L${dc[0]},${dc[1] + 17} L${dc[0] - 8},${dc[1] + 23}`}
           stroke={mk} strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"
           animate={{ opacity: p >= 3 ? 0.85 : 0 }}
           transition={{ duration: 0.2, delay: 0.3 }}
@@ -1229,14 +1229,14 @@ export function PhotoMarkupIllustration() {
           </motion.text>
         </motion.g>
 
-        {/* Toolbar */}
+        {/* Toolbar — positioned above label */}
         <motion.g animate={{ opacity: p >= 0 ? 0.4 : 0 }} transition={{ duration: 0.5, delay: 0.3 }}>
-          <rect x="140" y="274" width="120" height="18" rx="9"
+          <rect x="40" y="280" width="100" height="16" rx="8"
             stroke="rgba(255,255,255,0.1)" strokeWidth="1" fill="rgba(255,255,255,0.03)" />
-          <circle cx="163" cy="283" r="3.5" stroke="rgba(255,255,255,0.15)" strokeWidth="1" fill="none" />
-          <rect x="178" y="279.5" width="7" height="7" rx="1" stroke="rgba(255,255,255,0.15)" strokeWidth="1" fill="none" />
-          <path d="M200 279.5 L204 286.5" stroke="rgba(255,255,255,0.15)" strokeWidth="1" />
-          <path d="M218 280 L222 283.5 L226 280" stroke="rgba(255,255,255,0.15)" strokeWidth="1" />
+          <circle cx="58" cy="288" r="3" stroke="rgba(255,255,255,0.15)" strokeWidth="1" fill="none" />
+          <rect x="70" y="284.5" width="6" height="6" rx="1" stroke="rgba(255,255,255,0.15)" strokeWidth="1" fill="none" />
+          <path d="M86 284.5 L89.5 290.5" stroke="rgba(255,255,255,0.15)" strokeWidth="1" />
+          <path d="M100 285 L103.5 288 L107 285" stroke="rgba(255,255,255,0.15)" strokeWidth="1" />
         </motion.g>
       </svg>
     </Container>
