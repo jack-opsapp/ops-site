@@ -267,10 +267,6 @@ export function SchedulingIllustration() {
     { sc: 5, ec: 5, row: 4, color: '#2EA043', opacity: 0.3, stroke: 'rgba(46,160,67,0.5)', glow: false },
   ];
 
-  // "Today" indicator: day 16 = row 2, col 1
-  const todayCol = 1;
-  const todayRow = 2;
-
   return (
     <Container innerRef={ref} onHover={replay}>
       <svg viewBox="0 0 400 300" className="w-[85%] h-[85%]" fill="none">
@@ -343,15 +339,6 @@ export function SchedulingIllustration() {
           );
         })}
 
-        {/* Today circle indicator */}
-        <motion.circle
-          cx={gx + todayCol * colW + colW / 2} cy={gy + todayRow * rowH + 10}
-          r="12" stroke={ACCENT} strokeWidth="1.5" fill={ACCENT_FILL}
-          style={{ transformOrigin: `${gx + todayCol * colW + colW / 2}px ${gy + todayRow * rowH + 10}px` }}
-          animate={{ scale: p >= 7 ? 1 : 0, opacity: p >= 7 ? 1 : 0 }}
-          transition={springBouncy}
-          filter={p >= 7 ? 'url(#accentGlow)' : undefined}
-        />
       </svg>
     </Container>
   );
