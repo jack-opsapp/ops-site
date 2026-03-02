@@ -1,0 +1,68 @@
+{
+  "hero.sectionLabel": "PLATAFORMA",
+  "hero.headingLine1": "CADA HERRAMIENTA QUE",
+  "hero.headingLine2": "TU EQUIPO NECESITA.",
+  "hero.headingLine3": "NADA QUE NO.",
+  "hero.subtext": "Gestión de proyectos hecha para los que trabajan en campo.",
+
+  "feature.projectManagement.label": "GESTIÓN DE PROYECTOS",
+  "feature.projectManagement.heading": "DEJA DE BUSCAR DETALLES DEL TRABAJO EN LOS TEXTOS",
+  "feature.projectManagement.body": "Fotos enterradas en tu galería. Notas en tres grupos de texto diferentes. Cambios de alcance que nadie vio. OPS mantiene todo sobre un trabajo en un solo lugar — fotos, notas, tareas, presupuesto. Tu equipo abre un proyecto y el panorama completo está ahí.",
+
+  "feature.scheduling.label": "PROGRAMACIÓN",
+  "feature.scheduling.heading": "NO MÁS \u201C¿A DÓNDE VOY HOY?\u201D",
+  "feature.scheduling.body": "Lunes por la mañana. Cinco textos antes de las 7am. '¿Cuál es la dirección?' '¿Con quién voy?' '¿Cambió el alcance?' OPS pone el horario del día, los detalles del trabajo y la dirección del sitio frente a tu equipo antes de que salgan.",
+
+  "feature.teamManagement.label": "GESTIÓN DE EQUIPO",
+  "feature.teamManagement.heading": "DEJA DE LLAMAR PARA ENCONTRAR A TU EQUIPO",
+  "feature.teamManagement.body": "El sitio necesita otra mano. Llamas a tres personas para encontrar a una disponible. OPS muestra a todo tu equipo de un vistazo — quién está en qué trabajo, quién está libre, quién va en camino. Reasigna con un toque, no con cinco llamadas.",
+
+  "feature.clientManagement.label": "GESTIÓN DE CLIENTES",
+  "feature.clientManagement.heading": "EL CLIENTE LLAMA. NO ESTÁS IMPROVISANDO.",
+  "feature.clientManagement.body": "El cliente llama sobre su proyecto. Estás revisando textos tratando de recordar qué prometiste la semana pasada. OPS guarda la info de contacto de cada cliente, el historial de proyectos y las notas en un solo lugar. Un toque y suenas como que lo tienes todo controlado — porque así es.",
+
+  "feature.invoicing.label": "FACTURACIÓN",
+  "feature.invoicing.heading": "EL TRABAJO ESTÁ TERMINADO. ¿POR QUÉ NO HAS FACTURADO?",
+  "feature.invoicing.body": "Terminaste el trabajo hace dos semanas. La factura sigue en tu cabeza. Ese es dinero en la mesa de alguien más. OPS te permite crear presupuestos, convertirlos en facturas y enviarlos al cliente — directo desde el sitio de trabajo. Rastrea lo pagado y lo pendiente sin una hoja de cálculo.",
+
+  "feature.jobBoard.label": "TABLERO DE TRABAJOS",
+  "feature.jobBoard.heading": "NADA SE PIERDE EN EL CAMINO",
+  "feature.jobBoard.body": "Ese prospecto de hace tres semanas. El seguimiento que olvidaste. El trabajo que lleva un mes 'casi terminado'. OPS muestra cada trabajo desde la primera llamada hasta la factura final. Ves exactamente dónde está todo y qué necesita atención.",
+
+  "feature.pipeline.label": "PIPELINE",
+  "feature.pipeline.heading": "CADA PROSPECTO. CADA ETAPA. NADA PERDIDO.",
+  "feature.pipeline.body": "Llega un prospecto. Lo anotas en un papel. Dos semanas después lo encuentras debajo del asiento de la camioneta. OPS rastrea cada oportunidad desde el primer contacto hasta el contrato firmado. Ve tu pipeline de un vistazo — qué está caliente, qué está frío, qué necesita seguimiento. Crea un presupuesto, envíalo, conviértelo en factura cuando digan sí. Un flujo. Sin huecos.",
+
+  "feature.inventory.label": "INVENTARIO",
+  "feature.inventory.heading": "CONOCE TU STOCK. EN CUALQUIER MOMENTO. DESDE CUALQUIER LUGAR.",
+  "feature.inventory.body": "Nunca pierdas un trabajo por la cadena de suministro. Etiquétalo. Rastréalo. Sabe exactamente qué tienes, qué se está acabando y qué necesitas pedir — desde el sitio de trabajo o el taller. Ajusta cantidades en bloque después de un trabajo. Importa tu stock desde una hoja de cálculo. Toma una foto del inventario antes de un proyecto grande.",
+
+  "feature.photoMarkup.label": "MARCADO DE FOTOS",
+  "feature.photoMarkup.heading": "SEÑALA EL PROBLEMA. LITERALMENTE.",
+  "feature.photoMarkup.body": "Toma una foto en el sitio. Dibuja encima. Encierra la grieta. Señala la fuga con una flecha. Agrega una nota. Se queda con el trabajo, no se pierde en tu galería. Tu equipo ve exactamente qué necesita arreglo sin una llamada. Anota con el dedo o Apple Pencil — funciona de cualquier forma.",
+
+  "comparison.sectionLabel": "POR QUÉ OPS",
+  "comparison.heading": "LA HERRAMIENTA CORRECTA. EL PRECIO CORRECTO.",
+  "comparison.featureCol": "Función",
+  "comparison.row.price": "Precio (5 usuarios)",
+  "comparison.row.price.ops": "$140/mes",
+  "comparison.row.price.jobber": "$169/mes",
+  "comparison.row.price.servicetitan": "Cotización personalizada",
+  "comparison.row.price.housecall": "$189/mes",
+  "comparison.row.crewScheduling": "Programación de Equipo",
+  "comparison.row.projectTracking": "Seguimiento de Proyectos",
+  "comparison.row.invoicing": "Facturación",
+  "comparison.row.pipelineCrm": "Pipeline / CRM",
+  "comparison.row.inventoryTracking": "Seguimiento de Inventario",
+  "comparison.row.photoMarkup": "Marcado de Fotos",
+  "comparison.row.offlineMode": "Modo Sin Conexión",
+  "comparison.row.trainingRequired": "Capacitación Requerida",
+  "comparison.row.trainingRequired.ops": "Ninguna",
+  "comparison.row.trainingRequired.jobber": "1-2 semanas",
+  "comparison.row.trainingRequired.servicetitan": "2-4 semanas",
+  "comparison.row.trainingRequired.housecall": "1-2 semanas",
+  "comparison.row.allFeatures": "Todas las Funciones Incluidas",
+
+  "bottomCta.heading": "EMPIEZA A DIRIGIR TU OPERACIÓN",
+  "bottomCta.buttonText": "VER PLANES"
+}

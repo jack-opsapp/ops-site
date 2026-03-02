@@ -1,12 +1,13 @@
 /**
  * SocialProof — Testimonials + trust metrics
  *
- * Real testimonials from contractors, plus updated stat counters.
- * Copy aligned to try-ops authority.
+ * Real testimonials from contractors (kept in English), plus updated stat counters.
  */
 
 import { SectionLabel, FadeInUp, Card } from '@/components/ui';
+import { getTDict } from '@/i18n/server';
 
+// Testimonials stay in original English per plan
 const testimonials = [
   {
     quote: 'I came to OPS from Jobber. We went from our crew ignoring the app, to being excited to use it.',
@@ -34,19 +35,25 @@ const testimonials = [
   },
 ];
 
-const stats = [
-  { value: '400+', label: 'PROJECTS MANAGED' },
-  { value: '$3.2M+', label: 'REVENUE MANAGED' },
-  { value: '12K+', label: 'JOBS COMPLETED' },
-];
+export default async function SocialProof() {
+  const dict = await getTDict('home');
+  const t = (key: string) => {
+    const value = dict[key];
+    return typeof value === 'string' ? value : key;
+  };
 
-export default function SocialProof() {
+  const stats = [
+    { value: t('socialProof.stat1.value'), label: t('socialProof.stat1.label') },
+    { value: t('socialProof.stat2.value'), label: t('socialProof.stat2.label') },
+    { value: t('socialProof.stat3.value'), label: t('socialProof.stat3.label') },
+  ];
+
   return (
     <section className="py-24 md:py-32 bg-ops-background">
       <div className="max-w-[1400px] mx-auto px-6 md:px-10">
         {/* Section label */}
         <FadeInUp>
-          <SectionLabel label="THE TRADES" />
+          <SectionLabel label={t('socialProof.sectionLabel')} />
         </FadeInUp>
 
         {/* Heading */}
@@ -55,7 +62,7 @@ export default function SocialProof() {
             className="mt-4 font-heading font-bold uppercase leading-[0.95] tracking-tight text-ops-text-primary max-w-[700px]"
             style={{ fontSize: 'clamp(2rem, 4vw, 3.5rem)' }}
           >
-            CREWS THAT SWITCHED AREN&apos;T GOING BACK
+            {t('socialProof.heading')}
           </h2>
         </FadeInUp>
 
@@ -77,18 +84,18 @@ export default function SocialProof() {
 
         {/* Testimonials grid */}
         <div className="mt-16 md:mt-20 grid grid-cols-1 md:grid-cols-2 gap-6">
-          {testimonials.map((t, i) => (
-            <FadeInUp key={t.name} delay={0.1 + i * 0.08}>
+          {testimonials.map((testimonial, i) => (
+            <FadeInUp key={testimonial.name} delay={0.1 + i * 0.08}>
               <Card hoverable={false} className="p-8 h-full flex flex-col">
                 <p className="font-heading font-light text-base text-ops-text-secondary leading-relaxed flex-1">
-                  &ldquo;{t.quote}&rdquo;
+                  &ldquo;{testimonial.quote}&rdquo;
                 </p>
                 <div className="mt-6">
                   <p className="font-caption uppercase text-[11px] tracking-[0.15em] text-ops-text-primary">
-                    {t.name}
+                    {testimonial.name}
                   </p>
                   <p className="font-caption text-[11px] text-ops-text-secondary">
-                    {t.trade}, {t.location}
+                    {testimonial.trade}, {testimonial.location}
                   </p>
                 </div>
               </Card>

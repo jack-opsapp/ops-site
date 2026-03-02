@@ -14,22 +14,32 @@ import { createClient } from '@/lib/supabase';
 import UserDropdown from './UserDropdown';
 import MobileMenu from './MobileMenu';
 import Button from '@/components/ui/Button';
+import type { Dictionary } from '@/i18n/types';
 
-const navLinks = [
-  { label: 'PLATFORM', href: '/platform' },
-  { label: 'TOOLS', href: '/tools' },
-  { label: 'PLANS', href: '/plans' },
-  { label: 'JOURNAL', href: '/journal' },
-  { label: 'RESOURCES', href: '/resources' },
-  { label: 'COMPANY', href: '/company' },
+const navLinkKeys = [
+  { key: 'nav.platform', href: '/platform' },
+  { key: 'nav.tools', href: '/tools' },
+  { key: 'nav.plans', href: '/plans' },
+  { key: 'nav.journal', href: '/journal' },
+  { key: 'nav.resources', href: '/resources' },
+  { key: 'nav.company', href: '/company' },
 ];
 
-export default function Navigation() {
+interface NavigationProps {
+  commonDict: Dictionary;
+}
+
+export default function Navigation({ commonDict }: NavigationProps) {
   const [scrolled, setScrolled] = useState(false);
   const [user, setUser] = useState<{ name: string } | null>(null);
   const [dropdownOpen, setDropdownOpen] = useState(false);
   const [mobileOpen, setMobileOpen] = useState(false);
   const pathname = usePathname();
+
+  const t = (key: string) => {
+    const value = commonDict[key];
+    return typeof value === 'string' ? value : key;
+  };
 
   // Light-background pages need inverted nav colors before scroll
   const isLightPage = pathname === '/legal';
@@ -56,6 +66,11 @@ export default function Navigation() {
       }
     });
   }, []);
+
+  const navLinks = navLinkKeys.map((link) => ({
+    label: t(link.key),
+    href: link.href,
+  }));
 
   return (
     <>
@@ -90,7 +105,7 @@ export default function Navigation() {
           <div className="hidden lg:flex items-center gap-8">
             {navLinks.map((link) => (
               <Link
-                key={link.label}
+                key={link.href}
                 href={link.href}
                 className={`font-caption uppercase tracking-[0.15em] text-[11px] transition-colors ${
                   isLightPage && !scrolled
@@ -125,7 +140,7 @@ export default function Navigation() {
               </div>
             ) : (
               <Button variant="solid" href="https://app.opsapp.co" external>
-                GET OPS
+                {t('nav.getOps')}
               </Button>
             )}
           </div>
@@ -136,7 +151,7 @@ export default function Navigation() {
             className={`lg:hidden p-2 cursor-pointer transition-colors duration-300 ${
               isLightPage && !scrolled ? 'text-ops-text-dark' : 'text-ops-text-primary'
             }`}
-            aria-label="Open menu"
+            aria-label={t('nav.openMenu')}
           >
             <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5">
               <path d="M3 8h18M3 16h18" />
@@ -146,7 +161,11 @@ export default function Navigation() {
       </nav>
 
       {/* Mobile menu */}
-      <MobileMenu isOpen={mobileOpen} onClose={() => setMobileOpen(false)} />
+      <MobileMenu
+        isOpen={mobileOpen}
+        onClose={() => setMobileOpen(false)}
+        commonDict={commonDict}
+      />
     </>
   );
 }

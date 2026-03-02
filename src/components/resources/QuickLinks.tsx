@@ -1,41 +1,45 @@
 /**
  * QuickLinks — Grid of four navigational cards
- *
- * Server component. Each card links to a key resource.
- * External links open in new tab; internal links use Next.js routing.
  */
 
 import Link from 'next/link';
 import { Card, FadeInUp } from '@/components/ui';
+import { getTDict } from '@/i18n/server';
 
-const links = [
-  {
-    title: 'GETTING STARTED',
-    description: 'Download OPS and set up your crew in minutes.',
-    href: 'https://apps.apple.com/us/app/ops-job-crew-management/id6746662078',
-    external: true,
-  },
-  {
-    title: 'FAQ',
-    description: 'Answers to common questions about OPS.',
-    href: '#faq',
-    external: false,
-  },
-  {
-    title: 'JOURNAL',
-    description: 'Tips, guides, and stories from the trades.',
-    href: '/journal',
-    external: false,
-  },
-  {
-    title: 'CONTACT',
-    description: 'Reach out to the team directly.',
-    href: '#contact',
-    external: false,
-  },
-] as const;
+export default async function QuickLinks() {
+  const dict = await getTDict('resources');
+  const t = (key: string) => {
+    const value = dict[key];
+    return typeof value === 'string' ? value : key;
+  };
 
-export default function QuickLinks() {
+  const links = [
+    {
+      title: t('quickLinks.gettingStarted.title'),
+      description: t('quickLinks.gettingStarted.description'),
+      href: 'https://apps.apple.com/us/app/ops-job-crew-management/id6746662078',
+      external: true,
+    },
+    {
+      title: t('quickLinks.faq.title'),
+      description: t('quickLinks.faq.description'),
+      href: '#faq',
+      external: false,
+    },
+    {
+      title: t('quickLinks.journal.title'),
+      description: t('quickLinks.journal.description'),
+      href: '/journal',
+      external: false,
+    },
+    {
+      title: t('quickLinks.contact.title'),
+      description: t('quickLinks.contact.description'),
+      href: '#contact',
+      external: false,
+    },
+  ];
+
   return (
     <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-4">
       {links.map((link, index) => {

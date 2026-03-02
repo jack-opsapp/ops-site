@@ -1,0 +1,61 @@
+{
+  "hero.sectionLabel": "PLANS",
+  "hero.heading": "START FREE. UPGRADE WHEN YOU'RE READY.",
+  "hero.subtext": "No credit card. No commitment. Cancel anytime.",
+
+  "tier.freeTrial.name": "Free Trial",
+  "tier.freeTrial.interval": "30 days",
+  "tier.freeTrial.users": "UP TO 10 USERS",
+  "tier.freeTrial.bestFor": "Try everything before you commit",
+  "tier.freeTrial.ctaText": "START FREE TRIAL",
+
+  "tier.starter.name": "Starter",
+  "tier.starter.interval": "/mo or $864/yr (20% off)",
+  "tier.starter.users": "UP TO 3 USERS",
+  "tier.starter.bestFor": "Owner-operator or small crew. 1-3 people, looking to get organized.",
+  "tier.starter.ctaText": "GET STARTED",
+
+  "tier.team.name": "Team",
+  "tier.team.interval": "/mo or $1,344/yr (20% off)",
+  "tier.team.users": "UP TO 5 USERS",
+  "tier.team.bestFor": "Growing operation. 4-5 team members, ready to streamline coordination.",
+  "tier.team.ctaText": "GET OPS",
+
+  "tier.business.name": "Business",
+  "tier.business.interval": "/mo or $1,824/yr (20% off)",
+  "tier.business.users": "UP TO 10 USERS",
+  "tier.business.bestFor": "Established operation running many jobs concurrently. 6-10 team members.",
+  "tier.business.ctaText": "GET STARTED",
+
+  "features.fullAccess": "Full feature access",
+  "features.taskManagement": "Task management & scheduling",
+  "features.taskManagementCrew": "Task management & crew scheduling",
+  "features.photoStorage": "Photo storage & upload",
+  "features.projectDatabase": "Full project database",
+  "features.clientDatabase": "Client database management",
+  "features.unlimitedStorage": "Unlimited project & photo storage",
+  "features.upTo10Users": "Up to 10 users",
+  "features.noCreditCard": "No credit card required",
+
+  "callout": "After your free trial, pick the plan that fits your crew size. All plans include the same features — you only pay based on how many people you're managing.",
+
+  "bestFor": "Best for:",
+
+  "faq.sectionLabel": "QUESTIONS YOU'RE PROBABLY ASKING",
+  "faq.q1.question": "Why should I switch from Jobber?",
+  "faq.q1.answer": "Honestly? If Jobber works for you and your crew uses it, don't switch. OPS is for crews who tried Jobber and found it too complicated, or who are still using group texts and need something simple.",
+  "faq.q2.question": "What if you're missing a feature I need?",
+  "faq.q2.answer": "Tell me. If it makes sense for crews like yours, we'll build it. We're not trying to be everything to everyone — we're building exactly what field crews need, in the order they need it.",
+  "faq.q3.question": "How do I know you won't shut down?",
+  "faq.q3.answer": "Fair question. Here's the honest answer: I built this because I needed it. It's solving my problem and yours. I'm not going anywhere. Month-to-month pricing means no risk for you. Your data exports anytime.",
+  "faq.q4.question": "Can my crew actually use this without training?",
+  "faq.q4.answer": "Download it right now. Open it. If you can't figure out how to create a job in 60 seconds, it failed. That's the standard.",
+  "faq.q5.question": "Can I import my Jobber data?",
+  "faq.q5.answer": "Manual import available now with our help. One-click import coming Q3 2026. Either way, you don't lose your history.",
+  "faq.q6.question": "Why should I try the tutorial first?",
+  "faq.q6.answer": "Two reasons: (1) You see exactly how OPS works before downloading anything. (2) You stay warm through the download — when you open the app, you already know what you're doing.",
+
+  "bottomCta.heading": "YOUR CREW DESERVES SOFTWARE THAT WORKS AS HARD AS YOU DO",
+  "bottomCta.subtext": "Stop coordinating through chaos. Get OPS.",
+  "bottomCta.buttonText": "DOWNLOAD FREE"
+}

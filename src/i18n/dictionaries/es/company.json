@@ -1,0 +1,22 @@
+{
+  "hero.headingLine1": "CONSTRUIMOS LO QUE",
+  "hero.headingLine2": "DEBERÍA EXISTIR",
+
+  "origin.sectionLabel": "LA HISTORIA",
+  "origin.paragraph1": "Empecé en la construcción a los dieciséis. Peón de verano. Cargando madera, cavando cimientos, aprendiendo que al sitio de trabajo no le importan tus excusas. Pasé diez años construyendo decks y barandas — empecé mi propia empresa, la escalé de cero a $1.6 millones en cuatro años.",
+  "origin.paragraph2": "Mientras más crecía el equipo, peor se ponía la coordinación. Probé cada software que existe. Jobber. ServiceTitan. Housecall Pro. Mis trabajadores abrían la app una vez, se perdían en un laberinto de pestañas y menús desplegables, y volvían directo al grupo de texto. Estaba pagando por software que nadie usaba.",
+  "origin.paragraph3": "Así que construí lo que debería haber existido desde el principio. Una app. Ábrela, ve tus trabajos, sabe a dónde ir. Sin manual de capacitación. Sin webinar de onboarding. Si tu equipo puede leer una cinta métrica, puede usar OPS.",
+
+  "values.sectionLabel": "LO QUE CREEMOS",
+  "values.simplicity.label": "SIMPLICIDAD",
+  "values.simplicity.description": "Si necesita un manual de capacitación, es demasiado complicado. Cada función se gana su lugar siendo obvia.",
+  "values.reliability.label": "CONFIABILIDAD",
+  "values.reliability.description": "Tu equipo llega a las 6am. Tu software también debería. Funciona sin conexión. Se sincroniza cuando puede. Nunca pierde datos.",
+  "values.respectForTime.label": "RESPETO POR EL TIEMPO",
+  "values.respectForTime.description": "El tiempo de un contratista es dinero. Literalmente. Cada toque en OPS es uno que hemos justificado. Sin trabajo innecesario. Sin teatro administrativo.",
+  "values.ownership.label": "PROPIEDAD",
+  "values.ownership.description": "Tus datos. Tu operación. Tus reglas. No te encerramos. Nos ganamos tu negocio cada mes.",
+
+  "bottomCta.heading": "ÚNETE A LOS OFICIOS QUE FUNCIONAN CON OPS",
+  "bottomCta.buttonText": "OBTENER OPS"
+}

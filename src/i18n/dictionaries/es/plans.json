@@ -1,0 +1,61 @@
+{
+  "hero.sectionLabel": "PLANES",
+  "hero.heading": "EMPIEZA GRATIS. SUBE DE PLAN CUANDO ESTÉS LISTO.",
+  "hero.subtext": "Sin tarjeta de crédito. Sin compromiso. Cancela cuando quieras.",
+
+  "tier.freeTrial.name": "Prueba Gratis",
+  "tier.freeTrial.interval": "30 días",
+  "tier.freeTrial.users": "HASTA 10 USUARIOS",
+  "tier.freeTrial.bestFor": "Prueba todo antes de comprometerte",
+  "tier.freeTrial.ctaText": "EMPEZAR PRUEBA GRATIS",
+
+  "tier.starter.name": "Starter",
+  "tier.starter.interval": "/mes o $864/año (20% desc.)",
+  "tier.starter.users": "HASTA 3 USUARIOS",
+  "tier.starter.bestFor": "Dueño-operador o equipo pequeño. 1-3 personas, buscando organizarse.",
+  "tier.starter.ctaText": "EMPEZAR",
+
+  "tier.team.name": "Team",
+  "tier.team.interval": "/mes o $1,344/año (20% desc.)",
+  "tier.team.users": "HASTA 5 USUARIOS",
+  "tier.team.bestFor": "Operación en crecimiento. 4-5 miembros, listos para optimizar la coordinación.",
+  "tier.team.ctaText": "OBTENER OPS",
+
+  "tier.business.name": "Business",
+  "tier.business.interval": "/mes o $1,824/año (20% desc.)",
+  "tier.business.users": "HASTA 10 USUARIOS",
+  "tier.business.bestFor": "Operación establecida con muchos trabajos simultáneos. 6-10 miembros.",
+  "tier.business.ctaText": "EMPEZAR",
+
+  "features.fullAccess": "Acceso completo a funciones",
+  "features.taskManagement": "Gestión de tareas y programación",
+  "features.taskManagementCrew": "Gestión de tareas y programación de equipo",
+  "features.photoStorage": "Almacenamiento y carga de fotos",
+  "features.projectDatabase": "Base de datos completa de proyectos",
+  "features.clientDatabase": "Gestión de base de datos de clientes",
+  "features.unlimitedStorage": "Almacenamiento ilimitado de proyectos y fotos",
+  "features.upTo10Users": "Hasta 10 usuarios",
+  "features.noCreditCard": "Sin tarjeta de crédito requerida",
+
+  "callout": "Después de tu prueba gratis, elige el plan que se ajuste al tamaño de tu equipo. Todos los planes incluyen las mismas funciones — solo pagas según cuántas personas estés gestionando.",
+
+  "bestFor": "Ideal para:",
+
+  "faq.sectionLabel": "PREGUNTAS QUE PROBABLEMENTE TE ESTÁS HACIENDO",
+  "faq.q1.question": "¿Por qué debería cambiarme de Jobber?",
+  "faq.q1.answer": "¿Honestamente? Si Jobber te funciona y tu equipo lo usa, no te cambies. OPS es para equipos que probaron Jobber y les pareció demasiado complicado, o que siguen usando grupos de texto y necesitan algo simple.",
+  "faq.q2.question": "¿Qué pasa si les falta una función que necesito?",
+  "faq.q2.answer": "Dime. Si tiene sentido para equipos como el tuyo, lo construimos. No estamos tratando de ser todo para todos — estamos construyendo exactamente lo que los equipos de campo necesitan, en el orden que lo necesitan.",
+  "faq.q3.question": "¿Cómo sé que no van a cerrar?",
+  "faq.q3.answer": "Pregunta justa. La respuesta honesta: construí esto porque lo necesitaba. Está resolviendo mi problema y el tuyo. No me voy a ningún lado. Precios mes a mes significan cero riesgo para ti. Tus datos se exportan cuando quieras.",
+  "faq.q4.question": "¿Mi equipo realmente puede usar esto sin capacitación?",
+  "faq.q4.answer": "Descárgalo ahora mismo. Ábrelo. Si no puedes descifrar cómo crear un trabajo en 60 segundos, falló. Ese es el estándar.",
+  "faq.q5.question": "¿Puedo importar mis datos de Jobber?",
+  "faq.q5.answer": "Importación manual disponible ahora con nuestra ayuda. Importación con un clic próximamente en Q3 2026. De cualquier forma, no pierdes tu historial.",
+  "faq.q6.question": "¿Por qué debería probar el tutorial primero?",
+  "faq.q6.answer": "Dos razones: (1) Ves exactamente cómo funciona OPS antes de descargar nada. (2) Te mantienes enganchado durante la descarga — cuando abres la app, ya sabes lo que estás haciendo.",
+
+  "bottomCta.heading": "TU EQUIPO MERECE SOFTWARE QUE TRABAJE TAN DURO COMO TÚ",
+  "bottomCta.subtext": "Deja de coordinar a través del caos. Obtén OPS.",
+  "bottomCta.buttonText": "DESCARGA GRATIS"
+}

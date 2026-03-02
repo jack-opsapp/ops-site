@@ -21,6 +21,7 @@ interface PricingCardProps {
   recommended?: boolean;
   ctaText: string;
   ctaHref: string;
+  bestForLabel?: string;
 }
 
 function Checkmark() {
@@ -56,6 +57,7 @@ export default function PricingCard({
   recommended = false,
   ctaText,
   ctaHref,
+  bestForLabel = 'Best for:',
 }: PricingCardProps) {
   const [isHovered, setIsHovered] = useState(false);
 
@@ -94,7 +96,7 @@ export default function PricingCard({
 
       {/* Best for */}
       <p className="font-heading font-light text-xs text-ops-text-secondary italic mt-3">
-        Best for: {bestFor}
+        {bestForLabel} {bestFor}
       </p>
 
       <Divider className="my-6" />

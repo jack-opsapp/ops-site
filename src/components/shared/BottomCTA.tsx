@@ -10,6 +10,7 @@
 import Button from '@/components/ui/Button';
 import NewsletterSignup from '@/components/shared/NewsletterSignup';
 import { FadeInUp } from '@/components/ui';
+import { getTDict } from '@/i18n/server';
 
 interface BottomCTAProps {
   heading: string;
@@ -23,7 +24,7 @@ interface BottomCTAProps {
   newsletterSource?: string;
 }
 
-export default function BottomCTA({
+export default async function BottomCTA({
   heading,
   subtext,
   buttonText,
@@ -32,6 +33,11 @@ export default function BottomCTA({
   showNewsletter = false,
   newsletterSource = 'bottom-cta',
 }: BottomCTAProps) {
+  const commonDict = showNewsletter ? await getTDict('common') : undefined;
+  const stayLabel = commonDict
+    ? (typeof commonDict['bottomCta.stayInTheLoop'] === 'string' ? commonDict['bottomCta.stayInTheLoop'] : 'Stay in the loop')
+    : 'Stay in the loop';
+
   return (
     <section className="relative py-32 md:py-40 bg-ops-background overflow-hidden">
       {/* Subtle CSS gradient background */}
@@ -71,9 +77,9 @@ export default function BottomCTA({
           <FadeInUp delay={subtext ? 0.2 : 0.14}>
             <div className="mt-12 pt-8 border-t border-ops-border max-w-md">
               <p className="font-caption text-ops-text-secondary uppercase tracking-[0.15em] text-[11px] mb-3">
-                Stay in the loop
+                {stayLabel}
               </p>
-              <NewsletterSignup source={newsletterSource} compact />
+              <NewsletterSignup source={newsletterSource} compact commonDict={commonDict} />
             </div>
           </FadeInUp>
         )}

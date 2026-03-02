@@ -1,0 +1,24 @@
+{
+  "hero.sectionLabel": "HERRAMIENTAS",
+  "hero.heading": "AFILA TU VENTAJA",
+  "hero.subtext": "Herramientas diseñadas para profesionales de los oficios.",
+
+  "sectionLabel": "HERRAMIENTAS",
+
+  "tool.leadership.name": "EVALUACIÓN DE LIDERAZGO",
+  "tool.leadership.description": "Evalúa la aptitud de liderazgo y la dinámica de equipo. Basado en investigación de la gestión en la industria de la construcción.",
+  "tool.courses.name": "CURSOS",
+  "tool.courses.description": "Cursos prácticos y sin relleno para profesionales de los oficios. Precios, estimaciones, liderazgo y más.",
+  "tool.seo.name": "ANÁLISIS SEO CON IA",
+  "tool.seo.description": "Analiza tu presencia web contra la competencia. Obtén recomendaciones para dominar las búsquedas locales.",
+  "tool.calculator.name": "CALCULADORA DE ESTIMACIONES",
+  "tool.calculator.description": "Estimaciones rápidas de materiales y mano de obra desde tu teléfono. Hecho para la forma en que los oficios realmente cotizan trabajos.",
+
+  "status.available": "DISPONIBLE",
+  "status.development": "EN DESARROLLO",
+  "cta.tryIt": "PRUÉBALO",
+  "cta.explore": "EXPLORAR",
+
+  "bottomCta.heading": "EXPLORA LA PLATAFORMA",
+  "bottomCta.buttonText": "VER PLATAFORMA"
+}

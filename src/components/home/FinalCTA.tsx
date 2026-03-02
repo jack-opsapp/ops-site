@@ -2,15 +2,21 @@
  * FinalCTA — Bottom-of-page call to action
  *
  * Full-width section with bold headline, subtext, two CTAs, and trust line.
- * Copy aligned to try-ops authority.
  */
 
 import Button from '@/components/ui/Button';
 import { FadeInUp } from '@/components/ui';
+import { getTDict } from '@/i18n/server';
 
 const APP_STORE_URL = 'https://apps.apple.com/us/app/ops-job-crew-management/id6746662078';
 
-export default function FinalCTA() {
+export default async function FinalCTA() {
+  const dict = await getTDict('home');
+  const t = (key: string) => {
+    const value = dict[key];
+    return typeof value === 'string' ? value : key;
+  };
+
   return (
     <section className="relative py-32 md:py-48 bg-ops-background overflow-hidden">
       {/* Subtle CSS gradient overlay */}
@@ -29,30 +35,30 @@ export default function FinalCTA() {
             className="font-heading font-bold uppercase leading-[0.95] tracking-tight text-ops-text-primary max-w-[700px]"
             style={{ fontSize: 'clamp(2.5rem, 5vw, 4rem)' }}
           >
-            YOUR CREW DESERVES SOFTWARE THAT WORKS AS HARD AS YOU DO
+            {t('finalCta.heading')}
           </h2>
         </FadeInUp>
 
         <FadeInUp delay={0.08}>
           <p className="mt-6 font-heading font-light text-lg md:text-xl text-ops-text-secondary">
-            Stop coordinating through chaos. Get OPS.
+            {t('finalCta.subtext')}
           </p>
         </FadeInUp>
 
         <FadeInUp delay={0.14}>
           <div className="mt-10 flex items-center gap-4">
             <Button variant="solid" href={APP_STORE_URL} external>
-              DOWNLOAD FREE
+              {t('finalCta.ctaDownload')}
             </Button>
             <Button variant="ghost" href="https://try.opsapp.co/tutorial-intro" external>
-              TRY IT FIRST
+              {t('finalCta.ctaTry')}
             </Button>
           </div>
         </FadeInUp>
 
         <FadeInUp delay={0.2}>
           <p className="mt-4 font-caption text-xs text-ops-text-secondary tracking-[0.1em]">
-            Get started for free &middot; No credit card &middot; No training required
+            {t('finalCta.trustLine')}
           </p>
         </FadeInUp>
       </div>

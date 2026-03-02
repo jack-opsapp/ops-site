@@ -4,47 +4,34 @@ import QuickLinks from '@/components/resources/QuickLinks';
 import ContactBlock from '@/components/resources/ContactBlock';
 import FAQ from '@/components/shared/FAQ';
 import BottomCTA from '@/components/shared/BottomCTA';
+import { getLocale, getTDict } from '@/i18n/server';
 
-export const metadata: Metadata = {
-  title: 'Resources',
-  description:
-    'Get help with OPS. Download the app, read the FAQ, explore guides, or reach out to the team directly.',
-};
+export async function generateMetadata(): Promise<Metadata> {
+  const locale = await getLocale();
+  return {
+    title: locale === 'es' ? 'Recursos' : 'Resources',
+    description: locale === 'es'
+      ? 'Obtén ayuda con OPS. Descarga la app, lee las preguntas frecuentes, explora guías, o contacta al equipo directamente.'
+      : 'Get help with OPS. Download the app, read the FAQ, explore guides, or reach out to the team directly.',
+  };
+}
 
-const faqItems = [
-  {
-    question: 'How do I get started?',
-    answer:
-      'Download OPS from the App Store or sign up at app.opsapp.co. Create your company, invite your crew, and you\'re running in minutes. No setup call required.',
-  },
-  {
-    question: 'Does OPS work offline?',
-    answer:
-      'Yes. Your crew can view schedules, update projects, and take photos without cell service. Everything syncs automatically when connectivity returns.',
-  },
-  {
-    question: 'Can I import existing data?',
-    answer:
-      'We offer free data migration for all plans. Our team will help move your projects, clients, and crew data from your current system.',
-  },
-  {
-    question: 'Is my data secure?',
-    answer:
-      'Your data is encrypted in transit and at rest. We use industry-standard security practices and never share your information with third parties.',
-  },
-  {
-    question: 'What devices does OPS support?',
-    answer:
-      'OPS is available on iPhone and iPad via the App Store, and on any device through the web app at app.opsapp.co.',
-  },
-  {
-    question: 'How do I get help?',
-    answer:
-      'Email hello@opsapp.co or use the in-app feedback button. We respond within 24 hours — usually much faster.',
-  },
-];
+export default async function ResourcesPage() {
+  const dict = await getTDict('resources');
+  const t = (key: string) => {
+    const value = dict[key];
+    return typeof value === 'string' ? value : key;
+  };
 
-export default function ResourcesPage() {
+  const faqItems = [
+    { question: t('faq.q1.question'), answer: t('faq.q1.answer') },
+    { question: t('faq.q2.question'), answer: t('faq.q2.answer') },
+    { question: t('faq.q3.question'), answer: t('faq.q3.answer') },
+    { question: t('faq.q4.question'), answer: t('faq.q4.answer') },
+    { question: t('faq.q5.question'), answer: t('faq.q5.answer') },
+    { question: t('faq.q6.question'), answer: t('faq.q6.answer') },
+  ];
+
   return (
     <>
       <ResourcesHero />
@@ -57,12 +44,12 @@ export default function ResourcesPage() {
         <ContactBlock id="contact" />
       </div>
 
-      <FAQ label="COMMON QUESTIONS" items={faqItems} id="faq" />
+      <FAQ label={t('faq.sectionLabel')} items={faqItems} id="faq" />
 
       <BottomCTA
-        heading="START RUNNING YOUR OPERATION"
-        subtext="Download OPS today."
-        buttonText="GET OPS"
+        heading={t('bottomCta.heading')}
+        subtext={t('bottomCta.subtext')}
+        buttonText={t('bottomCta.buttonText')}
         buttonHref="https://apps.apple.com/us/app/ops-job-crew-management/id6746662078"
         external
         showNewsletter

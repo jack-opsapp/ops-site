@@ -1,0 +1,68 @@
+{
+  "hero.sectionLabel": "PLATFORM",
+  "hero.headingLine1": "EVERY TOOL YOUR",
+  "hero.headingLine2": "CREW NEEDS.",
+  "hero.headingLine3": "NOTHING THEY DON'T.",
+  "hero.subtext": "Project management built for boots on the ground.",
+
+  "feature.projectManagement.label": "PROJECT MANAGEMENT",
+  "feature.projectManagement.heading": "STOP HUNTING THROUGH TEXTS FOR JOB DETAILS",
+  "feature.projectManagement.body": "Photos buried in your camera roll. Notes in three different group chats. Scope changes nobody saw. OPS keeps everything about a job in one place — photos, notes, tasks, budget. Your crew opens a project and the whole picture is right there.",
+
+  "feature.scheduling.label": "SCHEDULING",
+  "feature.scheduling.heading": "NO MORE \u201CWHERE AM I GOING TODAY?\u201D",
+  "feature.scheduling.body": "Monday morning. Five texts before 7am. 'What's the address?' 'Who am I riding with?' 'Did the scope change?' OPS puts the daily schedule, job details, and site address in front of your crew before they leave the driveway.",
+
+  "feature.teamManagement.label": "TEAM MANAGEMENT",
+  "feature.teamManagement.heading": "STOP CALLING AROUND TO FIND YOUR CREW",
+  "feature.teamManagement.body": "Job site needs another hand. You call three guys to find one who's available. OPS shows your whole crew at a glance — who's on which job, who's free, who's en route. Reassign in one tap, not five phone calls.",
+
+  "feature.clientManagement.label": "CLIENT MANAGEMENT",
+  "feature.clientManagement.heading": "CLIENT CALLS. YOU\u2019RE NOT SCRAMBLING.",
+  "feature.clientManagement.body": "Client calls about their project. You're scrolling through texts trying to remember what you promised last week. OPS keeps every client's contact info, project history, and notes in one place. One tap and you sound like you've got it together — because you do.",
+
+  "feature.invoicing.label": "INVOICING",
+  "feature.invoicing.heading": "THE JOB\u2019S DONE. WHY HAVEN\u2019T YOU INVOICED.",
+  "feature.invoicing.body": "You finished the job two weeks ago. The invoice is still in your head. That's money sitting on someone else's table. OPS lets you build estimates, convert to invoices, and send to clients — right from the job site. Track what's paid and what's outstanding without a spreadsheet.",
+
+  "feature.jobBoard.label": "JOB BOARD",
+  "feature.jobBoard.heading": "NOTHING FALLS THROUGH THE CRACKS",
+  "feature.jobBoard.body": "That lead from three weeks ago. The follow-up you forgot. The job that's been 'almost done' for a month. OPS shows every job from first call to final invoice. You see exactly where everything stands and what needs attention next.",
+
+  "feature.pipeline.label": "PIPELINE",
+  "feature.pipeline.heading": "EVERY LEAD. EVERY STAGE. NOTHING LOST.",
+  "feature.pipeline.body": "A lead comes in. You scribble it on a notepad. Two weeks later you find the notepad under your truck seat. OPS tracks every opportunity from first contact to signed contract. See your pipeline at a glance — what's hot, what's stale, what needs a follow-up. Build an estimate, send it, convert it to an invoice when they say yes. One flow. No gaps.",
+
+  "feature.inventory.label": "INVENTORY",
+  "feature.inventory.heading": "KNOW YOUR STOCK. ANYTIME. FROM ANYWHERE.",
+  "feature.inventory.body": "Never lose a job to supply chain again. Tag it. Track it. Know exactly what's on hand, what's running low, and what you need to order — from the job site or the shop. Bulk-adjust quantities after a job. Import your stock from a spreadsheet. Take a snapshot before a big project so you know where everything stood.",
+
+  "feature.photoMarkup.label": "PHOTO MARKUP",
+  "feature.photoMarkup.heading": "POINT AT THE PROBLEM. LITERALLY.",
+  "feature.photoMarkup.body": "Take a photo on site. Draw on it. Circle the crack. Arrow the leak. Add a note. It stays with the job, not lost in your camera roll. Your crew sees exactly what needs fixing without a phone call. Annotate with your finger or Apple Pencil — works either way.",
+
+  "comparison.sectionLabel": "WHY OPS",
+  "comparison.heading": "THE RIGHT TOOL. THE RIGHT PRICE.",
+  "comparison.featureCol": "Feature",
+  "comparison.row.price": "Price (5 users)",
+  "comparison.row.price.ops": "$140/mo",
+  "comparison.row.price.jobber": "$169/mo",
+  "comparison.row.price.servicetitan": "Custom quote",
+  "comparison.row.price.housecall": "$189/mo",
+  "comparison.row.crewScheduling": "Crew Scheduling",
+  "comparison.row.projectTracking": "Project Tracking",
+  "comparison.row.invoicing": "Invoicing",
+  "comparison.row.pipelineCrm": "Pipeline / CRM",
+  "comparison.row.inventoryTracking": "Inventory Tracking",
+  "comparison.row.photoMarkup": "Photo Markup",
+  "comparison.row.offlineMode": "Offline Mode",
+  "comparison.row.trainingRequired": "Training Required",
+  "comparison.row.trainingRequired.ops": "None",
+  "comparison.row.trainingRequired.jobber": "1-2 weeks",
+  "comparison.row.trainingRequired.servicetitan": "2-4 weeks",
+  "comparison.row.trainingRequired.housecall": "1-2 weeks",
+  "comparison.row.allFeatures": "All Features Included",
+
+  "bottomCta.heading": "START RUNNING YOUR OPERATION",
+  "bottomCta.buttonText": "SEE PLANS"
+}

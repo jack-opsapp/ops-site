@@ -1,8 +1,5 @@
 /**
  * Tools page — Purpose-built tools for trades professionals
- *
- * Three tool cards (Leadership Assessment, AI SEO Analysis, Estimating Calculator)
- * with animated wireframe illustrations and bottom CTA.
  */
 
 import type { Metadata } from 'next';
@@ -16,57 +13,63 @@ import {
   CalculatorIllustration,
 } from '@/components/tools/ToolIllustrations';
 import BottomCTA from '@/components/shared/BottomCTA';
+import { getLocale, getTDict } from '@/i18n/server';
 
-export const metadata: Metadata = {
-  title: 'Tools',
-  description:
-    'Purpose-built tools for trades professionals. Leadership assessment, AI SEO analysis, and estimating calculator.',
-};
+export async function generateMetadata(): Promise<Metadata> {
+  const locale = await getLocale();
+  return {
+    title: locale === 'es' ? 'Herramientas' : 'Tools',
+    description: locale === 'es'
+      ? 'Herramientas diseñadas para profesionales de los oficios. Evaluación de liderazgo, análisis SEO con IA y calculadora de estimaciones.'
+      : 'Purpose-built tools for trades professionals. Leadership assessment, AI SEO analysis, and estimating calculator.',
+  };
+}
 
-const tools = [
-  {
-    name: 'LEADERSHIP ASSESSMENT',
-    description:
-      'Evaluate leadership aptitude and team dynamics. Built on research from construction industry management.',
-    status: 'available' as const,
-    href: '/tools/leadership',
-    illustration: <LeadershipIllustration />,
-  },
-  {
-    name: 'COURSES',
-    description:
-      'Practical, no-fluff courses built for trades professionals. Pricing, estimating, leadership, and more.',
-    status: 'available' as const,
-    href: 'https://learn.opsapp.co',
-    external: true,
-    illustration: <CoursesIllustration />,
-  },
-  {
-    name: 'AI SEO ANALYSIS',
-    description:
-      'Analyze your web presence against competitors. Get actionable recommendations for local search dominance.',
-    status: 'development' as const,
-    illustration: <SeoIllustration />,
-  },
-  {
-    name: 'ESTIMATING CALCULATOR',
-    description:
-      'Quick material and labor estimates from your phone. Built for the way trades actually price jobs.',
-    status: 'development' as const,
-    illustration: <CalculatorIllustration />,
-  },
-];
+export default async function ToolsPage() {
+  const dict = await getTDict('tools');
+  const t = (key: string) => {
+    const value = dict[key];
+    return typeof value === 'string' ? value : key;
+  };
 
-export default function ToolsPage() {
+  const tools = [
+    {
+      name: t('tool.leadership.name'),
+      description: t('tool.leadership.description'),
+      status: 'available' as const,
+      href: '/tools/leadership',
+      illustration: <LeadershipIllustration />,
+    },
+    {
+      name: t('tool.courses.name'),
+      description: t('tool.courses.description'),
+      status: 'available' as const,
+      href: 'https://learn.opsapp.co',
+      external: true,
+      illustration: <CoursesIllustration />,
+    },
+    {
+      name: t('tool.seo.name'),
+      description: t('tool.seo.description'),
+      status: 'development' as const,
+      illustration: <SeoIllustration />,
+    },
+    {
+      name: t('tool.calculator.name'),
+      description: t('tool.calculator.description'),
+      status: 'development' as const,
+      illustration: <CalculatorIllustration />,
+    },
+  ];
+
   return (
     <>
       <ToolsHero />
 
-      {/* Tool cards */}
       <section className="py-16 bg-ops-background">
         <div className="max-w-[1400px] mx-auto px-6 md:px-10">
           <FadeInUp>
-            <SectionLabel label="TOOLS" className="mb-10" />
+            <SectionLabel label={t('sectionLabel')} className="mb-10" />
           </FadeInUp>
 
           <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
@@ -79,6 +82,14 @@ export default function ToolsPage() {
                   href={'href' in tool ? tool.href : undefined}
                   external={'external' in tool && tool.external ? true : undefined}
                   illustration={tool.illustration}
+                  statusLabels={{
+                    available: t('status.available'),
+                    development: t('status.development'),
+                  }}
+                  ctaLabels={{
+                    tryIt: t('cta.tryIt'),
+                    explore: t('cta.explore'),
+                  }}
                 />
               </FadeInUp>
             ))}
@@ -87,8 +98,8 @@ export default function ToolsPage() {
       </section>
 
       <BottomCTA
-        heading="EXPLORE THE PLATFORM"
-        buttonText="SEE PLATFORM"
+        heading={t('bottomCta.heading')}
+        buttonText={t('bottomCta.buttonText')}
         buttonHref="/platform"
       />
     </>

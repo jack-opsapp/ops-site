@@ -4,13 +4,19 @@
 
 import Navigation from './Navigation';
 import Footer from './Footer';
+import LanguageBanner from './LanguageBanner';
+import { getTDict } from '@/i18n/server';
+import type { Dictionary } from '@/i18n/types';
 
-export default function PageLayout({ children }: { children: React.ReactNode }) {
+export default async function PageLayout({ children }: { children: React.ReactNode }) {
+  const commonDict = await getTDict('common') as Dictionary;
+
   return (
     <>
-      <Navigation />
+      <Navigation commonDict={commonDict} />
+      <LanguageBanner commonDict={commonDict} />
       <main>{children}</main>
-      <Footer />
+      <Footer commonDict={commonDict} />
 
       {/* Ambient page-edge glows — absolute, pointer-events-none */}
       <div className="pointer-events-none absolute inset-0 z-0 overflow-hidden" aria-hidden="true">

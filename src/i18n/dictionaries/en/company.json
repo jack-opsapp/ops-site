@@ -1,0 +1,22 @@
+{
+  "hero.headingLine1": "WE BUILD WHAT",
+  "hero.headingLine2": "SHOULD EXIST",
+
+  "origin.sectionLabel": "THE STORY",
+  "origin.paragraph1": "I started in construction at sixteen. Summer laborer. Carrying lumber, digging footings, learning that the job site doesn't care about your excuses. Spent ten years building decks and railings — started my own company, scaled it from zero to $1.6 million in four years.",
+  "origin.paragraph2": "The bigger the crew got, the worse the coordination got. I tried every piece of software out there. Jobber. ServiceTitan. Housecall Pro. My guys would open the app once, get lost in a maze of tabs and dropdown menus, and go right back to the group text. I was paying for software nobody used.",
+  "origin.paragraph3": "So I built what should have existed all along. One app. Open it, see your jobs, know where to go. No training manual. No onboarding webinar. If your crew can read a tape measure, they can use OPS.",
+
+  "values.sectionLabel": "WHAT WE BELIEVE",
+  "values.simplicity.label": "SIMPLICITY",
+  "values.simplicity.description": "If it needs a training manual, it\u2019s too complicated. Every feature earns its place by being obvious.",
+  "values.reliability.label": "RELIABILITY",
+  "values.reliability.description": "Your crew shows up at 6am. Your software should too. Works offline. Syncs when it can. Never loses data.",
+  "values.respectForTime.label": "RESPECT FOR TIME",
+  "values.respectForTime.description": "A contractor\u2019s time is money. Literally. Every tap in OPS is one we\u2019ve justified. No busywork. No admin theater.",
+  "values.ownership.label": "OWNERSHIP",
+  "values.ownership.description": "Your data. Your operation. Your rules. We don\u2019t lock you in. We keep your business by earning it every month.",
+
+  "bottomCta.heading": "JOIN THE TRADES THAT RUN ON OPS",
+  "bottomCta.buttonText": "GET OPS"
+}

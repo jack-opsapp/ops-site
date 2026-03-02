@@ -1,41 +1,41 @@
 /**
  * Values — Four value statements in a 2-column grid
- *
- * Server component. Kosugi caps labels with Mohave Light descriptions,
- * staggered FadeInUp animations.
  */
 
 import { SectionLabel, FadeInUp } from '@/components/ui';
+import { getTDict } from '@/i18n/server';
 
-const values = [
-  {
-    label: 'SIMPLICITY',
-    description:
-      'If it needs a training manual, it\u2019s too complicated. Every feature earns its place by being obvious.',
-  },
-  {
-    label: 'RELIABILITY',
-    description:
-      'Your crew shows up at 6am. Your software should too. Works offline. Syncs when it can. Never loses data.',
-  },
-  {
-    label: 'RESPECT FOR TIME',
-    description:
-      'A contractor\u2019s time is money. Literally. Every tap in OPS is one we\u2019ve justified. No busywork. No admin theater.',
-  },
-  {
-    label: 'OWNERSHIP',
-    description:
-      'Your data. Your operation. Your rules. We don\u2019t lock you in. We keep your business by earning it every month.',
-  },
-];
+export default async function Values() {
+  const dict = await getTDict('company');
+  const t = (key: string) => {
+    const value = dict[key];
+    return typeof value === 'string' ? value : key;
+  };
 
-export default function Values() {
+  const values = [
+    {
+      label: t('values.simplicity.label'),
+      description: t('values.simplicity.description'),
+    },
+    {
+      label: t('values.reliability.label'),
+      description: t('values.reliability.description'),
+    },
+    {
+      label: t('values.respectForTime.label'),
+      description: t('values.respectForTime.description'),
+    },
+    {
+      label: t('values.ownership.label'),
+      description: t('values.ownership.description'),
+    },
+  ];
+
   return (
     <section className="py-24 md:py-32 bg-ops-background">
       <div className="max-w-[1400px] mx-auto px-6 md:px-10">
         <FadeInUp>
-          <SectionLabel label="WHAT WE BELIEVE" className="mb-12" />
+          <SectionLabel label={t('values.sectionLabel')} className="mb-12" />
         </FadeInUp>
 
         <div className="grid grid-cols-1 md:grid-cols-2 gap-12">

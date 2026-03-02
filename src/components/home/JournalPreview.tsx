@@ -10,6 +10,7 @@
 import { SectionLabel, FadeInUp, Button } from '@/components/ui';
 import BlogPostRow from '@/components/shared/BlogPostRow';
 import { getLatestPosts } from '@/lib/blog';
+import { getTDict } from '@/i18n/server';
 
 export default async function JournalPreview() {
   const posts = await getLatestPosts(3);
@@ -18,6 +19,12 @@ export default async function JournalPreview() {
     return null;
   }
 
+  const dict = await getTDict('home');
+  const t = (key: string) => {
+    const value = dict[key];
+    return typeof value === 'string' ? value : key;
+  };
+
   return (
     <section className="py-24 md:py-32 bg-ops-background">
       <div className="max-w-[1400px] mx-auto px-6 md:px-10">
@@ -25,18 +32,18 @@ export default async function JournalPreview() {
         <div className="flex items-start justify-between gap-8">
           <div>
             <FadeInUp>
-              <SectionLabel label="JOURNAL" />
+              <SectionLabel label={t('journal.sectionLabel')} />
             </FadeInUp>
             <FadeInUp delay={0.05}>
               <h2 className="mt-4 font-heading font-bold uppercase leading-tight text-ops-text-primary text-4xl md:text-5xl lg:text-6xl">
-                LATEST FROM THE TEAM
+                {t('journal.heading')}
               </h2>
             </FadeInUp>
           </div>
 
           <FadeInUp delay={0.1}>
             <Button variant="ghost" href="/journal" className="shrink-0 mt-6">
-              READ MORE -&gt;
+              {t('journal.readMore')}
             </Button>
           </FadeInUp>
         </div>

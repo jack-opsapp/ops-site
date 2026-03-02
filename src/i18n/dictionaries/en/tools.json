@@ -1,0 +1,24 @@
+{
+  "hero.sectionLabel": "TOOLS",
+  "hero.heading": "SHARPEN YOUR EDGE",
+  "hero.subtext": "Purpose-built tools for trades professionals.",
+
+  "sectionLabel": "TOOLS",
+
+  "tool.leadership.name": "LEADERSHIP ASSESSMENT",
+  "tool.leadership.description": "Evaluate leadership aptitude and team dynamics. Built on research from construction industry management.",
+  "tool.courses.name": "COURSES",
+  "tool.courses.description": "Practical, no-fluff courses built for trades professionals. Pricing, estimating, leadership, and more.",
+  "tool.seo.name": "AI SEO ANALYSIS",
+  "tool.seo.description": "Analyze your web presence against competitors. Get actionable recommendations for local search dominance.",
+  "tool.calculator.name": "ESTIMATING CALCULATOR",
+  "tool.calculator.description": "Quick material and labor estimates from your phone. Built for the way trades actually price jobs.",
+
+  "status.available": "AVAILABLE",
+  "status.development": "IN DEVELOPMENT",
+  "cta.tryIt": "TRY IT",
+  "cta.explore": "EXPLORE",
+
+  "bottomCta.heading": "EXPLORE THE PLATFORM",
+  "bottomCta.buttonText": "SEE PLATFORM"
+}

@@ -8,22 +8,34 @@
 import { motion, AnimatePresence } from 'framer-motion';
 import Link from 'next/link';
 import Button from '@/components/ui/Button';
+import type { Dictionary } from '@/i18n/types';
 
 interface MobileMenuProps {
   isOpen: boolean;
   onClose: () => void;
+  commonDict: Dictionary;
 }
 
-const navLinks = [
-  { label: 'PLATFORM', href: '/platform' },
-  { label: 'TOOLS', href: '/tools' },
-  { label: 'PLANS', href: '/plans' },
-  { label: 'JOURNAL', href: '/journal' },
-  { label: 'RESOURCES', href: '/resources' },
-  { label: 'COMPANY', href: '/company' },
+const navLinkKeys = [
+  { key: 'nav.platform', href: '/platform' },
+  { key: 'nav.tools', href: '/tools' },
+  { key: 'nav.plans', href: '/plans' },
+  { key: 'nav.journal', href: '/journal' },
+  { key: 'nav.resources', href: '/resources' },
+  { key: 'nav.company', href: '/company' },
 ];
 
-export default function MobileMenu({ isOpen, onClose }: MobileMenuProps) {
+export default function MobileMenu({ isOpen, onClose, commonDict }: MobileMenuProps) {
+  const t = (key: string) => {
+    const value = commonDict[key];
+    return typeof value === 'string' ? value : key;
+  };
+
+  const navLinks = navLinkKeys.map((link) => ({
+    label: t(link.key),
+    href: link.href,
+  }));
+
   return (
     <AnimatePresence>
       {isOpen && (
@@ -39,7 +51,7 @@ export default function MobileMenu({ isOpen, onClose }: MobileMenuProps) {
             <button
               onClick={onClose}
               className="text-ops-text-primary p-2 cursor-pointer"
-              aria-label="Close menu"
+              aria-label={t('nav.closeMenu')}
             >
               <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5">
                 <path d="M18 6L6 18M6 6l12 12" />
@@ -51,7 +63,7 @@ export default function MobileMenu({ isOpen, onClose }: MobileMenuProps) {
           <nav className="flex-1 flex flex-col justify-center px-12 gap-1">
             {navLinks.map((link, i) => (
               <motion.div
-                key={link.label}
+                key={link.href}
                 initial={{ opacity: 0, x: -20 }}
                 animate={{ opacity: 1, x: 0 }}
                 transition={{
@@ -79,7 +91,7 @@ export default function MobileMenu({ isOpen, onClose }: MobileMenuProps) {
             className="px-12 pb-12"
           >
             <Button variant="solid" href="https://app.opsapp.co" external className="w-full">
-              GET OPS
+              {t('nav.getOps')}
             </Button>
           </motion.div>
         </motion.div>

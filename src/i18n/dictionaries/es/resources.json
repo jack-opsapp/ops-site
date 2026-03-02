@@ -1,0 +1,37 @@
+{
+  "hero.sectionLabel": "RECURSOS",
+  "hero.heading": "ESTAMOS AQUÍ PARA AYUDAR",
+  "hero.subtext": "Todo lo que necesitas para empezar y seguir funcionando.",
+
+  "quickLinks.gettingStarted.title": "CÓMO EMPEZAR",
+  "quickLinks.gettingStarted.description": "Descarga OPS y configura tu equipo en minutos.",
+  "quickLinks.faq.title": "PREGUNTAS FRECUENTES",
+  "quickLinks.faq.description": "Respuestas a preguntas comunes sobre OPS.",
+  "quickLinks.journal.title": "JOURNAL",
+  "quickLinks.journal.description": "Consejos, guías e historias de los oficios.",
+  "quickLinks.contact.title": "CONTACTO",
+  "quickLinks.contact.description": "Comunícate directamente con el equipo.",
+
+  "contact.sectionLabel": "PONTE EN CONTACTO",
+  "contact.heading": "HABLA CON EL EQUIPO",
+  "contact.responseTime": "Respondemos en menos de 24 horas. Generalmente más rápido.",
+  "contact.ctaText": "ENVÍANOS UN MENSAJE ->",
+
+  "faq.sectionLabel": "PREGUNTAS COMUNES",
+  "faq.q1.question": "¿Cómo empiezo?",
+  "faq.q1.answer": "Descarga OPS desde la App Store o regístrate en app.opsapp.co. Crea tu empresa, invita a tu equipo, y estarás funcionando en minutos. Sin necesidad de llamada de configuración.",
+  "faq.q2.question": "¿OPS funciona sin conexión?",
+  "faq.q2.answer": "Sí. Tu equipo puede ver horarios, actualizar proyectos y tomar fotos sin servicio celular. Todo se sincroniza automáticamente cuando vuelve la conexión.",
+  "faq.q3.question": "¿Puedo importar datos existentes?",
+  "faq.q3.answer": "Importación manual disponible ahora con nuestra ayuda — movemos tus proyectos, clientes y datos de equipo gratis. Importación con un clic próximamente en Q3 2026. De cualquier forma, no pierdes tu historial.",
+  "faq.q4.question": "¿Mis datos están seguros?",
+  "faq.q4.answer": "Tus datos están cifrados en tránsito y en reposo. Usamos prácticas de seguridad estándar de la industria y nunca compartimos tu información con terceros.",
+  "faq.q5.question": "¿En qué dispositivos funciona OPS?",
+  "faq.q5.answer": "OPS está disponible en iPhone y iPad a través de la App Store, y en cualquier dispositivo a través de la web app en app.opsapp.co.",
+  "faq.q6.question": "¿Cómo puedo obtener ayuda?",
+  "faq.q6.answer": "Envía un correo a hello@opsapp.co o usa el botón de retroalimentación en la app. Respondemos en menos de 24 horas — generalmente mucho más rápido.",
+
+  "bottomCta.heading": "EMPIEZA A DIRIGIR TU OPERACIÓN",
+  "bottomCta.subtext": "Descarga OPS hoy.",
+  "bottomCta.buttonText": "OBTENER OPS"
+}

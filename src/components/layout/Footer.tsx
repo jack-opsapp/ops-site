@@ -7,44 +7,55 @@
 import Link from 'next/link';
 import Image from 'next/image';
 import NewsletterSignup from '@/components/shared/NewsletterSignup';
+import LanguageToggle from './LanguageToggle';
+import type { Dictionary } from '@/i18n/types';
 
-const columns = [
-  {
-    title: 'PRODUCT',
-    links: [
-      { label: 'Platform', href: '/platform' },
-      { label: 'Tools', href: '/tools' },
-      { label: 'Plans', href: '/plans' },
-    ],
-  },
-  {
-    title: 'RESOURCES',
-    links: [
-      { label: 'Journal', href: '/journal' },
-      { label: 'Help', href: '/resources' },
-      { label: 'Contact', href: '/resources#contact' },
-    ],
-  },
-  {
-    title: 'COMPANY',
-    links: [
-      { label: 'About', href: '/company' },
-      { label: 'Careers', href: '/company' },
-      { label: 'Legal', href: '/legal?page=terms' },
-    ],
-  },
-  {
-    title: 'CONNECT',
-    links: [
-      { label: 'App Store', href: 'https://apps.apple.com/us/app/ops-job-crew-management/id6746662078', external: true },
-      { label: 'Web App', href: 'https://app.opsapp.co', external: true },
-      { label: 'Instagram', href: 'https://instagram.com/ops.app.co', external: true },
-      { label: 'LinkedIn', href: 'https://linkedin.com/company/ops-app', external: true },
-    ],
-  },
-];
+interface FooterProps {
+  commonDict: Dictionary;
+}
 
-export default function Footer() {
+export default function Footer({ commonDict }: FooterProps) {
+  const t = (key: string) => {
+    const value = commonDict[key];
+    return typeof value === 'string' ? value : key;
+  };
+
+  const columns = [
+    {
+      title: t('footer.product'),
+      links: [
+        { label: t('footer.platform'), href: '/platform' },
+        { label: t('footer.tools'), href: '/tools' },
+        { label: t('footer.plans'), href: '/plans' },
+      ],
+    },
+    {
+      title: t('footer.resources'),
+      links: [
+        { label: t('footer.journal'), href: '/journal' },
+        { label: t('footer.help'), href: '/resources' },
+        { label: t('footer.contact'), href: '/resources#contact' },
+      ],
+    },
+    {
+      title: t('footer.company'),
+      links: [
+        { label: t('footer.about'), href: '/company' },
+        { label: t('footer.careers'), href: '/company' },
+        { label: t('footer.legal'), href: '/legal?page=terms' },
+      ],
+    },
+    {
+      title: t('footer.connect'),
+      links: [
+        { label: t('footer.appStore'), href: 'https://apps.apple.com/us/app/ops-job-crew-management/id6746662078', external: true },
+        { label: t('footer.webApp'), href: 'https://app.opsapp.co', external: true },
+        { label: t('footer.instagram'), href: 'https://instagram.com/ops.app.co', external: true },
+        { label: t('footer.linkedin'), href: 'https://linkedin.com/company/ops-app', external: true },
+      ],
+    },
+  ];
+
   return (
     <footer className="relative">
       {/* Top border */}
@@ -93,12 +104,12 @@ export default function Footer() {
         <div className="mt-14 pt-8 border-t border-ops-border">
           <div className="max-w-md">
             <h3 className="font-caption text-ops-text-secondary uppercase tracking-[0.15em] text-[11px] mb-2">
-              Stay in the loop
+              {t('footer.stayInTheLoop')}
             </h3>
             <p className="font-body text-ops-text-secondary/60 text-xs mb-4">
-              Product updates and what we&apos;re building — once a month.
+              {t('footer.newsletterSubtext')}
             </p>
-            <NewsletterSignup source="footer" compact />
+            <NewsletterSignup source="footer" compact commonDict={commonDict} />
           </div>
         </div>
 
@@ -113,7 +124,7 @@ export default function Footer() {
               className="object-contain opacity-50"
             />
             <span className="font-body text-ops-text-secondary text-xs">
-              &copy; {new Date().getFullYear()} OPS Technologies Inc.
+              &copy; {new Date().getFullYear()} {t('footer.copyright')}
             </span>
           </div>
           <div className="flex items-center gap-6">
@@ -121,20 +132,21 @@ export default function Footer() {
               href="/legal?page=privacy"
               className="font-caption text-ops-text-secondary uppercase tracking-[0.1em] text-[10px] hover:text-ops-text-primary transition-colors"
             >
-              Privacy
+              {t('footer.privacy')}
             </Link>
             <Link
               href="/legal?page=terms"
               className="font-caption text-ops-text-secondary uppercase tracking-[0.1em] text-[10px] hover:text-ops-text-primary transition-colors"
             >
-              Terms
+              {t('footer.terms')}
             </Link>
             <Link
               href="/legal?page=eula"
               className="font-caption text-ops-text-secondary uppercase tracking-[0.1em] text-[10px] hover:text-ops-text-primary transition-colors"
             >
-              EULA
+              {t('footer.eula')}
             </Link>
+            <LanguageToggle />
           </div>
         </div>
       </div>
