@@ -33,12 +33,14 @@ const drawEase = [0.22, 1, 0.36, 1] as const;
  */
 function useSequence(phaseCount: number, intervalMs = 380) {
   const [phase, setPhase] = useState(-1);
+  const [interactive, setInteractive] = useState(false);
   const timersRef = useRef<ReturnType<typeof setTimeout>[]>([]);
   const isPlayingRef = useRef(false);
 
   const play = useCallback(() => {
     if (isPlayingRef.current) return;
     isPlayingRef.current = true;
+    setInteractive(false);
     timersRef.current.forEach(clearTimeout);
     timersRef.current = [];
     setPhase(-1);
@@ -52,6 +54,7 @@ function useSequence(phaseCount: number, intervalMs = 380) {
               if (i === phaseCount - 1) {
                 setTimeout(() => {
                   isPlayingRef.current = false;
+                  setInteractive(true);
                 }, 500);
               }
             }, i * intervalMs),
@@ -65,14 +68,14 @@ function useSequence(phaseCount: number, intervalMs = 380) {
     return () => timersRef.current.forEach(clearTimeout);
   }, []);
 
-  return { phase, play };
+  return { phase, play, interactive };
 }
 
 /** Hook to play on first viewport entry + replay on hover */
 function useIllustration(phaseCount: number, intervalMs = 380) {
   const ref = useRef<HTMLDivElement>(null);
   const inView = useInView(ref, { once: true, amount: 0.3 });
-  const { phase, play } = useSequence(phaseCount, intervalMs);
+  const { phase, play, interactive } = useSequence(phaseCount, intervalMs);
   const hasPlayed = useRef(false);
 
   useEffect(() => {
@@ -82,7 +85,7 @@ function useIllustration(phaseCount: number, intervalMs = 380) {
     }
   }, [inView, play]);
 
-  return { ref, phase, replay: play };
+  return { ref, phase, replay: play, interactive };
 }
 
 /** Shared container */
@@ -99,10 +102,46 @@ function Container({
     <div
       ref={innerRef}
       onMouseEnter={onHover}
-      className="w-full aspect-[4/3] bg-gradient-to-br from-ops-surface to-[#080808] border border-ops-border rounded-[3px] overflow-hidden flex items-center justify-center transition-colors duration-300 hover:border-ops-border-hover"
+      className="relative w-full aspect-[4/3] bg-gradient-to-br from-ops-surface to-[#080808] border border-ops-border rounded-[3px] overflow-hidden flex items-center justify-center transition-colors duration-300 hover:border-ops-border-hover"
     >
       {children}
     </div>
+  );
+}
+
+/** Subtle hint that appears after animation completes, dismissed on first interaction */
+function InteractionHint({
+  type,
+  visible,
+}: {
+  type: 'drag' | 'hover' | 'click' | 'draw';
+  visible: boolean;
+}) {
+  const [dismissed, setDismissed] = useState(false);
+
+  useEffect(() => {
+    if (visible && !dismissed) {
+      const t = setTimeout(() => setDismissed(true), 5000);
+      return () => clearTimeout(t);
+    }
+  }, [visible, dismissed]);
+
+  if (dismissed || !visible) return null;
+
+  const icons: Record<string, string> = {
+    drag: '\u2925', hover: '\u25CE', click: '\u25C9', draw: '\u270E',
+  };
+
+  return (
+    <motion.div
+      className="absolute bottom-3 right-3 flex items-center gap-1.5 pointer-events-none select-none z-10"
+      initial={{ opacity: 0 }}
+      animate={{ opacity: 0.4 }}
+      transition={{ delay: 1, duration: 0.6 }}
+    >
+      <span className="text-xs text-white/40">{icons[type]}</span>
+      <span className="text-[8px] font-body uppercase tracking-wider text-white/30">{type}</span>
+    </motion.div>
   );
 }
 
