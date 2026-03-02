@@ -749,8 +749,8 @@ export function PipelineIllustration() {
   ];
 
   const barX = 125;
-  const startY = 40;
-  const rowH = 48;
+  const startY = 30;
+  const rowH = 44;
   const barH = 22;
 
   return (

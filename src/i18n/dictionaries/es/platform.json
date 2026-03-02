@@ -21,7 +21,7 @@
   "feature.clientManagement.heading": "EL CLIENTE LLAMA. NO ESTÁS IMPROVISANDO.",
   "feature.clientManagement.body": "El cliente llama sobre su proyecto. Estás revisando textos tratando de recordar qué prometiste la semana pasada. OPS guarda la info de contacto de cada cliente, el historial de proyectos y las notas en un solo lugar. Un toque y suenas como que lo tienes todo controlado — porque así es.",
 
-  "feature.invoicing.label": "FACTURACIÓN",
+  "feature.invoicing.label": "FACTURACIÓN Y CONTABILIDAD",
   "feature.invoicing.heading": "EL TRABAJO ESTÁ TERMINADO. ¿POR QUÉ NO HAS FACTURADO?",
   "feature.invoicing.body": "Terminaste el trabajo hace dos semanas. La factura sigue en tu cabeza. Ese es dinero en la mesa de alguien más. OPS te permite crear presupuestos, convertirlos en facturas y enviarlos al cliente — directo desde el sitio de trabajo. Rastrea lo pagado y lo pendiente sin una hoja de cálculo.",
 
@@ -51,7 +51,7 @@
   "comparison.row.price.housecall": "$189/mes",
   "comparison.row.crewScheduling": "Programación de Equipo",
   "comparison.row.projectTracking": "Seguimiento de Proyectos",
-  "comparison.row.invoicing": "Facturación",
+  "comparison.row.invoicing": "Facturación y Contabilidad",
   "comparison.row.pipelineCrm": "Pipeline / CRM",
   "comparison.row.inventoryTracking": "Seguimiento de Inventario",
   "comparison.row.photoMarkup": "Marcado de Fotos",

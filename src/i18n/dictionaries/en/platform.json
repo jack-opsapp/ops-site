@@ -21,7 +21,7 @@
   "feature.clientManagement.heading": "CLIENT CALLS. YOU\u2019RE NOT SCRAMBLING.",
   "feature.clientManagement.body": "Client calls about their project. You're scrolling through texts trying to remember what you promised last week. OPS keeps every client's contact info, project history, and notes in one place. One tap and you sound like you've got it together — because you do.",
 
-  "feature.invoicing.label": "INVOICING",
+  "feature.invoicing.label": "INVOICING & ACCOUNTING",
   "feature.invoicing.heading": "THE JOB\u2019S DONE. WHY HAVEN\u2019T YOU INVOICED.",
   "feature.invoicing.body": "You finished the job two weeks ago. The invoice is still in your head. That's money sitting on someone else's table. OPS lets you build estimates, convert to invoices, and send to clients — right from the job site. Track what's paid and what's outstanding without a spreadsheet.",
 
@@ -51,7 +51,7 @@
   "comparison.row.price.housecall": "$189/mo",
   "comparison.row.crewScheduling": "Crew Scheduling",
   "comparison.row.projectTracking": "Project Tracking",
-  "comparison.row.invoicing": "Invoicing",
+  "comparison.row.invoicing": "Invoicing & Accounting",
   "comparison.row.pipelineCrm": "Pipeline / CRM",
   "comparison.row.inventoryTracking": "Inventory Tracking",
   "comparison.row.photoMarkup": "Photo Markup",
