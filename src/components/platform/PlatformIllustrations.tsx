@@ -13,7 +13,7 @@
  */
 
 import { useState, useEffect, useRef, useCallback } from 'react';
-import { motion, useInView } from 'framer-motion';
+import { motion, useInView, Reorder } from 'framer-motion';
 
 /* ─────────────────────────────────────────────────────────
  * SHARED UTILITIES
@@ -163,11 +163,19 @@ function GlowDefs() {
  * 1. PROJECT MANAGEMENT — Command Center Assembly
  * ───────────────────────────────────────────────────────── */
 
+const PM_TASKS = [
+  { label: 'Install base posts', tag: 'STRUCTURAL', done: true },
+  { label: 'Frame wall sections', tag: 'FRAMING', done: false },
+  { label: 'Run electrical rough-in', tag: 'ELECTRICAL', done: false },
+  { label: 'Hang drywall sheets', tag: 'FINISHING', done: false },
+];
+
 export function ProjectManagementIllustration() {
-  const { ref, phase: p, replay } = useIllustration(8, 380);
+  const { ref, phase: p, replay, interactive } = useIllustration(8, 380);
+  const [taskOrder, setTaskOrder] = useState([0, 1, 2, 3]);
 
   return (
-    <Container innerRef={ref} onHover={replay}>
+    <Container innerRef={ref} onHover={interactive ? undefined : replay}>
       <svg viewBox="0 0 400 300" className="w-[85%] h-[85%]" fill="none">
         <GlowDefs />
 
@@ -265,6 +273,45 @@ export function ProjectManagementIllustration() {
           filter={p >= 7 ? 'url(#accentGlow)' : undefined}
         />
       </svg>
+
+      {interactive && (
+        <Reorder.Group
+          axis="y"
+          values={taskOrder}
+          onReorder={setTaskOrder}
+          className="absolute z-10 flex flex-col gap-[2px]"
+          style={{ top: '62%', left: '14%', right: '14%', bottom: '18%' }}
+        >
+          {taskOrder.map((idx) => (
+            <Reorder.Item
+              key={idx}
+              value={idx}
+              className="flex items-center gap-2 px-3 py-1.5 rounded-sm border cursor-grab active:cursor-grabbing select-none"
+              style={{
+                backgroundColor: 'rgba(255,255,255,0.03)',
+                borderColor: 'rgba(255,255,255,0.08)',
+              }}
+              whileDrag={{
+                scale: 1.03,
+                borderColor: 'rgba(89,119,148,0.4)',
+                boxShadow: '0 8px 24px rgba(0,0,0,0.4)',
+                zIndex: 50,
+              }}
+              transition={{ type: 'spring', stiffness: 400, damping: 25 }}
+            >
+              <div
+                className="w-2.5 h-2.5 rounded-sm border flex items-center justify-center"
+                style={{ borderColor: PM_TASKS[idx].done ? ACCENT : 'rgba(255,255,255,0.2)' }}
+              >
+                {PM_TASKS[idx].done && <div className="w-1.5 h-1.5 rounded-[1px]" style={{ background: ACCENT }} />}
+              </div>
+              <span className="text-[8px] font-body text-white/35 truncate">{PM_TASKS[idx].label}</span>
+              <span className="ml-auto text-[7px] font-body text-white/15 whitespace-nowrap">{PM_TASKS[idx].tag}</span>
+            </Reorder.Item>
+          ))}
+        </Reorder.Group>
+      )}
+      <InteractionHint type="drag" visible={interactive} />
     </Container>
   );
 }
@@ -277,7 +324,8 @@ export function ProjectManagementIllustration() {
  * ───────────────────────────────────────────────────────── */
 
 export function SchedulingIllustration() {
-  const { ref, phase: p, replay } = useIllustration(8, 400);
+  const { ref, phase: p, replay, interactive } = useIllustration(8, 400);
+  const [activeBar, setActiveBar] = useState<number | null>(null);
 
   const colW = 48;
   const rowH = 38;
@@ -307,7 +355,7 @@ export function SchedulingIllustration() {
   ];
 
   return (
-    <Container innerRef={ref} onHover={replay}>
+    <Container innerRef={ref} onHover={interactive ? undefined : replay}>
       <svg viewBox="0 0 400 300" className="w-[85%] h-[85%]" fill="none">
         <GlowDefs />
 
@@ -378,7 +426,43 @@ export function SchedulingIllustration() {
           );
         })}
 
+        {/* Interactive: highlight active bar */}
+        {interactive && activeBar !== null && (
+          <motion.rect
+            x={gx + bars[activeBar].sc * colW + 3}
+            y={gy + bars[activeBar].row * rowH + 20}
+            width={(bars[activeBar].ec - bars[activeBar].sc + 1) * colW - 6}
+            height="10" rx="3"
+            fill="none" stroke={ACCENT} strokeWidth="2"
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 0.8 }}
+            filter="url(#accentGlow)"
+          />
+        )}
+
       </svg>
+
+      {interactive && (
+        <div className="absolute inset-0 z-10" style={{ padding: '7.5%' }}>
+          <svg viewBox="0 0 400 300" className="w-full h-full" fill="none" style={{ pointerEvents: 'none' }}>
+            {bars.map((bar, i) => {
+              const bx = gx + bar.sc * colW + 3;
+              const bw = (bar.ec - bar.sc + 1) * colW - 6;
+              const by = gy + bar.row * rowH + 20;
+              return (
+                <rect
+                  key={`hit-${i}`}
+                  x={bx} y={by} width={bw} height="10" rx="3"
+                  fill="transparent"
+                  style={{ pointerEvents: 'all', cursor: 'pointer' }}
+                  onClick={() => setActiveBar(activeBar === i ? null : i)}
+                />
+              );
+            })}
+          </svg>
+        </div>
+      )}
+      <InteractionHint type="click" visible={interactive} />
     </Container>
   );
 }
@@ -388,13 +472,31 @@ export function SchedulingIllustration() {
  * ───────────────────────────────────────────────────────── */
 
 export function TeamManagementIllustration() {
-  const { ref, phase: p, replay } = useIllustration(7, 400);
+  const { ref, phase: p, replay, interactive } = useIllustration(7, 400);
 
   const rows = [50, 110, 170, 230];
-  const statusColors = [ACCENT, ACCENT, '#E5A02E', 'rgba(255,255,255,0.2)'];
+  const [assignments, setAssignments] = useState([ACCENT, ACCENT, '#E5A02E', 'rgba(255,255,255,0.2)']);
+  const [selectedCrew, setSelectedCrew] = useState<number | null>(null);
+  const statusColors = interactive ? assignments : [ACCENT, ACCENT, '#E5A02E', 'rgba(255,255,255,0.2)'];
+
+  const handleCrewClick = (i: number) => {
+    if (!interactive) return;
+    if (selectedCrew === null) {
+      setSelectedCrew(i);
+    } else if (selectedCrew === i) {
+      setSelectedCrew(null);
+    } else {
+      setAssignments(prev => {
+        const next = [...prev];
+        [next[selectedCrew], next[i]] = [next[i], next[selectedCrew]];
+        return next;
+      });
+      setSelectedCrew(null);
+    }
+  };
 
   return (
-    <Container innerRef={ref} onHover={replay}>
+    <Container innerRef={ref} onHover={interactive ? undefined : replay}>
       <svg viewBox="0 0 400 300" className="w-[85%] h-[85%]" fill="none">
         <GlowDefs />
 
@@ -438,11 +540,15 @@ export function TeamManagementIllustration() {
           <motion.circle
             key={`status-${i}`}
             cx="280" cy={y + 18} r="5"
-            fill={statusColors[i]} fillOpacity={statusColors[i] === ACCENT ? 0.7 : 0.5}
+            fill={statusColors[i]}
+            fillOpacity={statusColors[i] === ACCENT ? 0.7 : statusColors[i] === '#E5A02E' ? 0.5 : 0.3}
             style={{ transformOrigin: `280px ${y + 18}px` }}
-            animate={{ scale: p >= 3 ? 1 : 0, opacity: p >= 3 ? 1 : 0 }}
-            transition={{ ...springBouncy, delay: i * 0.08 }}
-            filter={statusColors[i] === ACCENT ? 'url(#accentGlow)' : undefined}
+            animate={{
+              scale: p >= 3 ? (interactive && selectedCrew === i ? 1.6 : 1) : 0,
+              opacity: p >= 3 ? 1 : 0,
+            }}
+            transition={{ ...springBouncy, delay: p < 3 ? i * 0.08 : 0 }}
+            filter={statusColors[i] === ACCENT || (interactive && selectedCrew === i) ? 'url(#accentGlow)' : undefined}
           />
         ))}
 
@@ -474,7 +580,36 @@ export function TeamManagementIllustration() {
           transition={{ duration: 0.2 }}
           filter="url(#accentGlow)"
         />
+
+        {/* Interactive: selection ring */}
+        {interactive && selectedCrew !== null && (
+          <motion.circle
+            cx="60" cy={rows[selectedCrew] + 18} r="22"
+            stroke={ACCENT} strokeWidth="2" fill="none"
+            initial={{ scale: 0.8, opacity: 0 }}
+            animate={{ scale: 1, opacity: 0.6 }}
+            transition={springBouncy}
+            filter="url(#accentGlow)"
+          />
+        )}
       </svg>
+
+      {interactive && (
+        <div className="absolute inset-0 z-10" style={{ padding: '7.5%' }}>
+          <svg viewBox="0 0 400 300" className="w-full h-full" fill="none" style={{ pointerEvents: 'none' }}>
+            {rows.map((y, i) => (
+              <rect
+                key={`crew-hit-${i}`}
+                x="30" y={y} width="340" height="40"
+                fill="transparent"
+                style={{ pointerEvents: 'all', cursor: 'pointer' }}
+                onClick={() => handleCrewClick(i)}
+              />
+            ))}
+          </svg>
+        </div>
+      )}
+      <InteractionHint type="click" visible={interactive && selectedCrew === null} />
     </Container>
   );
 }
@@ -484,11 +619,16 @@ export function TeamManagementIllustration() {
  * ───────────────────────────────────────────────────────── */
 
 export function ClientManagementIllustration() {
-  const { ref, phase: p, replay } = useIllustration(8, 370);
+  const { ref, phase: p, replay, interactive } = useIllustration(8, 370);
+  const [flipped, setFlipped] = useState(false);
 
   return (
-    <Container innerRef={ref} onHover={replay}>
-      <svg viewBox="0 0 400 300" className="w-[85%] h-[85%]" fill="none">
+    <Container innerRef={ref} onHover={interactive ? undefined : replay}>
+      <motion.svg viewBox="0 0 400 300" className="w-[85%] h-[85%]" fill="none"
+        animate={{ scaleX: interactive && flipped ? 0 : 1 }}
+        transition={{ duration: 0.3, ease: [0.22, 1, 0.36, 1] }}
+        style={{ transformOrigin: 'center' }}
+      >
         <GlowDefs />
 
         {/* Card outline */}
@@ -570,7 +710,39 @@ export function ClientManagementIllustration() {
             <path d={`M115 ${230 + i * 20} L${260 - i * 20} ${230 + i * 20}`} stroke="rgba(255,255,255,0.12)" strokeWidth="1" />
           </motion.g>
         ))}
-      </svg>
+      </motion.svg>
+
+      {interactive && (
+        <>
+          <div
+            className="absolute inset-0 cursor-pointer z-10"
+            onClick={() => setFlipped(f => !f)}
+          />
+          <motion.div
+            className="absolute inset-0 flex items-center justify-center pointer-events-none z-20"
+            initial={false}
+            animate={{
+              scaleX: flipped ? 1 : 0,
+              opacity: flipped ? 1 : 0,
+            }}
+            transition={{ duration: 0.3, ease: [0.22, 1, 0.36, 1] }}
+            style={{ transformOrigin: 'center' }}
+          >
+            <div className="w-[55%] h-[78%] rounded-sm border border-[#597794]/30 bg-gradient-to-br from-[#597794]/[0.08] to-[#0A0A0A] p-5 flex flex-col justify-center">
+              <div className="text-[9px] font-body uppercase tracking-wider text-[#597794]/60 mb-3">Project History</div>
+              {['Kitchen Remodel — $24K', 'Deck Build — $18K', 'Bathroom — $12K'].map((proj, i) => (
+                <div key={i} className="flex items-center gap-2 py-1.5 border-b border-white/5 last:border-0">
+                  <div className="w-1.5 h-1.5 rounded-full bg-green-500/40" />
+                  <span className="text-[8px] font-body text-white/35">{proj}</span>
+                </div>
+              ))}
+              <div className="mt-3 text-[7px] font-body text-white/20">Last contact: 2 days ago</div>
+              <div className="text-[7px] font-body text-white/15 italic mt-1">&quot;Wants quote for fence&quot;</div>
+            </div>
+          </motion.div>
+        </>
+      )}
+      <InteractionHint type="click" visible={interactive && !flipped} />
     </Container>
   );
 }
@@ -580,10 +752,11 @@ export function ClientManagementIllustration() {
  * ───────────────────────────────────────────────────────── */
 
 export function InvoicingIllustration() {
-  const { ref, phase: p, replay } = useIllustration(8, 400);
+  const { ref, phase: p, replay, interactive } = useIllustration(8, 400);
+  const [isEstimate, setIsEstimate] = useState(false);
 
   return (
-    <Container innerRef={ref} onHover={replay}>
+    <Container innerRef={ref} onHover={interactive ? undefined : replay}>
       <svg viewBox="0 0 400 300" className="w-[85%] h-[85%]" fill="none">
         <GlowDefs />
 
@@ -645,21 +818,50 @@ export function InvoicingIllustration() {
         <motion.g animate={{ opacity: p >= 6 ? 1 : 0 }} transition={{ duration: 0.3 }}>
           <path d="M200 248 L315 248" stroke={ACCENT_STROKE} strokeWidth="1.5" />
           <path d="M220 262 L280 262" stroke="rgba(255,255,255,0.2)" strokeWidth="1.5" />
-          <path d="M285 262 L315 262" stroke={ACCENT} strokeWidth="2" filter="url(#accentGlow)" />
+          <motion.path
+            d="M285 262 L315 262"
+            stroke={interactive && isEstimate ? 'rgba(255,255,255,0.2)' : ACCENT}
+            strokeWidth="2"
+            filter={interactive && isEstimate ? undefined : 'url(#accentGlow)'}
+            animate={{ stroke: interactive && isEstimate ? 'rgba(255,255,255,0.2)' : ACCENT }}
+            transition={{ duration: 0.4 }}
+          />
         </motion.g>
 
-        {/* STAR MOMENT: "PAID" stamp */}
+        {/* STAR MOMENT: "PAID" / "DRAFT" stamp */}
         <motion.g
           style={{ transformOrigin: '160px 180px' }}
           animate={{ scale: p >= 7 ? 1 : 0, rotate: p >= 7 ? -12 : -40, opacity: p >= 7 ? 1 : 0 }}
           transition={{ type: 'spring', stiffness: 400, damping: 10 }}
         >
-          <rect x="100" y="150" width="120" height="50" rx="4" stroke={ACCENT} strokeWidth="2.5" fill="none" filter="url(#accentGlow)" />
-          <text x="160" y="182" textAnchor="middle" fontSize="24" fontFamily="var(--font-mohave)" fontWeight="bold" fill={ACCENT} filter="url(#accentGlow)">
-            PAID
-          </text>
+          <motion.rect x="100" y="150" width="120" height="50" rx="4"
+            strokeWidth="2.5" fill="none"
+            animate={{
+              stroke: interactive && isEstimate ? 'rgba(255,255,255,0.3)' : ACCENT,
+            }}
+            transition={{ duration: 0.4 }}
+            filter={interactive && isEstimate ? undefined : 'url(#accentGlow)'}
+          />
+          <motion.text x="160" y="182" textAnchor="middle" fontSize="24"
+            fontFamily="var(--font-mohave)" fontWeight="bold"
+            animate={{
+              fill: interactive && isEstimate ? 'rgba(255,255,255,0.3)' : ACCENT,
+            }}
+            transition={{ duration: 0.4 }}
+            filter={interactive && isEstimate ? undefined : 'url(#accentGlow)'}
+          >
+            {interactive && isEstimate ? 'DRAFT' : 'PAID'}
+          </motion.text>
         </motion.g>
       </svg>
+
+      {interactive && (
+        <div
+          className="absolute inset-0 cursor-pointer z-10"
+          onClick={() => setIsEstimate(e => !e)}
+        />
+      )}
+      <InteractionHint type="click" visible={interactive} />
     </Container>
   );
 }
@@ -669,14 +871,23 @@ export function InvoicingIllustration() {
  * ───────────────────────────────────────────────────────── */
 
 export function JobBoardIllustration() {
-  const { ref, phase: p, replay } = useIllustration(8, 420);
+  const { ref, phase: p, replay, interactive } = useIllustration(8, 420);
+  const [cardCols, setCardCols] = useState([0, 0, 0, 1, 2]); // 5 cards across 3 cols
 
   const colX = [20, 148, 276];
   const colW = 110;
   const headers = ['LEADS', 'ACTIVE', 'DONE'];
 
+  const advanceCard = (cardIdx: number) => {
+    setCardCols(prev => {
+      const next = [...prev];
+      next[cardIdx] = (next[cardIdx] + 1) % 3;
+      return next;
+    });
+  };
+
   return (
-    <Container innerRef={ref} onHover={replay}>
+    <Container innerRef={ref} onHover={interactive ? undefined : replay}>
       <svg viewBox="0 0 400 300" className="w-[85%] h-[85%]" fill="none">
         <GlowDefs />
 
@@ -765,6 +976,40 @@ export function JobBoardIllustration() {
           filter="url(#accentGlow)"
         />
       </svg>
+
+      {interactive && (
+        <div className="absolute inset-0 z-10" style={{ padding: '5% 5% 5% 5%' }}>
+          <div className="w-full h-full flex gap-[2%]">
+            {[0, 1, 2].map((col) => {
+              const cardsInCol = cardCols.reduce<number[]>((acc, c, i) => c === col ? [...acc, i] : acc, []);
+              return (
+                <div key={col} className="flex-1 flex flex-col items-stretch pt-[14%] gap-1 px-[3%]">
+                  {cardsInCol.map((cardIdx) => (
+                    <motion.button
+                      key={cardIdx}
+                      layout
+                      layoutId={`jb-card-${cardIdx}`}
+                      onClick={() => advanceCard(cardIdx)}
+                      className="rounded-sm border px-2 py-2 text-left cursor-pointer select-none"
+                      style={{
+                        backgroundColor: cardIdx === 3 ? 'rgba(89,119,148,0.08)' : 'rgba(255,255,255,0.03)',
+                        borderColor: cardIdx === 3 ? 'rgba(89,119,148,0.25)' : 'rgba(255,255,255,0.08)',
+                      }}
+                      whileHover={{ scale: 1.04, borderColor: 'rgba(89,119,148,0.4)' }}
+                      whileTap={{ scale: 0.97 }}
+                      transition={{ type: 'spring', stiffness: 400, damping: 25 }}
+                    >
+                      <div className="h-[3px] w-[60%] bg-white/15 rounded-full mb-1" />
+                      <div className="h-[2px] w-[40%] bg-white/8 rounded-full" />
+                    </motion.button>
+                  ))}
+                </div>
+              );
+            })}
+          </div>
+        </div>
+      )}
+      <InteractionHint type="click" visible={interactive} />
     </Container>
   );
 }
@@ -1001,8 +1246,19 @@ export function PipelineIllustration() {
  * 8. INVENTORY — Stock Dashboard
  * ───────────────────────────────────────────────────────── */
 
+interface PhysicsItem {
+  x: number; y: number; vx: number; vy: number;
+  w: number; h: number; rotation: number; vr: number;
+  color: string; targetX: number; targetY: number;
+}
+
 export function InventoryIllustration() {
-  const { ref, phase: p, replay } = useIllustration(8, 380);
+  const { ref, phase: p, replay, interactive } = useIllustration(8, 380);
+  const canvasRef = useRef<HTMLCanvasElement>(null);
+  const [tumbled, setTumbled] = useState(false);
+  const [showRestock, setShowRestock] = useState(false);
+  const physItems = useRef<PhysicsItem[]>([]);
+  const animRef = useRef<number>(0);
 
   const items = [
     { x: 25, y: 20, level: 0.85, label: 'PICKET RAIL' },
@@ -1017,8 +1273,114 @@ export function InventoryIllustration() {
   const cellH = 120;
   const barH = 30;
 
+  const triggerTumble = useCallback(() => {
+    if (tumbled) return;
+    setTumbled(true);
+    const canvas = canvasRef.current;
+    if (!canvas) return;
+    const dpr = window.devicePixelRatio || 1;
+    canvas.width = 400 * dpr;
+    canvas.height = 300 * dpr;
+    const ctx = canvas.getContext('2d')!;
+    ctx.scale(dpr, dpr);
+
+    physItems.current = items.map((item) => ({
+      x: item.x + cellW / 2 - 18, y: item.y + 12,
+      vx: (Math.random() - 0.5) * 8, vy: -(Math.random() * 5 + 3),
+      w: 36, h: 36, rotation: 0, vr: (Math.random() - 0.5) * 0.15,
+      color: item.low ? '#E54D2E' : ACCENT,
+      targetX: item.x + cellW / 2 - 18, targetY: item.y + 12,
+    }));
+
+    let frame = 0;
+    const sim = () => {
+      ctx.clearRect(0, 0, 400, 300);
+      let settled = true;
+      for (const pi of physItems.current) {
+        pi.vy += 0.45;
+        pi.x += pi.vx; pi.y += pi.vy; pi.rotation += pi.vr;
+        if (pi.y + pi.h > 278) { pi.y = 278 - pi.h; pi.vy *= -0.35; pi.vx *= 0.85; pi.vr *= 0.8; }
+        if (pi.x < 4) { pi.x = 4; pi.vx *= -0.5; }
+        if (pi.x + pi.w > 396) { pi.x = 396 - pi.w; pi.vx *= -0.5; }
+        if (Math.abs(pi.vy) > 0.5 || Math.abs(pi.vx) > 0.5) settled = false;
+        ctx.save();
+        ctx.translate(pi.x + pi.w / 2, pi.y + pi.h / 2);
+        ctx.rotate(pi.rotation);
+        ctx.beginPath();
+        ctx.roundRect(-pi.w / 2, -pi.h / 2, pi.w, pi.h, 4);
+        ctx.fillStyle = pi.color + '25';
+        ctx.fill();
+        ctx.strokeStyle = pi.color + '60';
+        ctx.lineWidth = 1;
+        ctx.stroke();
+        ctx.beginPath();
+        ctx.moveTo(-6, 0); ctx.lineTo(6, 0);
+        ctx.strokeStyle = 'rgba(255,255,255,0.12)';
+        ctx.stroke();
+        ctx.restore();
+      }
+      frame++;
+      if (!settled && frame < 300) {
+        animRef.current = requestAnimationFrame(sim);
+      } else {
+        setTimeout(() => setShowRestock(true), 500);
+      }
+    };
+    animRef.current = requestAnimationFrame(sim);
+  }, [tumbled]);
+
+  const triggerRestock = useCallback(() => {
+    setShowRestock(false);
+    const canvas = canvasRef.current;
+    if (!canvas) return;
+    const ctx = canvas.getContext('2d')!;
+    const dpr = window.devicePixelRatio || 1;
+    const starts = physItems.current.map(pi => ({ x: pi.x, y: pi.y, r: pi.rotation }));
+    let frame = 0;
+    const maxF = 50;
+    const anim = () => {
+      ctx.clearRect(0, 0, 400, 300);
+      const t = Math.min(frame / maxF, 1);
+      const e = 1 - Math.pow(1 - t, 3);
+      for (let i = 0; i < physItems.current.length; i++) {
+        const pi = physItems.current[i];
+        const s = starts[i];
+        const cx = s.x + (pi.targetX - s.x) * e;
+        const cy = s.y + (pi.targetY - s.y) * e;
+        const cr = s.r * (1 - e);
+        ctx.save();
+        ctx.translate(cx + pi.w / 2, cy + pi.h / 2);
+        ctx.rotate(cr);
+        ctx.beginPath();
+        ctx.roundRect(-pi.w / 2, -pi.h / 2, pi.w, pi.h, 4);
+        ctx.fillStyle = pi.color + '25';
+        ctx.fill();
+        ctx.strokeStyle = pi.color + '60';
+        ctx.lineWidth = 1;
+        ctx.stroke();
+        ctx.beginPath();
+        ctx.moveTo(-6, 0); ctx.lineTo(6, 0);
+        ctx.strokeStyle = 'rgba(255,255,255,0.12)';
+        ctx.stroke();
+        ctx.restore();
+      }
+      frame++;
+      if (frame <= maxF) {
+        animRef.current = requestAnimationFrame(anim);
+      } else {
+        ctx.clearRect(0, 0, 400, 300);
+        setTumbled(false);
+      }
+    };
+    animRef.current = requestAnimationFrame(anim);
+  }, []);
+
+  useEffect(() => {
+    return () => { if (animRef.current) cancelAnimationFrame(animRef.current); };
+  }, []);
+
   return (
-    <Container innerRef={ref} onHover={replay}>
+    <Container innerRef={ref} onHover={interactive ? undefined : replay}>
       <svg viewBox="0 0 400 300" className="w-[85%] h-[85%]" fill="none">
         <GlowDefs />
 
@@ -1133,6 +1495,36 @@ export function InventoryIllustration() {
           transition={{ pathLength: { duration: 0.3, ease: drawEase }, opacity: { duration: 0.2 } }}
         />
       </svg>
+
+      {interactive && (
+        <>
+          <canvas
+            ref={canvasRef}
+            width={400}
+            height={300}
+            className="absolute inset-0 w-full h-full z-10"
+            style={{ cursor: tumbled ? 'default' : 'pointer' }}
+            onClick={() => !tumbled && triggerTumble()}
+          />
+          {showRestock && (
+            <motion.button
+              className="absolute bottom-4 left-1/2 -translate-x-1/2 px-3 py-1.5 text-[9px] font-heading uppercase tracking-wider rounded-sm border z-20 cursor-pointer"
+              style={{
+                borderColor: 'rgba(89,119,148,0.4)',
+                backgroundColor: 'rgba(89,119,148,0.15)',
+                color: ACCENT,
+              }}
+              initial={{ opacity: 0, y: 10 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ delay: 0.3, type: 'spring', stiffness: 200, damping: 15 }}
+              onClick={(e) => { e.stopPropagation(); triggerRestock(); }}
+            >
+              RESTOCK
+            </motion.button>
+          )}
+        </>
+      )}
+      <InteractionHint type="click" visible={interactive && !tumbled} />
     </Container>
   );
 }
