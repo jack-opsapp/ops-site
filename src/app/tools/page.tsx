@@ -43,9 +43,7 @@ export default async function ToolsPage() {
     {
       name: t('tool.courses.name'),
       description: t('tool.courses.description'),
-      status: 'available' as const,
-      href: 'https://learn.opsapp.co',
-      external: true,
+      status: 'development' as const,
       illustration: <CoursesIllustration />,
     },
     {
