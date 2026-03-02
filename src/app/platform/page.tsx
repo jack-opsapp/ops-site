@@ -10,6 +10,17 @@ import ComparisonSection from '@/components/platform/ComparisonSection';
 import BottomCTA from '@/components/shared/BottomCTA';
 import { Divider } from '@/components/ui';
 import { getLocale, getTDict } from '@/i18n/server';
+import {
+  ProjectManagementIllustration,
+  SchedulingIllustration,
+  TeamManagementIllustration,
+  ClientManagementIllustration,
+  InvoicingIllustration,
+  JobBoardIllustration,
+  PipelineIllustration,
+  InventoryIllustration,
+  PhotoMarkupIllustration,
+} from '@/components/platform/PlatformIllustrations';
 
 export async function generateMetadata(): Promise<Metadata> {
   const locale = await getLocale();
@@ -34,15 +45,15 @@ export default async function PlatformPage() {
   };
 
   const featureBlocks = [
-    { key: 'projectManagement', direction: 'left' as const },
-    { key: 'scheduling', direction: 'right' as const },
-    { key: 'teamManagement', direction: 'left' as const },
-    { key: 'clientManagement', direction: 'right' as const },
-    { key: 'invoicing', direction: 'left' as const },
-    { key: 'jobBoard', direction: 'right' as const },
-    { key: 'pipeline', direction: 'left' as const },
-    { key: 'inventory', direction: 'right' as const },
-    { key: 'photoMarkup', direction: 'left' as const },
+    { key: 'projectManagement', direction: 'left' as const, visual: <ProjectManagementIllustration /> },
+    { key: 'scheduling', direction: 'right' as const, visual: <SchedulingIllustration /> },
+    { key: 'teamManagement', direction: 'left' as const, visual: <TeamManagementIllustration /> },
+    { key: 'clientManagement', direction: 'right' as const, visual: <ClientManagementIllustration /> },
+    { key: 'invoicing', direction: 'left' as const, inDevelopment: true, visual: <InvoicingIllustration /> },
+    { key: 'jobBoard', direction: 'right' as const, visual: <JobBoardIllustration /> },
+    { key: 'pipeline', direction: 'left' as const, inDevelopment: true, visual: <PipelineIllustration /> },
+    { key: 'inventory', direction: 'right' as const, inDevelopment: true, visual: <InventoryIllustration /> },
+    { key: 'photoMarkup', direction: 'left' as const, visual: <PhotoMarkupIllustration /> },
   ];
 
   return (
@@ -56,6 +67,8 @@ export default async function PlatformPage() {
             heading={t(`feature.${block.key}.heading`)}
             body={t(`feature.${block.key}.body`)}
             direction={block.direction}
+            inDevelopment={'inDevelopment' in block && block.inDevelopment}
+            visual={block.visual}
           />
           {i < featureBlocks.length - 1 && <Divider />}
         </div>

@@ -18,6 +18,7 @@ interface FeatureBlockProps {
   ctaHref?: string;
   visual?: React.ReactNode;
   direction: 'left' | 'right';
+  inDevelopment?: boolean;
 }
 
 export default function FeatureBlock({
@@ -28,6 +29,7 @@ export default function FeatureBlock({
   ctaHref,
   visual,
   direction,
+  inDevelopment = false,
 }: FeatureBlockProps) {
   const textOrder = direction === 'right' ? 'md:order-last' : '';
   const visualOrder = direction === 'right' ? 'md:order-first' : '';
@@ -39,7 +41,14 @@ export default function FeatureBlock({
           <div className="grid grid-cols-1 md:grid-cols-2 gap-12 md:gap-16 items-center">
             {/* Text side */}
             <div className={textOrder}>
-              <SectionLabel label={label} className="mb-5" />
+              <div className="flex items-center gap-3 mb-5">
+                <SectionLabel label={label} />
+                {inDevelopment && (
+                  <span className="inline-block px-2.5 py-1 text-[10px] font-caption uppercase tracking-[0.15em] border border-ops-border text-ops-text-secondary rounded-sm whitespace-nowrap">
+                    IN DEVELOPMENT
+                  </span>
+                )}
+              </div>
               <h2 className="font-heading font-bold uppercase leading-[0.95] tracking-tight text-ops-text-primary text-3xl md:text-4xl">
                 {heading}
               </h2>
