@@ -1198,9 +1198,9 @@ export function PhotoMarkupIllustration() {
           filter="url(#pmGlow)"
         />
 
-        {/* ═══ Phase 3 — Curve from circle down to label right side ═══ */}
+        {/* ═══ Phase 3 — Curve from circle to label right side ═══ */}
         <motion.path
-          d={`M${dc[0]},${dc[1]+18} C${dc[0]-30},${dc[1]+55} ${LX+65},${LY-15} ${LX+80},${LY+2}`}
+          d={`M${dc[0]},${dc[1]+18} C${dc[0]-30},${dc[1]+55} ${LX+100},${LY+2} ${LX+80},${LY+2}`}
           stroke={mk} strokeWidth="2" strokeLinecap="round" fill="none"
           animate={{ pathLength: p >= 3 ? 1 : 0, opacity: p >= 3 ? 0.85 : 0 }}
           transition={{ pathLength: { duration: 0.5, ease: drawEase }, opacity: { duration: 0.2 } }}
@@ -1221,22 +1221,24 @@ export function PhotoMarkupIllustration() {
           </text>
         </motion.g>
 
-        {/* ═══ Phase 5 — Measurement line (directly below front edge via y-offset) ═══ */}
+        {/* ═══ Phase 5 — Dimension line below front edge ═══ */}
         <motion.g animate={{ opacity: p >= 5 ? 1 : 0 }} transition={{ duration: 0.3 }}>
+          {/* Leader lines from front edge surface down past dimension */}
+          <path d={`M${pt(DX,0,0)} L${pt(DX,0,-30)}`} stroke={mk} strokeWidth="1" />
+          <motion.path d={`M${pt(W,0,0)} L${pt(W,0,-30)}`} stroke={mk} strokeWidth="1"
+            animate={{ opacity: p >= 5 ? 1 : 0 }} transition={{ duration: 0.2, delay: 0.4 }} />
+          {/* Main dimension line */}
           <motion.path
-            d={`M${pt(DX,0,-20)} L${pt(W,0,-20)}`}
+            d={`M${pt(DX,0,-25)} L${pt(W,0,-25)}`}
             stroke={mk} strokeWidth="1.5"
             animate={{ pathLength: p >= 5 ? 1 : 0 }}
             transition={{ pathLength: { duration: 0.5, ease: drawEase } }}
             filter="url(#pmGlow)"
           />
-          {/* Leader lines dropping from front edge down past dimension */}
-          <path d={`M${pt(DX,0,2)} L${pt(DX,0,-25)}`} stroke={mk} strokeWidth="1" />
-          <motion.path d={`M${pt(W,0,2)} L${pt(W,0,-25)}`} stroke={mk} strokeWidth="1"
-            animate={{ opacity: p >= 5 ? 1 : 0 }} transition={{ duration: 0.2, delay: 0.4 }} />
+          {/* Dimension text */}
           <motion.text
-            x={iso((DX + W) / 2, 0, -20)[0]}
-            y={iso((DX + W) / 2, 0, -20)[1] - 5}
+            x={iso((DX + W) / 2, 0, -25)[0]}
+            y={iso((DX + W) / 2, 0, -25)[1] - 5}
             textAnchor="middle" fontSize="9"
             fontFamily="var(--font-kosugi)" fill={mk}
             animate={{ opacity: p >= 5 ? 0.8 : 0 }}
