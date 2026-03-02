@@ -31,7 +31,7 @@ export default async function Hero() {
           alt=""
           fill
           priority
-          className="object-cover opacity-[0.35]"
+          className="object-cover opacity-[0.55]"
         />
       )}
 
