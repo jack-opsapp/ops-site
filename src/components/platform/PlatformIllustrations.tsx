@@ -325,7 +325,8 @@ export function ProjectManagementIllustration() {
 
 export function SchedulingIllustration() {
   const { ref, phase: p, replay, interactive } = useIllustration(8, 400);
-  const [activeBar, setActiveBar] = useState<number | null>(null);
+  const [selectedBar, setSelectedBar] = useState<number | null>(null);
+  const [barRows, setBarRows] = useState([1, 2, 3, 4, 4]);
 
   const colW = 48;
   const rowH = 38;
@@ -407,58 +408,118 @@ export function SchedulingIllustration() {
           </motion.text>
         ))}
 
-        {/* STAR MOMENT: Task bars drop in with bounce */}
+        {/* STAR MOMENT: Task bars drop in with bounce — use barRows when interactive */}
         {bars.map((bar, i) => {
+          const row = interactive ? barRows[i] : bar.row;
           const bx = gx + bar.sc * colW + 3;
           const bw = (bar.ec - bar.sc + 1) * colW - 6;
-          const by = gy + bar.row * rowH + 20;
+          const by = gy + row * rowH + 20;
+          const isSelected = selectedBar === i;
           return (
             <motion.rect
               key={`bar-${i}`}
-              x={bx} y={by} width={bw} height="10" rx="3"
-              fill={bar.color} fillOpacity={bar.opacity}
-              stroke={bar.stroke} strokeWidth="1"
+              x={bx} width={bw} height="10" rx="3"
+              fill={bar.color} fillOpacity={isSelected ? bar.opacity + 0.15 : bar.opacity}
+              stroke={isSelected ? '#fff' : bar.stroke} strokeWidth={isSelected ? '1.5' : '1'}
               style={{ transformOrigin: `${bx}px ${by + 5}px` }}
-              animate={{ scaleX: p >= 3 + i ? 1 : 0, opacity: p >= 3 + i ? 1 : 0 }}
-              transition={{ type: 'spring', stiffness: 250, damping: 14 }}
+              animate={{
+                scaleX: p >= 3 + i ? 1 : 0,
+                opacity: p >= 3 + i ? 1 : 0,
+                y: by,
+              }}
+              initial={{ y: gy + bar.row * rowH + 20 }}
+              transition={{
+                y: { type: 'spring', stiffness: 300, damping: 20 },
+                scaleX: { type: 'spring', stiffness: 250, damping: 14 },
+              }}
               filter={bar.glow && p >= 3 + i ? 'url(#accentGlow)' : undefined}
             />
           );
         })}
 
-        {/* Interactive: highlight active bar */}
-        {interactive && activeBar !== null && (
-          <motion.rect
-            x={gx + bars[activeBar].sc * colW + 3}
-            y={gy + bars[activeBar].row * rowH + 20}
-            width={(bars[activeBar].ec - bars[activeBar].sc + 1) * colW - 6}
-            height="10" rx="3"
-            fill="none" stroke={ACCENT} strokeWidth="2"
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 0.8 }}
-            filter="url(#accentGlow)"
+        {/* Interactive: selection ring around selected bar */}
+        {interactive && selectedBar !== null && (() => {
+          const bar = bars[selectedBar];
+          const row = barRows[selectedBar];
+          const bx = gx + bar.sc * colW + 1;
+          const bw = (bar.ec - bar.sc + 1) * colW - 2;
+          const by = gy + row * rowH + 18;
+          return (
+            <motion.rect
+              x={bx} width={bw} height="14" rx="4"
+              fill="none" stroke={ACCENT} strokeWidth="1.5"
+              strokeDasharray="3 2"
+              animate={{ opacity: [0.5, 1, 0.5], y: by }}
+              transition={{
+                opacity: { repeat: Infinity, duration: 1.2 },
+                y: { type: 'spring', stiffness: 300, damping: 20 },
+              }}
+              filter="url(#accentGlow)"
+            />
+          );
+        })()}
+
+        {/* Interactive: row highlight zones — click a row to move the selected bar there */}
+        {interactive && Array.from({ length: 5 }, (_, rowIdx) => (
+          <rect
+            key={`row-hit-${rowIdx}`}
+            x={gx} y={gy + rowIdx * rowH}
+            width={7 * colW} height={rowH}
+            fill={selectedBar !== null ? 'rgba(89,119,148,0.04)' : 'transparent'}
+            style={{ pointerEvents: 'all', cursor: selectedBar !== null ? 'pointer' : 'default' }}
+            onClick={() => {
+              if (selectedBar !== null) {
+                setBarRows(prev => {
+                  const next = [...prev];
+                  next[selectedBar] = rowIdx;
+                  return next;
+                });
+                setSelectedBar(null);
+              }
+            }}
           />
-        )}
+        ))}
 
       </svg>
 
+      {/* Interactive overlay: click bars to select, click rows to move */}
       {interactive && (
         <div className="absolute inset-0 z-10" style={{ padding: '7.5%' }}>
           <svg viewBox="0 0 400 300" className="w-full h-full" fill="none" style={{ pointerEvents: 'none' }}>
+            {/* Bar hit targets — click to select/deselect */}
             {bars.map((bar, i) => {
+              const row = barRows[i];
               const bx = gx + bar.sc * colW + 3;
               const bw = (bar.ec - bar.sc + 1) * colW - 6;
-              const by = gy + bar.row * rowH + 20;
+              const by = gy + row * rowH + 18;
               return (
                 <rect
                   key={`hit-${i}`}
-                  x={bx} y={by} width={bw} height="10" rx="3"
+                  x={bx} y={by} width={bw} height="14" rx="3"
                   fill="transparent"
                   style={{ pointerEvents: 'all', cursor: 'pointer' }}
-                  onClick={() => setActiveBar(activeBar === i ? null : i)}
+                  onClick={() => setSelectedBar(selectedBar === i ? null : i)}
                 />
               );
             })}
+            {/* Row hit targets — click to move selected bar */}
+            {selectedBar !== null && Array.from({ length: 5 }, (_, rowIdx) => (
+              <rect
+                key={`row-overlay-${rowIdx}`}
+                x={gx} y={gy + rowIdx * rowH}
+                width={7 * colW} height={rowH}
+                fill="transparent"
+                style={{ pointerEvents: 'all', cursor: 'pointer' }}
+                onClick={() => {
+                  setBarRows(prev => {
+                    const next = [...prev];
+                    next[selectedBar] = rowIdx;
+                    return next;
+                  });
+                  setSelectedBar(null);
+                }}
+              />
+            ))}
           </svg>
         </div>
       )}
@@ -926,89 +987,90 @@ export function JobBoardIllustration() {
           />
         ))}
 
-        {/* LEADS cards */}
-        {[0, 1, 2].map((i) => (
-          <motion.g
-            key={`lead-${i}`}
-            style={{ transformOrigin: `${colX[0] + colW / 2}px ${55 + i * 50 + 17}px` }}
-            animate={{ scale: p >= 2 ? 1 : 0, opacity: p >= 2 ? 1 : 0 }}
-            transition={{ ...springBouncy, delay: i * 0.08 }}
-          >
-            <rect x={colX[0] + 8} y={55 + i * 50} width={colW - 16} height="38" rx="3" stroke="rgba(255,255,255,0.12)" strokeWidth="1" fill="rgba(255,255,255,0.03)" />
-            <path d={`M${colX[0] + 16} ${68 + i * 50} L${colX[0] + colW - 24} ${68 + i * 50}`} stroke="rgba(255,255,255,0.15)" strokeWidth="1" />
-            <path d={`M${colX[0] + 16} ${78 + i * 50} L${colX[0] + 50} ${78 + i * 50}`} stroke="rgba(255,255,255,0.08)" strokeWidth="1" />
-          </motion.g>
-        ))}
+        {/* ── Phase animation cards (hidden when interactive) ── */}
+        {!interactive && (
+          <>
+            {/* LEADS cards */}
+            {[0, 1, 2].map((i) => (
+              <motion.g
+                key={`lead-${i}`}
+                style={{ transformOrigin: `${colX[0] + colW / 2}px ${55 + i * 50 + 17}px` }}
+                animate={{ scale: p >= 2 ? 1 : 0, opacity: p >= 2 ? 1 : 0 }}
+                transition={{ ...springBouncy, delay: i * 0.08 }}
+              >
+                <rect x={colX[0] + 8} y={55 + i * 50} width={colW - 16} height="38" rx="3" stroke="rgba(255,255,255,0.12)" strokeWidth="1" fill="rgba(255,255,255,0.03)" />
+                <path d={`M${colX[0] + 16} ${68 + i * 50} L${colX[0] + colW - 24} ${68 + i * 50}`} stroke="rgba(255,255,255,0.15)" strokeWidth="1" />
+                <path d={`M${colX[0] + 16} ${78 + i * 50} L${colX[0] + 50} ${78 + i * 50}`} stroke="rgba(255,255,255,0.08)" strokeWidth="1" />
+              </motion.g>
+            ))}
 
-        {/* STAR MOMENT: Card slides LEADS → ACTIVE */}
-        <motion.g
-          animate={{ x: p >= 4 ? colX[1] - colX[0] : 0 }}
-          transition={{ type: 'spring', stiffness: 150, damping: 14 }}
-        >
-          <motion.g animate={{ opacity: p >= 3 ? 1 : 0 }} transition={{ duration: 0.2 }}>
-            <rect x={colX[0] + 8} y="205" width={colW - 16} height="38" rx="3" stroke={ACCENT_STROKE} strokeWidth="1.5" fill={ACCENT_FILL} filter={p >= 4 ? 'url(#accentGlow)' : undefined} />
-            <path d={`M${colX[0] + 16} 218 L${colX[0] + colW - 24} 218`} stroke={ACCENT_STROKE} strokeWidth="1" />
-            <path d={`M${colX[0] + 16} 228 L${colX[0] + 50} 228`} stroke="rgba(89,119,148,0.3)" strokeWidth="1" />
-          </motion.g>
-        </motion.g>
+            {/* STAR MOMENT: Card slides LEADS → ACTIVE */}
+            <motion.g
+              animate={{ x: p >= 4 ? colX[1] - colX[0] : 0 }}
+              transition={{ type: 'spring', stiffness: 150, damping: 14 }}
+            >
+              <motion.g animate={{ opacity: p >= 3 ? 1 : 0 }} transition={{ duration: 0.2 }}>
+                <rect x={colX[0] + 8} y="205" width={colW - 16} height="38" rx="3" stroke={ACCENT_STROKE} strokeWidth="1.5" fill={ACCENT_FILL} filter={p >= 4 ? 'url(#accentGlow)' : undefined} />
+                <path d={`M${colX[0] + 16} 218 L${colX[0] + colW - 24} 218`} stroke={ACCENT_STROKE} strokeWidth="1" />
+                <path d={`M${colX[0] + 16} 228 L${colX[0] + 50} 228`} stroke="rgba(89,119,148,0.3)" strokeWidth="1" />
+              </motion.g>
+            </motion.g>
 
-        {/* Card slides ACTIVE → DONE */}
-        <motion.g
-          animate={{ x: p >= 6 ? colX[2] - colX[1] : 0 }}
-          transition={{ type: 'spring', stiffness: 150, damping: 14 }}
-        >
-          <motion.g
-            animate={{ opacity: p >= 5 ? 1 : 0, scale: p >= 5 ? 1 : 0.9 }}
-            transition={spring}
-          >
-            <rect x={colX[1] + 8} y="55" width={colW - 16} height="38" rx="3" stroke="rgba(255,255,255,0.12)" strokeWidth="1" fill="rgba(255,255,255,0.03)" />
-            <path d={`M${colX[1] + 16} 68 L${colX[1] + colW - 24} 68`} stroke="rgba(255,255,255,0.15)" strokeWidth="1" />
-            <path d={`M${colX[1] + 16} 78 L${colX[1] + 50} 78`} stroke="rgba(255,255,255,0.08)" strokeWidth="1" />
-          </motion.g>
-        </motion.g>
+            {/* Card slides ACTIVE → DONE */}
+            <motion.g
+              animate={{ x: p >= 6 ? colX[2] - colX[1] : 0 }}
+              transition={{ type: 'spring', stiffness: 150, damping: 14 }}
+            >
+              <motion.g
+                animate={{ opacity: p >= 5 ? 1 : 0, scale: p >= 5 ? 1 : 0.9 }}
+                transition={spring}
+              >
+                <rect x={colX[1] + 8} y="55" width={colW - 16} height="38" rx="3" stroke="rgba(255,255,255,0.12)" strokeWidth="1" fill="rgba(255,255,255,0.03)" />
+                <path d={`M${colX[1] + 16} 68 L${colX[1] + colW - 24} 68`} stroke="rgba(255,255,255,0.15)" strokeWidth="1" />
+                <path d={`M${colX[1] + 16} 78 L${colX[1] + 50} 78`} stroke="rgba(255,255,255,0.08)" strokeWidth="1" />
+              </motion.g>
+            </motion.g>
 
-        {/* Checkmark on done card */}
-        <motion.path
-          d={`M${colX[2] + colW - 28} 62 L${colX[2] + colW - 24} 68 L${colX[2] + colW - 16} 58`}
-          stroke={ACCENT} strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"
-          animate={{ pathLength: p >= 7 ? 1 : 0, opacity: p >= 7 ? 1 : 0 }}
-          transition={{ pathLength: { duration: 0.3, ease: drawEase }, opacity: { duration: 0.15 } }}
-          filter="url(#accentGlow)"
-        />
+            {/* Checkmark on done card */}
+            <motion.path
+              d={`M${colX[2] + colW - 28} 62 L${colX[2] + colW - 24} 68 L${colX[2] + colW - 16} 58`}
+              stroke={ACCENT} strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"
+              animate={{ pathLength: p >= 7 ? 1 : 0, opacity: p >= 7 ? 1 : 0 }}
+              transition={{ pathLength: { duration: 0.3, ease: drawEase }, opacity: { duration: 0.15 } }}
+              filter="url(#accentGlow)"
+            />
+          </>
+        )}
+
+        {/* ── Interactive clickable cards ── */}
+        {interactive && [0, 1, 2, 3, 4].map(ci => {
+          const col = cardCols[ci];
+          let slot = 0;
+          for (let j = 0; j < ci; j++) { if (cardCols[j] === col) slot++; }
+          const cx = colX[col] + 8;
+          const cy = 55 + slot * 50;
+          const isAccent = ci === 3;
+          return (
+            <motion.g
+              key={`ic-${ci}`}
+              animate={{ x: cx, y: cy }}
+              initial={{ x: cx, y: cy }}
+              transition={{ type: 'spring', stiffness: 200, damping: 18 }}
+              onClick={() => advanceCard(ci)}
+              style={{ cursor: 'pointer' }}
+            >
+              <rect x={0} y={0} width={colW - 16} height="38" rx="3"
+                stroke={isAccent ? ACCENT_STROKE : 'rgba(255,255,255,0.12)'}
+                strokeWidth={isAccent ? '1.5' : '1'}
+                fill={isAccent ? ACCENT_FILL : 'rgba(255,255,255,0.03)'}
+                filter={isAccent ? 'url(#accentGlow)' : undefined}
+              />
+              <path d={`M8 13 L${colW - 24} 13`} stroke={isAccent ? ACCENT_STROKE : 'rgba(255,255,255,0.15)'} strokeWidth="1" />
+              <path d="M8 23 L42 23" stroke={isAccent ? 'rgba(89,119,148,0.3)' : 'rgba(255,255,255,0.08)'} strokeWidth="1" />
+            </motion.g>
+          );
+        })}
       </svg>
-
-      {interactive && (
-        <div className="absolute inset-0 z-10" style={{ padding: '5% 5% 5% 5%' }}>
-          <div className="w-full h-full flex gap-[2%]">
-            {[0, 1, 2].map((col) => {
-              const cardsInCol = cardCols.reduce<number[]>((acc, c, i) => c === col ? [...acc, i] : acc, []);
-              return (
-                <div key={col} className="flex-1 flex flex-col items-stretch pt-[14%] gap-1 px-[3%]">
-                  {cardsInCol.map((cardIdx) => (
-                    <motion.button
-                      key={cardIdx}
-                      layout
-                      layoutId={`jb-card-${cardIdx}`}
-                      onClick={() => advanceCard(cardIdx)}
-                      className="rounded-sm border px-2 py-2 text-left cursor-pointer select-none"
-                      style={{
-                        backgroundColor: cardIdx === 3 ? 'rgba(89,119,148,0.08)' : 'rgba(255,255,255,0.03)',
-                        borderColor: cardIdx === 3 ? 'rgba(89,119,148,0.25)' : 'rgba(255,255,255,0.08)',
-                      }}
-                      whileHover={{ scale: 1.04, borderColor: 'rgba(89,119,148,0.4)' }}
-                      whileTap={{ scale: 0.97 }}
-                      transition={{ type: 'spring', stiffness: 400, damping: 25 }}
-                    >
-                      <div className="h-[3px] w-[60%] bg-white/15 rounded-full mb-1" />
-                      <div className="h-[2px] w-[40%] bg-white/8 rounded-full" />
-                    </motion.button>
-                  ))}
-                </div>
-              );
-            })}
-          </div>
-        </div>
-      )}
       <InteractionHint type="click" visible={interactive} />
     </Container>
   );
@@ -1078,10 +1140,34 @@ export function PipelineIllustration() {
   const isHovering = hoveredIdx !== null && interactive;
   const springWidth = { type: 'spring' as const, stiffness: 300, damping: 20 };
 
+  /** Gain on WON when hovering */
+  const wonGain = (() => {
+    if (!isHovering) return 0;
+    const wonIdx = stages.length - 1;
+    const hoveredWidth = getInteractiveWidth(wonIdx);
+    const baseWidth = stages[wonIdx].width;
+    const scaled = Math.round(stages[wonIdx].numValue * hoveredWidth / baseWidth);
+    return scaled - stages[wonIdx].numValue;
+  })();
+
   return (
     <Container innerRef={ref} onHover={replay}>
       <svg viewBox="0 0 400 300" className="w-[85%] h-[85%]" fill="none">
         <GlowDefs />
+
+        {/* "WHAT IF?" label — appears when hovering */}
+        <motion.g
+          animate={{ opacity: isHovering ? 1 : 0, y: isHovering ? 0 : 4 }}
+          transition={{ duration: 0.2 }}
+        >
+          <text
+            x={barX + maxWidth / 2} y={16}
+            textAnchor="middle" fontSize="8" fontFamily="var(--font-mohave)" fontWeight="bold"
+            fill="rgba(89,119,148,0.7)" letterSpacing="0.5"
+          >
+            WHAT IF 100% CONVERTED?
+          </text>
+        </motion.g>
 
         {/* Stage labels */}
         {stages.map((stage, i) => (
@@ -1089,8 +1175,11 @@ export function PipelineIllustration() {
             key={`label-${i}`}
             x={barX - 10} y={startY + i * rowH + barH / 2 + 4}
             textAnchor="end" fontSize="9" fontFamily="var(--font-mohave)" fontWeight="bold"
-            fill="rgba(255,255,255,0.35)"
-            animate={{ opacity: p >= 0 ? 1 : 0, x: p >= 0 ? 0 : -10 }}
+            animate={{
+              opacity: p >= 0 ? 1 : 0,
+              x: p >= 0 ? 0 : -10,
+              fill: isHovering && i >= (hoveredIdx ?? 999) ? 'rgba(255,255,255,0.6)' : 'rgba(255,255,255,0.35)',
+            }}
             transition={{ ...spring, delay: i * 0.06 }}
           >
             {stage.label}
@@ -1211,13 +1300,18 @@ export function PipelineIllustration() {
           >
             WON
           </text>
-          <text
+          <motion.text
             x={barX + 30} y={startY + 5 * rowH + 22}
             fontSize="11" fontFamily="var(--font-mohave)" fontWeight="bold"
-            fill="rgba(46,160,67,0.7)"
+            animate={{
+              fill: isHovering ? 'rgba(46,160,67,1)' : 'rgba(46,160,67,0.7)',
+              scale: isHovering ? 1.15 : 1,
+            }}
+            style={{ transformOrigin: `${barX + 42}px ${startY + 5 * rowH + 18}px` }}
+            transition={{ duration: 0.2 }}
           >
             {getWonValue()}
-          </text>
+          </motion.text>
           <text
             x={barX + 80} y={startY + 5 * rowH + 22}
             fontSize="9" fontFamily="var(--font-kosugi)"
@@ -1246,138 +1340,34 @@ export function PipelineIllustration() {
  * 8. INVENTORY — Stock Dashboard
  * ───────────────────────────────────────────────────────── */
 
-interface PhysicsItem {
-  x: number; y: number; vx: number; vy: number;
-  w: number; h: number; rotation: number; vr: number;
-  color: string; targetX: number; targetY: number;
-}
-
 export function InventoryIllustration() {
   const { ref, phase: p, replay, interactive } = useIllustration(8, 380);
-  const canvasRef = useRef<HTMLCanvasElement>(null);
-  const [tumbled, setTumbled] = useState(false);
-  const [showRestock, setShowRestock] = useState(false);
-  const physItems = useRef<PhysicsItem[]>([]);
-  const animRef = useRef<number>(0);
+
+  const initialLevels = [0.85, 0.6, 0.15, 0.7, 0.45, 0.9];
+  const [levels, setLevels] = useState(initialLevels);
+  const [hasAdjusted, setHasAdjusted] = useState(false);
 
   const items = [
-    { x: 25, y: 20, level: 0.85, label: 'PICKET RAIL' },
-    { x: 150, y: 20, level: 0.6, label: 'SELF TAPPERS' },
-    { x: 275, y: 20, level: 0.15, label: 'LAG SCREWS', low: true },
-    { x: 25, y: 160, level: 0.7, label: 'CAULKING' },
-    { x: 150, y: 160, level: 0.45, label: 'TOP BRACKET' },
-    { x: 275, y: 160, level: 0.9, label: 'GLASS PANEL' },
+    { x: 25, y: 20, label: 'PICKET RAIL' },
+    { x: 150, y: 20, label: 'SELF TAPPERS' },
+    { x: 275, y: 20, label: 'LAG SCREWS' },
+    { x: 25, y: 160, label: 'CAULKING' },
+    { x: 150, y: 160, label: 'TOP BRACKET' },
+    { x: 275, y: 160, label: 'GLASS PANEL' },
   ];
 
   const cellW = 110;
   const cellH = 120;
   const barH = 30;
 
-  const triggerTumble = useCallback(() => {
-    if (tumbled) return;
-    setTumbled(true);
-    const canvas = canvasRef.current;
-    if (!canvas) return;
-    const dpr = window.devicePixelRatio || 1;
-    canvas.width = 400 * dpr;
-    canvas.height = 300 * dpr;
-    const ctx = canvas.getContext('2d')!;
-    ctx.scale(dpr, dpr);
-
-    physItems.current = items.map((item) => ({
-      x: item.x + cellW / 2 - 18, y: item.y + 12,
-      vx: (Math.random() - 0.5) * 8, vy: -(Math.random() * 5 + 3),
-      w: 36, h: 36, rotation: 0, vr: (Math.random() - 0.5) * 0.15,
-      color: item.low ? '#E54D2E' : ACCENT,
-      targetX: item.x + cellW / 2 - 18, targetY: item.y + 12,
-    }));
-
-    let frame = 0;
-    const sim = () => {
-      ctx.clearRect(0, 0, 400, 300);
-      let settled = true;
-      for (const pi of physItems.current) {
-        pi.vy += 0.45;
-        pi.x += pi.vx; pi.y += pi.vy; pi.rotation += pi.vr;
-        if (pi.y + pi.h > 278) { pi.y = 278 - pi.h; pi.vy *= -0.35; pi.vx *= 0.85; pi.vr *= 0.8; }
-        if (pi.x < 4) { pi.x = 4; pi.vx *= -0.5; }
-        if (pi.x + pi.w > 396) { pi.x = 396 - pi.w; pi.vx *= -0.5; }
-        if (Math.abs(pi.vy) > 0.5 || Math.abs(pi.vx) > 0.5) settled = false;
-        ctx.save();
-        ctx.translate(pi.x + pi.w / 2, pi.y + pi.h / 2);
-        ctx.rotate(pi.rotation);
-        ctx.beginPath();
-        ctx.roundRect(-pi.w / 2, -pi.h / 2, pi.w, pi.h, 4);
-        ctx.fillStyle = pi.color + '25';
-        ctx.fill();
-        ctx.strokeStyle = pi.color + '60';
-        ctx.lineWidth = 1;
-        ctx.stroke();
-        ctx.beginPath();
-        ctx.moveTo(-6, 0); ctx.lineTo(6, 0);
-        ctx.strokeStyle = 'rgba(255,255,255,0.12)';
-        ctx.stroke();
-        ctx.restore();
-      }
-      frame++;
-      if (!settled && frame < 300) {
-        animRef.current = requestAnimationFrame(sim);
-      } else {
-        setTimeout(() => setShowRestock(true), 500);
-      }
-    };
-    animRef.current = requestAnimationFrame(sim);
-  }, [tumbled]);
-
-  const triggerRestock = useCallback(() => {
-    setShowRestock(false);
-    const canvas = canvasRef.current;
-    if (!canvas) return;
-    const ctx = canvas.getContext('2d')!;
-    const dpr = window.devicePixelRatio || 1;
-    const starts = physItems.current.map(pi => ({ x: pi.x, y: pi.y, r: pi.rotation }));
-    let frame = 0;
-    const maxF = 50;
-    const anim = () => {
-      ctx.clearRect(0, 0, 400, 300);
-      const t = Math.min(frame / maxF, 1);
-      const e = 1 - Math.pow(1 - t, 3);
-      for (let i = 0; i < physItems.current.length; i++) {
-        const pi = physItems.current[i];
-        const s = starts[i];
-        const cx = s.x + (pi.targetX - s.x) * e;
-        const cy = s.y + (pi.targetY - s.y) * e;
-        const cr = s.r * (1 - e);
-        ctx.save();
-        ctx.translate(cx + pi.w / 2, cy + pi.h / 2);
-        ctx.rotate(cr);
-        ctx.beginPath();
-        ctx.roundRect(-pi.w / 2, -pi.h / 2, pi.w, pi.h, 4);
-        ctx.fillStyle = pi.color + '25';
-        ctx.fill();
-        ctx.strokeStyle = pi.color + '60';
-        ctx.lineWidth = 1;
-        ctx.stroke();
-        ctx.beginPath();
-        ctx.moveTo(-6, 0); ctx.lineTo(6, 0);
-        ctx.strokeStyle = 'rgba(255,255,255,0.12)';
-        ctx.stroke();
-        ctx.restore();
-      }
-      frame++;
-      if (frame <= maxF) {
-        animRef.current = requestAnimationFrame(anim);
-      } else {
-        ctx.clearRect(0, 0, 400, 300);
-        setTumbled(false);
-      }
-    };
-    animRef.current = requestAnimationFrame(anim);
-  }, []);
-
-  useEffect(() => {
-    return () => { if (animRef.current) cancelAnimationFrame(animRef.current); };
-  }, []);
+  const adjustLevel = (i: number, delta: number) => {
+    if (!hasAdjusted) setHasAdjusted(true);
+    setLevels(prev => {
+      const next = [...prev];
+      next[i] = Math.max(0.05, Math.min(1, +(next[i] + delta).toFixed(2)));
+      return next;
+    });
+  };
 
   return (
     <Container innerRef={ref} onHover={interactive ? undefined : replay}>
@@ -1433,98 +1423,120 @@ export function InventoryIllustration() {
           />
         ))}
 
-        {/* Bar fills */}
-        {items.map((item, i) => (
-          <motion.rect
-            key={`bar-${i}`}
-            x={item.x + 10} y={item.y + cellH - barH - 10}
-            width={(cellW - 20) * item.level} height={barH} rx="3"
-            fill={item.low ? '#E54D2E' : ACCENT}
-            fillOpacity={item.low ? 0.4 : 0.2}
-            stroke={item.low ? 'rgba(229,77,46,0.5)' : ACCENT_STROKE}
-            strokeWidth="1"
-            style={{ transformOrigin: `${item.x + 10}px ${item.y + cellH - barH - 10 + barH / 2}px` }}
-            animate={{ scaleX: p >= 4 ? 1 : 0, opacity: p >= 4 ? 1 : 0 }}
-            transition={{ duration: 0.6, ease: drawEase, delay: i * 0.06 }}
-            filter={!item.low && p >= 4 ? 'url(#accentGlow)' : undefined}
-          />
+        {/* Bar fills — animated width, dynamic color based on level */}
+        {items.map((item, i) => {
+          const lvl = interactive ? levels[i] : initialLevels[i];
+          const isLow = lvl < 0.2;
+          return (
+            <motion.rect
+              key={`bar-${i}`}
+              x={item.x + 10} y={item.y + cellH - barH - 10}
+              height={barH} rx="3"
+              initial={{ width: 0, opacity: 0 }}
+              animate={{
+                width: p >= 4 ? (cellW - 20) * lvl : 0,
+                opacity: p >= 4 ? 1 : 0,
+                fill: isLow ? 'rgba(229,77,46,0.4)' : 'rgba(89,119,148,0.2)',
+                stroke: isLow ? 'rgba(229,77,46,0.5)' : ACCENT_STROKE,
+              }}
+              strokeWidth="1"
+              transition={{ width: { duration: 0.4, ease: drawEase }, opacity: { duration: 0.3 }, fill: { duration: 0.3 }, stroke: { duration: 0.3 } }}
+              filter={!isLow && p >= 4 ? 'url(#accentGlow)' : undefined}
+            />
+          );
+        })}
+
+        {/* +/− buttons — appear when interactive */}
+        {interactive && items.map((item, i) => (
+          <motion.g
+            key={`ctrl-${i}`}
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            transition={{ duration: 0.3, delay: i * 0.04 }}
+          >
+            {/* Minus button */}
+            <g onClick={() => adjustLevel(i, -0.1)} style={{ cursor: 'pointer' }}>
+              <rect x={item.x + 6} y={item.y + 24} width="14" height="14" rx="3"
+                fill="rgba(255,255,255,0.04)" stroke="rgba(255,255,255,0.12)" strokeWidth="0.8" />
+              <path d={`M${item.x + 10} ${item.y + 31} L${item.x + 16} ${item.y + 31}`}
+                stroke="rgba(255,255,255,0.35)" strokeWidth="1.2" strokeLinecap="round" />
+            </g>
+            {/* Plus button */}
+            <g onClick={() => adjustLevel(i, 0.1)} style={{ cursor: 'pointer' }}>
+              <rect x={item.x + cellW - 20} y={item.y + 24} width="14" height="14" rx="3"
+                fill="rgba(255,255,255,0.04)" stroke="rgba(255,255,255,0.12)" strokeWidth="0.8" />
+              <path d={`M${item.x + cellW - 16} ${item.y + 31} L${item.x + cellW - 10} ${item.y + 31}`}
+                stroke="rgba(255,255,255,0.35)" strokeWidth="1.2" strokeLinecap="round" />
+              <path d={`M${item.x + cellW - 13} ${item.y + 28} L${item.x + cellW - 13} ${item.y + 34}`}
+                stroke="rgba(255,255,255,0.35)" strokeWidth="1.2" strokeLinecap="round" />
+            </g>
+          </motion.g>
         ))}
 
-        {/* STAR MOMENT: Low stock alert */}
-        <motion.circle
-          cx={275 + cellW - 5} cy={25} r="8"
-          fill="#E54D2E" fillOpacity="0.7"
-          animate={{ scale: p >= 5 ? 1 : 0, opacity: p >= 5 ? 1 : 0 }}
-          style={{ transformOrigin: `${275 + cellW - 5}px 25px` }}
-          transition={springBouncy}
-        />
-        <motion.text
-          x={275 + cellW - 5} y={28}
-          textAnchor="middle" fontSize="10" fill="white" fontWeight="bold"
-          animate={{ opacity: p >= 5 ? 1 : 0 }}
-          transition={{ duration: 0.2 }}
-        >
-          !
-        </motion.text>
+        {/* Low stock alert — dynamic: shows on any item below 20% */}
+        {items.map((item, i) => {
+          const lvl = interactive ? levels[i] : initialLevels[i];
+          const isLow = lvl < 0.2;
+          const showAlert = interactive ? isLow : (i === 2 && p >= 5);
+          return showAlert ? (
+            <motion.g key={`alert-${i}`}>
+              <motion.circle
+                cx={item.x + cellW - 5} cy={item.y + 5} r="8"
+                fill="#E54D2E" fillOpacity="0.7"
+                animate={{ scale: 1, opacity: 1 }}
+                initial={{ scale: 0, opacity: 0 }}
+                style={{ transformOrigin: `${item.x + cellW - 5}px ${item.y + 5}px` }}
+                transition={springBouncy}
+              />
+              <motion.text
+                x={item.x + cellW - 5} y={item.y + 8}
+                textAnchor="middle" fontSize="10" fill="white" fontWeight="bold"
+                initial={{ opacity: 0 }}
+                animate={{ opacity: 1 }}
+                transition={{ duration: 0.2 }}
+              >
+                !
+              </motion.text>
+            </motion.g>
+          ) : null;
+        })}
 
-        {/* REORDER badge — styled pill, not plain text */}
-        <motion.g
-          style={{ transformOrigin: `${275 + cellW / 2}px ${20 + cellH + 18}px` }}
-          animate={{ scale: p >= 6 ? 1 : 0, opacity: p >= 6 ? 1 : 0 }}
-          transition={springBouncy}
-        >
-          <rect
-            x={275 + cellW / 2 - 32} y={20 + cellH + 6}
-            width="64" height="22" rx="4"
-            fill="rgba(229,77,46,0.15)" stroke="rgba(229,77,46,0.5)" strokeWidth="1"
-          />
-          <text
-            x={275 + cellW / 2} y={20 + cellH + 21}
-            textAnchor="middle" fontSize="9" fontFamily="var(--font-mohave)" fontWeight="bold"
-            fill="#E54D2E"
-          >
-            REORDER
-          </text>
-        </motion.g>
-
-        {/* Restock arrow */}
-        <motion.path
-          d={`M${275 + cellW / 2} ${20 + cellH - 2} L${275 + cellW / 2} ${20 + cellH + 6}`}
-          stroke="#E54D2E" strokeWidth="1.5" strokeLinecap="round"
-          animate={{ pathLength: p >= 6 ? 1 : 0, opacity: p >= 6 ? 0.6 : 0 }}
-          transition={{ pathLength: { duration: 0.3, ease: drawEase }, opacity: { duration: 0.2 } }}
-        />
+        {/* REORDER badge — shows below first low-stock item in top row */}
+        {(() => {
+          const lowIdx = interactive
+            ? items.findIndex((_, i) => levels[i] < 0.2 && items[i].y < 100)
+            : (p >= 6 ? 2 : -1);
+          if (lowIdx < 0) return null;
+          const item = items[lowIdx];
+          return (
+            <motion.g
+              style={{ transformOrigin: `${item.x + cellW / 2}px ${item.y + cellH + 18}px` }}
+              animate={{ scale: 1, opacity: 1 }}
+              initial={{ scale: 0, opacity: 0 }}
+              transition={springBouncy}
+            >
+              <rect
+                x={item.x + cellW / 2 - 32} y={item.y + cellH + 6}
+                width="64" height="22" rx="4"
+                fill="rgba(229,77,46,0.15)" stroke="rgba(229,77,46,0.5)" strokeWidth="1"
+              />
+              <text
+                x={item.x + cellW / 2} y={item.y + cellH + 21}
+                textAnchor="middle" fontSize="9" fontFamily="var(--font-mohave)" fontWeight="bold"
+                fill="#E54D2E"
+              >
+                REORDER
+              </text>
+              <path
+                d={`M${item.x + cellW / 2} ${item.y + cellH - 2} L${item.x + cellW / 2} ${item.y + cellH + 6}`}
+                stroke="#E54D2E" strokeWidth="1.5" strokeLinecap="round" opacity="0.6"
+              />
+            </motion.g>
+          );
+        })()}
       </svg>
 
-      {interactive && (
-        <>
-          <canvas
-            ref={canvasRef}
-            width={400}
-            height={300}
-            className="absolute inset-0 w-full h-full z-10"
-            style={{ cursor: tumbled ? 'default' : 'pointer' }}
-            onClick={() => !tumbled && triggerTumble()}
-          />
-          {showRestock && (
-            <motion.button
-              className="absolute bottom-4 left-1/2 -translate-x-1/2 px-3 py-1.5 text-[9px] font-heading uppercase tracking-wider rounded-sm border z-20 cursor-pointer"
-              style={{
-                borderColor: 'rgba(89,119,148,0.4)',
-                backgroundColor: 'rgba(89,119,148,0.15)',
-                color: ACCENT,
-              }}
-              initial={{ opacity: 0, y: 10 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ delay: 0.3, type: 'spring', stiffness: 200, damping: 15 }}
-              onClick={(e) => { e.stopPropagation(); triggerRestock(); }}
-            >
-              RESTOCK
-            </motion.button>
-          )}
-        </>
-      )}
-      <InteractionHint type="click" visible={interactive && !tumbled} />
+      <InteractionHint type="click" visible={interactive && !hasAdjusted} />
     </Container>
   );
 }
@@ -1829,14 +1841,53 @@ export function PhotoMarkupIllustration() {
           </motion.text>
         </motion.g>
 
-        {/* Toolbar — positioned above label */}
-        <motion.g animate={{ opacity: p >= 0 ? 0.4 : 0 }} transition={{ duration: 0.5, delay: 0.3 }}>
-          <rect x="40" y="280" width="100" height="16" rx="8"
-            stroke="rgba(255,255,255,0.1)" strokeWidth="1" fill="rgba(255,255,255,0.03)" />
-          <circle cx="58" cy="288" r="3" stroke="rgba(255,255,255,0.15)" strokeWidth="1" fill="none" />
-          <rect x="70" y="284.5" width="6" height="6" rx="1" stroke="rgba(255,255,255,0.15)" strokeWidth="1" fill="none" />
-          <path d="M86 284.5 L89.5 290.5" stroke="rgba(255,255,255,0.15)" strokeWidth="1" />
-          <path d="M100 285 L103.5 288 L107 285" stroke="rgba(255,255,255,0.15)" strokeWidth="1" />
+        {/* Toolbar — grows when interactive to suggest interactability */}
+        <motion.g
+          animate={{
+            opacity: p >= 0 ? (interactive ? 0.9 : 0.4) : 0,
+            scale: interactive ? 1.15 : 1,
+          }}
+          transition={{ duration: 0.5, delay: interactive ? 0 : 0.3 }}
+          style={{ transformOrigin: '90px 288px' }}
+        >
+          <motion.rect x="40" y="280" height="16" rx="8"
+            animate={{
+              width: interactive && hasDrawn ? 120 : 100,
+              stroke: interactive ? 'rgba(255,255,255,0.25)' : 'rgba(255,255,255,0.1)',
+              fill: interactive ? 'rgba(255,255,255,0.06)' : 'rgba(255,255,255,0.03)',
+            }}
+            initial={{ width: 100 }}
+            strokeWidth="1" transition={{ duration: 0.3 }}
+          />
+          {/* Pen icon */}
+          <motion.circle cx="58" cy="288" r="3.5"
+            animate={{
+              stroke: interactive && tool === 'pen' ? mk : 'rgba(255,255,255,0.15)',
+              fill: interactive && tool === 'pen' ? mk : 'none',
+              fillOpacity: interactive && tool === 'pen' ? 0.35 : 0,
+            }}
+            strokeWidth="1" transition={{ duration: 0.15 }}
+            filter={interactive && tool === 'pen' ? 'url(#pmGlow)' : undefined}
+          />
+          {/* Eraser icon */}
+          <motion.rect x="69.5" y="284" width="7" height="7" rx="1.5"
+            animate={{
+              stroke: interactive && tool === 'eraser' ? mk : 'rgba(255,255,255,0.15)',
+              fill: interactive && tool === 'eraser' ? mk : 'none',
+              fillOpacity: interactive && tool === 'eraser' ? 0.35 : 0,
+            }}
+            strokeWidth="1" transition={{ duration: 0.15 }}
+            filter={interactive && tool === 'eraser' ? 'url(#pmGlow)' : undefined}
+          />
+          {/* Divider */}
+          <path d="M82 283 L82 293" stroke="rgba(255,255,255,0.06)" strokeWidth="0.5" />
+          {/* Undo / clear icon — X shape, visible when drawn */}
+          <motion.g
+            animate={{ opacity: interactive && hasDrawn ? 0.9 : 0.3 }}
+            transition={{ duration: 0.2 }}
+          >
+            <path d="M90 285 L96 291 M96 285 L90 291" stroke={interactive && hasDrawn ? mk : 'rgba(255,255,255,0.15)'} strokeWidth="1.2" strokeLinecap="round" />
+          </motion.g>
         </motion.g>
       </svg>
 
@@ -1846,8 +1897,8 @@ export function PhotoMarkupIllustration() {
           ref={canvasRef}
           width={400}
           height={300}
-          className="absolute inset-0 w-full h-full cursor-crosshair"
-          style={{ touchAction: 'none' }}
+          className="absolute inset-0 w-full h-full z-10"
+          style={{ touchAction: 'none', cursor: tool === 'eraser' ? 'cell' : 'crosshair' }}
           onMouseDown={startDraw}
           onMouseMove={draw}
           onMouseUp={stopDraw}
@@ -1859,56 +1910,49 @@ export function PhotoMarkupIllustration() {
         />
       )}
 
-      {/* ═══ Drawing toolbar ═══ */}
+      {/* ═══ Transparent click targets over SVG toolbar ═══
+           SVG is 85% of container, centered → 7.5% margin each side.
+           Toolbar at SVG (40,280, w100/120, h16) in viewBox 400x300:
+             left = 7.5% + (40/400)*85% = 7.5% + 8.5% = 16%
+             top  = 7.5% + (280/300)*85% = 7.5% + 79.3% = 86.8%
+             w    = (120/400)*85% ≈ 25.5%   h = (16/300)*85% ≈ 4.5%
+           Scaled 1.15x from center adds ~1% each side.
+      ═══ */}
       {interactive && (
-        <motion.div
-          className="absolute bottom-2 left-2 flex items-center gap-1 z-10"
-          initial={{ opacity: 0, y: 6 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.3, delay: 0.2 }}
+        <div
+          className="absolute z-20 flex items-center"
+          style={{
+            left: '14.5%',
+            top: '85.5%',
+            width: '28%',
+            height: '6%',
+          }}
         >
           <button
-            onClick={() => setTool('pen')}
-            className="flex items-center justify-center w-7 h-7 rounded-[3px] text-[10px] transition-colors duration-150"
-            style={{
-              background: tool === 'pen' ? 'rgba(229,77,46,0.2)' : 'rgba(255,255,255,0.05)',
-              border: `1px solid ${tool === 'pen' ? mk : 'rgba(255,255,255,0.1)'}`,
-              color: tool === 'pen' ? mk : 'rgba(255,255,255,0.4)',
-            }}
+            onClick={(e) => { e.stopPropagation(); setTool('pen'); }}
+            className="h-full cursor-pointer"
+            style={{ background: 'transparent', border: 'none', width: '30%' }}
             title="Pen"
-          >
-            ✎
-          </button>
+            aria-label="Pen tool"
+          />
           <button
-            onClick={() => setTool('eraser')}
-            className="flex items-center justify-center w-7 h-7 rounded-[3px] text-[10px] transition-colors duration-150"
-            style={{
-              background: tool === 'eraser' ? 'rgba(229,77,46,0.2)' : 'rgba(255,255,255,0.05)',
-              border: `1px solid ${tool === 'eraser' ? mk : 'rgba(255,255,255,0.1)'}`,
-              color: tool === 'eraser' ? mk : 'rgba(255,255,255,0.4)',
-            }}
+            onClick={(e) => { e.stopPropagation(); setTool('eraser'); }}
+            className="h-full cursor-pointer"
+            style={{ background: 'transparent', border: 'none', width: '30%' }}
             title="Eraser"
-          >
-            ◻
-          </button>
+            aria-label="Eraser tool"
+          />
           {hasDrawn && (
             <button
-              onClick={clearCanvas}
-              className="flex items-center justify-center h-7 px-2 rounded-[3px] text-[9px] font-body uppercase tracking-wider transition-colors duration-150"
-              style={{
-                background: 'rgba(255,255,255,0.05)',
-                border: '1px solid rgba(255,255,255,0.1)',
-                color: 'rgba(255,255,255,0.4)',
-              }}
+              onClick={(e) => { e.stopPropagation(); clearCanvas(); }}
+              className="h-full cursor-pointer"
+              style={{ background: 'transparent', border: 'none', width: '40%' }}
               title="Clear all"
-            >
-              Clear
-            </button>
+              aria-label="Clear drawing"
+            />
           )}
-        </motion.div>
+        </div>
       )}
-
-      <InteractionHint type="draw" visible={interactive && !hasDrawn} />
     </Container>
   );
 }
