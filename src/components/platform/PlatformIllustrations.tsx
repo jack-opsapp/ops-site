@@ -1174,25 +1174,18 @@ export function PhotoMarkupIllustration() {
           filter="url(#pmGlow)"
         />
 
-        {/* ═══ Phase 3 — Arrow from label up to circle + arrowhead ═══ */}
+        {/* ═══ Phase 3 — Curve from circle down to label right side ═══ */}
         <motion.path
-          d={`M${LX + 39},${LY - 14} Q${dc[0] - 35},${LY - 5} ${dc[0]},${dc[1] + 17}`}
-          stroke={mk} strokeWidth="2" strokeLinecap="round"
+          d={`M${dc[0]},${dc[1]+18} C${dc[0]-30},${dc[1]+55} ${LX+65},${LY-15} ${LX+80},${LY+2}`}
+          stroke={mk} strokeWidth="2" strokeLinecap="round" fill="none"
           animate={{ pathLength: p >= 3 ? 1 : 0, opacity: p >= 3 ? 0.85 : 0 }}
           transition={{ pathLength: { duration: 0.5, ease: drawEase }, opacity: { duration: 0.2 } }}
           filter="url(#pmGlow)"
         />
-        <motion.path
-          d={`M${dc[0] + 6},${dc[1] + 25} L${dc[0]},${dc[1] + 17} L${dc[0] - 8},${dc[1] + 23}`}
-          stroke={mk} strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"
-          animate={{ opacity: p >= 3 ? 0.85 : 0 }}
-          transition={{ duration: 0.2, delay: 0.3 }}
-          filter="url(#pmGlow)"
-        />
 
-        {/* ═══ Phase 4 — REPLACE label ═══ */}
+        {/* ═══ Phase 4 — REPLACE label (at end of curve) ═══ */}
         <motion.g
-          animate={{ opacity: p >= 4 ? 1 : 0, x: p >= 4 ? 0 : 8 }}
+          animate={{ opacity: p >= 4 ? 1 : 0, y: p >= 4 ? 0 : 8 }}
           transition={spring}
         >
           <rect x={LX - 2} y={LY - 12} width="82" height="28" rx="4" fill="rgba(0,0,0,0.45)" />
@@ -1204,22 +1197,22 @@ export function PhotoMarkupIllustration() {
           </text>
         </motion.g>
 
-        {/* ═══ Phase 5 — Measurement line (pushed below circle) ═══ */}
+        {/* ═══ Phase 5 — Measurement line (directly below front edge via y-offset) ═══ */}
         <motion.g animate={{ opacity: p >= 5 ? 1 : 0 }} transition={{ duration: 0.3 }}>
           <motion.path
-            d={`M${pt(DX,-15)} L${pt(W,-15)}`}
+            d={`M${pt(DX,0,-20)} L${pt(W,0,-20)}`}
             stroke={mk} strokeWidth="1.5"
             animate={{ pathLength: p >= 5 ? 1 : 0 }}
             transition={{ pathLength: { duration: 0.5, ease: drawEase } }}
             filter="url(#pmGlow)"
           />
-          {/* Long leader lines clearing the annotation circle */}
-          <path d={`M${pt(DX,-4)} L${pt(DX,-22)}`} stroke={mk} strokeWidth="1.5" />
-          <motion.path d={`M${pt(W,-4)} L${pt(W,-22)}`} stroke={mk} strokeWidth="1.5"
+          {/* Leader lines dropping from front edge down past dimension */}
+          <path d={`M${pt(DX,0,2)} L${pt(DX,0,-25)}`} stroke={mk} strokeWidth="1" />
+          <motion.path d={`M${pt(W,0,2)} L${pt(W,0,-25)}`} stroke={mk} strokeWidth="1"
             animate={{ opacity: p >= 5 ? 1 : 0 }} transition={{ duration: 0.2, delay: 0.4 }} />
           <motion.text
-            x={iso((DX + W) / 2, -15)[0]}
-            y={iso((DX + W) / 2, -15)[1] - 5}
+            x={iso((DX + W) / 2, 0, -20)[0]}
+            y={iso((DX + W) / 2, 0, -20)[1] - 5}
             textAnchor="middle" fontSize="9"
             fontFamily="var(--font-kosugi)" fill={mk}
             animate={{ opacity: p >= 5 ? 0.8 : 0 }}
