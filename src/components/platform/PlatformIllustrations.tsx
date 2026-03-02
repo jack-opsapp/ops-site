@@ -777,20 +777,61 @@ export function JobBoardIllustration() {
  * ───────────────────────────────────────────────────────── */
 
 export function PipelineIllustration() {
-  const { ref, phase: p, replay } = useIllustration(8, 400);
+  const { ref, phase: p, replay, interactive } = useIllustration(8, 400);
+  const [hoveredIdx, setHoveredIdx] = useState<number | null>(null);
 
   const stages = [
-    { label: 'LEADS', width: 180, count: '24', value: '$480K', lost: '', color: 'rgba(255,255,255,0.2)', stroke: 'rgba(255,255,255,0.15)' },
-    { label: 'QUALIFIED', width: 145, count: '18', value: '$360K', lost: '-$120K', color: 'rgba(89,119,148,0.35)', stroke: ACCENT_STROKE },
-    { label: 'PROPOSAL', width: 110, count: '12', value: '$240K', lost: '-$120K', color: 'rgba(89,119,148,0.55)', stroke: ACCENT },
-    { label: 'NEGOTIATE', width: 75, count: '6', value: '$120K', lost: '-$120K', color: 'rgba(229,160,46,0.35)', stroke: 'rgba(229,160,46,0.6)' },
-    { label: 'WON', width: 55, count: '4', value: '$96K', lost: '-$24K', color: 'rgba(46,160,67,0.35)', stroke: 'rgba(46,160,67,0.6)' },
+    { label: 'LEADS', width: 180, count: '24', value: '$480K', numValue: 480, lost: '', color: 'rgba(255,255,255,0.2)', stroke: 'rgba(255,255,255,0.15)' },
+    { label: 'QUALIFIED', width: 145, count: '18', value: '$360K', numValue: 360, lost: '-$120K', color: 'rgba(89,119,148,0.35)', stroke: ACCENT_STROKE },
+    { label: 'PROPOSAL', width: 110, count: '12', value: '$240K', numValue: 240, lost: '-$120K', color: 'rgba(89,119,148,0.55)', stroke: ACCENT },
+    { label: 'NEGOTIATE', width: 75, count: '6', value: '$120K', numValue: 120, lost: '-$120K', color: 'rgba(229,160,46,0.35)', stroke: 'rgba(229,160,46,0.6)' },
+    { label: 'WON', width: 55, count: '4', value: '$96K', numValue: 96, lost: '-$24K', color: 'rgba(46,160,67,0.35)', stroke: 'rgba(46,160,67,0.6)' },
   ];
 
   const barX = 125;
   const startY = 30;
   const rowH = 44;
   const barH = 22;
+  const maxWidth = 180;
+
+  /** When hovering stage i, stages i..end expand to stage i's width */
+  function getInteractiveWidth(i: number): number {
+    if (hoveredIdx === null || !interactive) return stages[i].width;
+    if (i >= hoveredIdx) return stages[hoveredIdx].width;
+    return stages[i].width;
+  }
+
+  /** Scale value proportionally to width expansion */
+  function getInteractiveValue(i: number): string {
+    if (hoveredIdx === null || !interactive) return stages[i].value;
+    const hoveredWidth = getInteractiveWidth(i);
+    const baseWidth = stages[i].width;
+    if (hoveredWidth === baseWidth) return stages[i].value;
+    const scaled = Math.round(stages[i].numValue * hoveredWidth / baseWidth);
+    return `$${scaled}K`;
+  }
+
+  /** Total won value when hovering */
+  function getWonValue(): string {
+    if (hoveredIdx === null || !interactive) return '$96K';
+    const wonIdx = stages.length - 1;
+    const hoveredWidth = getInteractiveWidth(wonIdx);
+    const baseWidth = stages[wonIdx].width;
+    const scaled = Math.round(stages[wonIdx].numValue * hoveredWidth / baseWidth);
+    return `$${scaled}K`;
+  }
+
+  /** Total left on table when hovering */
+  function getLeftOnTable(): string {
+    if (hoveredIdx === null || !interactive) return '$384K';
+    const wonScaled = Math.round(stages[stages.length - 1].numValue * getInteractiveWidth(stages.length - 1) / stages[stages.length - 1].width);
+    const leftover = 480 - wonScaled;
+    if (leftover <= 0) return '$0';
+    return `$${leftover}K`;
+  }
+
+  const isHovering = hoveredIdx !== null && interactive;
+  const springWidth = { type: 'spring' as const, stiffness: 300, damping: 20 };
 
   return (
     <Container innerRef={ref} onHover={replay}>
@@ -815,25 +856,41 @@ export function PipelineIllustration() {
         {stages.map((_, i) => (
           <motion.rect
             key={`bg-${i}`}
-            x={barX} y={startY + i * rowH} width={180} height={barH} rx="3"
+            x={barX} y={startY + i * rowH} width={maxWidth} height={barH} rx="3"
             stroke="rgba(255,255,255,0.05)" strokeWidth="1" fill="rgba(255,255,255,0.02)"
             animate={{ opacity: p >= 1 ? 1 : 0 }}
             transition={{ duration: 0.3, delay: i * 0.05 }}
           />
         ))}
 
-        {/* Bar fills — stagger in one by one */}
-        {stages.map((stage, i) => (
-          <motion.rect
-            key={`fill-${i}`}
-            x={barX} y={startY + i * rowH} width={stage.width} height={barH} rx="3"
-            fill={stage.color} stroke={stage.stroke} strokeWidth="1"
-            style={{ transformOrigin: `${barX}px ${startY + i * rowH + barH / 2}px` }}
-            animate={{ scaleX: p >= 2 + i ? 1 : 0, opacity: p >= 2 + i ? 1 : 0 }}
-            transition={{ duration: 0.6, ease: drawEase }}
-            filter={i === 4 && p >= 6 ? 'url(#accentGlow)' : undefined}
-          />
-        ))}
+        {/* Bar fills — stagger in one by one, expand on hover */}
+        {stages.map((stage, i) => {
+          const w = getInteractiveWidth(i);
+          return (
+            <motion.rect
+              key={`fill-${i}`}
+              x={barX} y={startY + i * rowH} height={barH} rx="3"
+              fill={stage.color} stroke={stage.stroke} strokeWidth="1"
+              style={{
+                transformOrigin: `${barX}px ${startY + i * rowH + barH / 2}px`,
+                cursor: interactive ? 'pointer' : 'default',
+              }}
+              animate={{
+                scaleX: p >= 2 + i ? 1 : 0,
+                opacity: p >= 2 + i ? 1 : 0,
+                width: w,
+              }}
+              transition={{
+                scaleX: { duration: 0.6, ease: drawEase },
+                opacity: { duration: 0.6, ease: drawEase },
+                width: springWidth,
+              }}
+              filter={i === 4 && p >= 6 ? 'url(#accentGlow)' : undefined}
+              onMouseEnter={interactive ? () => setHoveredIdx(i) : undefined}
+              onMouseLeave={interactive ? () => setHoveredIdx(null) : undefined}
+            />
+          );
+        })}
 
         {/* Drop-off ghost bars — value lost at each stage */}
         {stages.slice(1).map((stage, i) => {
@@ -844,51 +901,64 @@ export function PipelineIllustration() {
               x={barX + stage.width} y={startY + (i + 1) * rowH}
               width={prevWidth - stage.width} height={barH} rx="3"
               fill="rgba(229,77,46,0.06)" stroke="rgba(229,77,46,0.1)" strokeWidth="0.5"
-              animate={{ opacity: p >= 7 ? 1 : 0 }}
-              transition={{ duration: 0.4, delay: (i + 1) * 0.06 }}
+              animate={{ opacity: p >= 7 && !isHovering ? 1 : 0 }}
+              transition={{ duration: 0.3, delay: isHovering ? 0 : (i + 1) * 0.06 }}
             />
           );
         })}
 
         {/* Analytics — count + value + lost labels */}
-        {stages.map((stage, i) => (
-          <motion.g
-            key={`analytics-${i}`}
-            animate={{ opacity: p >= 7 ? 1 : 0, x: p >= 7 ? 0 : 8 }}
-            transition={{ ...spring, delay: i * 0.05 }}
-          >
-            <text
-              x={barX + stage.width + 10} y={startY + i * rowH + 10}
-              fontSize="9" fontFamily="var(--font-mohave)" fontWeight="bold"
-              fill="rgba(255,255,255,0.4)"
+        {stages.map((stage, i) => {
+          const displayWidth = getInteractiveWidth(i);
+          const displayValue = getInteractiveValue(i);
+          return (
+            <motion.g
+              key={`analytics-${i}`}
+              animate={{ opacity: p >= 7 ? 1 : 0, x: p >= 7 ? 0 : 8 }}
+              transition={{ ...spring, delay: i * 0.05 }}
             >
-              {stage.count}
-            </text>
-            <text
-              x={barX + stage.width + 10} y={startY + i * rowH + 20}
-              fontSize="8" fontFamily="var(--font-kosugi)"
-              fill="rgba(255,255,255,0.2)"
-            >
-              {stage.value}
-            </text>
-            {stage.lost && (
-              <text
-                x={barX + stage.width + 46} y={startY + i * rowH + 20}
-                fontSize="7" fontFamily="var(--font-kosugi)"
-                fill="rgba(229,77,46,0.5)"
+              <motion.text
+                x={barX + displayWidth + 10} y={startY + i * rowH + 10}
+                fontSize="9" fontFamily="var(--font-mohave)" fontWeight="bold"
+                fill="rgba(255,255,255,0.4)"
+                animate={{ x: barX + displayWidth + 10 }}
+                transition={springWidth}
               >
-                {stage.lost}
-              </text>
-            )}
-          </motion.g>
-        ))}
+                {stage.count}
+              </motion.text>
+              <motion.text
+                x={barX + displayWidth + 10} y={startY + i * rowH + 20}
+                fontSize="8" fontFamily="var(--font-kosugi)"
+                fill="rgba(255,255,255,0.2)"
+                animate={{ x: barX + displayWidth + 10 }}
+                transition={springWidth}
+              >
+                {displayValue}
+              </motion.text>
+              {stage.lost && (
+                <motion.text
+                  x={barX + displayWidth + 46} y={startY + i * rowH + 20}
+                  fontSize="7" fontFamily="var(--font-kosugi)"
+                  fill="rgba(229,77,46,0.5)"
+                  animate={{
+                    opacity: isHovering ? 0 : 1,
+                    x: barX + displayWidth + 46,
+                  }}
+                  transition={{ opacity: { duration: 0.2 }, x: springWidth }}
+                >
+                  {stage.lost}
+                </motion.text>
+              )}
+            </motion.g>
+          );
+        })}
 
         {/* Conversion summary at bottom */}
         <motion.g
           animate={{ opacity: p >= 7 ? 1 : 0 }}
           transition={{ duration: 0.4 }}
         >
-          <path d={`M${barX} ${startY + 5 * rowH + 5} L${barX + 180} ${startY + 5 * rowH + 5}`} stroke="rgba(255,255,255,0.06)" strokeWidth="1" />
+          <path d={`M${barX} ${startY + 5 * rowH + 5} L${barX + maxWidth} ${startY + 5 * rowH + 5}`} stroke="rgba(255,255,255,0.06)" strokeWidth="1" />
           <text
             x={barX} y={startY + 5 * rowH + 22}
             fontSize="9" fontFamily="var(--font-kosugi)"
@@ -901,7 +971,7 @@ export function PipelineIllustration() {
             fontSize="11" fontFamily="var(--font-mohave)" fontWeight="bold"
             fill="rgba(46,160,67,0.7)"
           >
-            $96K
+            {getWonValue()}
           </text>
           <text
             x={barX + 80} y={startY + 5 * rowH + 22}
@@ -910,15 +980,19 @@ export function PipelineIllustration() {
           >
             LEFT ON TABLE
           </text>
-          <text
+          <motion.text
             x={barX + 165} y={startY + 5 * rowH + 22}
             fontSize="11" fontFamily="var(--font-mohave)" fontWeight="bold"
-            fill="rgba(229,77,46,0.6)"
+            animate={{
+              fill: isHovering ? 'rgba(46,160,67,0.7)' : 'rgba(229,77,46,0.6)',
+            }}
+            transition={{ duration: 0.3 }}
           >
-            $384K
-          </text>
+            {getLeftOnTable()}
+          </motion.text>
         </motion.g>
       </svg>
+      <InteractionHint type="hover" visible={interactive} />
     </Container>
   );
 }
@@ -1075,8 +1149,84 @@ export function InventoryIllustration() {
  * ───────────────────────────────────────────────────────── */
 
 export function PhotoMarkupIllustration() {
-  const { ref, phase: p, replay } = useIllustration(6, 420);
+  const { ref, phase: p, replay, interactive } = useIllustration(6, 420);
   const mk = '#E54D2E';
+
+  /* ── Canvas drawing state ── */
+  const canvasRef = useRef<HTMLCanvasElement>(null);
+  const isDrawing = useRef(false);
+  const lastPoint = useRef<{ x: number; y: number } | null>(null);
+  const [tool, setTool] = useState<'pen' | 'eraser'>('pen');
+  const [hasDrawn, setHasDrawn] = useState(false);
+
+  /* ── Canvas coordinate helper ── */
+  function getCanvasPoint(e: React.MouseEvent | React.TouchEvent): { x: number; y: number } | null {
+    const canvas = canvasRef.current;
+    if (!canvas) return null;
+    const rect = canvas.getBoundingClientRect();
+    const clientX = 'touches' in e ? e.touches[0]?.clientX ?? 0 : e.clientX;
+    const clientY = 'touches' in e ? e.touches[0]?.clientY ?? 0 : e.clientY;
+    return {
+      x: (clientX - rect.left) * (400 / rect.width),
+      y: (clientY - rect.top) * (300 / rect.height),
+    };
+  }
+
+  /* ── Drawing handlers ── */
+  function startDraw(e: React.MouseEvent | React.TouchEvent): void {
+    if ('touches' in e) e.preventDefault();
+    const point = getCanvasPoint(e);
+    if (!point) return;
+    isDrawing.current = true;
+    lastPoint.current = point;
+    if (!hasDrawn) setHasDrawn(true);
+  }
+
+  function draw(e: React.MouseEvent | React.TouchEvent): void {
+    if ('touches' in e) e.preventDefault();
+    if (!isDrawing.current) return;
+    const point = getCanvasPoint(e);
+    const prev = lastPoint.current;
+    if (!point || !prev) return;
+    const ctx = canvasRef.current?.getContext('2d');
+    if (!ctx) return;
+
+    ctx.beginPath();
+    ctx.moveTo(prev.x, prev.y);
+    ctx.lineTo(point.x, point.y);
+    ctx.lineCap = 'round';
+    ctx.lineJoin = 'round';
+
+    if (tool === 'pen') {
+      ctx.globalCompositeOperation = 'source-over';
+      ctx.strokeStyle = mk;
+      ctx.lineWidth = 3;
+      ctx.shadowColor = mk;
+      ctx.shadowBlur = 6;
+    } else {
+      ctx.globalCompositeOperation = 'destination-out';
+      ctx.strokeStyle = 'rgba(0,0,0,1)';
+      ctx.lineWidth = 20;
+      ctx.shadowColor = 'transparent';
+      ctx.shadowBlur = 0;
+    }
+
+    ctx.stroke();
+    ctx.shadowBlur = 0;
+    lastPoint.current = point;
+  }
+
+  function stopDraw(): void {
+    isDrawing.current = false;
+    lastPoint.current = null;
+  }
+
+  function clearCanvas(): void {
+    const ctx = canvasRef.current?.getContext('2d');
+    if (!ctx) return;
+    ctx.clearRect(0, 0, 400, 300);
+    setHasDrawn(false);
+  }
 
   /* ── Isometric projection ──
    * x → screen-right + up   z → screen-left + up   y → screen-up */
@@ -1110,7 +1260,7 @@ export function PhotoMarkupIllustration() {
   const LX = 135, LY = 255;
 
   return (
-    <Container innerRef={ref} onHover={replay}>
+    <Container innerRef={ref} onHover={interactive ? undefined : replay}>
       <svg viewBox="0 0 400 300" className="w-[85%] h-[85%]" fill="none">
         <defs>
           <filter id="pmGlow" x="-50%" y="-50%" width="200%" height="200%">
@@ -1297,6 +1447,76 @@ export function PhotoMarkupIllustration() {
           <path d="M100 285 L103.5 288 L107 285" stroke="rgba(255,255,255,0.15)" strokeWidth="1" />
         </motion.g>
       </svg>
+
+      {/* ═══ Freehand drawing canvas overlay ═══ */}
+      {interactive && (
+        <canvas
+          ref={canvasRef}
+          width={400}
+          height={300}
+          className="absolute inset-0 w-full h-full cursor-crosshair"
+          style={{ touchAction: 'none' }}
+          onMouseDown={startDraw}
+          onMouseMove={draw}
+          onMouseUp={stopDraw}
+          onMouseLeave={stopDraw}
+          onTouchStart={startDraw}
+          onTouchMove={draw}
+          onTouchEnd={stopDraw}
+          onTouchCancel={stopDraw}
+        />
+      )}
+
+      {/* ═══ Drawing toolbar ═══ */}
+      {interactive && (
+        <motion.div
+          className="absolute bottom-2 left-2 flex items-center gap-1 z-10"
+          initial={{ opacity: 0, y: 6 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.3, delay: 0.2 }}
+        >
+          <button
+            onClick={() => setTool('pen')}
+            className="flex items-center justify-center w-7 h-7 rounded-[3px] text-[10px] transition-colors duration-150"
+            style={{
+              background: tool === 'pen' ? 'rgba(229,77,46,0.2)' : 'rgba(255,255,255,0.05)',
+              border: `1px solid ${tool === 'pen' ? mk : 'rgba(255,255,255,0.1)'}`,
+              color: tool === 'pen' ? mk : 'rgba(255,255,255,0.4)',
+            }}
+            title="Pen"
+          >
+            ✎
+          </button>
+          <button
+            onClick={() => setTool('eraser')}
+            className="flex items-center justify-center w-7 h-7 rounded-[3px] text-[10px] transition-colors duration-150"
+            style={{
+              background: tool === 'eraser' ? 'rgba(229,77,46,0.2)' : 'rgba(255,255,255,0.05)',
+              border: `1px solid ${tool === 'eraser' ? mk : 'rgba(255,255,255,0.1)'}`,
+              color: tool === 'eraser' ? mk : 'rgba(255,255,255,0.4)',
+            }}
+            title="Eraser"
+          >
+            ◻
+          </button>
+          {hasDrawn && (
+            <button
+              onClick={clearCanvas}
+              className="flex items-center justify-center h-7 px-2 rounded-[3px] text-[9px] font-body uppercase tracking-wider transition-colors duration-150"
+              style={{
+                background: 'rgba(255,255,255,0.05)',
+                border: '1px solid rgba(255,255,255,0.1)',
+                color: 'rgba(255,255,255,0.4)',
+              }}
+              title="Clear all"
+            >
+              Clear
+            </button>
+          )}
+        </motion.div>
+      )}
+
+      <InteractionHint type="draw" visible={interactive && !hasDrawn} />
     </Container>
   );
 }
