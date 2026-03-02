@@ -741,11 +741,11 @@ export function PipelineIllustration() {
   const { ref, phase: p, replay } = useIllustration(8, 400);
 
   const stages = [
-    { label: 'LEADS', width: 180, count: '24', value: '$480K', color: 'rgba(255,255,255,0.2)', stroke: 'rgba(255,255,255,0.15)' },
-    { label: 'QUALIFIED', width: 145, count: '18', value: '$360K', color: 'rgba(89,119,148,0.35)', stroke: ACCENT_STROKE },
-    { label: 'PROPOSAL', width: 110, count: '12', value: '$240K', color: 'rgba(89,119,148,0.55)', stroke: ACCENT },
-    { label: 'NEGOTIATE', width: 75, count: '6', value: '$120K', color: 'rgba(229,160,46,0.35)', stroke: 'rgba(229,160,46,0.6)' },
-    { label: 'WON', width: 55, count: '4', value: '$96K', color: 'rgba(46,160,67,0.35)', stroke: 'rgba(46,160,67,0.6)' },
+    { label: 'LEADS', width: 180, count: '24', value: '$480K', lost: '', color: 'rgba(255,255,255,0.2)', stroke: 'rgba(255,255,255,0.15)' },
+    { label: 'QUALIFIED', width: 145, count: '18', value: '$360K', lost: '-$120K', color: 'rgba(89,119,148,0.35)', stroke: ACCENT_STROKE },
+    { label: 'PROPOSAL', width: 110, count: '12', value: '$240K', lost: '-$120K', color: 'rgba(89,119,148,0.55)', stroke: ACCENT },
+    { label: 'NEGOTIATE', width: 75, count: '6', value: '$120K', lost: '-$120K', color: 'rgba(229,160,46,0.35)', stroke: 'rgba(229,160,46,0.6)' },
+    { label: 'WON', width: 55, count: '4', value: '$96K', lost: '-$24K', color: 'rgba(46,160,67,0.35)', stroke: 'rgba(46,160,67,0.6)' },
   ];
 
   const barX = 125;
@@ -796,7 +796,22 @@ export function PipelineIllustration() {
           />
         ))}
 
-        {/* Analytics — count + value labels */}
+        {/* Drop-off ghost bars — value lost at each stage */}
+        {stages.slice(1).map((stage, i) => {
+          const prevWidth = stages[i].width;
+          return (
+            <motion.rect
+              key={`drop-${i}`}
+              x={barX + stage.width} y={startY + (i + 1) * rowH}
+              width={prevWidth - stage.width} height={barH} rx="3"
+              fill="rgba(229,77,46,0.06)" stroke="rgba(229,77,46,0.1)" strokeWidth="0.5"
+              animate={{ opacity: p >= 7 ? 1 : 0 }}
+              transition={{ duration: 0.4, delay: (i + 1) * 0.06 }}
+            />
+          );
+        })}
+
+        {/* Analytics — count + value + lost labels */}
         {stages.map((stage, i) => (
           <motion.g
             key={`analytics-${i}`}
@@ -817,6 +832,15 @@ export function PipelineIllustration() {
             >
               {stage.value}
             </text>
+            {stage.lost && (
+              <text
+                x={barX + stage.width + 46} y={startY + i * rowH + 20}
+                fontSize="7" fontFamily="var(--font-kosugi)"
+                fill="rgba(229,77,46,0.5)"
+              >
+                {stage.lost}
+              </text>
+            )}
           </motion.g>
         ))}
 
@@ -831,28 +855,28 @@ export function PipelineIllustration() {
             fontSize="9" fontFamily="var(--font-kosugi)"
             fill="rgba(255,255,255,0.25)"
           >
-            WIN RATE
+            WON
           </text>
           <text
-            x={barX + 60} y={startY + 5 * rowH + 22}
+            x={barX + 30} y={startY + 5 * rowH + 22}
             fontSize="11" fontFamily="var(--font-mohave)" fontWeight="bold"
             fill="rgba(46,160,67,0.7)"
           >
-            17%
+            $96K
           </text>
           <text
-            x={barX + 110} y={startY + 5 * rowH + 22}
+            x={barX + 80} y={startY + 5 * rowH + 22}
             fontSize="9" fontFamily="var(--font-kosugi)"
             fill="rgba(255,255,255,0.25)"
           >
-            TOTAL
+            LEFT ON TABLE
           </text>
           <text
-            x={barX + 145} y={startY + 5 * rowH + 22}
+            x={barX + 165} y={startY + 5 * rowH + 22}
             fontSize="11" fontFamily="var(--font-mohave)" fontWeight="bold"
-            fill={ACCENT}
+            fill="rgba(229,77,46,0.6)"
           >
-            $1.3M
+            $384K
           </text>
         </motion.g>
       </svg>
