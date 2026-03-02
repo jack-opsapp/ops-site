@@ -374,27 +374,27 @@ function AppsIllustration({ isActive, size }: { isActive: boolean; size: number 
 
   const toolSpring = { type: 'spring' as const, stiffness: 120, damping: 14 };
 
-  // Positions: center cluster vs spread vs drift
+  // Positions: evenly-spaced 2x2 grid vs spread vs drift
   const toolPositions = {
     calendar: {
-      center: { x: 80, y: 70 },
-      spread: { x: 30, y: 24 },
-      drift: { x: 10, y: 8 },
+      center: { x: 40, y: 40 },
+      spread: { x: 10, y: 8 },
+      drift: { x: -5, y: -8 },
     },
     camera: {
-      center: { x: 100, y: 70 },
-      spread: { x: 140, y: 24 },
-      drift: { x: 160, y: 8 },
+      center: { x: 130, y: 40 },
+      spread: { x: 155, y: 8 },
+      drift: { x: 170, y: -8 },
     },
     clock: {
-      center: { x: 80, y: 100 },
-      spread: { x: 30, y: 150 },
-      drift: { x: 10, y: 168 },
+      center: { x: 40, y: 130 },
+      spread: { x: 10, y: 155 },
+      drift: { x: -5, y: 170 },
     },
     chat: {
-      center: { x: 100, y: 100 },
-      spread: { x: 150, y: 150 },
-      drift: { x: 168, y: 168 },
+      center: { x: 130, y: 130 },
+      spread: { x: 155, y: 155 },
+      drift: { x: 170, y: 170 },
     },
   };
 
