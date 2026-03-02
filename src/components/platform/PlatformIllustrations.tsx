@@ -1014,164 +1014,241 @@ export function InventoryIllustration() {
 }
 
 /* ─────────────────────────────────────────────────────────
- * 9. PHOTO MARKUP — Deck Documentation
+ * 9. PHOTO MARKUP — Isometric Deck Corner
  *
- * Bird's-eye deck with boards, railing, a busted end,
- * and red "REPLACE" annotation markup.
+ * True isometric 3D projection of a deck corner with:
+ *  - Board planks with alternating fills for depth
+ *  - Front + right fascia showing deck thickness
+ *  - Railing with posts, rails, balusters on two edges
+ *  - Damaged/missing boards at front-right corner
+ *  - Red markup annotations (circle, arrow, REPLACE label)
  * ───────────────────────────────────────────────────────── */
 
 export function PhotoMarkupIllustration() {
-  const { ref, phase: p, replay } = useIllustration(8, 400);
+  const { ref, phase: p, replay } = useIllustration(6, 420);
+  const mk = '#E54D2E';
 
-  const markupColor = '#E54D2E';
+  /* ── Isometric projection ──
+   * x → screen-right + up   z → screen-left + up   y → screen-up */
+  const OX = 200, OY = 232;
+  const iso = (x: number, z: number, y: number = 0): [number, number] => [
+    OX + x - z,
+    OY - x * 0.5 - z * 0.5 - y,
+  ];
+  const pt = (x: number, z: number, y: number = 0) => {
+    const [sx, sy] = iso(x, z, y);
+    return `${sx.toFixed(1)},${sy.toFixed(1)}`;
+  };
+
+  /* ── Deck dimensions ── */
+  const W = 110, D = 82, TH = 7, RH = 32;
+
+  /* ── Boards: 7 planks running along x-axis ── */
+  const BC = 7;
+  const BW = D / BC;
+  const be = Array.from({ length: BC + 1 }, (_, i) => +(i * BW).toFixed(2));
+
+  /* ── Damage zone: first 2 boards, right end broken ── */
+  const DX = 72, DB = 2, DZ = be[DB];
+
+  /* ── Railing post positions ── */
+  const fp = [0, 36, 73, W];
+  const rp = [0, 27, 55, D];
+
+  /* ── Annotation screen coords ── */
+  const dc = iso((DX + W) / 2, DZ / 2);
+  const LX = 52, LY = 166;
 
   return (
     <Container innerRef={ref} onHover={replay}>
       <svg viewBox="0 0 400 300" className="w-[85%] h-[85%]" fill="none">
         <defs>
-          <filter id="markupGlow" x="-50%" y="-50%" width="200%" height="200%">
+          <filter id="pmGlow" x="-50%" y="-50%" width="200%" height="200%">
             <feGaussianBlur in="SourceGraphic" stdDeviation="3" result="blur" />
-            <feMerge>
-              <feMergeNode in="blur" />
-              <feMergeNode in="SourceGraphic" />
-            </feMerge>
+            <feMerge><feMergeNode in="blur" /><feMergeNode in="SourceGraphic" /></feMerge>
           </filter>
         </defs>
 
-        {/* Photo frame */}
-        <motion.rect
-          x="30" y="15" width="340" height="250" rx="4"
-          stroke="rgba(255,255,255,0.15)" strokeWidth="1.5"
-          animate={{ pathLength: p >= 0 ? 1 : 0, opacity: p >= 0 ? 1 : 0.3 }}
-          transition={{ pathLength: { duration: 0.7, ease: drawEase }, opacity: { duration: 0.3 } }}
-        />
-
-        {/* Deck structure — fades in */}
-        <motion.g animate={{ opacity: p >= 1 ? 1 : 0 }} transition={{ duration: 0.5 }}>
-          {/* Deck surface — angled for 3D feel */}
-          <path d="M60 80 L350 60 L350 230 L60 240 Z" fill="rgba(255,255,255,0.03)" stroke="rgba(255,255,255,0.1)" strokeWidth="1" />
-
-          {/* Deck boards — horizontal parallel lines */}
-          {[0, 1, 2, 3, 4, 5, 6, 7].map((i) => {
-            const y1 = 92 + i * 20;
-            const y2 = 72 + i * 20;
-            // Boards go full width except damaged area (last 2 boards at right end)
-            const endX = i >= 5 ? 280 : 350;
+        {/* ═══ Phase 0 — Deck structure ═══ */}
+        <motion.g animate={{ opacity: p >= 0 ? 1 : 0 }} transition={{ duration: 0.6 }}>
+          {/* Ground shadow */}
+          <path
+            d={`M${pt(6,-4,-TH-3)} L${pt(W+4,-4,-TH-3)} L${pt(W+4,D+3,-TH-3)} L${pt(6,D+3,-TH-3)} Z`}
+            fill="rgba(0,0,0,0.12)"
+          />
+          {/* Front fascia (z=0 face) */}
+          <path
+            d={`M${pt(0,0)} L${pt(W,0)} L${pt(W,0,-TH)} L${pt(0,0,-TH)} Z`}
+            fill="rgba(255,255,255,0.045)" stroke="rgba(255,255,255,0.12)" strokeWidth="1"
+          />
+          {/* Right fascia (x=W face) */}
+          <path
+            d={`M${pt(W,0)} L${pt(W,D)} L${pt(W,D,-TH)} L${pt(W,0,-TH)} Z`}
+            fill="rgba(255,255,255,0.065)" stroke="rgba(255,255,255,0.12)" strokeWidth="1"
+          />
+          {/* Damage void */}
+          <path
+            d={`M${pt(DX,0)} L${pt(W,0)} L${pt(W,DZ)} L${pt(DX,DZ)} Z`}
+            fill="rgba(0,0,0,0.35)"
+          />
+          {/* Joists visible through hole */}
+          {[86, 100].map((x, i) => (
+            <path key={`j${i}`} d={`M${pt(x,0.5,-3)} L${pt(x,DZ-0.5,-3)}`}
+              stroke="rgba(255,255,255,0.06)" strokeWidth="2.5" />
+          ))}
+          {/* Board planks */}
+          {be.slice(0, -1).map((z1, i) => {
+            const z2 = be[i + 1];
+            const endX = i < DB ? DX : W;
             return (
-              <path
-                key={`board-${i}`}
-                d={`M60 ${y1} L${endX} ${y2 + (endX === 350 ? 0 : (350 - endX) * -0.069)}`}
-                stroke="rgba(255,255,255,0.08)"
-                strokeWidth="1"
+              <path key={`bd${i}`}
+                d={`M${pt(0,z1)} L${pt(endX,z1)} L${pt(endX,z2)} L${pt(0,z2)} Z`}
+                fill={i % 2 === 0 ? 'rgba(255,255,255,0.03)' : 'rgba(255,255,255,0.065)'}
               />
             );
           })}
-
-          {/* Railing posts along top edge */}
-          {[0, 1, 2, 3, 4, 5, 6].map((i) => {
-            const x = 80 + i * 40;
-            const yTop = 60 + (x - 60) * -0.069;
+          {/* Board gap lines */}
+          {be.slice(1, -1).map((z, i) => (
+            <path key={`g${i}`}
+              d={`M${pt(0,z)} L${pt(i < DB ? DX : W, z)}`}
+              stroke="rgba(255,255,255,0.1)" strokeWidth="0.8"
+            />
+          ))}
+          {/* Surface outline */}
+          <path
+            d={`M${pt(0,0)} L${pt(W,0)} L${pt(W,D)} L${pt(0,D)} Z`}
+            stroke="rgba(255,255,255,0.16)" strokeWidth="1.2"
+          />
+          {/* Jagged broken board edges */}
+          {be.slice(0, DB).map((z1, i) => {
+            const z2 = be[i + 1];
+            const a = z1 + BW * 0.15, b = z1 + BW * 0.35;
+            const c = z1 + BW * 0.55, d = z1 + BW * 0.75;
             return (
-              <g key={`post-${i}`}>
-                <rect x={x - 3} y={yTop - 22} width="6" height="22" rx="1" stroke="rgba(255,255,255,0.12)" strokeWidth="1" fill="rgba(255,255,255,0.04)" />
+              <path key={`bk${i}`}
+                d={`M${pt(DX,z1+0.5)} L${pt(DX+5,a)} L${pt(DX-3,b)} L${pt(DX+6,c)} L${pt(DX-2,d)} L${pt(DX+3,z2-0.5)}`}
+                stroke="rgba(255,255,255,0.2)" strokeWidth="1.5" strokeLinecap="round"
+              />
+            );
+          })}
+        </motion.g>
+
+        {/* ═══ Phase 1 — Railing ═══ */}
+        <motion.g animate={{ opacity: p >= 1 ? 1 : 0, y: p >= 1 ? 0 : 8 }} transition={spring}>
+          {/* Far edge posts (z=D) */}
+          {fp.map((x, i) => {
+            const [bx, by] = iso(x, D);
+            const [, ty] = iso(x, D, RH);
+            return (
+              <g key={`fp${i}`}>
+                <line x1={bx} y1={by} x2={bx} y2={ty}
+                  stroke="rgba(255,255,255,0.22)" strokeWidth="2.5" strokeLinecap="round" />
+                <rect x={bx-3} y={ty-2} width="6" height="3" rx="0.5"
+                  fill="rgba(255,255,255,0.06)" stroke="rgba(255,255,255,0.12)" strokeWidth="0.5" />
               </g>
             );
           })}
-
-          {/* Top rail connecting posts */}
-          <path d="M77 38 L317 18" stroke="rgba(255,255,255,0.12)" strokeWidth="1.5" />
-
-          {/* Stairs at bottom-center */}
-          <rect x="160" y="240" width="80" height="15" rx="1" stroke="rgba(255,255,255,0.08)" strokeWidth="1" fill="rgba(255,255,255,0.02)" />
-          <rect x="150" y="255" width="100" height="12" rx="1" stroke="rgba(255,255,255,0.06)" strokeWidth="1" fill="rgba(255,255,255,0.01)" />
-
-          {/* Damaged area — jagged broken board ends */}
-          <path d="M280 172 L290 168 L285 175 L295 170" stroke="rgba(255,255,255,0.15)" strokeWidth="1.5" strokeLinecap="round" />
-          <path d="M280 192 L288 190 L283 196 L292 191" stroke="rgba(255,255,255,0.15)" strokeWidth="1.5" strokeLinecap="round" />
-          <path d="M280 212 L286 210 L282 216 L290 212" stroke="rgba(255,255,255,0.15)" strokeWidth="1.5" strokeLinecap="round" />
-          {/* Gap / missing boards indication */}
-          <path d="M295 165 L340 161" stroke="rgba(255,255,255,0.04)" strokeWidth="1" strokeDasharray="4 6" />
-          <path d="M295 185 L340 181" stroke="rgba(255,255,255,0.04)" strokeWidth="1" strokeDasharray="4 6" />
-          <path d="M295 205 L340 201" stroke="rgba(255,255,255,0.04)" strokeWidth="1" strokeDasharray="4 6" />
+          <path d={`M${pt(0,D,RH)} L${pt(W,D,RH)}`} stroke="rgba(255,255,255,0.2)" strokeWidth="1.5" />
+          <path d={`M${pt(0,D,RH*0.32)} L${pt(W,D,RH*0.32)}`} stroke="rgba(255,255,255,0.1)" strokeWidth="1" />
+          {[10, 22, 48, 60, 85, 98].map((x, i) => (
+            <path key={`fb${i}`}
+              d={`M${pt(x,D,RH*0.27)} L${pt(x,D,RH*0.93)}`}
+              stroke="rgba(255,255,255,0.07)" strokeWidth="1" />
+          ))}
+          {/* Right edge posts (x=W) */}
+          {rp.map((z, i) => {
+            const [bx, by] = iso(W, z);
+            const [, ty] = iso(W, z, RH);
+            return (
+              <g key={`rp${i}`}>
+                <line x1={bx} y1={by} x2={bx} y2={ty}
+                  stroke="rgba(255,255,255,0.22)" strokeWidth="2.5" strokeLinecap="round" />
+                <rect x={bx-3} y={ty-2} width="6" height="3" rx="0.5"
+                  fill="rgba(255,255,255,0.06)" stroke="rgba(255,255,255,0.12)" strokeWidth="0.5" />
+              </g>
+            );
+          })}
+          <path d={`M${pt(W,0,RH)} L${pt(W,D,RH)}`} stroke="rgba(255,255,255,0.2)" strokeWidth="1.5" />
+          <path d={`M${pt(W,0,RH*0.32)} L${pt(W,D,RH*0.32)}`} stroke="rgba(255,255,255,0.1)" strokeWidth="1" />
+          {[9, 18, 37, 46, 65, 74].map((z, i) => (
+            <path key={`rb${i}`}
+              d={`M${pt(W,z,RH*0.27)} L${pt(W,z,RH*0.93)}`}
+              stroke="rgba(255,255,255,0.07)" strokeWidth="1" />
+          ))}
         </motion.g>
 
-        {/* STAR MOMENT: Red circle annotation around damaged area */}
-        <motion.circle
-          cx="310" cy="190" r="42"
-          stroke={markupColor} strokeWidth="2.5"
-          animate={{ pathLength: p >= 2 ? 1 : 0, opacity: p >= 2 ? 0.8 : 0 }}
+        {/* ═══ Phase 2 — Red circle around damage ═══ */}
+        <motion.ellipse
+          cx={dc[0]} cy={dc[1]} rx="36" ry="18"
+          stroke={mk} strokeWidth="2.5"
+          transform={`rotate(-18, ${dc[0]}, ${dc[1]})`}
+          animate={{ pathLength: p >= 2 ? 1 : 0, opacity: p >= 2 ? 0.85 : 0 }}
           transition={{ pathLength: { duration: 0.6, ease: drawEase }, opacity: { duration: 0.2 } }}
-          filter="url(#markupGlow)"
+          filter="url(#pmGlow)"
         />
 
-        {/* Arrow from damaged area to label */}
+        {/* ═══ Phase 3 — Arrow + arrowhead ═══ */}
         <motion.path
-          d="M268 185 C230 180 190 150 155 140"
-          stroke={markupColor} strokeWidth="2" strokeLinecap="round"
-          animate={{ pathLength: p >= 3 ? 1 : 0, opacity: p >= 3 ? 0.8 : 0 }}
+          d={`M${dc[0] - 30},${dc[1] + 4} Q${LX + 55},${LY + 32} ${LX + 78},${LY + 4}`}
+          stroke={mk} strokeWidth="2" strokeLinecap="round"
+          animate={{ pathLength: p >= 3 ? 1 : 0, opacity: p >= 3 ? 0.85 : 0 }}
           transition={{ pathLength: { duration: 0.5, ease: drawEase }, opacity: { duration: 0.2 } }}
-          filter="url(#markupGlow)"
+          filter="url(#pmGlow)"
         />
         <motion.path
-          d="M160 145 L154 139 L148 145"
-          stroke={markupColor} strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"
-          animate={{ opacity: p >= 3 ? 0.8 : 0 }}
+          d={`M${LX + 84},${LY - 2} L${LX + 78},${LY + 4} L${LX + 84},${LY + 10}`}
+          stroke={mk} strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"
+          animate={{ opacity: p >= 3 ? 0.85 : 0 }}
           transition={{ duration: 0.2, delay: 0.3 }}
-          filter="url(#markupGlow)"
+          filter="url(#pmGlow)"
         />
 
-        {/* "REPLACE" label */}
+        {/* ═══ Phase 4 — REPLACE label ═══ */}
         <motion.g
           animate={{ opacity: p >= 4 ? 1 : 0, x: p >= 4 ? 0 : 8 }}
           transition={spring}
         >
-          <rect x="80" y="118" width="80" height="24" rx="3" fill="rgba(229,77,46,0.15)" stroke={markupColor} strokeWidth="1.5" />
-          <text x="120" y="134" textAnchor="middle" fontSize="11" fontFamily="var(--font-mohave)" fontWeight="bold" fill={markupColor}>
+          <rect x={LX - 2} y={LY - 12} width="82" height="28" rx="4" fill="rgba(0,0,0,0.45)" />
+          <rect x={LX} y={LY - 10} width="78" height="24" rx="3"
+            fill="rgba(229,77,46,0.15)" stroke={mk} strokeWidth="1.5" />
+          <text x={LX + 39} y={LY + 6} textAnchor="middle" fontSize="11"
+            fontFamily="var(--font-mohave)" fontWeight="bold" fill={mk}>
             REPLACE
           </text>
         </motion.g>
 
-        {/* Measurement line across damaged section */}
+        {/* ═══ Phase 5 — Measurement line ═══ */}
         <motion.g animate={{ opacity: p >= 5 ? 1 : 0 }} transition={{ duration: 0.3 }}>
           <motion.path
-            d="M275 228 L345 224"
-            stroke={markupColor} strokeWidth="1.5"
+            d={`M${pt(DX,-6)} L${pt(W,-6)}`}
+            stroke={mk} strokeWidth="1.5"
             animate={{ pathLength: p >= 5 ? 1 : 0 }}
             transition={{ pathLength: { duration: 0.5, ease: drawEase } }}
-            filter="url(#markupGlow)"
+            filter="url(#pmGlow)"
           />
-          <path d="M275 224 L275 232" stroke={markupColor} strokeWidth="1.5" />
-          <motion.path d="M345 220 L345 228" stroke={markupColor} strokeWidth="1.5"
-            animate={{ opacity: p >= 5 ? 1 : 0 }} transition={{ duration: 0.3, delay: 0.4 }}
-          />
+          <path d={`M${pt(DX,-3)} L${pt(DX,-9)}`} stroke={mk} strokeWidth="1.5" />
+          <motion.path d={`M${pt(W,-3)} L${pt(W,-9)}`} stroke={mk} strokeWidth="1.5"
+            animate={{ opacity: p >= 5 ? 1 : 0 }} transition={{ duration: 0.2, delay: 0.4 }} />
+          <motion.text
+            x={iso((DX + W) / 2, -6)[0]}
+            y={iso((DX + W) / 2, -6)[1] - 5}
+            textAnchor="middle" fontSize="9"
+            fontFamily="var(--font-kosugi)" fill={mk}
+            animate={{ opacity: p >= 5 ? 0.8 : 0 }}
+            transition={{ duration: 0.3, delay: 0.3 }}
+          >
+            6&apos; 4&quot;
+          </motion.text>
         </motion.g>
 
-        {/* Dimension text */}
-        <motion.text
-          x="310" y="220" textAnchor="middle" fontSize="9" fontFamily="var(--font-kosugi)"
-          fill={markupColor}
-          animate={{ opacity: p >= 6 ? 0.8 : 0 }}
-          transition={{ duration: 0.3 }}
-        >
-          6&apos; 4&quot;
-        </motion.text>
-
-        {/* Second small annotation — cracked post */}
-        <motion.circle
-          cx="320" cy="30" r="18"
-          stroke={markupColor} strokeWidth="2"
-          animate={{ pathLength: p >= 7 ? 1 : 0, opacity: p >= 7 ? 0.7 : 0 }}
-          transition={{ pathLength: { duration: 0.5, ease: drawEase }, opacity: { duration: 0.2 } }}
-          filter="url(#markupGlow)"
-        />
-
-        {/* Toolbar at bottom */}
-        <motion.g animate={{ opacity: p >= 1 ? 0.4 : 0 }} transition={{ duration: 0.5, delay: 0.3 }}>
-          <rect x="140" y="270" width="120" height="20" rx="10" stroke="rgba(255,255,255,0.1)" strokeWidth="1" fill="rgba(255,255,255,0.03)" />
-          <circle cx="165" cy="280" r="4" stroke="rgba(255,255,255,0.15)" strokeWidth="1" fill="none" />
-          <rect x="182" y="276" width="8" height="8" rx="1" stroke="rgba(255,255,255,0.15)" strokeWidth="1" fill="none" />
-          <path d="M205 276 L210 284" stroke="rgba(255,255,255,0.15)" strokeWidth="1" />
-          <path d="M225 276 L230 280 L235 276" stroke="rgba(255,255,255,0.15)" strokeWidth="1" />
+        {/* Toolbar */}
+        <motion.g animate={{ opacity: p >= 0 ? 0.4 : 0 }} transition={{ duration: 0.5, delay: 0.3 }}>
+          <rect x="140" y="274" width="120" height="18" rx="9"
+            stroke="rgba(255,255,255,0.1)" strokeWidth="1" fill="rgba(255,255,255,0.03)" />
+          <circle cx="163" cy="283" r="3.5" stroke="rgba(255,255,255,0.15)" strokeWidth="1" fill="none" />
+          <rect x="178" y="279.5" width="7" height="7" rx="1" stroke="rgba(255,255,255,0.15)" strokeWidth="1" fill="none" />
+          <path d="M200 279.5 L204 286.5" stroke="rgba(255,255,255,0.15)" strokeWidth="1" />
+          <path d="M218 280 L222 283.5 L226 280" stroke="rgba(255,255,255,0.15)" strokeWidth="1" />
         </motion.g>
       </svg>
     </Container>
