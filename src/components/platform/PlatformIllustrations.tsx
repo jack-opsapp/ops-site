@@ -222,47 +222,91 @@ export function ProjectManagementIllustration() {
           />
         ))}
 
-        {/* Task checkboxes */}
-        {[0, 1].map((i) => (
-          <motion.g key={`task-${i}`}>
-            <motion.rect
-              x="50" y={195 + i * 30} width="14" height="14" rx="2"
-              stroke="rgba(255,255,255,0.2)" strokeWidth="1"
-              animate={{ opacity: p >= 4 ? 1 : 0, scale: p >= 4 ? 1 : 0.5 }}
-              transition={{ ...spring, delay: i * 0.1 }}
-            />
-            <motion.path
-              d={`M75 ${202 + i * 30} L${200 - i * 40} ${202 + i * 30}`}
-              stroke="rgba(255,255,255,0.15)" strokeWidth="1"
-              animate={{ opacity: p >= 4 ? 1 : 0, x: p >= 4 ? 0 : 20 }}
-              transition={{ ...spring, delay: i * 0.1 }}
-            />
-          </motion.g>
-        ))}
-
-        {/* Checkmark */}
-        <motion.path
-          d="M53 202 L56 206 L61 198"
-          stroke={ACCENT} strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"
-          animate={{ pathLength: p >= 5 ? 1 : 0, opacity: p >= 5 ? 1 : 0 }}
-          transition={{ pathLength: { duration: 0.3, ease: drawEase }, opacity: { duration: 0.15 } }}
-          filter={p >= 5 ? 'url(#accentGlow)' : undefined}
-        />
+        {/* Task rows — SVG version (hidden when interactive, replaced by Reorder) */}
+        {!interactive && [0, 1, 2, 3].map((i) => {
+          const ty = 182 + i * 22;
+          const task = PM_TASKS[i];
+          return (
+            <motion.g key={`task-${i}`}>
+              {/* Checkbox */}
+              <motion.rect
+                x="50" y={ty} width="12" height="12" rx="2"
+                stroke={task.done ? ACCENT_STROKE : 'rgba(255,255,255,0.15)'} strokeWidth="1"
+                fill={task.done ? ACCENT_FILL : 'none'}
+                animate={{ opacity: p >= 4 ? 1 : 0, scale: p >= 4 ? 1 : 0.5 }}
+                transition={{ ...spring, delay: i * 0.08 }}
+              />
+              {/* Checkmark for done items */}
+              {task.done && (
+                <motion.path
+                  d={`M53 ${ty + 4} L55.5 ${ty + 7.5} L59 ${ty + 3}`}
+                  stroke={ACCENT} strokeWidth="1.2" strokeLinecap="round" strokeLinejoin="round" fill="none"
+                  animate={{ pathLength: p >= 5 ? 1 : 0, opacity: p >= 5 ? 1 : 0 }}
+                  transition={{ pathLength: { duration: 0.3, ease: drawEase }, opacity: { duration: 0.15 } }}
+                  filter={p >= 5 ? 'url(#accentGlow)' : undefined}
+                />
+              )}
+              {/* Task label */}
+              <motion.text
+                x="70" y={ty + 9}
+                fontSize="8" fontFamily="var(--font-kosugi)"
+                fill={task.done ? 'rgba(255,255,255,0.25)' : 'rgba(255,255,255,0.35)'}
+                textDecoration={task.done ? 'line-through' : 'none'}
+                animate={{ opacity: p >= 4 ? 1 : 0, x: p >= 4 ? 0 : 15 }}
+                transition={{ ...spring, delay: i * 0.08 }}
+              >
+                {task.label}
+              </motion.text>
+              {/* Tag */}
+              <motion.text
+                x="340" y={ty + 9}
+                textAnchor="end" fontSize="6" fontFamily="var(--font-kosugi)"
+                fill="rgba(255,255,255,0.12)"
+                animate={{ opacity: p >= 4 ? 1 : 0 }}
+                transition={{ duration: 0.2, delay: i * 0.08 + 0.1 }}
+              >
+                {task.tag}
+              </motion.text>
+              {/* Subtle divider line below */}
+              {i < 3 && (
+                <motion.path
+                  d={`M50 ${ty + 18} L350 ${ty + 18}`}
+                  stroke="rgba(255,255,255,0.04)" strokeWidth="0.5"
+                  animate={{ opacity: p >= 4 ? 1 : 0 }}
+                  transition={{ duration: 0.2, delay: i * 0.05 }}
+                />
+              )}
+            </motion.g>
+          );
+        })}
 
         {/* Progress bar */}
         <motion.rect
-          x="50" y="258" width="300" height="10" rx="5"
-          stroke="rgba(255,255,255,0.1)" strokeWidth="1" fill="rgba(255,255,255,0.02)"
+          x="50" y="272" width="300" height="6" rx="3"
+          stroke="rgba(255,255,255,0.08)" strokeWidth="0.5" fill="rgba(255,255,255,0.02)"
           animate={{ opacity: p >= 6 ? 1 : 0 }}
           transition={{ duration: 0.3 }}
         />
         <motion.rect
-          x="50" y="258" width="200" height="10" rx="5" fill={ACCENT}
-          animate={{ scaleX: p >= 6 ? 1 : 0, opacity: p >= 6 ? 0.6 : 0 }}
-          style={{ transformOrigin: '50px 263px' }}
+          x="50" y="272" height="6" rx="3" fill={ACCENT}
+          animate={{
+            width: p >= 6 ? 75 : 0,
+            opacity: p >= 6 ? 0.5 : 0,
+          }}
+          initial={{ width: 0 }}
           transition={{ duration: 0.8, ease: drawEase }}
           filter={p >= 6 ? 'url(#accentGlow)' : undefined}
         />
+        {/* Progress label */}
+        <motion.text
+          x="355" y="278"
+          textAnchor="end" fontSize="7" fontFamily="var(--font-kosugi)"
+          fill="rgba(255,255,255,0.2)"
+          animate={{ opacity: p >= 6 ? 1 : 0 }}
+          transition={{ duration: 0.3, delay: 0.4 }}
+        >
+          25%
+        </motion.text>
 
         {/* Status badge */}
         <motion.circle
@@ -272,41 +316,93 @@ export function ProjectManagementIllustration() {
           transition={springBouncy}
           filter={p >= 7 ? 'url(#accentGlow)' : undefined}
         />
+
+        {/* Interactive: SVG task rows for reordering */}
+        {interactive && taskOrder.map((idx, pos) => {
+          const ty = 182 + pos * 22;
+          const task = PM_TASKS[idx];
+          return (
+            <motion.g
+              key={`i-task-${idx}`}
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              transition={{ duration: 0.3, delay: pos * 0.05 }}
+            >
+              {/* Checkbox */}
+              <rect
+                x="50" y={ty} width="12" height="12" rx="2"
+                stroke={task.done ? ACCENT_STROKE : 'rgba(255,255,255,0.15)'} strokeWidth="1"
+                fill={task.done ? ACCENT_FILL : 'none'}
+              />
+              {task.done && (
+                <path
+                  d={`M53 ${ty + 4} L55.5 ${ty + 7.5} L59 ${ty + 3}`}
+                  stroke={ACCENT} strokeWidth="1.2" strokeLinecap="round" strokeLinejoin="round" fill="none"
+                  filter="url(#accentGlow)"
+                />
+              )}
+              {/* Task label */}
+              <text
+                x="70" y={ty + 9}
+                fontSize="8" fontFamily="var(--font-kosugi)"
+                fill={task.done ? 'rgba(255,255,255,0.25)' : 'rgba(255,255,255,0.35)'}
+                textDecoration={task.done ? 'line-through' : 'none'}
+              >
+                {task.label}
+              </text>
+              {/* Tag */}
+              <text
+                x="310" y={ty + 9}
+                textAnchor="end" fontSize="6" fontFamily="var(--font-kosugi)"
+                fill="rgba(255,255,255,0.12)"
+              >
+                {task.tag}
+              </text>
+              {/* Drag handle dots */}
+              <g fill="rgba(255,255,255,0.15)">
+                <circle cx="330" cy={ty + 4} r="1" />
+                <circle cx="334" cy={ty + 4} r="1" />
+                <circle cx="330" cy={ty + 8} r="1" />
+                <circle cx="334" cy={ty + 8} r="1" />
+              </g>
+              {/* Divider */}
+              {pos < 3 && (
+                <path d={`M50 ${ty + 18} L350 ${ty + 18}`} stroke="rgba(255,255,255,0.04)" strokeWidth="0.5" />
+              )}
+            </motion.g>
+          );
+        })}
       </svg>
 
+      {/* Interactive: transparent HTML drag targets over each task row */}
       {interactive && (
         <Reorder.Group
           axis="y"
           values={taskOrder}
           onReorder={setTaskOrder}
-          className="absolute z-10 flex flex-col gap-[2px]"
-          style={{ top: '62%', left: '14%', right: '14%', bottom: '18%' }}
+          className="absolute z-10 flex flex-col"
+          style={{
+            top: `${7.5 + (182 / 300) * 85}%`,
+            left: `${7.5 + (50 / 400) * 85}%`,
+            width: `${(300 / 400) * 85}%`,
+            height: `${(88 / 300) * 85}%`,
+          }}
         >
           {taskOrder.map((idx) => (
             <Reorder.Item
               key={idx}
               value={idx}
-              className="flex items-center gap-2 px-3 py-1.5 rounded-sm border cursor-grab active:cursor-grabbing select-none"
-              style={{
-                backgroundColor: 'rgba(255,255,255,0.03)',
-                borderColor: 'rgba(255,255,255,0.08)',
-              }}
+              className="flex-1 cursor-grab active:cursor-grabbing select-none"
+              style={{ backgroundColor: 'rgba(0,0,0,0)' }}
               whileDrag={{
-                scale: 1.03,
-                borderColor: 'rgba(89,119,148,0.4)',
-                boxShadow: '0 8px 24px rgba(0,0,0,0.4)',
+                scale: 1.02,
                 zIndex: 50,
+                backgroundColor: 'rgba(89,119,148,0.08)',
+                borderRadius: '2px',
               }}
               transition={{ type: 'spring', stiffness: 400, damping: 25 }}
             >
-              <div
-                className="w-2.5 h-2.5 rounded-sm border flex items-center justify-center"
-                style={{ borderColor: PM_TASKS[idx].done ? ACCENT : 'rgba(255,255,255,0.2)' }}
-              >
-                {PM_TASKS[idx].done && <div className="w-1.5 h-1.5 rounded-[1px]" style={{ background: ACCENT }} />}
-              </div>
-              <span className="text-[8px] font-body text-white/35 truncate">{PM_TASKS[idx].label}</span>
-              <span className="ml-auto text-[7px] font-body text-white/15 whitespace-nowrap">{PM_TASKS[idx].tag}</span>
+              {/* Empty — visual is rendered in SVG */}
             </Reorder.Item>
           ))}
         </Reorder.Group>
