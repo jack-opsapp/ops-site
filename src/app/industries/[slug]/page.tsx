@@ -79,14 +79,14 @@ export default async function IndustryPage({ params }: PageProps) {
         headline={content.hero.headline}
         subtext={content.hero.subtext}
       />
-      <IndustryPainPoints
-        painPoints={content.painPoints.map((pp, i) => ({
-          ...pp,
-          variant: industry.painPointConfig[i]?.variant ?? 'messages',
-          flowDirection: industry.painPointConfig[i]?.flowDirection ?? 'left-to-right',
+      <IndustryPainPoints painPoints={content.painPoints} />
+      <IndustrySolutions
+        solutions={content.solutions.map((sol, i) => ({
+          ...sol,
+          variant: industry.solutionConfig[i]?.variant ?? 'messages',
+          flowDirection: industry.solutionConfig[i]?.flowDirection ?? 'left-to-right',
         }))}
       />
-      <IndustrySolutions solutions={content.solutions} />
       <IndustryComparison
         competitors={content.comparison.competitors}
         rows={content.comparison.rows}

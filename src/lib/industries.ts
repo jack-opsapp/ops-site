@@ -48,7 +48,7 @@ export interface IndustryContent {
 export interface IndustryData {
   slug: string;
   name: string;
-  painPointConfig: Array<{
+  solutionConfig: Array<{
     variant: WireframeVariant;
     flowDirection: FlowDirection;
   }>;
@@ -98,10 +98,11 @@ export const industries: IndustryData[] = [
   {
     slug: 'landscaping',
     name: 'Landscaping',
-    painPointConfig: [
+    solutionConfig: [
       { variant: 'messages', flowDirection: 'left-to-right' },
       { variant: 'dashboard', flowDirection: 'top-to-bottom' },
       { variant: 'apps', flowDirection: 'right-to-left' },
+      { variant: 'dashboard', flowDirection: 'left-to-right' },
     ],
     content: {
       en: {
@@ -225,10 +226,11 @@ export const industries: IndustryData[] = [
   {
     slug: 'auto-detailing',
     name: 'Auto Detailing',
-    painPointConfig: [
+    solutionConfig: [
       { variant: 'dashboard', flowDirection: 'top-to-bottom' },
       { variant: 'messages', flowDirection: 'right-to-left' },
       { variant: 'apps', flowDirection: 'left-to-right' },
+      { variant: 'messages', flowDirection: 'top-to-bottom' },
     ],
     content: {
       en: {
@@ -352,10 +354,11 @@ export const industries: IndustryData[] = [
   {
     slug: 'railings',
     name: 'Railings',
-    painPointConfig: [
+    solutionConfig: [
       { variant: 'apps', flowDirection: 'right-to-left' },
       { variant: 'messages', flowDirection: 'left-to-right' },
       { variant: 'dashboard', flowDirection: 'top-to-bottom' },
+      { variant: 'apps', flowDirection: 'left-to-right' },
     ],
     content: {
       en: {

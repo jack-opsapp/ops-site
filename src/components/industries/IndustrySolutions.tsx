@@ -1,13 +1,19 @@
-import { SectionLabel, FadeInUp } from '@/components/ui';
+'use client';
 
-interface Solution {
+import { SectionLabel, FadeInUp } from '@/components/ui';
+import IndustrySolutionDevice from './IndustrySolutionDevice';
+import type { WireframeVariant, FlowDirection } from '@/lib/industries';
+
+interface SolutionItem {
   title: string;
   copy: string;
   painPointRef: number;
+  variant: WireframeVariant;
+  flowDirection: FlowDirection;
 }
 
 interface IndustrySolutionsProps {
-  solutions: Solution[];
+  solutions: SolutionItem[];
 }
 
 export default function IndustrySolutions({ solutions }: IndustrySolutionsProps) {
@@ -44,7 +50,10 @@ export default function IndustrySolutions({ solutions }: IndustrySolutionsProps)
                     </p>
                   </div>
                   <div className={direction === 'right' ? 'md:order-first' : ''}>
-                    <div className="w-full max-w-[500px] aspect-[4/3] bg-ops-surface border border-ops-border rounded-[3px]" />
+                    <IndustrySolutionDevice
+                      variant={solution.variant}
+                      flowDirection={solution.flowDirection}
+                    />
                   </div>
                 </div>
               </FadeInUp>
