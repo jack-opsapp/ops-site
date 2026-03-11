@@ -14,7 +14,7 @@ const MAX_TILT = 18;
 /* ─── Static wireframe screen content ─── */
 function ScreenContent({ deviceType }: { deviceType: DeviceType }) {
   return (
-    <div className="absolute inset-0 p-3 flex flex-col gap-2 opacity-25 pointer-events-none">
+    <div className="absolute inset-0 p-3 flex flex-col gap-2 opacity-[0.65] pointer-events-none">
       {/* Top bar */}
       <div className="flex items-center gap-2">
         <div className="w-4 h-4 rounded-[3px] border border-white/20" />

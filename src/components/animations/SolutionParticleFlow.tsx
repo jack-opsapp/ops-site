@@ -300,15 +300,22 @@ export default function SolutionParticleFlow({ flowDirection, isActive, tilt, ma
       const particles = particlesRef.current;
       const currentTilt = tiltRef.current;
 
+      // On activation: only restart dead particles — leave in-flight ones alone
+      // so re-hovering doesn't cause an abrupt reset
       if (active && !wasActive) {
         for (let j = 0; j < particles.length; j++) {
           const pt = particles[j];
-          const slot = j % PARTICLES_PER_LANE;
-          const laneDelay = pt.laneIndex * 0.015;
-          pt.progress = -(slot / PARTICLES_PER_LANE) - laneDelay;
-          pt.alive = true;
+          if (!pt.alive) {
+            const slot = j % PARTICLES_PER_LANE;
+            const laneDelay = pt.laneIndex * 0.015;
+            pt.progress = -(slot / PARTICLES_PER_LANE) - laneDelay;
+            pt.alive = true;
+          }
         }
       }
+
+      // While active, recycle particles that reach the end
+      // While inactive, let them drain naturally (alive ones keep moving)
       wasActiveRef.current = active;
 
       const tiltNormY = currentTilt.rotateY / maxTilt;
