@@ -1,5 +1,6 @@
 import type { MetadataRoute } from 'next';
 import { getAllLiveSlugs } from '@/lib/blog';
+import { getAllIndustrySlugs } from '@/lib/industries';
 
 export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
   const baseUrl = 'https://opsapp.co';
@@ -27,5 +28,14 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
     priority: 0.7,
   }));
 
-  return [...staticPages, ...blogPages];
+  // Industry landing pages
+  const industrySlugs = getAllIndustrySlugs();
+  const industryPages: MetadataRoute.Sitemap = industrySlugs.map((slug) => ({
+    url: `${baseUrl}/industries/${slug}`,
+    lastModified: new Date(),
+    changeFrequency: 'monthly' as const,
+    priority: 0.8,
+  }));
+
+  return [...staticPages, ...blogPages, ...industryPages];
 }
