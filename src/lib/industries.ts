@@ -4,6 +4,7 @@
 
 export type FlowDirection = 'left-to-right' | 'top-to-bottom' | 'right-to-left';
 export type WireframeVariant = 'messages' | 'dashboard' | 'apps';
+export type DeviceType = 'phone' | 'laptop' | 'tablet' | 'desktop';
 
 export interface IndustryContent {
   meta: {
@@ -48,8 +49,11 @@ export interface IndustryContent {
 export interface IndustryData {
   slug: string;
   name: string;
-  solutionConfig: Array<{
+  painPointConfig: Array<{
     variant: WireframeVariant;
+  }>;
+  solutionConfig: Array<{
+    deviceType: DeviceType;
     flowDirection: FlowDirection;
   }>;
   content: {
@@ -98,11 +102,16 @@ export const industries: IndustryData[] = [
   {
     slug: 'landscaping',
     name: 'Landscaping',
+    painPointConfig: [
+      { variant: 'messages' },
+      { variant: 'dashboard' },
+      { variant: 'apps' },
+    ],
     solutionConfig: [
-      { variant: 'messages', flowDirection: 'left-to-right' },
-      { variant: 'dashboard', flowDirection: 'top-to-bottom' },
-      { variant: 'apps', flowDirection: 'right-to-left' },
-      { variant: 'dashboard', flowDirection: 'left-to-right' },
+      { deviceType: 'phone', flowDirection: 'left-to-right' },
+      { deviceType: 'laptop', flowDirection: 'top-to-bottom' },
+      { deviceType: 'tablet', flowDirection: 'right-to-left' },
+      { deviceType: 'desktop', flowDirection: 'left-to-right' },
     ],
     content: {
       en: {
@@ -226,11 +235,16 @@ export const industries: IndustryData[] = [
   {
     slug: 'auto-detailing',
     name: 'Auto Detailing',
+    painPointConfig: [
+      { variant: 'dashboard' },
+      { variant: 'messages' },
+      { variant: 'apps' },
+    ],
     solutionConfig: [
-      { variant: 'dashboard', flowDirection: 'top-to-bottom' },
-      { variant: 'messages', flowDirection: 'right-to-left' },
-      { variant: 'apps', flowDirection: 'left-to-right' },
-      { variant: 'messages', flowDirection: 'top-to-bottom' },
+      { deviceType: 'phone', flowDirection: 'top-to-bottom' },
+      { deviceType: 'laptop', flowDirection: 'right-to-left' },
+      { deviceType: 'tablet', flowDirection: 'left-to-right' },
+      { deviceType: 'desktop', flowDirection: 'top-to-bottom' },
     ],
     content: {
       en: {
@@ -354,11 +368,16 @@ export const industries: IndustryData[] = [
   {
     slug: 'railings',
     name: 'Railings',
+    painPointConfig: [
+      { variant: 'apps' },
+      { variant: 'messages' },
+      { variant: 'dashboard' },
+    ],
     solutionConfig: [
-      { variant: 'apps', flowDirection: 'right-to-left' },
-      { variant: 'messages', flowDirection: 'left-to-right' },
-      { variant: 'dashboard', flowDirection: 'top-to-bottom' },
-      { variant: 'apps', flowDirection: 'left-to-right' },
+      { deviceType: 'phone', flowDirection: 'right-to-left' },
+      { deviceType: 'laptop', flowDirection: 'left-to-right' },
+      { deviceType: 'tablet', flowDirection: 'top-to-bottom' },
+      { deviceType: 'desktop', flowDirection: 'left-to-right' },
     ],
     content: {
       en: {

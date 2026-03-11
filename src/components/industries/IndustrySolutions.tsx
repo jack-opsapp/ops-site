@@ -2,13 +2,13 @@
 
 import { SectionLabel, FadeInUp } from '@/components/ui';
 import IndustrySolutionDevice from './IndustrySolutionDevice';
-import type { WireframeVariant, FlowDirection } from '@/lib/industries';
+import type { DeviceType, FlowDirection } from '@/lib/industries';
 
 interface SolutionItem {
   title: string;
   copy: string;
   painPointRef: number;
-  variant: WireframeVariant;
+  deviceType: DeviceType;
   flowDirection: FlowDirection;
 }
 
@@ -51,7 +51,7 @@ export default function IndustrySolutions({ solutions }: IndustrySolutionsProps)
                   </div>
                   <div className={direction === 'right' ? 'md:order-first' : ''}>
                     <IndustrySolutionDevice
-                      variant={solution.variant}
+                      deviceType={solution.deviceType}
                       flowDirection={solution.flowDirection}
                     />
                   </div>
