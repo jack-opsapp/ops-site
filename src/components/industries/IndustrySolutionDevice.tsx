@@ -1,7 +1,7 @@
 'use client';
 
 import { useRef, useState, useCallback, useEffect } from 'react';
-import CardParticleFlow from '@/components/animations/CardParticleFlow';
+import SolutionParticleFlow from '@/components/animations/SolutionParticleFlow';
 import type { DeviceType, FlowDirection } from '@/lib/industries';
 
 interface IndustrySolutionDeviceProps {
@@ -9,17 +9,17 @@ interface IndustrySolutionDeviceProps {
   flowDirection: FlowDirection;
 }
 
-const MAX_TILT = 6;
+const MAX_TILT = 18;
 
 /* ─── Static wireframe screen content ─── */
 function ScreenContent({ deviceType }: { deviceType: DeviceType }) {
   return (
-    <div className="absolute inset-0 p-3 flex flex-col gap-2 opacity-30">
+    <div className="absolute inset-0 p-3 flex flex-col gap-2 opacity-25 pointer-events-none">
       {/* Top bar */}
       <div className="flex items-center gap-2">
         <div className="w-4 h-4 rounded-[3px] border border-white/20" />
-        <div className="flex-1 h-2 bg-white/10 rounded-full" />
-        <div className="w-6 h-2 bg-white/10 rounded-full" />
+        <div className="flex-1 h-2 border border-white/10 rounded-full" />
+        <div className="w-6 h-2 border border-white/10 rounded-full" />
       </div>
 
       {deviceType === 'phone' && (
@@ -30,8 +30,8 @@ function ScreenContent({ deviceType }: { deviceType: DeviceType }) {
               <div key={j} className="flex items-center gap-2">
                 <div className="w-8 h-8 rounded-[3px] border border-white/10 shrink-0" />
                 <div className="flex-1 flex flex-col gap-1">
-                  <div className="h-1.5 bg-white/8 rounded-full" style={{ width: `${60 + j * 10}%` }} />
-                  <div className="h-1 bg-white/5 rounded-full w-3/4" />
+                  <div className="h-1.5 border border-white/8 rounded-full" style={{ width: `${60 + j * 10}%` }} />
+                  <div className="h-1 border border-white/5 rounded-full w-3/4" />
                 </div>
               </div>
             ))}
@@ -40,7 +40,6 @@ function ScreenContent({ deviceType }: { deviceType: DeviceType }) {
             {[0, 1, 2, 3].map((j) => (
               <div key={j} className="flex-1 h-6 flex flex-col items-center justify-center gap-0.5">
                 <div className="w-3 h-3 rounded-[2px] border border-white/10" />
-                <div className="w-full h-0.5 bg-white/5 rounded-full" />
               </div>
             ))}
           </div>
@@ -53,7 +52,7 @@ function ScreenContent({ deviceType }: { deviceType: DeviceType }) {
           <div className="flex-1 flex gap-2">
             <div className="w-1/4 flex flex-col gap-2">
               {[0, 1, 2, 3, 4].map((j) => (
-                <div key={j} className="h-1.5 bg-white/8 rounded-full" style={{ width: `${70 + j * 5}%` }} />
+                <div key={j} className="h-1.5 border border-white/8 rounded-full" style={{ width: `${70 + j * 5}%` }} />
               ))}
             </div>
             <div className="flex-1 flex flex-col gap-2">
@@ -81,8 +80,8 @@ function ScreenContent({ deviceType }: { deviceType: DeviceType }) {
               <div key={j} className="flex items-center gap-2">
                 <div className="w-6 h-6 rounded-[3px] border border-white/10 shrink-0" />
                 <div className="flex-1 flex flex-col gap-0.5">
-                  <div className="h-1.5 bg-white/8 rounded-full" style={{ width: `${55 + j * 15}%` }} />
-                  <div className="h-1 bg-white/5 rounded-full w-2/3" />
+                  <div className="h-1.5 border border-white/8 rounded-full" style={{ width: `${55 + j * 15}%` }} />
+                  <div className="h-1 border border-white/5 rounded-full w-2/3" />
                 </div>
               </div>
             ))}
@@ -96,21 +95,19 @@ function ScreenContent({ deviceType }: { deviceType: DeviceType }) {
           <div className="flex-1 flex gap-3">
             <div className="w-[18%] flex flex-col gap-1.5">
               {[0, 1, 2, 3, 4, 5].map((j) => (
-                <div key={j} className="h-1 bg-white/8 rounded-full" style={{ width: `${65 + j * 5}%` }} />
+                <div key={j} className="h-1 border border-white/8 rounded-full" style={{ width: `${65 + j * 5}%` }} />
               ))}
             </div>
             <div className="flex-1 flex flex-col gap-2">
               <div className="flex gap-2">
                 {[0, 1, 2, 3].map((j) => (
-                  <div key={j} className="flex-1 aspect-square rounded-[2px] border border-white/8 flex items-center justify-center">
-                    <div className="w-1/2 h-1 bg-white/6 rounded-full" />
-                  </div>
+                  <div key={j} className="flex-1 aspect-square rounded-[2px] border border-white/8" />
                 ))}
               </div>
               <div className="flex-1 rounded-[2px] border border-white/6 flex items-end p-1.5">
                 <div className="flex gap-1 items-end w-full">
                   {[40, 65, 30, 80, 55, 70, 45].map((h, j) => (
-                    <div key={j} className="flex-1 bg-white/6 rounded-t-[1px]" style={{ height: `${h}%` }} />
+                    <div key={j} className="flex-1 border border-white/6 rounded-t-[1px]" style={{ height: `${h}%` }} />
                   ))}
                 </div>
               </div>
@@ -122,25 +119,24 @@ function ScreenContent({ deviceType }: { deviceType: DeviceType }) {
   );
 }
 
-/* ─── Device frames ─── */
+/* ─── Wireframe device frames — no fills, borders only ─── */
 
 function PhoneFrame({ isActive, children }: { isActive: boolean; children: React.ReactNode }) {
   return (
     <div className={`
-      relative overflow-hidden rounded-[24px] border-2 bg-[#111111]
+      relative rounded-[24px] border-2
       aspect-[9/17] w-full max-w-[240px] mx-auto
       transition-colors duration-200
-      ${isActive ? 'border-ops-accent/40' : 'border-ops-border'}
+      ${isActive ? 'border-ops-accent/30' : 'border-white/12'}
     `}>
-      <div className="absolute top-0 inset-x-0 h-6 bg-[#111111] z-20 flex items-center justify-center">
-        <div className="w-16 h-[4px] bg-[#1a1a1a] rounded-full" />
-      </div>
-      <div className="absolute inset-2.5 top-7 bottom-3 rounded-[8px] overflow-hidden bg-ops-background/60 z-10">
+      {/* Notch */}
+      <div className="absolute top-2 left-1/2 -translate-x-1/2 w-16 h-[4px] border border-white/10 rounded-full z-20" />
+      {/* Screen area */}
+      <div className="absolute inset-2.5 top-7 bottom-3 rounded-[8px] overflow-hidden z-10">
         {children}
       </div>
-      <div className="absolute bottom-1 inset-x-0 flex items-center justify-center z-20">
-        <div className="w-20 h-[3px] bg-[#222222] rounded-full" />
-      </div>
+      {/* Home indicator */}
+      <div className="absolute bottom-1.5 left-1/2 -translate-x-1/2 w-20 h-[3px] border border-white/8 rounded-full z-20" />
     </div>
   );
 }
@@ -148,25 +144,27 @@ function PhoneFrame({ isActive, children }: { isActive: boolean; children: React
 function LaptopFrame({ isActive, children }: { isActive: boolean; children: React.ReactNode }) {
   return (
     <div className="w-full max-w-[480px] mx-auto">
+      {/* Screen */}
       <div className={`
-        relative overflow-hidden rounded-t-[8px] border-2 bg-[#111111]
+        relative rounded-t-[8px] border-2
         aspect-[16/10]
         transition-colors duration-200
-        ${isActive ? 'border-ops-accent/40' : 'border-ops-border'}
+        ${isActive ? 'border-ops-accent/30' : 'border-white/12'}
       `}>
-        <div className="absolute top-0 inset-x-0 h-3 bg-[#111111] z-20 flex items-center justify-center">
-          <div className="w-2 h-2 rounded-full border border-[#222]" />
-        </div>
-        <div className="absolute inset-1.5 top-4 bottom-1.5 rounded-[3px] overflow-hidden bg-ops-background/60 z-10">
+        {/* Webcam */}
+        <div className="absolute top-1.5 left-1/2 -translate-x-1/2 w-2 h-2 rounded-full border border-white/10 z-20" />
+        {/* Screen area */}
+        <div className="absolute inset-1.5 top-4 bottom-1.5 rounded-[3px] overflow-hidden z-10">
           {children}
         </div>
       </div>
+      {/* Keyboard */}
       <div className={`
         h-3 rounded-b-[4px] border-x-2 border-b-2
-        bg-[#0a0a0a] transition-colors duration-200
-        ${isActive ? 'border-ops-accent/40' : 'border-ops-border'}
+        transition-colors duration-200
+        ${isActive ? 'border-ops-accent/30' : 'border-white/12'}
       `}>
-        <div className="w-16 h-1 bg-[#151515] rounded-full mx-auto mt-0.5" />
+        <div className="w-16 h-[3px] border border-white/6 rounded-full mx-auto mt-0.5" />
       </div>
     </div>
   );
@@ -175,12 +173,13 @@ function LaptopFrame({ isActive, children }: { isActive: boolean; children: Reac
 function TabletFrame({ isActive, children }: { isActive: boolean; children: React.ReactNode }) {
   return (
     <div className={`
-      relative overflow-hidden rounded-[16px] border-2 bg-[#111111]
+      relative rounded-[16px] border-2
       aspect-[3/4] w-full max-w-[320px] mx-auto
       transition-colors duration-200
-      ${isActive ? 'border-ops-accent/40' : 'border-ops-border'}
+      ${isActive ? 'border-ops-accent/30' : 'border-white/12'}
     `}>
-      <div className="absolute inset-2.5 rounded-[6px] overflow-hidden bg-ops-background/60 z-10">
+      {/* Screen area */}
+      <div className="absolute inset-2.5 rounded-[6px] overflow-hidden z-10">
         {children}
       </div>
     </div>
@@ -190,25 +189,29 @@ function TabletFrame({ isActive, children }: { isActive: boolean; children: Reac
 function DesktopFrame({ isActive, children }: { isActive: boolean; children: React.ReactNode }) {
   return (
     <div className="w-full max-w-[520px] mx-auto">
+      {/* Monitor */}
       <div className={`
-        relative overflow-hidden rounded-[6px] border-2 bg-[#111111]
+        relative rounded-[6px] border-2
         aspect-[16/9]
         transition-colors duration-200
-        ${isActive ? 'border-ops-accent/40' : 'border-ops-border'}
+        ${isActive ? 'border-ops-accent/30' : 'border-white/12'}
       `}>
-        <div className="absolute inset-1.5 rounded-[2px] overflow-hidden bg-ops-background/60 z-10">
+        {/* Screen area */}
+        <div className="absolute inset-1.5 rounded-[2px] overflow-hidden z-10">
           {children}
         </div>
       </div>
+      {/* Stand neck */}
       <div className={`
-        w-10 h-8 mx-auto border-x-2 bg-[#0a0a0a]
+        w-10 h-8 mx-auto border-x-2
         transition-colors duration-200
-        ${isActive ? 'border-ops-accent/40' : 'border-ops-border'}
+        ${isActive ? 'border-ops-accent/30' : 'border-white/12'}
       `} />
+      {/* Stand base */}
       <div className={`
-        w-28 h-1.5 mx-auto rounded-b-full border-x-2 border-b-2 bg-[#0a0a0a]
+        w-28 h-1.5 mx-auto rounded-b-full border-x-2 border-b-2
         transition-colors duration-200
-        ${isActive ? 'border-ops-accent/40' : 'border-ops-border'}
+        ${isActive ? 'border-ops-accent/30' : 'border-white/12'}
       `} />
     </div>
   );
@@ -270,7 +273,7 @@ export default function IndustrySolutionDevice({ deviceType, flowDirection }: In
   }, [isMobile]);
 
   const mobileTilt = isMobile && isActive
-    ? { rotateX: 2, rotateY: -3 }
+    ? { rotateX: 3, rotateY: -4 }
     : { rotateX: 0, rotateY: 0 };
 
   const activeTilt = isMobile ? mobileTilt : tilt;
@@ -285,17 +288,21 @@ export default function IndustrySolutionDevice({ deviceType, flowDirection }: In
       onMouseMove={handleMouseMove}
       onMouseLeave={handleMouseLeave}
     >
-      {/* Particle flow — extends well beyond the device */}
-      <div className="absolute pointer-events-none z-0" style={{ inset: '-100px' }}>
-        <CardParticleFlow flowDirection={flowDirection} isActive={isActive} />
-      </div>
+      {/* Dual-layer particles: back (z-0) and front (z-20), device between at z-10 */}
+      <SolutionParticleFlow
+        flowDirection={flowDirection}
+        isActive={isActive}
+        tilt={activeTilt}
+        maxTilt={MAX_TILT}
+      />
 
-      {/* Device with tilt */}
+      {/* Device with tilt — sits at z-10 between particle layers */}
       <div
-        className="relative z-10"
+        className="relative"
         style={{
+          zIndex: 10,
           transform: `rotateX(${activeTilt.rotateX}deg) rotateY(${activeTilt.rotateY}deg)`,
-          transition: isActive ? 'transform 0.2s ease-out' : 'transform 0.3s ease-out',
+          transition: isActive ? 'transform 0.15s ease-out' : 'transform 0.3s ease-out',
           transformStyle: 'preserve-3d',
         }}
       >

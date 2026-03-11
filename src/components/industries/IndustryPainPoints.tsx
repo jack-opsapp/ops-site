@@ -46,7 +46,7 @@ export default function IndustryPainPoints({ painPoints }: IndustryPainPointsPro
   }, [isMobile]);
 
   return (
-    <section className="py-24 md:py-32 bg-ops-background">
+    <section className="pt-32 pb-24 md:pt-40 md:pb-32 bg-ops-background">
       <div className="max-w-[1400px] mx-auto px-6 md:px-10">
         <FadeInUp>
           <SectionLabel label="THE PROBLEM" />
