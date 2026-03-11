@@ -1,10 +1,17 @@
 // src/app/industries/[slug]/page.tsx
 
 import type { Metadata } from 'next';
+import Script from 'next/script';
 import { notFound } from 'next/navigation';
 import { getLocale } from '@/i18n/server';
 import { getIndustryBySlug, getAllIndustrySlugs, universalFAQ } from '@/lib/industries';
 import type { IndustryContent } from '@/lib/industries';
+import IndustryHero from '@/components/industries/IndustryHero';
+import IndustryPainPoints from '@/components/industries/IndustryPainPoints';
+import IndustrySolutions from '@/components/industries/IndustrySolutions';
+import IndustryComparison from '@/components/industries/IndustryComparison';
+import IndustryFAQ from '@/components/industries/IndustryFAQ';
+import IndustryCTA from '@/components/industries/IndustryCTA';
 
 interface PageProps {
   params: Promise<{ slug: string }>;
@@ -60,14 +67,32 @@ export default async function IndustryPage({ params }: PageProps) {
 
   return (
     <>
-      <script
+      <Script
+        id={`faq-jsonld-${slug}`}
         type="application/ld+json"
-        dangerouslySetInnerHTML={{ __html: JSON.stringify(faqJsonLd) }}
+        strategy="beforeInteractive"
+      >
+        {JSON.stringify(faqJsonLd)}
+      </Script>
+      <IndustryHero
+        sectionLabel={content.hero.sectionLabel}
+        headline={content.hero.headline}
+        subtext={content.hero.subtext}
       />
-      {/* Section components added in subsequent tasks */}
-      <div data-industry={slug}>
-        <p className="text-white p-20">Industry page: {industry.name}</p>
-      </div>
+      <IndustryPainPoints
+        painPoints={content.painPoints.map((pp, i) => ({
+          ...pp,
+          variant: industry.painPointConfig[i]?.variant ?? 'messages',
+          flowDirection: industry.painPointConfig[i]?.flowDirection ?? 'left-to-right',
+        }))}
+      />
+      <IndustrySolutions solutions={content.solutions} />
+      <IndustryComparison
+        competitors={content.comparison.competitors}
+        rows={content.comparison.rows}
+      />
+      <IndustryFAQ universalFaq={uFaq} industryFaq={content.faq} />
+      <IndustryCTA headline={content.cta.headline} subtext={content.cta.subtext} />
     </>
   );
 }
