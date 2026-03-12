@@ -14,6 +14,10 @@ import { getAllLivePosts, getBlogCategories } from '@/lib/blog';
 
 export const metadata: Metadata = {
   title: 'Journal',
+  description: 'Insights, guides, and stories for trades professionals. Crew management, project operations, and building a better business in the field.',
+  alternates: {
+    canonical: 'https://opsapp.co/journal',
+  },
 };
 
 export const revalidate = 300;

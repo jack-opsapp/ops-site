@@ -17,8 +17,11 @@ export async function generateMetadata(): Promise<Metadata> {
       ? 'OPS — Sistema Operativo de Proyectos'
       : 'OPS — Operational Project System',
     description: locale === 'es'
-      ? 'Dirige tu operación. Hecho para los oficios.'
-      : 'Run your operation. Built for the trades.',
+      ? 'Gestión de proyectos, programación de equipos, facturación y más — hecho para contratistas y oficios. Empieza gratis.'
+      : 'Project management, crew scheduling, invoicing, and more — built for contractors and the trades. Start free.',
+    alternates: {
+      canonical: 'https://opsapp.co',
+    },
   };
 }
 

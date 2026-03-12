@@ -5,6 +5,7 @@
  * followed by the post title, category, and metadata on a white surface.
  */
 
+import Image from 'next/image';
 import { SectionLabel } from '@/components/ui';
 import type { BlogPostWithCategory } from '@/lib/blog';
 
@@ -30,10 +31,13 @@ export default function PostHeader({ post }: PostHeaderProps) {
       {/* Hero image or gradient strip */}
       {post.thumbnail_url ? (
         <div className="relative w-full" style={{ height: '50vh' }}>
-          <img
+          <Image
             src={post.thumbnail_url}
             alt={post.title}
-            className="absolute inset-0 w-full h-full object-cover"
+            fill
+            className="object-cover"
+            priority
+            sizes="100vw"
           />
           {/* Heavy gradient: transparent at top -> white at bottom */}
           <div
@@ -79,7 +83,7 @@ export default function PostHeader({ post }: PostHeaderProps) {
           {post.word_count > 0 && (
             <>
               {' '}&middot;{' '}
-              {post.word_count.toLocaleString()} WORDS
+              {Math.ceil(post.word_count / 200)} MIN READ
             </>
           )}
         </p>

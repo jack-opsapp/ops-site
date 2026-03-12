@@ -52,8 +52,12 @@ export async function generateMetadata({
     openGraph: {
       title: post.meta_title || post.title,
       description: post.summary || post.teaser || undefined,
-      images: post.thumbnail_url ? [{ url: post.thumbnail_url }] : undefined,
+      images: post.thumbnail_url
+        ? [{ url: post.thumbnail_url, width: 1200, height: 630, alt: post.title }]
+        : undefined,
       type: 'article',
+      publishedTime: post.published_at || undefined,
+      authors: [post.author || 'OPS Team'],
     },
     alternates: {
       canonical: `https://opsapp.co/journal/${post.slug}`,
@@ -82,10 +86,35 @@ export default async function JournalPostPage({
     '@context': 'https://schema.org',
     '@type': 'Article',
     headline: post.title,
+    description: post.summary || post.teaser || undefined,
     author: { '@type': 'Person', name: post.author || 'OPS Team' },
     datePublished: post.published_at,
-    publisher: { '@type': 'Organization', name: 'OPS' },
+    url: `https://opsapp.co/journal/${post.slug}`,
+    publisher: {
+      '@type': 'Organization',
+      name: 'OPS',
+      url: 'https://opsapp.co',
+      logo: {
+        '@type': 'ImageObject',
+        url: 'https://opsapp.co/images/ops-logo-white.png',
+      },
+    },
     image: post.thumbnail_url,
+    mainEntityOfPage: {
+      '@type': 'WebPage',
+      '@id': `https://opsapp.co/journal/${post.slug}`,
+    },
+    ...(post.word_count > 0 && { wordCount: post.word_count }),
+  };
+
+  const breadcrumbLd = {
+    '@context': 'https://schema.org',
+    '@type': 'BreadcrumbList',
+    itemListElement: [
+      { '@type': 'ListItem', position: 1, name: 'Home', item: 'https://opsapp.co' },
+      { '@type': 'ListItem', position: 2, name: 'Journal', item: 'https://opsapp.co/journal' },
+      { '@type': 'ListItem', position: 3, name: post.title, item: `https://opsapp.co/journal/${post.slug}` },
+    ],
   };
 
   /* Add FAQ schema if FAQs exist */
@@ -111,6 +140,12 @@ export default async function JournalPostPage({
       <script
         type="application/ld+json"
         dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
+      />
+
+      {/* Breadcrumb structured data — values from trusted DB fields only */}
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(breadcrumbLd) }}
       />
 
       {/* FAQ structured data (separate schema) */}

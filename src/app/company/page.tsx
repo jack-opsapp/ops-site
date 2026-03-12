@@ -12,6 +12,9 @@ export async function generateMetadata(): Promise<Metadata> {
     description: locale === 'es'
       ? 'OPS fue fundado por un contratista que escaló un negocio de decks y barandas de $0 a $1.6M — y construyó el software que su equipo realmente usaría.'
       : 'OPS was founded by a contractor who scaled a deck and railing business from $0 to $1.6M — and built the software his crew would actually use.',
+    alternates: {
+      canonical: 'https://opsapp.co/company',
+    },
   };
 }
 

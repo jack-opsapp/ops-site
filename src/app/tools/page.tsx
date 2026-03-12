@@ -22,6 +22,9 @@ export async function generateMetadata(): Promise<Metadata> {
     description: locale === 'es'
       ? 'Herramientas diseñadas para profesionales de los oficios. Evaluación de liderazgo, análisis SEO con IA y calculadora de estimaciones.'
       : 'Purpose-built tools for trades professionals. Leadership assessment, AI SEO analysis, and estimating calculator.',
+    alternates: {
+      canonical: 'https://opsapp.co/tools',
+    },
   };
 }
 

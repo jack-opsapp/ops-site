@@ -13,6 +13,9 @@ export async function generateMetadata(): Promise<Metadata> {
     description: locale === 'es'
       ? 'Obtén ayuda con OPS. Descarga la app, lee las preguntas frecuentes, explora guías, o contacta al equipo directamente.'
       : 'Get help with OPS. Download the app, read the FAQ, explore guides, or reach out to the team directly.',
+    alternates: {
+      canonical: 'https://opsapp.co/resources',
+    },
   };
 }
 

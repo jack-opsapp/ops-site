@@ -19,6 +19,9 @@ export async function generateMetadata(): Promise<Metadata> {
     description: locale === 'es'
       ? 'Empieza gratis. Sube de plan cuando estés listo. Sin tarjeta de crédito, sin compromiso. Todos los planes incluyen todas las funciones.'
       : 'Start free. Upgrade when you\'re ready. No credit card, no commitment. All plans include every feature — you only pay based on crew size.',
+    alternates: {
+      canonical: 'https://opsapp.co/plans',
+    },
   };
 }
 

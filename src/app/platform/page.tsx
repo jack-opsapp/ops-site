@@ -34,6 +34,9 @@ export async function generateMetadata(): Promise<Metadata> {
     description: locale === 'es'
       ? 'Cada herramienta que tu equipo necesita. Gestión de proyectos, programación, facturación, pipeline, inventario y marcado de fotos — hecho para los oficios.'
       : 'Every tool your crew needs. Project management, scheduling, invoicing, pipeline, inventory, and photo markup — built for the trades.',
+    alternates: {
+      canonical: 'https://opsapp.co/platform',
+    },
   };
 }
 
