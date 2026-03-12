@@ -1,6 +1,7 @@
 import type { MetadataRoute } from 'next';
 import { getAllLiveSlugs } from '@/lib/blog';
 import { getAllIndustrySlugs } from '@/lib/industries';
+import { getAllComparisonSlugs } from '@/lib/comparisons';
 
 export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
   const baseUrl = 'https://opsapp.co';
@@ -37,5 +38,14 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
     priority: 0.8,
   }));
 
-  return [...staticPages, ...blogPages, ...industryPages];
+  // Competitor comparison pages
+  const comparisonSlugs = getAllComparisonSlugs();
+  const comparisonPages: MetadataRoute.Sitemap = comparisonSlugs.map((slug) => ({
+    url: `${baseUrl}/compare/${slug}`,
+    lastModified: new Date(),
+    changeFrequency: 'monthly' as const,
+    priority: 0.9,
+  }));
+
+  return [...staticPages, ...blogPages, ...industryPages, ...comparisonPages];
 }
