@@ -3,9 +3,13 @@
  *
  * Uses the service role key to bypass RLS.
  * All functions are intended for use in Server Components and Route Handlers.
+ *
+ * Gracefully returns empty results when Supabase is not configured
+ * (e.g. local builds without env vars), so the sitemap and static
+ * generation don't fail.
  */
 
-import { supabaseAdmin } from './supabase-admin';
+import { getSupabaseAdmin } from './supabase-admin';
 
 /* -------------------------------------------------------------------------- */
 /*  Types (matching Supabase schema)                                          */
@@ -44,6 +48,20 @@ export type BlogPostWithCategory = BlogPost & {
 };
 
 /* -------------------------------------------------------------------------- */
+/*  Helpers                                                                   */
+/* -------------------------------------------------------------------------- */
+
+/** Returns the Supabase client, or null if env vars aren't set. */
+function tryGetClient() {
+  try {
+    return getSupabaseAdmin();
+  } catch {
+    console.warn('[blog] Supabase not configured — returning empty results.');
+    return null;
+  }
+}
+
+/* -------------------------------------------------------------------------- */
 /*  Query helpers                                                             */
 /* -------------------------------------------------------------------------- */
 
@@ -54,7 +72,10 @@ export type BlogPostWithCategory = BlogPost & {
 export async function getLatestPosts(
   limit: number
 ): Promise<BlogPostWithCategory[]> {
-  const { data, error } = await supabaseAdmin
+  const client = tryGetClient();
+  if (!client) return [];
+
+  const { data, error } = await client
     .from('blog_posts')
     .select('*, blog_categories!category_id(name, slug)')
     .eq('is_live', true)
@@ -73,7 +94,10 @@ export async function getLatestPosts(
  * Fetch all published blog posts, ordered by published_at desc.
  */
 export async function getAllLivePosts(): Promise<BlogPostWithCategory[]> {
-  const { data, error } = await supabaseAdmin
+  const client = tryGetClient();
+  if (!client) return [];
+
+  const { data, error } = await client
     .from('blog_posts')
     .select('*, blog_categories!category_id(name, slug)')
     .eq('is_live', true)
@@ -93,8 +117,11 @@ export async function getAllLivePosts(): Promise<BlogPostWithCategory[]> {
 export async function getPostsByCategory(
   categorySlug: string
 ): Promise<BlogPostWithCategory[]> {
+  const client = tryGetClient();
+  if (!client) return [];
+
   // First resolve the category id from slug
-  const { data: category, error: catError } = await supabaseAdmin
+  const { data: category, error: catError } = await client
     .from('blog_categories')
     .select('id')
     .eq('slug', categorySlug)
@@ -105,7 +132,7 @@ export async function getPostsByCategory(
     return [];
   }
 
-  const { data, error } = await supabaseAdmin
+  const { data, error } = await client
     .from('blog_posts')
     .select('*, blog_categories!category_id(name, slug)')
     .eq('is_live', true)
@@ -126,7 +153,10 @@ export async function getPostsByCategory(
 export async function getPostBySlug(
   slug: string
 ): Promise<BlogPostWithCategory | null> {
-  const { data, error } = await supabaseAdmin
+  const client = tryGetClient();
+  if (!client) return null;
+
+  const { data, error } = await client
     .from('blog_posts')
     .select('*, blog_categories!category_id(name, slug)')
     .eq('slug', slug)
@@ -145,7 +175,10 @@ export async function getPostBySlug(
  * Fetch all blog categories, ordered alphabetically by name.
  */
 export async function getBlogCategories(): Promise<BlogCategory[]> {
-  const { data, error } = await supabaseAdmin
+  const client = tryGetClient();
+  if (!client) return [];
+
+  const { data, error } = await client
     .from('blog_categories')
     .select('id, name, slug')
     .order('name', { ascending: true });
@@ -163,7 +196,10 @@ export async function getBlogCategories(): Promise<BlogCategory[]> {
  * Intended for use with Next.js generateStaticParams.
  */
 export async function getAllLiveSlugs(): Promise<{ slug: string }[]> {
-  const { data, error } = await supabaseAdmin
+  const client = tryGetClient();
+  if (!client) return [];
+
+  const { data, error } = await client
     .from('blog_posts')
     .select('slug')
     .eq('is_live', true);

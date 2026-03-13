@@ -11,7 +11,7 @@
  */
 
 import { nanoid } from 'nanoid';
-import { supabaseAdmin } from '../supabase-admin';
+import { getSupabaseAdmin } from '../supabase-admin';
 import type {
   AssessmentVersion,
   DemographicContext,
@@ -67,7 +67,7 @@ export async function startAssessment(
   const seedQuestions = selectSeedChunk(pool, version);
 
   // Insert session row
-  const { data: session, error: sessionError } = await supabaseAdmin
+  const { data: session, error: sessionError } = await getSupabaseAdmin()
     .from('assessment_sessions')
     .insert({
       token,
@@ -117,7 +117,7 @@ export async function startUpgradeAssessment(
   totalChunks: number;
 }> {
   // Fetch the completed quick session
-  const { data: quickSession, error: quickError } = await supabaseAdmin
+  const { data: quickSession, error: quickError } = await getSupabaseAdmin()
     .from('assessment_sessions')
     .select('id, version, status, score_details')
     .eq('token', quickToken)
@@ -163,7 +163,7 @@ export async function startUpgradeAssessment(
     .filter(Boolean) as typeof pool;
 
   // Insert session row
-  const { data: session, error: sessionError } = await supabaseAdmin
+  const { data: session, error: sessionError } = await getSupabaseAdmin()
     .from('assessment_sessions')
     .insert({
       token,
@@ -207,7 +207,7 @@ export async function submitChunkAndGetNext(
   totalChunks: number;
 }> {
   // Validate session
-  const { data: session, error: sessionError } = await supabaseAdmin
+  const { data: session, error: sessionError } = await getSupabaseAdmin()
     .from('assessment_sessions')
     .select('id, version, status, current_chunk, total_chunks, metadata')
     .eq('id', sessionId)
@@ -248,7 +248,7 @@ export async function submitChunkAndGetNext(
     };
   });
 
-  const { error: insertError } = await supabaseAdmin
+  const { error: insertError } = await getSupabaseAdmin()
     .from('assessment_responses')
     .insert(responseRows);
 
@@ -257,7 +257,7 @@ export async function submitChunkAndGetNext(
   }
 
   // Fetch ALL responses for this session to compute running scores
-  const { data: allResponses, error: respError } = await supabaseAdmin
+  const { data: allResponses, error: respError } = await getSupabaseAdmin()
     .from('assessment_responses')
     .select('question_id, answer_value, response_time_ms')
     .eq('session_id', sessionId);
@@ -296,7 +296,7 @@ export async function submitChunkAndGetNext(
 
   if (isLastChunk) {
     // Mark as needing email capture (still in_progress until email submitted)
-    await supabaseAdmin
+    await getSupabaseAdmin()
       .from('assessment_sessions')
       .update({
         scores: simpleScores,
@@ -331,7 +331,7 @@ export async function submitChunkAndGetNext(
     .filter(Boolean) as typeof pool;
 
   // Increment chunk and update session
-  await supabaseAdmin
+  await getSupabaseAdmin()
     .from('assessment_sessions')
     .update({
       current_chunk: currentChunk + 1,
@@ -363,7 +363,7 @@ export async function submitEmailAndGenerateResults(
   email: string,
 ): Promise<{ token: string }> {
   // Fetch session
-  const { data: session, error: sessionError } = await supabaseAdmin
+  const { data: session, error: sessionError } = await getSupabaseAdmin()
     .from('assessment_sessions')
     .select('*')
     .eq('id', sessionId)
@@ -380,7 +380,7 @@ export async function submitEmailAndGenerateResults(
   const emailQuickPrior = emailSessionMeta.quick_score_profile as ScoreProfile | undefined;
 
   // Fetch all responses
-  const { data: allResponses, error: respError } = await supabaseAdmin
+  const { data: allResponses, error: respError } = await getSupabaseAdmin()
     .from('assessment_responses')
     .select('*')
     .eq('session_id', sessionId)
@@ -422,7 +422,7 @@ export async function submitEmailAndGenerateResults(
   );
 
   // Fetch archetype profiles
-  const { data: archetypes, error: archError } = await supabaseAdmin
+  const { data: archetypes, error: archError } = await getSupabaseAdmin()
     .from('archetype_profiles')
     .select('*');
 
@@ -489,7 +489,7 @@ export async function submitEmailAndGenerateResults(
   }
 
   // Update session as completed
-  await supabaseAdmin
+  await getSupabaseAdmin()
     .from('assessment_sessions')
     .update({
       first_name: firstName,
@@ -516,7 +516,7 @@ export async function getResults(
   token: string,
 ): Promise<AssessmentResult | { error: string }> {
   // Fetch session by token
-  const { data: session, error: sessionError } = await supabaseAdmin
+  const { data: session, error: sessionError } = await getSupabaseAdmin()
     .from('assessment_sessions')
     .select('*')
     .eq('token', token)
@@ -532,7 +532,7 @@ export async function getResults(
 
   // Fetch primary and secondary archetypes
   const archetypeIds = [session.archetype, session.secondary_archetype].filter(Boolean);
-  const { data: archetypes, error: archError } = await supabaseAdmin
+  const { data: archetypes, error: archError } = await getSupabaseAdmin()
     .from('archetype_profiles')
     .select('*')
     .in('id', archetypeIds);
@@ -549,7 +549,7 @@ export async function getResults(
   }
 
   // Fetch score norms
-  const { data: norms } = await supabaseAdmin
+  const { data: norms } = await getSupabaseAdmin()
     .from('score_norms')
     .select('dimension, percentile_map')
     .eq('segment', 'all');
@@ -591,7 +591,7 @@ export async function getResults(
     const scoreProfile = session.score_details as ScoreProfile;
 
     // Fetch responses to compute sub-scores deterministically
-    const { data: responses } = await supabaseAdmin
+    const { data: responses } = await getSupabaseAdmin()
       .from('assessment_responses')
       .select('question_id, answer_value')
       .eq('session_id', session.id);
@@ -638,7 +638,7 @@ export async function resumeAssessment(
   totalChunks: number;
 } | null> {
   // Look up session by token
-  const { data: session, error: sessionError } = await supabaseAdmin
+  const { data: session, error: sessionError } = await getSupabaseAdmin()
     .from('assessment_sessions')
     .select('id, token, version, status, current_chunk, total_chunks, metadata')
     .eq('token', token)

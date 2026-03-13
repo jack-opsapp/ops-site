@@ -7,7 +7,7 @@
  */
 
 import { NextResponse } from 'next/server';
-import { supabaseAdmin } from '@/lib/supabase-admin';
+import { getSupabaseAdmin } from '@/lib/supabase-admin';
 
 export async function POST(request: Request) {
   try {
@@ -28,7 +28,7 @@ export async function POST(request: Request) {
     const normalizedEmail = email.toLowerCase().trim();
 
     // Upsert: insert or re-activate existing subscriber
-    const { error } = await supabaseAdmin
+    const { error } = await getSupabaseAdmin()
       .from('newsletter_subscribers')
       .upsert(
         {

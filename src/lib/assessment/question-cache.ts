@@ -5,7 +5,7 @@
  * Fetches from Supabase and caches for 1 hour.
  */
 
-import { supabaseAdmin } from '../supabase-admin';
+import { getSupabaseAdmin } from '../supabase-admin';
 import type { PoolQuestion, AssessmentVersion } from './types';
 
 /* ------------------------------------------------------------------ */
@@ -27,7 +27,7 @@ function isCacheValid(): boolean {
 }
 
 async function loadAllQuestions(): Promise<PoolQuestion[]> {
-  const { data, error } = await supabaseAdmin
+  const { data, error } = await getSupabaseAdmin()
     .from('question_pool')
     .select('*');
 
