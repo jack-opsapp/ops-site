@@ -1319,3 +1319,7 @@ export function getComparisonBySlug(slug: string): ComparisonData | undefined {
 export function getAllComparisonSlugs(): string[] {
   return comparisons.map((c) => c.slug);
 }
+
+export function getAllComparisons(): ComparisonData[] {
+  return comparisons;
+}

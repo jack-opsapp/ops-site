@@ -1563,3 +1563,7 @@ export function getIndustryBySlug(slug: string): IndustryData | undefined {
 export function getAllIndustrySlugs(): string[] {
   return industries.map((i) => i.slug);
 }
+
+export function getAllIndustries(): IndustryData[] {
+  return industries;
+}
