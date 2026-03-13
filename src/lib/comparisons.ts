@@ -117,12 +117,12 @@ export const comparisons: ComparisonData[] = [
         verdict: {
           summary: 'OPS is a free-to-start, mobile-first field service app built for trade crews of any size. Unlike ServiceTitan, it requires no sales call, no implementation period, and no long-term contract. Your crew downloads the app and starts managing jobs the same day.',
           switchReasons: [
-            'Free to start vs. $245\u2013$500/tech/month',
+            'Free 30-day trial, then $90\u2013$190/month vs. $245\u2013$500/tech/month',
             'Set up in minutes vs. 3\u201312 month implementation',
             'No contract vs. 12-month minimum with early termination fees up to $39,000+',
             'Mobile-first with offline mode vs. desktop-first with mobile bolted on',
+            'Built-in turn-by-turn navigation, estimates, invoicing, pipeline/CRM, and client portal \u2014 all included',
             'Published pricing vs. mandatory 60-minute sales call',
-            'Your data is yours vs. 60-day limited access window after cancellation',
           ],
           competitorStrengths: [
             'Powerful dispatch board with drag-and-drop scheduling and route optimization',
@@ -180,7 +180,7 @@ export const comparisons: ComparisonData[] = [
           },
           {
             title: 'Built for the crew, not the corner office.',
-            copy: "OPS is designed from pixel one for the person in the field. 56dp touch targets for gloved hands. Dark theme readable in direct sunlight. Full offline mode for basements, attics, and dead zones. Your tech opens the app, sees today's jobs, taps to navigate, updates status \u2014 done. No training program required because the app was designed to not need one.",
+            copy: "OPS is designed from pixel one for the person in the field. 56dp touch targets for gloved hands. Dark theme readable in direct sunlight. Full offline mode for basements, attics, and dead zones. Built-in turn-by-turn navigation to job sites \u2014 your crew taps an address and drives, no switching apps. Swipe-to-change-status on any job card. Photo annotations so your foreman can mark up site photos with arrows and notes. A 25-phase interactive tutorial means new hires are productive without a single training session.",
             painPointRef: 2,
           },
           {
@@ -219,7 +219,7 @@ export const comparisons: ComparisonData[] = [
           },
           {
             question: 'What is the best ServiceTitan alternative for trade contractors?',
-            answer: "The best alternative depends on your team size and needs. For large operations wanting similar depth with more transparent pricing, Jobber or Housecall Pro are options. For small-to-mid-size crews of 2\u201320 people who need something their field workers will actually use, OPS is purpose-built: free to start, no contracts, mobile-first design with offline capability, and instant setup. The most common complaint about ServiceTitan is that teams pay enterprise prices for a tool their field workers are afraid to use. OPS solves this by making the field experience the product, not an afterthought.",
+            answer: "The best alternative depends on your team size and needs. For large operations wanting similar depth with more transparent pricing, Jobber or Housecall Pro are options. For small-to-mid-size crews of 2\u201320 people who need something their field workers will actually use, OPS is purpose-built: free to start with a 30-day trial, then $90\u2013$190/month flat. No contracts, no per-tech pricing. Mobile-first design with full offline capability, built-in turn-by-turn navigation to job sites, estimates and invoicing, pipeline/CRM, a client portal where customers approve estimates and pay invoices, and photo annotations for marking up job site images. The most common complaint about ServiceTitan is that teams pay enterprise prices for a tool their field workers are afraid to use. OPS solves this by making the field experience the product, not an afterthought.",
           },
         ],
         cta: {
@@ -271,12 +271,12 @@ export const comparisons: ComparisonData[] = [
         verdict: {
           summary: 'OPS is a free-to-start field service app that works offline, syncs in real time, and gives every user the full feature set. Unlike Jobber, there are no per-user surcharges, no feature-gated tiers, and no 12-hour calendar sync delays.',
           switchReasons: [
-            'Free to start with full features vs. $39\u2013$599/mo with aggressive feature gating',
+            'Free 30-day trial, then $90\u2013$190/month flat vs. $39\u2013$599/mo with aggressive feature gating and $29/user add-ons',
             'Full offline mode vs. no offline capability at all',
             'Real-time calendar sync vs. one-way sync every 12 hours',
-            'Built-in double-booking prevention vs. no conflict alerts',
-            'Every user gets full access vs. \u201Climited worker\u201D default permissions',
-            'No per-user surcharges vs. $29/month per additional user',
+            'Built-in turn-by-turn navigation to job sites \u2014 Jobber has no navigation',
+            'Estimates, invoicing, pipeline/CRM, and client portal included \u2014 not gated behind tiers',
+            'Swipe-to-change-status, photo annotations, and 25-phase tutorial \u2014 crews are productive day one',
           ],
           competitorStrengths: [
             'Clean, modern desktop interface with intuitive onboarding for first-time software users',
@@ -329,7 +329,7 @@ export const comparisons: ComparisonData[] = [
           },
           {
             title: 'Built for the crew. Not the corner office.',
-            copy: "OPS is mobile-first, not mobile-also. 56dp touch targets designed for gloved hands. Full offline capability \u2014 access schedules, update job status, log materials, and capture data without a cell signal. Dark theme for outdoor visibility. Your field workers get the full app, not a stripped-down \u2018limited worker\u2019 view where they can see their schedule and nothing else.",
+            copy: "OPS is mobile-first, not mobile-also. 56dp touch targets designed for gloved hands. Full offline capability \u2014 access schedules, update job status, take photos, and capture data without a cell signal. Swipe any job card to change status with haptic feedback. Built-in turn-by-turn navigation to every job site \u2014 no switching to Google Maps. Photo annotations so your crew can mark up site images with arrows and notes. Every field worker gets the full app, not a stripped-down \u2018limited worker\u2019 view.",
             painPointRef: 1,
           },
           {
@@ -339,7 +339,7 @@ export const comparisons: ComparisonData[] = [
           },
           {
             title: 'Download today. Working tomorrow.',
-            copy: 'No 14-day trial with a credit card wall. No tiered onboarding where the useful features are locked behind the expensive plan. No sales call. Download OPS from the App Store, set up your crew, and start scheduling jobs. Built to be intuitive for people who build things for a living \u2014 not people who manage software for a living.',
+            copy: 'No 14-day trial with a credit card wall. No tiered onboarding where the useful features are locked behind the expensive plan. No sales call. Download OPS from the App Store, set up your crew, and start scheduling jobs. A built-in 25-phase interactive tutorial walks new users through every feature \u2014 your crew is productive without a single training session. Or try it in your browser first at try.opsapp.co, no download required.',
             painPointRef: 1,
           },
         ],
@@ -427,10 +427,10 @@ export const comparisons: ComparisonData[] = [
           switchReasons: [
             'Human support for every user vs. AI chatbot gatekeeping with buried phone number',
             'Full offline mode vs. view-only cached jobs',
-            'Free to start vs. $59\u2013$329/mo with $40\u2013$149/mo add-ons on top',
-            'No sales calls after signup vs. 5+ calls per day from different numbers',
-            'Cancel anytime online vs. must call and fight a retention agent',
-            'Android app built natively vs. 3.3/5 Google Play rating',
+            'Free 30-day trial, then $90\u2013$190/month flat vs. $59\u2013$329/mo with $40\u2013$149/mo add-ons on top',
+            'Estimates, invoicing, pipeline/CRM, and client portal included \u2014 no add-on maze',
+            'Built-in turn-by-turn navigation, photo annotations, and swipe-to-change-status',
+            'Cancel anytime vs. must call and fight a retention agent to leave',
           ],
           competitorStrengths: [
             'Intuitive color-coded scheduling interface with drag-and-drop',
@@ -483,12 +483,12 @@ export const comparisons: ComparisonData[] = [
           },
           {
             title: 'One price. Everything included.',
-            copy: "With Housecall Pro, the $59 plan is designed to force an upgrade \u2014 you\u2019ll be at $200+ within 90 days once you add QuickBooks sync, GPS tracking, proposals, and a price book. OPS publishes real pricing with no add-on maze. No $40/month for proposals. No $20/vehicle for GPS. No $149/month for a price book. You get the whole platform. Free to start \u2014 no credit card, no sales call, no demo wall.",
+            copy: "With Housecall Pro, the $59 plan is designed to force an upgrade \u2014 you\u2019ll be at $200+ within 90 days once you add QuickBooks sync, GPS tracking, proposals, and a price book. OPS is $90\u2013$190/month flat with a 30-day free trial. Estimates and invoicing are included. Pipeline/CRM is included. A client portal where your customers approve estimates, answer questions, and pay invoices is included. Turn-by-turn navigation is included. No add-on maze. No $40/month for proposals. No $149/month for a price book.",
             painPointRef: 1,
           },
           {
             title: 'Built for the field. Not the front office.',
-            copy: "Housecall Pro\u2019s mobile app crashes in the field, can\u2019t work offline, and updates break established workflows without warning. OPS was built mobile-first \u2014 56dp touch targets for gloved hands, dark theme readable in direct sunlight, full offline capability, and an Android experience that matches iOS. Edit jobs, log time, take photos \u2014 all without signal. Everything syncs when connectivity returns.",
+            copy: "Housecall Pro\u2019s mobile app crashes in the field, can\u2019t work offline, and updates break established workflows without warning. OPS was built mobile-first \u2014 56dp touch targets for gloved hands, dark theme readable in direct sunlight, full offline capability. Swipe any job card to change status with haptic confirmation. Built-in turn-by-turn navigation gets your crew to the job site without switching apps. Photo annotations let your foreman mark up site photos with arrows and notes. Everything works offline and syncs when connectivity returns.",
             painPointRef: 2,
           },
           {
@@ -503,7 +503,7 @@ export const comparisons: ComparisonData[] = [
             { feature: 'Starting price', ops: 'Free to start', competitor: '$59/mo (annual) / $79/mo (monthly)', secondComp: '$39/mo (1 user)' },
             { feature: 'Offline capability', ops: 'Full \u2014 edit, create, log', competitor: 'View-only (cached jobs)', secondComp: 'No offline mode' },
             { feature: 'Customer support', ops: 'Human support, every user', competitor: 'AI chatbot first, buried phone number', secondComp: 'Phone support, all tiers' },
-            { feature: 'Android app quality', ops: 'Native, built from scratch', competitor: '3.3/5 Google Play', secondComp: '4.2/5 Google Play' },
+            { feature: 'Built-in job site navigation', ops: 'Turn-by-turn with GPS smoothing', competitor: false, secondComp: false },
             { feature: 'QuickBooks integration', ops: 'Included', competitor: 'Essentials+ ($149/mo)', secondComp: 'Connect+ ($119/mo)' },
             { feature: 'Sales calls after signup', ops: 'Never', competitor: 'Expect 5+ per day', secondComp: 'No' },
           ],
@@ -579,12 +579,12 @@ export const comparisons: ComparisonData[] = [
         verdict: {
           summary: 'OPS is a free-to-start field service app that works for commercial and residential contractors of any size. Unlike BuildOps, it requires no sales call, no implementation period, and no annual contract. Your crew downloads the app and manages jobs the same day \u2014 at a fraction of the cost.',
           switchReasons: [
-            'Free to start vs. ~$299/user/month billed annually',
+            'Free 30-day trial, then $90\u2013$190/month flat vs. ~$299/user/month billed annually',
             'Set up in minutes vs. 8-week target (reported up to 12+ months)',
             'Works for commercial and residential vs. commercial only',
-            'Free trial available vs. no trial, must book sales demo',
-            'Published pricing vs. hidden pricing behind a sales call',
-            'Built for the field crew vs. built for enterprise project managers',
+            'Built-in turn-by-turn navigation, estimates, invoicing, pipeline/CRM, and client portal \u2014 all included',
+            'Swipe-to-change-status, photo annotations, and 25-phase tutorial \u2014 no weeks of training',
+            'Published pricing vs. hidden pricing behind a sales gauntlet',
           ],
           competitorStrengths: [
             'Purpose-built for large commercial contractor workflows with multi-phase project management',
@@ -637,7 +637,7 @@ export const comparisons: ComparisonData[] = [
           },
           {
             title: 'Built for the crew. Not the corner office.',
-            copy: "BuildOps is built for dispatchers, project managers, and back-office admins managing multi-million dollar commercial projects. OPS is built for the person actually doing the work \u2014 the electrician on the ladder, the plumber under the sink, the foreman coordinating three crews across town. 56dp touch targets for gloved hands. Dark theme for outdoor visibility. Offline mode that works in basements and dead zones.",
+            copy: "BuildOps is built for dispatchers, project managers, and back-office admins managing multi-million dollar commercial projects. OPS is built for the person actually doing the work \u2014 the electrician on the ladder, the plumber under the sink, the foreman coordinating three crews across town. Swipe any job card to change status. Built-in turn-by-turn navigation to every site. Photo annotations so your crew can mark up issues on the spot. 56dp touch targets for gloved hands. Offline mode that works in basements and dead zones.",
             painPointRef: 2,
           },
           {
