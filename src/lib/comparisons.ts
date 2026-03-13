@@ -691,6 +691,623 @@ export const comparisons: ComparisonData[] = [
       },
     },
   },
+
+  // ==================== FIELDPULSE ====================
+  {
+    slug: 'fieldpulse',
+    competitorName: 'FieldPulse',
+    painPointConfig: [
+      { variant: 'messages' },
+      { variant: 'dashboard' },
+      { variant: 'apps' },
+    ],
+    solutionConfig: [
+      { deviceType: 'phone', flowDirection: 'left-to-right' },
+      { deviceType: 'laptop', flowDirection: 'top-to-bottom' },
+      { deviceType: 'tablet', flowDirection: 'right-to-left' },
+      { deviceType: 'desktop', flowDirection: 'left-to-right' },
+    ],
+    content: {
+      en: {
+        meta: {
+          title: 'FieldPulse Alternative for Trade Crews | OPS',
+          description: 'FieldPulse hides pricing, charges $30/vehicle for GPS, and locks you into annual contracts. OPS is free to start with transparent pricing and everything included.',
+          keywords: [
+            'fieldpulse alternative',
+            'fieldpulse alternatives 2026',
+            'fieldpulse pricing',
+            'how much does fieldpulse cost',
+            'fieldpulse hidden pricing',
+            'fieldpulse too expensive',
+            'cheaper than fieldpulse',
+            'fieldpulse offline mode problems',
+            'fieldpulse quickbooks sync issues',
+            'fieldpulse mobile app issues',
+          ],
+        },
+        hero: {
+          sectionLabel: 'FieldPulse Alternative',
+          headline: 'STOP GUESSING\nWHAT YOUR SOFTWARE COSTS',
+          subtext: "FieldPulse won\u2019t show you the price until you sit through a sales call. Then the add-ons start \u2014 GPS tracking, VoIP, AI dispatch \u2014 and a 5-person crew is suddenly paying $600\u2013$800/month. There\u2019s a simpler way.",
+        },
+        verdict: {
+          summary: 'OPS is a free-to-start, mobile-first field service app with published pricing and no add-on maze. Unlike FieldPulse, it requires no sales call to see the price, no annual contract to get started, and no per-vehicle GPS surcharges. Your crew downloads the app and starts managing jobs the same day.',
+          switchReasons: [
+            'Free 30-day trial, then $90\u2013$190/month flat vs. hidden pricing with $600\u2013$800+/month real cost',
+            'Published pricing vs. "Book a Demo" to learn the price',
+            'Full offline mode vs. offline mode that loses data in basements and dead zones',
+            'Built-in turn-by-turn navigation, estimates, invoicing, pipeline/CRM, and client portal \u2014 all included',
+            'No annual contract lock-in vs. mandatory annual contracts with 60-day cancellation notice',
+            'No per-vehicle GPS surcharge vs. $30/vehicle/month ($1,800/year for a 5-truck fleet)',
+          ],
+          competitorStrengths: [
+            'Genuinely excellent customer support with hands-on onboarding specialists',
+            'Comprehensive feature set for mid-market (scheduling, CRM, estimates, invoicing, pricebook, fleet tracking)',
+            'Flexible custom workflows for complex multi-phase jobs beyond simple schedule-complete-invoice',
+            'Operator AI \u2014 24/7 AI dispatcher for after-hours call answering and job booking',
+          ],
+          bestFor: {
+            ops: 'Trade crews of 2\u201320 who need transparent pricing, reliable offline mode, and a mobile app that works on the job site \u2014 not just on the demo screen.',
+            competitor: 'Growing mid-market service businesses (10\u201330 techs) with dedicated office staff who can manage the complexity and absorb the add-on costs.',
+          },
+        },
+        painPoints: [
+          {
+            title: 'THE PRICE?\nYOU\u2019LL HAVE TO CALL TO FIND OUT.',
+            bullets: [
+              'FieldPulse does not publish any pricing on their website. The pricing page exists but shows no numbers \u2014 just a "Book a Free Demo" button.',
+              'Third-party sources estimate $99\u2013$399/month, but mandatory add-ons stack up: GPS tracking at $30/vehicle/month, VoIP phone system, payment processing at 2.9%, and AI features all cost extra.',
+              'One reviewer: "Marketing makes the software seem top-tier but doesn\u2019t disclose you need add-ons for basic functionality like calling, texting, and emailing. I spent over $1,000 in add-ons."',
+              'All customers since November 2023 are locked into annual contracts with 60-day cancellation notice. Multiple users report unexpected price increases after the first year.',
+            ],
+            forLine: 'For contractors tired of being surprised by their software bill every month.',
+          },
+          {
+            title: 'OFFLINE MODE THAT\nDOESN\u2019T ACTUALLY WORK OFFLINE.',
+            bullets: [
+              'FieldPulse advertises offline mode. In practice, field crews consistently report data loss in basements, crawl spaces, and rural properties.',
+              'One reviewer: "It is supposed to be offline compatible. But it is not. If I have no service I am not getting into the system at all."',
+              'Google Play rating: 3.2/5. iOS App Store: 3.7/5. Too many taps, cramped interface, photo upload bugs.',
+              'Another reviewer: "We ultimately feel like we are working with an unfinished product that is still being beta tested in a lot of ways."',
+            ],
+            forLine: 'For crews who work in basements, crawl spaces, and dead zones \u2014 where offline mode matters most.',
+          },
+          {
+            title: 'QUICKBOOKS SYNC THAT\nCREATES MORE WORK THAN IT SAVES.',
+            bullets: [
+              'QuickBooks Desktop integration is the #1 integration complaint on Capterra and G2. Duplicate entries, sync failures, and manual cleanup are routine.',
+              'The VoIP add-on (Engage) has its own problems: "I asked a few people to call it to test. 50% of them their phone just hung up and did not ring."',
+              'Moving between estimates, jobs, and invoices "still feels a bit disjointed, with information between these categories needing engineering work to avoid constantly copying and pasting."',
+              'After experiencing integration failures, one user tried to cancel: "They tried to deny my request for a refund of engage when I was canceling."',
+            ],
+            forLine: 'For contractors who need their field software and accounting software to actually talk to each other.',
+          },
+        ],
+        solutions: [
+          {
+            title: 'Pricing published. No sales call required.',
+            copy: "FieldPulse hides pricing behind a contact form and locks you into annual contracts. OPS publishes pricing on the website. $90/month for 3 seats, $140 for 5, $190 for 10 \u2014 and a 30-day free trial to prove it works. No sales call. No \u201Ccustom quote.\u201D No surprise add-on fees six months in. Turn-by-turn navigation, estimates, invoicing, pipeline/CRM, and a client portal are all included. Not gated. Not add-ons. Included.",
+            painPointRef: 0,
+          },
+          {
+            title: 'Offline mode that works in a basement.',
+            copy: "FieldPulse advertises offline mode but users report it fails when there is no cell service \u2014 the exact moment you need it. OPS was built for the field first. Full offline capability in basements, crawl spaces, rural job sites, and inside commercial buildings with thick walls. Edit jobs, take photos, update status, log materials \u2014 all without signal. Everything syncs automatically when connectivity returns. No data loss. No \u201Cdelete and reinstall.\u201D",
+            painPointRef: 1,
+          },
+          {
+            title: 'Built for the crew, not just the dashboard.',
+            copy: "FieldPulse has a 3.2-star rating on Google Play \u2014 that\u2019s the score your field crew sees. OPS is built mobile-first with 56dp touch targets for gloved hands, a dark theme readable in direct sunlight, and an interface designed for someone on a ladder. Swipe-to-change-status on any job card. Built-in turn-by-turn navigation to every job site. Photo annotations so your foreman can mark up site photos with arrows and notes. A 25-phase interactive tutorial means new hires are productive without a training session.",
+            painPointRef: 1,
+          },
+          {
+            title: 'One price. Everything included. No add-on trap.',
+            copy: "FieldPulse charges extra for calling, texting, GPS tracking, and AI features. One reviewer spent over $1,000 on add-ons for \u201Cbasic functionality.\u201D OPS includes what you need: estimates and invoicing, pipeline/CRM, a client portal where customers approve estimates and pay invoices, crew location tracking, and turn-by-turn navigation. No $30/vehicle/month GPS surcharge. No VoIP add-on fee. No surprise cost creep after you\u2019re locked into an annual contract.",
+            painPointRef: 0,
+          },
+        ],
+        comparison: {
+          secondCompetitor: 'Jobber',
+          rows: [
+            { feature: 'Starting price', ops: 'Free 30-day trial', competitor: '~$99\u2013$399/month (hidden)', secondComp: '$39/month (1 user)' },
+            { feature: 'Pricing transparency', ops: 'Published on website', competitor: 'Hidden \u2014 requires sales call', secondComp: 'Published on website' },
+            { feature: 'Offline capability', ops: 'Full \u2014 edit, create, log', competitor: 'Advertised but unreliable', secondComp: 'No offline mode' },
+            { feature: 'Contract requirements', ops: 'No annual lock-in', competitor: 'Annual contract, 60-day cancellation', secondComp: 'Month-to-month available' },
+            { feature: 'GPS / fleet tracking cost', ops: 'Included', competitor: '$30/vehicle/month add-on', secondComp: 'Not available' },
+            { feature: 'Built-in job site navigation', ops: 'Turn-by-turn with GPS smoothing', competitor: false, secondComp: false },
+          ],
+        },
+        faq: [
+          {
+            question: 'How much does FieldPulse actually cost?',
+            answer: "FieldPulse does not publish pricing. All quotes require contacting their sales team. Third-party sources estimate $99\u2013$399/month depending on team size, but the real cost is higher once you add mandatory add-ons: GPS tracking at $30/vehicle/month, VoIP phone system, payment processing at 2.9%, and AI features. One user spent over $1,000 on add-ons for what they called \u201Cbasic functionality.\u201D All customers since November 2023 are on annual contracts with 60-day cancellation requirements. OPS is $90\u2013$190/month flat with a 30-day free trial and no add-on maze.",
+          },
+          {
+            question: 'Does FieldPulse work offline?',
+            answer: "FieldPulse advertises offline mode, but user reviews consistently report it fails in low-connectivity environments. Technicians working in basements, rural areas, and inside commercial buildings report being unable to access the system at all without cell service. One reviewer stated: \u201CIt is supposed to be offline compatible. But it is not. If I have no service I am not getting into the system at all.\u201D OPS was built offline-first \u2014 full editing, photo capture, and job updates work without any signal.",
+          },
+          {
+            question: 'Is FieldPulse good for small contractors?',
+            answer: "FieldPulse targets small to mid-size service businesses (2\u201315 technicians) and its feature set is comprehensive. However, the hidden pricing, annual contract requirements, and add-on cost structure make it expensive for small teams. A 5-person crew with vehicles could pay $600\u2013$800+/month. If you need a mobile-first platform with transparent pricing and no sales call required, OPS is free to start at $90\u2013$190/month after the trial.",
+          },
+          {
+            question: 'Does FieldPulse integrate with QuickBooks?',
+            answer: "Yes, FieldPulse integrates with QuickBooks Desktop and Online. However, the Desktop integration is the most-complained-about feature across review platforms. Users report duplicate entries, sync failures, and the need for manual intervention to clean up accounting records. FieldPulse\u2019s own help center has extensive troubleshooting documentation for sync failures, which suggests the problem is widespread.",
+          },
+          {
+            question: 'What is the best FieldPulse alternative in 2026?',
+            answer: "Common FieldPulse alternatives include Jobber ($39\u2013$349/month, published pricing), Housecall Pro ($59\u2013$329/month), and ServiceTitan ($245\u2013$500/tech/month). Each has trade-offs: Jobber gates features behind tiers, Housecall Pro collapsed support to AI-only, and ServiceTitan costs 5\u201310x more with multi-month implementations. OPS is purpose-built for field crews with transparent pricing ($90\u2013$190/month flat), reliable offline mode, built-in turn-by-turn navigation, estimates, invoicing, and a client portal \u2014 all included.",
+          },
+        ],
+        cta: {
+          headline: 'STOP PAYING FOR ADD-ONS\nTHAT SHOULD BE INCLUDED',
+          subtext: 'See the price before the sales call. Try OPS free \u2014 no credit card, no annual contract, no $30/vehicle GPS surcharge.',
+        },
+      },
+    },
+  },
+
+  // ==================== SIMPRO ====================
+  {
+    slug: 'simpro',
+    competitorName: 'Simpro',
+    painPointConfig: [
+      { variant: 'dashboard' },
+      { variant: 'apps' },
+      { variant: 'messages' },
+    ],
+    solutionConfig: [
+      { deviceType: 'phone', flowDirection: 'left-to-right' },
+      { deviceType: 'laptop', flowDirection: 'top-to-bottom' },
+      { deviceType: 'tablet', flowDirection: 'right-to-left' },
+      { deviceType: 'desktop', flowDirection: 'left-to-right' },
+    ],
+    content: {
+      en: {
+        meta: {
+          title: 'Simpro Alternative for Trade Crews | OPS',
+          description: 'Simpro takes 60 days to set up, locks you into 3\u20135 year contracts with 8% annual increases, and your crew still can\u2019t use the mobile app. OPS is free to start.',
+          keywords: [
+            'simpro alternative',
+            'simpro alternatives 2026',
+            'simpro pricing',
+            'how much does simpro cost',
+            'simpro too complicated',
+            'simpro learning curve',
+            'simpro mobile app problems',
+            'simpro contract lock in',
+            'simpler than simpro',
+            'simpro for small business',
+          ],
+        },
+        hero: {
+          sectionLabel: 'Simpro Alternative',
+          headline: 'YOUR CREW DOESN\u2019T NEED\nAN ERP ON THEIR PHONE',
+          subtext: "Simpro has 24 years of features crammed into a mobile app your crew refuses to use. A 60-day implementation. A 3\u20135 year contract with automatic price increases. And a Trustpilot rating of 2.2 out of 5. There\u2019s a simpler way to run your operation.",
+        },
+        verdict: {
+          summary: 'OPS is a free-to-start, mobile-first field service app designed for trade crews who need simplicity, not ERP complexity. Unlike Simpro, it requires no sales call, no 60-day implementation, no mandatory onboarding fees, and no multi-year contract. Your crew downloads the app and is productive the same day.',
+          switchReasons: [
+            'Free 30-day trial, then $90\u2013$190/month flat vs. hidden pricing with mandatory onboarding fees of \u201Cseveral thousand dollars\u201D',
+            'Set up in minutes vs. 60-day recommended implementation',
+            'No contract vs. 3\u20135 year lock-in with 8% automatic annual increases',
+            'Built-in turn-by-turn navigation, estimates, invoicing, pipeline/CRM, and client portal \u2014 all included',
+            'Swipe-to-change-status, photo annotations, and 25-phase tutorial \u2014 crews are productive day one, not week eight',
+            'Mobile app built for the field vs. desktop ERP squeezed onto a phone',
+          ],
+          competitorStrengths: [
+            'Genuinely comprehensive end-to-end workflow from lead to quote to job to invoice with deep job costing',
+            'Strong inventory management with vendor catalogue imports, barcode scanning, and multi-location stock tracking',
+            'Detailed reporting and analytics with actual-vs-estimated cost comparison',
+            'Quoting with Takeoffs \u2014 upload plans, set scale, use smart symbol recognition for faster estimates',
+            'Mature platform with 24 years of refinement and deep understanding of trade workflows',
+          ],
+          bestFor: {
+            ops: 'Trade crews of 2\u201320 who need mobile-first simplicity, transparent pricing, and software their field workers will actually use without weeks of training.',
+            competitor: 'Mid-to-large operations (20\u2013500 employees) with dedicated admin staff, complex job costing needs, and the budget and time for enterprise-grade implementation.',
+          },
+        },
+        painPoints: [
+          {
+            title: 'AN ERP SYSTEM\nDISGUISED AS A MOBILE APP.',
+            bullets: [
+              'Simpro was built as desktop software over 24 years. The mobile app is an afterthought bolted onto a complex backend. Google Play rating: 3.7/5 with 710 ratings.',
+              'Users report the app constantly refreshes, dropdown menus don\u2019t work, saved notes disappear, and site history deletes itself. "Never used an app with such a constant stream of issues that just never get fixed."',
+              'Multiple users report re-downloading the app monthly to fix crashes. Some reinstall daily to refresh data. The mobile app logs engineers out at random intervals.',
+              'No GPS tracking for mobile users. No geofencing for time clock verification. For a field service app, these are foundational gaps.',
+            ],
+            forLine: 'For field crews who spend more time fighting the Simpro app than doing actual work.',
+          },
+          {
+            title: '60 DAYS TO SET UP.\nTHOUSANDS TO ONBOARD.\nYEARS TO LOCK IN.',
+            bullets: [
+              'Simpro recommends "around 60 days" for implementation \u2014 two months before your crew can use the software.',
+              'Mandatory onboarding fees of "several thousand dollars" for setup, training, and data migration \u2014 before your first subscription payment.',
+              'Contract lock-in: 3\u20135 year terms with 8% per annum automatic increases. The alternative? A threat of 12% annual increases.',
+              'Users report Simpro does not assist with data migration despite charging for onboarding. Subscription costs double over time.',
+            ],
+            forLine: 'For contractors who cannot afford 60 days of downtime and thousands in onboarding fees before the software even works.',
+          },
+          {
+            title: 'YOUR CREW WILL\nNEVER LEARN THIS SOFTWARE.',
+            bullets: [
+              '"Learning the software was hard for a lot of our employees." The learning curve is not a one-time event \u2014 it is perpetual.',
+              '"Training staff to apply business workflows through Simpro has been an ongoing challenge." Every new hire means weeks of additional training.',
+              'Trustpilot rating: 2.2/5 \u2014 rated "Poor." The people who leave unfiltered reviews paint a different picture than curated review platforms.',
+              'Glassdoor employer rating: 2.8/5 with only 40% of employees recommending the company \u2014 27% below IT industry average.',
+            ],
+            forLine: 'For trade business owners who bought Simpro and discovered their field crews refuse to use it.',
+          },
+        ],
+        solutions: [
+          {
+            title: 'Built for the crew, not the back office.',
+            copy: "Simpro was built in 2002 as desktop software for business owners and admins. The mobile app came later, as an afterthought. OPS was built mobile-first for the person actually on the job site \u2014 the electrician pulling wire, the plumber under a house, the foreman juggling three crews. 56dp touch targets for gloved hands. Dark theme for outdoor visibility. Swipe-to-change-status on any job card. Built-in turn-by-turn navigation to every site. Photo annotations so your crew can mark up issues on the spot. No ERP menus. No overwhelming feature lists. Just the tools your crew actually needs.",
+            painPointRef: 0,
+          },
+          {
+            title: 'Free to start. No 60-day setup.',
+            copy: "Simpro charges thousands for onboarding, takes 60 days to implement, and does not even help with data migration despite charging for the privilege. OPS is free to download with no credit card required. No sales call. No demo booking. No onboarding fees. Download the app and start managing jobs today. Your crew does not have 60 days to wait \u2014 or thousands of dollars to spend before the software is usable.",
+            painPointRef: 1,
+          },
+          {
+            title: 'No lock-in. No price escalators.',
+            copy: "Simpro locks customers into 3\u20135 year contracts with automatic 8% annual increases and minimum user requirements. If your business is seasonal, or if you lose a crew member, you still pay for their seat. OPS has no long-term contracts, no annual price escalators, and no minimum user counts. $90\u2013$190/month flat. Scale up or down as your business demands. Cancel anytime.",
+            painPointRef: 1,
+          },
+          {
+            title: 'Your new hire uses it in 5 minutes, not 5 weeks.',
+            copy: "Simpro users report that \u201Clearning the software was hard for a lot of our employees\u201D and that training is an \u201Congoing challenge.\u201D Every new hire means weeks of onboarding on a system with a Trustpilot rating of 2.2 out of 5. OPS includes a built-in 25-phase interactive tutorial that walks new users through every feature. Hand your phone to a new crew member and they are productive in minutes \u2014 no training sessions, no certification exams, no paid onboarding.",
+            painPointRef: 2,
+          },
+        ],
+        comparison: {
+          secondCompetitor: 'Jobber',
+          rows: [
+            { feature: 'Starting price', ops: 'Free 30-day trial', competitor: '~$154/month minimum (hidden)', secondComp: '$39/month (1 user)' },
+            { feature: 'Time to get started', ops: 'Minutes', competitor: '~60 days recommended', secondComp: 'Hours to days' },
+            { feature: 'Contract requirements', ops: 'None \u2014 cancel anytime', competitor: '3\u20135 year lock-in with 8% annual increases', secondComp: 'Monthly or annual' },
+            { feature: 'Free trial', ops: 'Yes \u2014 download and use immediately', competitor: 'No \u2014 must contact sales', secondComp: '14-day trial' },
+            { feature: 'Mobile app rating (Google Play)', ops: 'Launching soon', competitor: '3.7/5 (710 ratings)', secondComp: '4.3/5' },
+            { feature: 'Pricing transparency', ops: 'Published on website', competitor: 'Hidden \u2014 requires sales call', secondComp: 'Published on website' },
+          ],
+        },
+        faq: [
+          {
+            question: 'Is Simpro worth it for a small contractor?',
+            answer: "Simpro is designed as comprehensive business management software covering quoting, scheduling, job costing, inventory, invoicing, and asset management. That depth is valuable for mid-sized operations with dedicated admin staff. But for small contractors under 15 employees, the 60-day implementation, mandatory onboarding fees of several thousand dollars, and 3\u20135 year contract lock-ins with 8% annual increases make it a risky investment. Users report that \u201Clearning the software was hard for a lot of our employees\u201D and that training is an \u201Congoing challenge.\u201D OPS is $90\u2013$190/month flat with a 30-day free trial and no contracts.",
+          },
+          {
+            question: 'Does Simpro have a free trial?',
+            answer: "No. Simpro does not offer a free trial or a free plan. You must contact their sales team and go through an implementation process before accessing the software. OPS is free to download with no credit card, no sales call, and no demo required. You can evaluate OPS with your actual crew on actual job sites before committing a dollar.",
+          },
+          {
+            question: 'How much does Simpro actually cost?',
+            answer: "Simpro does not publish pricing. Third-party sources report starting around $30/user/month with a base plan at approximately $154/month. For a 5\u201310 person crew, expect $300\u2013$600/month in subscriptions plus several thousand dollars in mandatory onboarding fees. Add 3\u20135 year contracts with 8% annual increases, and the total cost of ownership is substantial. Users report subscription costs doubling over time. OPS is $90\u2013$190/month flat with no onboarding fees and no contracts.",
+          },
+          {
+            question: 'Why is Simpro so complicated?',
+            answer: "Simpro started in 2002 as desktop business management software and has spent 24 years adding features \u2014 job costing, inventory management, asset tracking, project management, quoting, invoicing, compliance, and more. The result is a system that can do almost anything but requires significant training to operate. Users describe the interface as \u201Cclunky and unintuitive\u201D and the feature set as \u201Coverwhelming.\u201D The mobile app compounds this by squeezing desktop-grade complexity onto a phone screen. If your crew just needs to see their schedule, update job status, navigate to the site, and take photos, they do not need an ERP in their pocket.",
+          },
+          {
+            question: 'What are the main problems with Simpro\u2019s mobile app?',
+            answer: "The Simpro Mobile app (3.7/5 on Google Play, 710 ratings) has persistent issues: random logouts mid-job, data that does not sync or refresh, notes that disappear, dropdown menus that fail, and crashes requiring complete app reinstallation \u2014 sometimes monthly, sometimes daily. Users report \u201Cnever used an app with such a constant stream of issues that just never get fixed.\u201D The app also lacks GPS tracking for field technicians and has no geofencing for time clock verification.",
+          },
+        ],
+        cta: {
+          headline: 'YOUR CREW DOESN\u2019T NEED\n60 DAYS OF TRAINING',
+          subtext: 'ERP complexity or crew simplicity \u2014 your call. Try OPS free. No sales call, no onboarding fees, no 3-year contract.',
+        },
+      },
+    },
+  },
+
+  // ==================== FIELDEDGE ====================
+  {
+    slug: 'fieldedge',
+    competitorName: 'FieldEdge',
+    painPointConfig: [
+      { variant: 'apps' },
+      { variant: 'dashboard' },
+      { variant: 'messages' },
+    ],
+    solutionConfig: [
+      { deviceType: 'phone', flowDirection: 'left-to-right' },
+      { deviceType: 'laptop', flowDirection: 'top-to-bottom' },
+      { deviceType: 'tablet', flowDirection: 'right-to-left' },
+      { deviceType: 'desktop', flowDirection: 'left-to-right' },
+    ],
+    content: {
+      en: {
+        meta: {
+          title: 'FieldEdge Alternative for Trade Crews | OPS',
+          description: 'FieldEdge\u2019s mobile app has 1.8 stars. Your techs are threatening to quit over it. OPS is built mobile-first, free to start, and designed for this decade.',
+          keywords: [
+            'fieldedge alternative',
+            'fieldedge alternatives 2026',
+            'fieldedge pricing',
+            'fieldedge mobile app problems',
+            'fieldedge too expensive',
+            'fieldedge outdated',
+            'fieldedge bugs crashes',
+            'fieldedge vs servicetitan',
+            'cheaper than fieldedge',
+            'hvac software better than fieldedge',
+          ],
+        },
+        hero: {
+          sectionLabel: 'FieldEdge Alternative',
+          headline: 'YOUR TECHS DESERVE SOFTWARE\nBUILT IN THIS DECADE',
+          subtext: "FieldEdge was founded in 1980. The mobile app has 1.8 stars on the App Store. Your techs lose quotes mid-save, get logged out mid-job, and one reviewer said their employees threatened to quit over it. You\u2019re paying $125/tech/month for this.",
+        },
+        verdict: {
+          summary: 'OPS is a free-to-start, mobile-first field service app built from scratch with modern technology. Unlike FieldEdge, there is no legacy codebase from the 1980s, no 1.8-star mobile app, and no $125/tech/month price tag for software that crashes daily. Your crew downloads the app and starts managing jobs the same day.',
+          switchReasons: [
+            'Free 30-day trial, then $90\u2013$190/month flat vs. $100\u2013$125/user/month plus $500\u2013$2,000 setup',
+            'Mobile app built from scratch vs. 1.8 stars on App Store / 2.0 stars on Google Play',
+            'Set up in minutes vs. mandatory 5-week onboarding process',
+            'Built-in turn-by-turn navigation, estimates, invoicing, pipeline/CRM, and client portal \u2014 all included',
+            'Transparent pricing vs. demo-wall pricing with Clearent payment processing lock-in',
+            'No vendor lock-in vs. forced Clearent processing with reported bait-and-switch rates (promised 2.7%, charged 3.4%)',
+          ],
+          competitorStrengths: [
+            'Best-in-class QuickBooks integration \u2014 two-way sync built as the first full QuickBooks FSM integration in 1999',
+            'Deep flat-rate pricebook management with Coolfront integration for service-focused businesses',
+            'Strong service agreement management with automated recurring maintenance scheduling',
+            'Established platform with 40+ years of battle-tested workflows for traditional HVAC/plumbing/electrical service',
+          ],
+          bestFor: {
+            ops: 'Trade crews of any size who need a modern mobile-first app, transparent pricing, and software their field workers will actually want to use.',
+            competitor: 'Established HVAC/plumbing/electrical service businesses heavily invested in flat-rate pricing and QuickBooks who can tolerate the mobile app\u2019s limitations.',
+          },
+        },
+        painPoints: [
+          {
+            title: 'BUILT IN THE \u201980S.\nFEELS LIKE IT.',
+            bullets: [
+              'FieldEdge traces its roots to 1980 when the Slay brothers created the first electronic dispatch board. 45 years later, that legacy shows in every screen.',
+              'The interface "relies heavily on text entry boxes, dialog buttons, and pop-up forms" and has been "progressively modernized \u2014 sometimes awkwardly."',
+              '"There are so many steps for even the simplest of tasks, and it should not take 10\u201320 minutes to create one work order."',
+              'When updates ship, they introduce new bugs: "The volume of issues has intensified due to all the so-called new updates."',
+            ],
+            forLine: 'For HVAC, plumbing, and electrical contractors whose office staff wastes hours fighting a legacy interface.',
+          },
+          {
+            title: '$125 PER TECH PER MONTH\nFOR SOFTWARE THAT CRASHES.',
+            bullets: [
+              'FieldEdge charges $100/user/month for office staff and $125/user/month for field techs, plus $500\u2013$2,000 setup and mandatory 5-week onboarding.',
+              'Features score 3.9/5 and Value for Money 3.9/5 on Capterra \u2014 below average for premium pricing.',
+              'Payment processing is locked to Clearent (same parent company, Xplor). Users report being promised 2.7% but charged 3.4%. On $500K in annual card transactions, that\u2019s a $3,500 difference.',
+              'No free trial. No way to test before committing. "Everything is an additional charge and the training you pay for is not the greatest."',
+            ],
+            forLine: 'For contractors paying $10,000\u2013$30,000/year and wondering why their $125/month mobile app has 1.8 stars.',
+          },
+          {
+            title: 'YOUR TECHS\nHATE USING IT.',
+            bullets: [
+              'FieldEdge\u2019s mobile app: 1.8/5 on the App Store (370 ratings). 2.0/5 on Google Play (200+ reviews). The lowest ratings of any major FSM platform.',
+              '"The application crashes at least once a day." Quotes are lost mid-save. The keyboard freezes. GPS fails 80% of the time regardless of carrier.',
+              '"Employees using the app have said they will quit if it\u2019s not gone soon." This is not a software complaint \u2014 it is a retention crisis.',
+              'FieldEdge has released multiple separate app versions (FE 2.0 Beta, FieldEdge 3) rather than fixing the core product.',
+            ],
+            forLine: 'For contractors whose techs are losing quotes, crashing mid-job, and threatening to walk.',
+          },
+        ],
+        solutions: [
+          {
+            title: 'Built in 2025, not 1980.',
+            copy: "FieldEdge has been modernizing a 45-year-old codebase \u2014 one awkward update at a time. OPS was built from scratch with modern technology. No legacy baggage. No desktop-first compromises. No \u201Cprogressive modernization.\u201D Dark theme for outdoor visibility. 56dp touch targets for gloved hands. Swipe-to-change-status on any job card. Built-in turn-by-turn navigation to every site. Photo annotations for marking up job site images. Your techs will actually want to use it.",
+            painPointRef: 0,
+          },
+          {
+            title: 'A mobile app your techs won\u2019t quit over.',
+            copy: "FieldEdge\u2019s mobile app has 1.8 stars on the App Store. Users lose quotes mid-save, get logged out mid-job, and crash at least once daily. OPS was designed mobile-first for the person actually doing the work \u2014 the tech on the roof, the plumber under the sink, the electrician on the ladder. Full offline mode. Syncing that does not lose your data. A 25-phase tutorial that gets new techs productive without a training session. An app that does not crash once a day.",
+            painPointRef: 2,
+          },
+          {
+            title: 'Free to start. Not free to book a demo.',
+            copy: "FieldEdge does not offer a free trial because \u201Cthey find new members have the most success when their team walks them through the onboarding process.\u201D Translation: 5 weeks of mandatory onboarding, a $500\u2013$2,000 setup fee, and you cannot touch the software until they say so. OPS is free to download with a 30-day trial. No sales call. No demo booking. No 5-week onboarding. Your crew is scheduling jobs before a FieldEdge sales rep returns your voicemail.",
+            painPointRef: 1,
+          },
+          {
+            title: 'Transparent pricing. No Clearent lock-in.',
+            copy: "FieldEdge hides pricing behind demo calls and locks you into Clearent for payment processing \u2014 owned by the same parent company, Xplor. Users report bait-and-switch on processing rates: promised 2.7%, charged 3.4%. OPS publishes pricing on the website. $90/month for 3 seats, $140 for 5, $190 for 10. No vendor lock-in. No hidden fees. No parent-company payment processor taking a cut you did not agree to.",
+            painPointRef: 1,
+          },
+        ],
+        comparison: {
+          secondCompetitor: 'Jobber',
+          rows: [
+            { feature: 'Starting price', ops: 'Free 30-day trial', competitor: '$100\u2013$125/user/month + setup', secondComp: '$39/month (1 user)' },
+            { feature: 'Annual cost \u2014 10-person crew', ops: '$90\u2013$190/month flat', competitor: '~$14,100/year + setup fees', secondComp: '~$4,188\u2013$8,988/year' },
+            { feature: 'Mobile app rating (iOS)', ops: 'Launching soon', competitor: '1.8/5 (370 ratings)', secondComp: '4.4/5' },
+            { feature: 'Free trial', ops: 'Yes \u2014 download and use immediately', competitor: 'No \u2014 5-week mandatory onboarding', secondComp: '14-day trial' },
+            { feature: 'Time to get started', ops: 'Minutes', competitor: '5+ weeks mandatory onboarding', secondComp: 'Hours to days' },
+            { feature: 'Payment processing lock-in', ops: 'No vendor lock-in', competitor: 'Clearent required (Xplor-owned)', secondComp: 'No lock-in' },
+          ],
+        },
+        faq: [
+          {
+            question: 'Is FieldEdge worth it for a small contractor?',
+            answer: "FieldEdge charges $100\u2013$125/user/month plus $500\u2013$2,000 in setup fees and requires 5 weeks of mandatory onboarding. A 10-person crew pays approximately $14,100/year before add-ons. The mobile app has 1.8 stars on the App Store and 2.0 on Google Play. For small contractors who need software that works on day one, OPS is free to start with a 30-day trial, published pricing at $90\u2013$190/month flat, and a mobile-first design that does not require weeks of training.",
+          },
+          {
+            question: 'Does FieldEdge have a free trial?',
+            answer: "No. FieldEdge does not offer a free trial. They state this is because \u201Cnew members have the most success when their team walks them through the onboarding process.\u201D You must request a demo, sit through a sales call, and commit to a paid plan with a setup fee before using the software. OPS is free to download with no credit card, no sales call, and no 5-week onboarding program.",
+          },
+          {
+            question: 'Why is FieldEdge\u2019s mobile app rated so low?',
+            answer: "FieldEdge\u2019s mobile app has 1.8 stars on the App Store and 2.0 on Google Play \u2014 the lowest ratings of any major FSM platform. Users consistently report daily crashes, lost quotes and data when saving, keyboard freezing that requires app restarts, GPS failures regardless of carrier, and poor offline functionality. The core product was built as desktop software in the 1980s and the mobile app feels like an afterthought. One reviewer wrote: \u201CEmployees using the app have said they will quit if it\u2019s not gone soon.\u201D",
+          },
+          {
+            question: 'How does FieldEdge compare to ServiceTitan?',
+            answer: "Both target HVAC, plumbing, and electrical contractors but differ significantly. ServiceTitan is more expensive ($245\u2013$500/tech/month) with more automation and a more modern interface. FieldEdge is cheaper per user ($100\u2013$125) but has a legacy interface and the lowest mobile app ratings in FSM. Both require sales demos and neither offers free trials. OPS offers a free 30-day trial with a mobile-first design, transparent pricing at $90\u2013$190/month flat, and no contracts.",
+          },
+          {
+            question: 'What does FieldEdge actually cost in total?',
+            answer: "FieldEdge charges $100/month per office user and $125/month per field technician, plus $500\u2013$2,000 in one-time setup fees. Payment processing through Clearent (required) adds 2.7%\u20133.4% per transaction \u2014 and users report being promised the lower rate but charged the higher one. Annual plans do not refund if you cancel early. Total cost for a 10-person team: approximately $14,100\u2013$17,000+/year depending on tier and add-ons. OPS is $90\u2013$190/month flat with no setup fees.",
+          },
+        ],
+        cta: {
+          headline: 'YOUR TECHS DESERVE\nBETTER THAN 1.8 STARS',
+          subtext: 'Stop paying $125/tech for software built in the \u201980s. Try OPS free \u2014 no sales call, no setup fee, no 5-week onboarding.',
+        },
+      },
+    },
+  },
+
+  // ==================== ZUPER ====================
+  {
+    slug: 'zuper',
+    competitorName: 'Zuper',
+    painPointConfig: [
+      { variant: 'messages' },
+      { variant: 'apps' },
+      { variant: 'dashboard' },
+    ],
+    solutionConfig: [
+      { deviceType: 'phone', flowDirection: 'left-to-right' },
+      { deviceType: 'laptop', flowDirection: 'top-to-bottom' },
+      { deviceType: 'tablet', flowDirection: 'right-to-left' },
+      { deviceType: 'desktop', flowDirection: 'left-to-right' },
+    ],
+    content: {
+      en: {
+        meta: {
+          title: 'Zuper Alternative for Trade Crews | OPS',
+          description: 'Zuper is a generic FSM platform built for every industry and optimized for none. OPS is built for trade crews with a 3.0-star app upgrade and no 12-week implementation.',
+          keywords: [
+            'zuper alternative',
+            'zuper alternatives 2026',
+            'zuper pricing',
+            'zuper too expensive',
+            'zuper mobile app problems',
+            'zuper implementation time',
+            'zuper vs servicetitan',
+            'zuper vs jobber',
+            'zuper for small business',
+            'field service management trade specific',
+          ],
+        },
+        hero: {
+          sectionLabel: 'Zuper Alternative',
+          headline: 'BUILT FOR EVERY TRADE\nMEANS BUILT FOR NONE',
+          subtext: "Zuper markets to HVAC, plumbing, electrical, roofing, solar, pool, landscaping, cleaning, ISPs, manufacturing, and more \u2014 all from one generic platform. Their mobile app has 3.0 stars. Implementation takes 12 weeks. And you\u2019ll need a sales call just to learn the price.",
+        },
+        verdict: {
+          summary: 'OPS is a free-to-start, mobile-first field service app built specifically for trade crews. Unlike Zuper, it is not a generic horizontal platform that serves every industry equally poorly. Your crew downloads OPS and starts managing jobs the same day \u2014 no 12-week implementation, no sales call, no configuration project to make generic software fit your trade.',
+          switchReasons: [
+            'Free 30-day trial, then $90\u2013$190/month flat vs. hidden pricing ($35\u2013$65/user/month, sales call required)',
+            'Set up in minutes vs. 12-week implementation timeline',
+            'Built for trade crews vs. generic platform for every industry from ISPs to manufacturing',
+            'Built-in turn-by-turn navigation, estimates, invoicing, pipeline/CRM, and client portal \u2014 all included',
+            'Swipe-to-change-status, photo annotations, and 25-phase tutorial \u2014 no weeks of configuration',
+            'US-based support during business hours vs. support that only replies overnight',
+          ],
+          competitorStrengths: [
+            'Strong CRM and enterprise integrations (Zendesk, Salesforce, HubSpot, QuickBooks)',
+            'High customization flexibility \u2014 84% of users praise the ability to configure workflows',
+            'AI-powered smart dispatch and Zuper Glass smart glasses for skilled trades (launched 2025)',
+            'Real-time GPS tracking and location intelligence across the field workforce',
+          ],
+          bestFor: {
+            ops: 'Trade crews of 2\u201320 who need a mobile-first app that works for their trade out of the box \u2014 no 12-week configuration project required.',
+            competitor: 'Mid-market and enterprise organizations (50+ employees) with dedicated IT staff who can invest 12 weeks configuring a generic platform to fit their specific workflows.',
+          },
+        },
+        painPoints: [
+          {
+            title: 'GENERIC SOFTWARE FOR EVERY TRADE\nMEANS PURPOSE-BUILT FOR NONE.',
+            bullets: [
+              'Zuper markets to HVAC, plumbing, electrical, roofing, solar, pool, landscaping, cleaning, security, ISPs, manufacturing, construction, and more. No trade gets purpose-built workflows.',
+              'The learning curve exists because the product is generic. Extensive customization is needed to make it fit any specific trade \u2014 and that customization takes 12 weeks.',
+              'The estimate platform is "pretty basic" because no single estimating workflow can serve roofers, electricians, and ISP technicians equally.',
+              'Custom reporting must be requested through the Zuper team \u2014 because generic report templates do not fit any specific trade\u2019s KPIs.',
+            ],
+            forLine: 'For trade contractors who tried the "all-in-one for everyone" pitch and realized it means built for no one.',
+          },
+          {
+            title: 'THE MOBILE APP\nYOUR CREW WILL HATE.',
+            bullets: [
+              'Zuper\u2019s main mobile app has a 3.0-star rating on Google Play. The Pro app: 3.9 stars. Both are well below what field crews need from a tool they use all day.',
+              '"The app is unstable and crashes in the middle of certain tasks." "Too many clicks required." "The app likes to disappear while in the middle of typing."',
+              'Offline mode is described as "spotty" \u2014 a critical failure for crews in basements, rural areas, and inside buildings.',
+              'For a company that raised $46.1M in funding with 298 employees, a 3.0-star mobile app is a product failure.',
+            ],
+            forLine: 'For field crews who need a mobile app that works reliably \u2014 not one that crashes, lags, and requires too many taps.',
+          },
+          {
+            title: 'HIDDEN PRICING AND\n12-WEEK IMPLEMENTATION.',
+            bullets: [
+              'Zuper does not publish pricing. Starting price reported at $35\u2013$65/user/month, but the final number is a mystery until you sit through a sales process.',
+              'Full implementation can take up to 12 weeks. For a small crew that needs software working this week, 12 weeks is three months of lost productivity.',
+              'Support only responds during non-US hours: "I can never get in touch with their support team during normal US based business hours. They only reply overnight."',
+              'One user reported working with Zuper for almost a year with unresolved issues \u2014 "a huge waste of time and money."',
+            ],
+            forLine: 'For contractors who cannot afford 12 weeks of setup and cannot wait until India wakes up for support.',
+          },
+        ],
+        solutions: [
+          {
+            title: 'Built for your trade, not every trade.',
+            copy: "Zuper markets to HVAC, plumbing, electrical, roofing, solar, pool, landscaping, cleaning, manufacturing, ISPs, and more \u2014 all with the same generic platform. A roofer, a pool tech, and an HVAC installer all get the same screens. OPS is built for trade contractors. Every workflow, every interaction is designed for crews who work with their hands. Built-in turn-by-turn navigation to job sites. Estimates and invoicing designed for how trades actually quote work. A pipeline/CRM that tracks leads through to closed jobs. No 12-week configuration project to make generic software fit your trade.",
+            painPointRef: 0,
+          },
+          {
+            title: 'A mobile app crews actually want to use.',
+            copy: "Zuper\u2019s mobile app has a 3.0-star rating on Google Play. Users report crashes, too many clicks, spotty offline mode, and sync delays. OPS is built mobile-first with 56dp touch targets for gloved hands, a dark theme for outdoor visibility, and full offline capability. Swipe any job card to change status with haptic feedback. Built-in turn-by-turn navigation to every site. Photo annotations so your crew can mark up images on the spot. Your field workers should not need a training class to check their schedule.",
+            painPointRef: 1,
+          },
+          {
+            title: 'Free to start. Pricing you can actually see.',
+            copy: "Zuper hides pricing behind a sales call. OPS publishes pricing on the website: $90/month for 3 seats, $140 for 5, $190 for 10 \u2014 with a 30-day free trial. No sales call. No demo booking. No 12-week implementation. Download the app and start using it today. Estimates, invoicing, pipeline/CRM, a client portal where customers approve estimates and pay invoices \u2014 all included from day one.",
+            painPointRef: 2,
+          },
+          {
+            title: 'Support when you need it, not overnight.',
+            copy: "Zuper users report they \u201Ccan never get in touch with support during normal US business hours\u201D and that replies come \u201Covernight.\u201D One user worked with Zuper for almost a year with issues still unresolved, describing it as \u201Ca huge waste of time and money.\u201D When your crew is on a job site at 10 AM and hits a problem, overnight replies from the other side of the world are useless. OPS provides support that works on your schedule.",
+            painPointRef: 2,
+          },
+        ],
+        comparison: {
+          secondCompetitor: 'Jobber',
+          rows: [
+            { feature: 'Starting price', ops: 'Free 30-day trial', competitor: '$35\u2013$65/user/month (hidden)', secondComp: '$39/month (1 user)' },
+            { feature: 'Pricing transparency', ops: 'Published on website', competitor: 'Hidden \u2014 requires sales call', secondComp: 'Published on website' },
+            { feature: 'Time to get started', ops: 'Minutes', competitor: 'Up to 12 weeks implementation', secondComp: 'Hours to days' },
+            { feature: 'Mobile app rating (Google Play)', ops: 'Launching soon', competitor: '3.0/5 (main app)', secondComp: '4.3/5' },
+            { feature: 'Trade-specific design', ops: 'Built for trade crews', competitor: 'Generic \u2014 same platform for all industries', secondComp: 'Generic with industry landing pages' },
+            { feature: 'Built-in job site navigation', ops: 'Turn-by-turn with GPS smoothing', competitor: false, secondComp: false },
+          ],
+        },
+        faq: [
+          {
+            question: 'Is Zuper good for small contractors?',
+            answer: "Zuper is designed for mid-market and enterprise field service organizations. While they accept smaller customers, the 12-week implementation timeline, hidden pricing, and steep learning curve make it a poor fit for small crews that need software working this week. The platform requires extensive customization to fit any specific trade, and custom reporting must be requested through the Zuper team. OPS is $90\u2013$190/month flat with a 30-day free trial and works out of the box for trade crews of any size.",
+          },
+          {
+            question: 'How much does Zuper cost?',
+            answer: "Zuper does not publish pricing. You must contact their sales team for a quote. Third-party sources report starting prices of $35\u2013$65/user/month. For a 10-person crew, that works out to approximately $4,200\u2013$7,800/year before implementation or training costs. Zuper offers three tiers (Starter, Growth, Enterprise) but specific prices are hidden behind a sales conversation. OPS is $90\u2013$190/month flat with published pricing and no add-on maze.",
+          },
+          {
+            question: 'Does Zuper have a good mobile app?',
+            answer: "Zuper\u2019s mobile experience is a documented weakness. The main app has a 3.0-star rating on Google Play. Users report crashes during tasks, too many clicks for simple operations, spotty offline mode, and synchronization delays. One reviewer noted the app \u201Clikes to disappear while in the middle of typing.\u201D For field crews who rely on their phone as their primary work tool, a 3.0-star app is a liability.",
+          },
+          {
+            question: 'How long does Zuper implementation take?',
+            answer: "Full Zuper implementation can take up to 12 weeks. Users report a steep learning curve with a non-intuitive interface that requires extensive training and configuration. The platform\u2019s generic design means significant work is needed to fit any specific trade\u2019s workflow. Some users report working with Zuper for close to a year with issues still unresolved. OPS requires no implementation \u2014 download and start scheduling jobs the same day.",
+          },
+          {
+            question: 'Is Zuper built for my specific trade?',
+            answer: "No. Zuper is a generic, horizontal FSM platform that markets to every industry \u2014 HVAC, plumbing, electrical, roofing, solar, pool, landscaping, cleaning, manufacturing, ISPs, and more. No trade gets purpose-built workflows. You get the same screens whether you are a roofer or an ISP technician. The 12-week implementation exists because the platform must be heavily customized to fit any specific workflow. OPS is built for trade contractors with workflows designed for how crews actually work in the field.",
+          },
+        ],
+        cta: {
+          headline: 'BUILT FOR YOUR TRADE.\nNOT EVERY TRADE.',
+          subtext: '12 weeks to implement or 5 minutes to download. Your call. Try OPS free \u2014 no sales call, no configuration project.',
+        },
+      },
+    },
+  },
 ];
 
 // --- Helpers ---
