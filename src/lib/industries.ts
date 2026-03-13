@@ -1024,6 +1024,534 @@ export const industries: IndustryData[] = [
       },
     },
   },
+  // ─── Concrete ──────────────────────────────────────────────────────────
+  {
+    slug: 'concrete',
+    name: 'Concrete',
+    painPointConfig: [
+      { variant: 'dashboard' },
+      { variant: 'messages' },
+      { variant: 'apps' },
+    ],
+    solutionConfig: [
+      { deviceType: 'phone', flowDirection: 'left-to-right' },
+      { deviceType: 'laptop', flowDirection: 'top-to-bottom' },
+      { deviceType: 'tablet', flowDirection: 'right-to-left' },
+      { deviceType: 'desktop', flowDirection: 'left-to-right' },
+    ],
+    content: {
+      en: {
+        meta: {
+          title: 'Concrete Contractor Management Software | OPS',
+          description: 'Schedule pours around weather, coordinate multi-crew staging, and document every batch — built for concrete contractors who can\'t afford a bad pour.',
+          keywords: [
+            'concrete contractor software',
+            'concrete business management software',
+            'concrete scheduling software',
+            'concrete crew management app',
+            'concrete pour scheduling software',
+            'concrete subcontractor management',
+            'concrete project management software',
+            'concrete job costing software',
+            'concrete contractor app',
+            'concrete estimating and scheduling app',
+          ],
+        },
+        hero: {
+          sectionLabel: 'For Concrete Contractors',
+          headline: "YOU CAN'T UN-POUR CONCRETE.\nMAKE SURE THE SCHEDULE IS RIGHT.",
+          subtext: "The truck shows up and the clock starts. If the forms aren't ready, the crew isn't staged, or the weather turns — you're paying for mud you can't use. OPS coordinates your crews, tracks weather windows, and documents every pour so the right people are at the right site before the first truck backs in.",
+        },
+        painPoints: [
+          {
+            title: 'Weather doesn\'t check your calendar',
+            bullets: [
+              'Temperature drops below 40\u00B0F during curing and the concrete weakens permanently — no fix, no rework, just demolition',
+              'Ready-mix delivery is scheduled but the rain forecast changed overnight — now you\'re rescheduling the crew, the pump, the trucks, and the inspector by phone',
+              'A large commercial pour needs forms, rebar, pump, finishers, and 8\u201312 trucks arriving at 15-minute intervals — one breakdown in the sequence and the whole pour is at risk',
+              'Cancel tomorrow\'s pour and the cascade hits every project on your schedule for the rest of the week',
+            ],
+            forLine: 'For: Concrete contractors making pour-or-wait decisions that cost thousands based on weather apps and gut feel',
+          },
+          {
+            title: 'Labor costs 9% more than last year and every idle hour bleeds money',
+            bullets: [
+              'Construction compensation up 9% year-over-year — if your estimates use last year\'s labor rates, every job bleeds margin',
+              'Over 20% of construction workers are over 55 and retiring fast — the pipeline of replacements is thin',
+              'Delays cost North American construction $280 billion annually — and concrete delays are the most expensive because you can\'t pause a pour',
+              'Less experienced crews mean more quality issues — inconsistent finishing, improper curing, substandard formwork that doubles labor costs on rework',
+            ],
+            forLine: 'For: Concrete company owners paying more for labor while watching productivity drop with every inexperienced hire',
+          },
+          {
+            title: 'GC software priced for subcontractor budgets',
+            bullets: [
+              'Procore is the gold standard for construction management — and completely unaffordable for a 10-person concrete crew doing 3\u20134 active jobs',
+              'ServiceTitan costs $245\u2013$500+ per tech per month with $5,000\u2013$50,000 implementation — that\'s $30K\u2013$60K/year for a sub with 5\u20138% net margins',
+              'Jobber was designed for same-day service calls, not multi-day concrete projects with weather dependencies and multi-crew staging',
+              'The result: most concrete contractors still run on phone calls, text messages, and paper estimates because the software market failed them',
+            ],
+            forLine: 'For: Concrete subcontractors who need crew scheduling and job tracking but can\'t justify Procore pricing on sub margins',
+          },
+        ],
+        solutions: [
+          {
+            title: 'Schedule pours around weather. Not the other way around.',
+            copy: "Build your pour schedule with multi-day visibility that accounts for temperature windows, rain probability, and wind conditions. When weather forces a reschedule, shift crews and equipment to alternate sites with one adjustment — not an hour of phone calls. Multi-crew staging shows exactly who needs to be where: form crew complete, rebar inspected, pump staged, finishers on standby, trucks arriving at intervals. Pour documentation captures batch tickets, conditions, and time-stamped photos — the evidence trail that proves quality.",
+            painPointRef: 0,
+          },
+          {
+            title: 'Every crew hour tracked. Every dollar accounted.',
+            copy: "When labor costs 9% more than last year, you need to know exactly where every hour goes. Time tracking per crew, per site, per phase builds the labor cost database that makes your next estimate accurate — not a guess based on last year's rates. Real-time job costing compares estimated vs. actual labor and material costs as the project progresses. Crew dispatch prevents the most expensive waste: sending a finishing crew to a site that isn't ready.",
+            painPointRef: 1,
+          },
+          {
+            title: 'Built for the pour site. Not the office trailer.',
+            copy: "Your finishers are on their knees at 5 AM. They're not checking a laptop. 56dp touch targets work with wet, muddy gloves. Dark theme is readable at dawn or under flood lights. Photo capture documents formwork, rebar placement, pour progress, and finished surfaces with timestamps and GPS. Works offline because new construction sites, rural pads, and infrastructure projects don't have cell service. Your crew sees their schedule and site details without calling the office.",
+            painPointRef: 1,
+          },
+          {
+            title: 'Sub pricing. Not GC pricing.',
+            copy: "Concrete margins are tight enough without your software squeezing them. OPS is flat-rate regardless of crew size — whether you're running 5 workers or 50. Free to start with no credit card. No implementation fees. No 12-month contracts. Compare that to Procore at enterprise pricing, ServiceTitan at $30K\u2013$60K/year for 10 workers, or Jobber at $4,188+/year with user overages. For a concrete sub doing $1M\u2013$5M in revenue, OPS is a line item you'll never think about.",
+            painPointRef: 2,
+          },
+        ],
+        comparison: {
+          competitors: ['Jobber', 'Knowify'],
+          rows: [
+            { feature: 'Mobile-first crew app', ops: true, comp1: 'Limited', comp2: 'Limited' },
+            { feature: 'Multi-day project scheduling', ops: true, comp1: false, comp2: true },
+            { feature: 'Per-phase photo documentation', ops: true, comp1: 'Basic', comp2: 'Limited' },
+            { feature: 'Offline mode for job sites', ops: true, comp1: false, comp2: false },
+            { feature: 'No per-user pricing', ops: true, comp1: false, comp2: false },
+            { feature: 'Starting price', ops: 'Free to start', comp1: '$49/mo', comp2: '$149/mo' },
+          ],
+        },
+        faq: [
+          {
+            question: 'What is the best software for concrete contractors?',
+            answer: "It depends on your role. If you're a GC managing concrete subs, Procore and Fieldwire are industry standards — but at enterprise pricing designed for companies managing 50+ projects. If you're a concrete subcontractor running 2\u201315 workers, those tools are overbuilt and overpriced. Jobber handles basic scheduling but was designed for same-day service calls — it doesn't understand multi-day pours, weather dependencies, or multi-crew staging. Knowify offers construction-specific job costing but isn't mobile-first for field crews. OPS handles scheduling, crew management, job tracking, and photo documentation at flat-rate pricing that works for sub margins.",
+          },
+          {
+            question: 'How do concrete contractors handle weather delays?',
+            answer: "The best concrete contractors schedule pours around weather windows, not despite them. They monitor forecasts 3\u20137 days out for temperature, humidity, wind, and precipitation — because concrete that cures below 40\u00B0F weakens permanently, and rain during finishing ruins the surface. When weather forces a reschedule, the cascade hits everything: ready-mix delivery, pump operator, inspector, and crew need to be rescheduled simultaneously while alternate site work gets slotted into the open day. Software that tracks all those dependencies and can cascade changes across projects is the difference between managing weather and reacting to it.",
+          },
+          {
+            question: 'How is the labor shortage affecting concrete contractors?',
+            answer: "Concrete is one of the hardest-hit segments of construction. Over 20% of workers are over 55 and retiring, the residential sector faces a 32% labor shortage, and compensation has risen 9% year-over-year. This creates a triple squeeze: fewer workers, higher cost per worker, and lower average experience. Less experienced crews mean more quality issues — inconsistent finishing, improper curing, substandard formwork. Technology that maximizes productive hours per crew member through better scheduling, reduced idle time, and fewer cascading delays directly addresses all three pressures.",
+          },
+          {
+            question: 'How is OPS different from Procore for concrete subcontractors?',
+            answer: "Procore is built for general contractors managing large-scale construction projects with dozens of subs, change orders, architectural drawings, and bidding portals. If you're a 10-person concrete crew doing 3\u20134 active jobs, you don't need 90% of what Procore offers — but you're paying for all of it. OPS gives concrete subs what they actually need: crew scheduling, multi-site coordination, pour documentation with photos, and time tracking — at flat-rate pricing, not enterprise pricing. You'll be scheduling pours on day one instead of spending months in onboarding.",
+          },
+          {
+            question: 'What documentation do concrete contractors need per pour?',
+            answer: "Professional pour documentation protects against quality disputes and satisfies inspection requirements. Key records include batch tickets from the ready-mix supplier showing mix design, slump, and air content. Ambient conditions at pour time — temperature, humidity, wind. Slump test results on-site. Time-stamped photos of formwork, rebar placement, pour progress, and finished surface. For commercial and infrastructure work, this documentation is increasingly required, not optional. OPS captures all of it on your phone during the pour — organized per project and retrievable in seconds.",
+          },
+        ],
+        cta: {
+          headline: "YOU CAN'T UN-POUR CONCRETE.",
+          subtext: "Every pour is a one-shot operation. Your schedule, your crews, and your weather window have to be right before the first truck backs in. OPS makes sure they are.",
+        },
+      },
+    },
+  },
+  // ─── Flooring ──────────────────────────────────────────────────────────
+  {
+    slug: 'flooring',
+    name: 'Flooring',
+    painPointConfig: [
+      { variant: 'apps' },
+      { variant: 'dashboard' },
+      { variant: 'messages' },
+    ],
+    solutionConfig: [
+      { deviceType: 'phone', flowDirection: 'left-to-right' },
+      { deviceType: 'laptop', flowDirection: 'top-to-bottom' },
+      { deviceType: 'tablet', flowDirection: 'right-to-left' },
+      { deviceType: 'desktop', flowDirection: 'left-to-right' },
+    ],
+    content: {
+      en: {
+        meta: {
+          title: 'Flooring Contractor Management Software | OPS',
+          description: 'Schedule multi-day installs, track material costs in real time, and give your installers a tool that works from the subfloor — not the showroom.',
+          keywords: [
+            'flooring contractor software',
+            'flooring business software',
+            'flooring scheduling software',
+            'flooring installer app',
+            'flooring company management software',
+            'flooring project management',
+            'flooring job costing software',
+            'flooring crew management app',
+            'flooring installation scheduling app',
+            'flooring business management app',
+          ],
+        },
+        hero: {
+          sectionLabel: 'For Flooring Contractors',
+          headline: 'YOUR INSTALLERS ARE YOUR\nMOST EXPENSIVE RESOURCE.\nSTOP WASTING THEIR TIME.',
+          subtext: "A flooring install isn't a one-day job. It's subfloor prep, material acclimation, installation, transitions, and cleanup across 2\u20135 days — with every phase depending on the last. OPS schedules the full project, tracks material costs in real time, and gives your crew everything they need from the job site floor, not the showroom desk.",
+        },
+        painPoints: [
+          {
+            title: 'Multi-day installs collapse without coordination',
+            bullets: [
+              'Day 1 subfloor prep, Day 2\u20133 installation, Day 4 transitions and trim — each phase depends on the previous one finishing on time',
+              'Plumber runs behind on rough-in and your crew shows up to a site that isn\'t ready — a wasted day of labor and a rescheduled customer',
+              'Hardwood needs 3\u20135 days to acclimate before installation — if materials arrive late, the entire project stalls',
+              'Failed moisture test on a concrete subfloor pushes everything back and you need to redirect the crew to another job without double-booking',
+            ],
+            forLine: 'For: Flooring contractors juggling subfloor prep, material delivery, installation crews, and customer schedules across projects that span days',
+          },
+          {
+            title: 'Material waste and blind job costing kill margins',
+            bullets: [
+              'Every cut creates waste — the difference between a 5% and 15% waste factor on a $10,000 material order is $1,000 of pure margin loss',
+              'You don\'t know your true margin on a job until weeks after invoicing — material costs, labor hours, and unexpected subfloor repairs pile up across the project',
+              'Underestimate tile and you\'re making an emergency distributor run — overestimate and you\'re stuck with inventory tying up cash',
+              'Installer wages growing 11% year-over-year — if you quoted using last year\'s labor rates, this year\'s wages eat directly into profit',
+            ],
+            forLine: 'For: Flooring contractors losing money because material overages, waste, and inaccurate estimates eat into already-thin margins',
+          },
+          {
+            title: 'Showroom software that doesn\'t work from the subfloor',
+            bullets: [
+              'QFloors and Epicor RFMS have great estimating — but no mobile app your installer can use to check schedules or document subfloor conditions from a customer\'s living room',
+              'Jobber handles scheduling but has no concept of multi-day project phasing, material delivery coordination, or subfloor documentation',
+              'ServiceTitan costs $245\u2013$500+ per tech per month — for a 5-installer company, that\'s $15,000\u2013$30,000/year in software on already-thin margins',
+              'Your office doesn\'t know if today\'s install is on track until the crew calls at 4 PM — by then it\'s too late to adjust anything',
+            ],
+            forLine: 'For: Flooring company owners running operations on paper because the software they bought works at the desk but not on the floor',
+          },
+        ],
+        solutions: [
+          {
+            title: 'Multi-day scheduling that handles the full project.',
+            copy: "Schedule a 5-day hardwood installation phase by phase: subfloor prep Monday, acclimation check Tuesday, installation Wednesday\u2013Thursday, transitions Friday. Each phase shows crew assignments, material requirements, and completion status. When the plumber delays rough-in, drag the project forward and the system notifies affected crew and customers. Material delivery dates are tied to project phases — so acclimation timelines are tracked, not forgotten. Multi-project views show every active job across all crews, preventing double-booking and idle time.",
+            painPointRef: 0,
+          },
+          {
+            title: 'Know your margin before the invoice goes out.',
+            copy: "Track material costs, labor hours, and expenses in real time as the project progresses. When your installer logs 2 extra hours of subfloor repair, the job cost updates immediately — before you invoice, not three weeks after. Photo documentation captures subfloor conditions before installation and completed work at every phase. Job history builds a database of actual costs per project type and surface material, making every future estimate more accurate than the last.",
+            painPointRef: 1,
+          },
+          {
+            title: 'From the job site. Not the showroom.',
+            copy: "Your installers need to see today's schedule, the project specs, and a way to document their work — from a dusty subfloor, not a showroom desk. 56dp touch targets work with work gloves. Dark theme is readable in any lighting — from a dim basement to a sun-drenched living room. Photo capture documents subfloor condition, installation progress, and completed work. Offline mode works on job sites with no WiFi — common in new construction and renovation projects.",
+            painPointRef: 2,
+          },
+          {
+            title: 'Flat pricing. Not per-installer pricing.',
+            copy: "Flooring margins are already under pressure from 11% wage inflation and volatile material costs. Your software shouldn't add to the squeeze. OPS is flat-rate regardless of crew size — hire your fourth installer, no price increase. Free to start with no credit card. No implementation fees. No 12-month contracts. Compare: ServiceTitan at $15K\u2013$30K/year for 5 installers, QFloors at enterprise pricing, Jobber at $4,188+/year with user overages. For a flooring company doing $300K\u2013$1M in revenue, OPS is a rounding error.",
+            painPointRef: 2,
+          },
+        ],
+        comparison: {
+          competitors: ['Jobber', 'Floorzap'],
+          rows: [
+            { feature: 'Mobile-first crew interface', ops: true, comp1: true, comp2: 'Limited' },
+            { feature: 'Multi-day project scheduling', ops: true, comp1: false, comp2: true },
+            { feature: 'Per-phase photo documentation', ops: true, comp1: 'Basic', comp2: true },
+            { feature: 'Offline mode for job sites', ops: true, comp1: false, comp2: false },
+            { feature: 'No per-user pricing', ops: true, comp1: false, comp2: false },
+            { feature: 'Starting price', ops: 'Free to start', comp1: '$49/mo', comp2: 'Subscription' },
+          ],
+        },
+        faq: [
+          {
+            question: 'What is the best software for flooring contractors?',
+            answer: "It depends on your primary need. If you need comprehensive estimating and material management, QFloors and Epicor RFMS are industry standards — but they're office-centric with no mobile crew interface. Floorzap offers flooring-specific quoting and scheduling in one tool. Jobber handles basic scheduling and invoicing but doesn't understand multi-day project phasing or material coordination. OPS provides mobile-first crew scheduling, multi-day project management, and photo documentation at flat-rate pricing — bridging the gap between showroom software and generic field service tools.",
+          },
+          {
+            question: 'How do flooring contractors manage multi-day installation projects?',
+            answer: "Successful flooring contractors break projects into phases: subfloor preparation, material acclimation (3\u20135 days for hardwood), installation, transitions and trim, and cleanup. Each phase has specific crew assignments, material requirements, and time estimates. The key is scheduling software that supports multi-day projects with phase dependencies — so when one phase runs over, downstream phases adjust automatically. Material delivery dates must be synchronized with installation phases to prevent crew idle time.",
+          },
+          {
+            question: 'How do I reduce material waste on flooring jobs?',
+            answer: "Material waste typically runs 5\u201315% depending on room layout, pattern matching, and installer skill. Three things reduce it: precise measurement and waste factor calculation during estimating, tracking actual waste per project type to refine future estimates, and planning cuts to maximize material use across rooms. Real-time job costing that compares estimated vs. actual material use identifies patterns over time. The difference between a 5% and 15% waste factor on a $10,000 material order is $1,000 — pure margin.",
+          },
+          {
+            question: 'How is OPS different from Jobber for flooring companies?',
+            answer: "Jobber was built for same-day service businesses — a plumber shows up, fixes the leak, and closes the job. Flooring doesn't work that way. A hardwood install runs 3\u20135 days with subfloor prep, acclimation, installation, and finishing phases that depend on each other. Jobber has no concept of multi-day project phasing, material delivery coordination, or trade dependencies. It also charges per user, which gets expensive as you add seasonal installers. OPS handles multi-day projects natively, works offline on job sites without WiFi, and doesn't charge per user.",
+          },
+          {
+            question: 'How is the installer labor shortage affecting flooring companies?',
+            answer: "Skilled flooring installers are the scarcest resource in the trade. The workforce is aging out, younger workers aren't entering at sufficient rates, and installer wages have grown 11% — significantly faster than the 7.3% construction median. This means every hour of installer idle time costs more than it did last year. Flooring contractors can't hire their way out of the problem. The answer is making the crews you have more productive — better scheduling, fewer wasted trips, less rework from miscommunication — so every installer hour generates revenue.",
+          },
+        ],
+        cta: {
+          headline: 'STOP WASTING YOUR MOST EXPENSIVE RESOURCE.',
+          subtext: "Your installers cost more every year. Every hour they spend waiting for materials, driving to sites that aren't ready, or calling the office for specs is money you don't get back. OPS puts the plan in their hands.",
+        },
+      },
+    },
+  },
+  // ─── Drywall ───────────────────────────────────────────────────────────
+  {
+    slug: 'drywall',
+    name: 'Drywall',
+    painPointConfig: [
+      { variant: 'messages' },
+      { variant: 'apps' },
+      { variant: 'dashboard' },
+    ],
+    solutionConfig: [
+      { deviceType: 'phone', flowDirection: 'left-to-right' },
+      { deviceType: 'laptop', flowDirection: 'top-to-bottom' },
+      { deviceType: 'tablet', flowDirection: 'right-to-left' },
+      { deviceType: 'desktop', flowDirection: 'left-to-right' },
+    ],
+    content: {
+      en: {
+        meta: {
+          title: 'Drywall Contractor Management Software | OPS',
+          description: 'Phase-by-phase scheduling, multi-site crew dispatch, and trade coordination — built for drywall subs who need more than a spreadsheet but less than Procore.',
+          keywords: [
+            'drywall contractor software',
+            'drywall business software',
+            'drywall scheduling software',
+            'drywall crew management app',
+            'drywall project management software',
+            'drywall subcontractor management',
+            'drywall job tracking app',
+            'drywall estimating and scheduling',
+            'drywall business management app',
+            'drywall installer scheduling software',
+          ],
+        },
+        hero: {
+          sectionLabel: 'For Drywall Contractors',
+          headline: 'FIVE PHASES. THREE TRADES.\nZERO ROOM FOR ERROR.',
+          subtext: "Hanging, taping, mudding, sanding, finishing — each phase has its own crew, its own drying time, and its own way of falling behind. And you're coordinating all of it around electricians who aren't done and painters who are waiting. OPS tracks every phase across every site so your crews go where the work is actually ready.",
+        },
+        painPoints: [
+          {
+            title: 'Every phase depends on the last one drying',
+            bullets: [
+              'Hanging, taping, first coat, second coat, sanding, finishing — each phase needs 24\u201348 hours of drying time that humidity can extend without warning',
+              'Electrical and plumbing rough-in must be complete and inspected before hanging starts — one trade running behind halts your entire operation',
+              'A 5-crew company has crews at 3\u20134 different sites, each at different phases — knowing which crew goes where tomorrow requires real-time visibility, not phone calls',
+              'Schedule sanding based on standard timing, mud isn\'t dry, crew shows up and can\'t work — a wasted day you could have sent them to another site',
+            ],
+            forLine: 'For: Drywall contractors managing hanging, taping, mudding, sanding, and finishing across multiple sites while coordinating with electricians, plumbers, and painters',
+          },
+          {
+            title: 'The labor crisis is making every other problem worse',
+            bullets: [
+              'Drywall installers are among the hardest skilled labor roles to fill — 88% of firms with craft workers report open positions',
+              'Installer wages have grown 11% while margins stay flat — if your estimates use last year\'s rates, every job is less profitable than projected',
+              'Less experienced workers create quality issues that weren\'t a problem five years ago — poor mudding and sanding shows through paint',
+              'More bodies doesn\'t solve it — overcrowded sites, higher safety risk, less accountability. The answer is making the crews you have more productive.',
+            ],
+            forLine: 'For: Drywall company owners who can\'t find skilled hangers and finishers while wages climb 11% and quality drops with every green hire',
+          },
+          {
+            title: 'Enterprise software for subcontractor budgets',
+            bullets: [
+              'Procore and Buildertrend are built for general contractors — bidding portals, architectural drawings, client selection tools you\'ll never touch',
+              'ServiceTitan costs $245\u2013$500+ per tech per month with $5K\u2013$50K implementation — for a 10-person drywall crew, that\'s $30K\u2013$60K/year',
+              'Jobber was designed for same-day service calls — no phased construction workflows, no drying time between phases, no trade coordination',
+              'So most drywall companies use nothing. Phone calls, text messages, and handshake agreements with the GC. The software market failed this trade.',
+            ],
+            forLine: 'For: Drywall subcontractors paying GC prices for software they only use 20% of',
+          },
+        ],
+        solutions: [
+          {
+            title: 'Phase-by-phase scheduling across every site.',
+            copy: "Schedule hanging crew at Site A Monday, taping at Site B, finishing at Site C — with phase completion tracking that shows which sites are ready for the next step. When mud needs an extra day to dry, push sanding forward and redirect the crew to a site that IS ready. Trade coordination notes track when electrical passed inspection and when the GC says the site is clear for hang. Tomorrow's dispatch is based on reality, not assumptions.",
+            painPointRef: 0,
+          },
+          {
+            title: 'Make every crew hour count.',
+            copy: "When skilled hangers cost $27+/hour and wages are climbing 11% annually, idle time is the most expensive line item you're not tracking. Real-time crew visibility shows where every team is and what phase they're completing. Photo documentation captures work quality at each phase — catch finishing issues before the painter shows up. Time tracking per phase per site builds accurate labor cost data for future estimates. Crew scheduling prevents the #1 waste: sending workers to a site that isn't ready for their phase.",
+            painPointRef: 1,
+          },
+          {
+            title: 'Built for the job site. Not the office trailer.',
+            copy: "Drywall sites are dusty, messy, and don't always have WiFi. Your scheduling app needs to handle all of that. 56dp touch targets work with work gloves. Dark theme is readable from a dark interior to a bright exterior. Photo documentation captures each phase — hanging alignment, tape seams, mud coats, finished surfaces — for quality tracking and GC sign-off. Works offline on new construction shells without cell service. Your crew sees their schedule and phase requirements without calling anyone.",
+            painPointRef: 1,
+          },
+          {
+            title: "You're a sub, not a GC. Price accordingly.",
+            copy: "Your software budget should match your role. OPS is flat-rate regardless of crew size — whether you're running 3 workers or 30. Free to start with no credit card. No implementation fees. No 12-month contracts. Compare: Procore and Buildertrend at enterprise GC pricing, ServiceTitan at $30K\u2013$60K/year for 10 workers, Jobber at $4,188+/year with user overages. For a drywall sub doing $500K\u2013$2M in revenue, OPS is insignificant overhead.",
+            painPointRef: 2,
+          },
+        ],
+        comparison: {
+          competitors: ['Jobber', 'Contractor+'],
+          rows: [
+            { feature: 'Mobile-first crew app', ops: true, comp1: 'Limited', comp2: true },
+            { feature: 'Multi-phase project scheduling', ops: true, comp1: false, comp2: 'Limited' },
+            { feature: 'Per-phase photo documentation', ops: true, comp1: 'Basic', comp2: true },
+            { feature: 'Offline mode for job sites', ops: true, comp1: false, comp2: false },
+            { feature: 'No per-user pricing', ops: true, comp1: false, comp2: 'Free tier limited' },
+            { feature: 'Starting price', ops: 'Free to start', comp1: '$49/mo', comp2: 'Free tier' },
+          ],
+        },
+        faq: [
+          {
+            question: 'What is the best software for drywall contractors?',
+            answer: "It depends on your role. If you're a GC with drywall crews, Procore or Buildertrend provide comprehensive project management — at GC pricing. If you're a drywall subcontractor, Contractor+ offers sub-focused features including scheduling and invoicing with a free tier. Jobber is accessible but was designed for same-day service, not phased construction. Knowify offers construction-specific job costing. OPS combines multi-phase scheduling, crew management, photo documentation, and trade coordination at flat-rate pricing that works for sub margins.",
+          },
+          {
+            question: 'How do drywall contractors manage multi-phase scheduling?',
+            answer: "Successful drywall contractors schedule by phase, not just by day. Hanging, taping, first coat, second coat, sanding, and finishing each require specific crews and drying time between phases. The key is tracking phase completion per site so crews are dispatched to sites that are actually ready for their phase — not sites where mud is still drying. A 5-crew company with 3\u20134 active sites needs multi-site visibility showing phase status across all jobs. Without it, you're making dispatch decisions based on yesterday's phone call instead of today's reality.",
+          },
+          {
+            question: 'How is the labor shortage affecting drywall contractors?',
+            answer: "Drywall is one of the hardest-hit trades. 88% of firms report open positions and installer wages have grown 11% — almost double the 7.3% construction average. The shortage hurts quality too: less experienced crews produce finishing work that shows through paint, requiring rework that doubles labor costs. 56% of contractors report failing to meet schedule timelines due to labor shortages. The answer isn't more bodies on overcrowded sites. It's making existing crews more productive through better scheduling that eliminates idle time, wasted trips, and phase mismatches.",
+          },
+          {
+            question: 'How is OPS different from Procore for drywall subcontractors?',
+            answer: "Procore is built for general contractors managing dozens of subs, change orders, architectural drawings, and bidding portals across large-scale projects. If you're a drywall sub running 5\u201315 workers across 3\u20134 active job sites, you don't need 90% of what Procore offers — but you're paying enterprise pricing for all of it. OPS gives drywall subs what they actually need: phase-by-phase scheduling, multi-site crew dispatch, photo documentation per phase, and trade coordination — at flat-rate pricing. Deploy it today, not in three months.",
+          },
+          {
+            question: 'How do drywall contractors coordinate with other trades?',
+            answer: "Drywall sits in the middle of the construction sequence: after electrical and plumbing rough-in and inspection, before painting and final trim. A missed handoff from any trade halts your operation. Real-time communication with GCs about site readiness, tracking inspection schedules, and flexible crew dispatching are essential. The most common and expensive failure is sending a crew to a site that isn't ready for their phase. OPS tracks site readiness and phase status so you dispatch crews to sites where work can actually happen — not sites where you're hoping the electrician finished.",
+          },
+        ],
+        cta: {
+          headline: 'STOP SENDING CREWS TO SITES THAT AREN\'T READY.',
+          subtext: "Every wasted trip is hours of skilled labor you don't get back. OPS tracks which sites are ready for which phase — so your crews go where the work is, not where you hope it is.",
+        },
+      },
+    },
+  },
+  // ─── Appliance Repair ──────────────────────────────────────────────────
+  {
+    slug: 'appliance-repair',
+    name: 'Appliance Repair',
+    painPointConfig: [
+      { variant: 'dashboard' },
+      { variant: 'apps' },
+      { variant: 'messages' },
+    ],
+    solutionConfig: [
+      { deviceType: 'phone', flowDirection: 'left-to-right' },
+      { deviceType: 'laptop', flowDirection: 'top-to-bottom' },
+      { deviceType: 'tablet', flowDirection: 'right-to-left' },
+      { deviceType: 'desktop', flowDirection: 'left-to-right' },
+    ],
+    content: {
+      en: {
+        meta: {
+          title: 'Appliance Repair Business Software | OPS',
+          description: 'Dispatch smarter, document diagnostics, and stop making two trips when one will do — built for appliance repair companies competing with franchise chains.',
+          keywords: [
+            'appliance repair software',
+            'appliance repair scheduling software',
+            'appliance repair business software',
+            'appliance repair dispatch software',
+            'appliance repair management app',
+            'appliance repair invoicing app',
+            'appliance repair inventory management',
+            'appliance repair field service management',
+            'appliance repair technician app',
+            'appliance repair business management',
+          ],
+        },
+        hero: {
+          sectionLabel: 'For Appliance Repair Companies',
+          headline: 'STOP MAKING TWO TRIPS\nWHEN ONE WILL DO.',
+          subtext: "The industry average first-time fix rate is 75%. That means 1 in 4 jobs sends your tech back out — burning fuel, blocking a new appointment, and frustrating a customer who already waited once. OPS documents diagnostics, tracks what's on every truck, and gives your techs everything they need to close the job on the first visit.",
+        },
+        painPoints: [
+          {
+            title: 'One in four jobs requires a second trip — and each one costs you $200+',
+            bullets: [
+              'Tech diagnoses a failed water inlet valve but doesn\'t have one on the van — customer waits days, you lose a future appointment slot, and they might call your competitor instead',
+              'Tracking hundreds of parts across multiple vans is chaos — every brand uses different part numbers for the same component',
+              'Each callback costs $150\u2013$300 in wasted labor and fuel, plus the new job you could\'ve run in that slot',
+              'Improving first-time fix rate from 75% to 90% adds capacity for 2\u20133 additional billable jobs per week per technician',
+            ],
+            forLine: 'For: Appliance repair owners watching profits disappear into second truck rolls because techs didn\'t have the right parts',
+          },
+          {
+            title: 'Customers expect franchise-level service from a 3-person shop',
+            bullets: [
+              'Homeowners compare your service to Amazon delivery tracking — they want online booking, text updates, and accurate arrival windows',
+              'Manufacturers require digital documentation for warranty payouts — model numbers, serial numbers, failure codes, photos. Paper doesn\'t cut it.',
+              'Quotes don\'t get sent in time, follow-ups fall through the cracks, customers who called three days ago still haven\'t been scheduled',
+              'Sears Home Services and Mr. Appliance have enterprise tech platforms — your 4-tech shop needs the same customer experience without the franchise overhead',
+            ],
+            forLine: 'For: Independent appliance repair companies losing jobs because they can\'t match the booking experience of franchise chains',
+          },
+          {
+            title: 'Enterprise pricing for an industry of small businesses',
+            bullets: [
+              'ServiceTitan costs $245\u2013$500+ per tech per month plus $5K\u2013$50K implementation — for a 4-tech company, that\'s $12K\u2013$24K/year on $400K revenue',
+              'Housecall Pro charges $59\u2013$329/month with add-ons ($40/mo proposals, $149/mo price book) pushing real costs well above the sticker price',
+              'Workiz charges per-user with costs scaling as you add technicians — features like inventory tracking require higher-tier plans',
+              'None of these are built for appliance repair. No model/serial number tracking, no failure code libraries, no first-time fix rate analytics. Just generic scheduling.',
+            ],
+            forLine: 'For: Appliance repair owners paying enterprise prices for generic tools that don\'t understand diagnostics, parts, or warranty workflows',
+          },
+        ],
+        solutions: [
+          {
+            title: 'Fix it right the first time.',
+            copy: "Track what's on every truck before you dispatch. When a tech diagnoses the problem, they log exactly what they need — model number, part number, symptoms, photos — so the return visit starts with the part already on the van. Job documentation captures appliance details, failure symptoms, and diagnostic photos in real time. Over time, you see which appliance types and which parts drive the most callbacks, so you stock smarter and train better. Every percentage point of first-time fix rate improvement is money straight to your bottom line.",
+            painPointRef: 0,
+          },
+          {
+            title: 'Professional service. Small business overhead.',
+            copy: "Automated booking confirmation, real-time ETA updates, and professional digital invoices — the same customer experience franchise chains deliver, without the franchise fees. Customers book online 24/7. Automated text reminders reduce no-shows. Digital invoices with parts line items and warranty documentation are generated on-site and sent before the technician leaves the driveway. Customer equipment history shows every appliance you've serviced at that address, with previous repairs and warranty status.",
+            painPointRef: 1,
+          },
+          {
+            title: 'Built for the utility room. Not the boardroom.',
+            copy: "Your techs work in basements, garages, and tight kitchen spaces — not at desks. 56dp touch targets work with work gloves. Dark theme is readable behind a refrigerator or in a bright laundry room. Photo capture documents the problem, the repair, and the installed parts for warranty compliance. Works offline because basements don't have WiFi. Sync when you're back in the van. Your tech sees the job, the appliance history, and what's on their truck — nothing more, nothing less.",
+            painPointRef: 1,
+          },
+          {
+            title: 'Your parts cost enough. Your software shouldn\'t.',
+            copy: "OPS is flat-rate regardless of team size — add technicians as you grow, no price increase. Free to start with no credit card. No implementation fees. No 12-month contracts. No $5,000 setup. Compare: ServiceTitan at $12K\u2013$24K/year for 4 techs, Housecall Pro at $3,948+/year with add-ons, Workiz at per-user rates that scale up. For an appliance repair company doing $300K\u2013$600K in revenue, OPS costs less than a single callback.",
+            painPointRef: 2,
+          },
+        ],
+        comparison: {
+          competitors: ['Workiz', 'Housecall Pro'],
+          rows: [
+            { feature: 'Mobile-first dark theme UI', ops: true, comp1: false, comp2: false },
+            { feature: 'Scheduling + dispatching', ops: true, comp1: true, comp2: true },
+            { feature: 'Per-job photo documentation', ops: true, comp1: true, comp2: true },
+            { feature: 'Offline mode for basements', ops: true, comp1: false, comp2: false },
+            { feature: 'No per-user pricing', ops: true, comp1: false, comp2: false },
+            { feature: 'Starting price', ops: 'Free to start', comp1: '$198/mo (5 users)', comp2: '$59/mo' },
+          ],
+        },
+        faq: [
+          {
+            question: 'What is the best software for appliance repair businesses?',
+            answer: "Workiz is the most popular among small-to-mid appliance repair companies for dispatch and call tracking — but it charges per-user, and costs add up as you grow. Housecall Pro offers scheduling and invoicing but provides the same generic features it gives HVAC and plumbing companies. ServiceTitan is designed for large operations at $245\u2013$500+ per tech per month. None of them are built for appliance repair specifically. OPS combines scheduling, dispatch, photo documentation, and mobile job management at flat-rate pricing that works for a 2-tech shop or a 15-van fleet.",
+          },
+          {
+            question: 'How can I improve my first-time fix rate?',
+            answer: "The industry average is 75% — meaning 1 in 4 jobs requires a return trip. Three things drive improvement: stock common parts per appliance type on each van based on historical job data, capture detailed diagnostics during the first visit so return trips start prepared, and track which appliance types and failure modes cause the most callbacks so you can pre-stage those parts. Improving from 75% to 90% adds capacity for 2\u20133 additional billable jobs per week per technician. That's real revenue, not a theoretical number.",
+          },
+          {
+            question: 'How do I handle manufacturer warranty claims efficiently?',
+            answer: "Manufacturers increasingly require digital documentation: model and serial numbers, photos of the failure, parts used, labor hours, and technician notes. Incomplete paperwork means denied claims and delayed payments. Digital job documentation that captures all required fields on-site — on the technician's phone, during the repair — eliminates the end-of-day paperwork scramble and the incomplete forms that get rejected. OPS photo documentation and job notes give you a complete record for every warranty repair.",
+          },
+          {
+            question: 'How is OPS different from Workiz for appliance repair?',
+            answer: "Workiz is a strong fit for appliance repair with solid dispatch and call tracking features. The main differences are pricing model and field experience. Workiz charges per-user — at $198/month for 5 users, costs scale linearly as you hire. OPS is flat-rate regardless of team size. OPS also works offline — critical for appliance repair techs working in basements and utility rooms with no cell signal — and uses a dark-themed, glove-friendly interface designed specifically for field conditions, not office use.",
+          },
+          {
+            question: 'What\'s the biggest challenge for independent appliance repair vs. franchise chains?',
+            answer: "Franchise chains like Sears Home Services and Mr. Appliance run enterprise tech platforms that deliver real-time ETAs, automated customer communications, and professional digital invoicing. Matching that customer experience without franchise overhead is the challenge. Most independent shops still answer the phone, scribble on paper, and send handwritten invoices. The solution is affordable software that delivers the same professional experience. OPS at flat-rate pricing provides the same capabilities — online booking, automated updates, digital invoicing — that franchise operations pay thousands per month to access.",
+          },
+        ],
+        cta: {
+          headline: 'STOP PAYING FOR TWO TRIPS.',
+          subtext: "Every callback is wasted fuel, a blocked appointment, and a frustrated customer. OPS helps your techs fix it right the first time — and document everything for the warranty claim while they're at it.",
+        },
+      },
+    },
+  },
 ];
 
 // --- Helpers ---
