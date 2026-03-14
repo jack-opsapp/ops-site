@@ -4,6 +4,8 @@ import PainPoints from '@/components/home/PainPoints';
 import PlatformShowcase from '@/components/home/PlatformShowcase';
 import Starburst from '@/components/home/Starburst';
 import SocialProof from '@/components/home/SocialProof';
+import WhatIsOps from '@/components/home/WhatIsOps';
+import TradesList from '@/components/home/TradesList';
 import JournalPreview from '@/components/home/JournalPreview';
 import FinalCTA from '@/components/home/FinalCTA';
 import { getLocale } from '@/i18n/server';
@@ -14,11 +16,11 @@ export async function generateMetadata(): Promise<Metadata> {
   const locale = await getLocale();
   return {
     title: locale === 'es'
-      ? 'OPS — Sistema Operativo de Proyectos'
-      : 'OPS — Operational Project System',
+      ? 'OPS — Gestión de Trabajo para Contratistas y Equipos de Campo'
+      : 'OPS — Job Management for Contractors and Field Crews',
     description: locale === 'es'
-      ? 'Gestión de proyectos, programación de equipos, facturación y más — hecho para contratistas y oficios. Empieza gratis.'
-      : 'Project management, crew scheduling, invoicing, and more — built for contractors and the trades. Start free.',
+      ? 'La app de gestión de trabajo que tu equipo realmente usará. Programación de equipos, seguimiento de proyectos, documentación fotográfica. Construida por un contratista. Gratis para empezar.'
+      : 'The job management app your crew will actually use. Crew scheduling, project tracking, photo documentation. Built by a contractor who scaled to $1.6M. Free to start.',
     alternates: {
       canonical: 'https://opsapp.co',
     },
@@ -28,11 +30,40 @@ export async function generateMetadata(): Promise<Metadata> {
 export default function HomePage() {
   return (
     <>
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{
+          __html: JSON.stringify({
+            "@context": "https://schema.org",
+            "@type": "SoftwareApplication",
+            "name": "OPS",
+            "applicationCategory": "BusinessApplication",
+            "operatingSystem": "iOS, Web",
+            "url": "https://opsapp.co",
+            "description": "Field-first job management app for trades contractors. Track projects, schedule crews, document with photos, manage clients and invoicing. No training required — your crew opens it and knows what to do.",
+            "offers": {
+              "@type": "AggregateOffer",
+              "lowPrice": "0",
+              "highPrice": "190",
+              "priceCurrency": "USD",
+              "offerCount": "4"
+            },
+            "creator": {
+              "@type": "Organization",
+              "name": "OPS",
+              "url": "https://opsapp.co"
+            },
+            "featureList": "Project Management, Crew Scheduling, Photo Documentation and Markup, Job Board, Client Management, Invoicing, Pipeline Tracking, Inventory Management, Offline Mode"
+          })
+        }}
+      />
       <Hero />
       <PainPoints />
       <PlatformShowcase />
       <Starburst />
       <SocialProof />
+      <WhatIsOps />
+      <TradesList />
       <JournalPreview />
       <FinalCTA />
     </>

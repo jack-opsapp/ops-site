@@ -28,7 +28,7 @@ export default async function Hero() {
       {HERO_IMAGE && (
         <Image
           src={HERO_IMAGE}
-          alt=""
+          alt="Trades crew using OPS job management app on a construction site"
           fill
           priority
           className="object-cover opacity-[0.55]"

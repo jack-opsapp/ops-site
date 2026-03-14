@@ -34,6 +34,10 @@ export async function generateMetadata({ params }: PageProps): Promise<Metadata>
   return {
     title: `${result.archetype.name} | Leadership Assessment`,
     description: result.archetype.tagline,
+    robots: {
+      index: false,
+      follow: true,
+    },
   };
 }
 

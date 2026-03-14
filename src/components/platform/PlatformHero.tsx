@@ -20,7 +20,7 @@ export default async function PlatformHero() {
       {HERO_IMAGE && (
         <Image
           src={`/images/heroes/${HERO_IMAGE}`}
-          alt=""
+          alt="OPS field management platform features overview"
           fill
           priority
           className="object-cover"

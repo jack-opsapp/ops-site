@@ -15,10 +15,10 @@ const APP_STORE_URL = 'https://apps.apple.com/us/app/ops-job-crew-management/id6
 export async function generateMetadata(): Promise<Metadata> {
   const locale = await getLocale();
   return {
-    title: locale === 'es' ? 'Planes' : 'Plans',
+    title: locale === 'es' ? 'Precios — Planes de OPS' : 'Pricing — OPS Plans',
     description: locale === 'es'
-      ? 'Empieza gratis. Sube de plan cuando estés listo. Sin tarjeta de crédito, sin compromiso. Todos los planes incluyen todas las funciones.'
-      : 'Start free. Upgrade when you\'re ready. No credit card, no commitment. All plans include every feature — you only pay based on crew size.',
+      ? 'Empieza gratis. Sube de plan cuando estés listo. Desde $0/mes hasta $190/mes según el tamaño de tu equipo. Todas las funciones incluidas en cada plan. Sin tarjeta de crédito.'
+      : 'OPS pricing starts free. Plans from $0 to $190/month based on crew size. Every feature included at every tier — project management, scheduling, photo docs, invoicing. No credit card required.',
     alternates: {
       canonical: 'https://opsapp.co/plans',
     },
@@ -115,6 +115,25 @@ export default async function PlansPage() {
 
   return (
     <>
+      {/* FAQ structured data for rich results */}
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{
+          __html: JSON.stringify({
+            '@context': 'https://schema.org',
+            '@type': 'FAQPage',
+            mainEntity: faqItems.map((item) => ({
+              '@type': 'Question',
+              name: item.question,
+              acceptedAnswer: {
+                '@type': 'Answer',
+                text: item.answer,
+              },
+            })),
+          }),
+        }}
+      />
+
       <PlansHero />
 
       {/* Pricing cards */}

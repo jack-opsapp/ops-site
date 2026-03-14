@@ -18,10 +18,10 @@ import { getLocale, getTDict } from '@/i18n/server';
 export async function generateMetadata(): Promise<Metadata> {
   const locale = await getLocale();
   return {
-    title: locale === 'es' ? 'Herramientas' : 'Tools',
+    title: locale === 'es' ? 'Herramientas para Contratistas' : 'Free Tools for Contractors',
     description: locale === 'es'
-      ? 'Herramientas diseñadas para profesionales de los oficios. Evaluación de liderazgo, análisis SEO con IA y calculadora de estimaciones.'
-      : 'Purpose-built tools for trades professionals. Leadership assessment, AI SEO analysis, and estimating calculator.',
+      ? 'Herramientas gratuitas para profesionales de los oficios. Evaluación de liderazgo con IA, cursos para negocios de construcción y calculadoras de estimación.'
+      : 'Free tools built for trades professionals. AI-powered leadership assessment, construction business courses, and estimating calculators. No signup required.',
     alternates: {
       canonical: 'https://opsapp.co/tools',
     },

@@ -8,10 +8,10 @@ import { getLocale, getTDict } from '@/i18n/server';
 export async function generateMetadata(): Promise<Metadata> {
   const locale = await getLocale();
   return {
-    title: locale === 'es' ? 'Empresa' : 'Company',
+    title: locale === 'es' ? 'Nuestra Historia' : 'About OPS',
     description: locale === 'es'
-      ? 'OPS fue fundado por un contratista que escaló un negocio de decks y barandas de $0 a $1.6M — y construyó el software que su equipo realmente usaría.'
-      : 'OPS was founded by a contractor who scaled a deck and railing business from $0 to $1.6M — and built the software his crew would actually use.',
+      ? 'OPS fue creado por un contratista que escaló un negocio de decks de $0 a $1.6M en 4 años. Probó Jobber, ServiceTitan, Housecall Pro. Ninguno funcionó. Así que construyó el suyo.'
+      : 'OPS was built by a contractor who scaled a deck and railing business from $0 to $1.6M in 4 years. Tried Jobber, ServiceTitan, Housecall Pro. None worked for his crew. So he built his own.',
     alternates: {
       canonical: 'https://opsapp.co/company',
     },

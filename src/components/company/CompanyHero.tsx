@@ -20,7 +20,7 @@ export default async function CompanyHero() {
       {HERO_IMAGE && (
         <Image
           src={`/images/heroes/${HERO_IMAGE}`}
-          alt=""
+          alt="OPS founder and contractor on a job site"
           fill
           priority
           className="object-cover"

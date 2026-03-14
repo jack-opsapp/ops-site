@@ -19,8 +19,15 @@ export async function generateMetadata(): Promise<Metadata> {
   return {
     title: 'Legal',
     description: locale === 'es'
-      ? 'Términos de Servicio, Política de Privacidad, Acuerdo de Licencia de Usuario Final y Acuerdo de Procesamiento de Datos de OPS.'
+      ? 'Términos de Servicio, Política de Privacidad, EULA y Acuerdo de Procesamiento de Datos de OPS.'
       : 'OPS Terms of Service, Privacy Policy, End User License Agreement, and Data Processing Agreement.',
+    alternates: {
+      canonical: 'https://opsapp.co/legal',
+    },
+    robots: {
+      index: true,
+      follow: true,
+    },
   };
 }
 

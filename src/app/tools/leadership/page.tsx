@@ -16,8 +16,11 @@ import AmbientBurst from '@/components/assessment/AmbientBurst';
 import PathSelector from '@/components/assessment/PathSelector';
 
 export const metadata: Metadata = {
-  title: 'Leadership Assessment',
-  description: 'Discover your leadership archetype with our AI-powered assessment. Understand your strengths, blind spots, and growth path.',
+  title: 'Leadership Assessment for Contractors',
+  description: 'Discover your leadership archetype. AI-powered assessment built for trades business owners and crew leads. Understand your strengths, blind spots, and growth path. Free — takes 10 minutes.',
+  alternates: {
+    canonical: 'https://opsapp.co/tools/leadership',
+  },
 };
 
 /* ------------------------------------------------------------------ */

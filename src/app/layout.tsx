@@ -10,45 +10,32 @@ import './globals.css';
 
 export async function generateMetadata(): Promise<Metadata> {
   const locale = await getLocale();
-  const isEs = locale === 'es';
   return {
     metadataBase: new URL('https://opsapp.co'),
     title: {
-      default: isEs
+      default: locale === 'es'
         ? 'OPS — Sistema Operativo de Proyectos'
         : 'OPS — Operational Project System',
       template: '%s | OPS',
     },
-    description: isEs
-      ? 'Dirige tu operación. Hecho para los oficios.'
-      : 'Run your operation. Built for the trades.',
+    description: locale === 'es'
+      ? 'App de gestión de trabajo para contratistas y equipos de campo. Seguimiento de proyectos, programación de equipos, documentación fotográfica y facturación. Sin entrenamiento necesario.'
+      : 'Job management app for contractors and field crews. Project tracking, crew scheduling, photo documentation, and invoicing. No training required — your crew opens it and knows what to do.',
     openGraph: {
       type: 'website',
-      locale: isEs ? 'es_MX' : 'en_US',
+      locale: locale === 'es' ? 'es_MX' : 'en_US',
       url: 'https://opsapp.co',
       siteName: 'OPS',
-      images: [
-        {
-          url: '/images/og-image.png',
-          width: 1200,
-          height: 630,
-          alt: 'OPS — Operational Project System',
-        },
-      ],
+      images: [{ url: 'https://opsapp.co/images/og-image.png', width: 1200, height: 630, alt: 'OPS — Job management built for trades crews' }],
     },
     twitter: {
       card: 'summary_large_image',
-      images: ['/images/og-image.png'],
-    },
-    other: {
-      'theme-color': '#0D0D0D',
-      'format-detection': 'telephone=no',
+      images: ['https://opsapp.co/images/og-image.png'],
     },
     alternates: {
-      canonical: 'https://opsapp.co',
       languages: {
-        'en': 'https://opsapp.co',
-        'es': 'https://opsapp.co',
+        en: 'https://opsapp.co',
+        es: 'https://opsapp.co?lang=es',
       },
     },
   };
@@ -61,43 +48,54 @@ export default async function RootLayout({
 }>) {
   const locale = await getLocale();
 
-  // Static JSON-LD — all values are hardcoded string literals, safe from injection
-  const orgJsonLd = JSON.stringify({
-    '@context': 'https://schema.org',
-    '@type': 'SoftwareApplication',
-    name: 'OPS',
-    alternateName: 'Operational Project System',
-    url: 'https://opsapp.co',
-    applicationCategory: 'BusinessApplication',
-    operatingSystem: 'iOS, Web',
-    description: 'Project management and crew operations platform built for the trades.',
-    offers: {
-      '@type': 'Offer',
-      price: '0',
-      priceCurrency: 'USD',
-      description: 'Free trial, then from $29/month',
-    },
-    publisher: {
-      '@type': 'Organization',
-      name: 'OPS',
-      url: 'https://opsapp.co',
-      logo: {
-        '@type': 'ImageObject',
-        url: 'https://opsapp.co/images/ops-logo-white.png',
-      },
-    },
-  });
-
   return (
     <html lang={locale} className={`${mohave.variable} ${kosugi.variable}`}>
       <body className="font-body antialiased">
-        <script
-          type="application/ld+json"
-          dangerouslySetInnerHTML={{ __html: orgJsonLd }}
-        />
         <LanguageProvider locale={locale}>
           <PageLayout>{children}</PageLayout>
         </LanguageProvider>
+        {/* Sitewide structured data — Organization + WebSite */}
+        <script
+          type="application/ld+json"
+          dangerouslySetInnerHTML={{
+            __html: JSON.stringify([
+              {
+                "@context": "https://schema.org",
+                "@type": "Organization",
+                "name": "OPS",
+                "url": "https://opsapp.co",
+                "logo": "https://opsapp.co/images/ops-logo-white.png",
+                "description": "Field-first job management app built by a contractor for trades crews. Project tracking, crew scheduling, photo documentation, and invoicing — no training required.",
+                "founder": {
+                  "@type": "Person",
+                  "name": "Jack"
+                },
+                "foundingDate": "2024",
+                "sameAs": [
+                  "https://instagram.com/ops.app.co",
+                  "https://linkedin.com/company/ops-app",
+                  "https://apps.apple.com/us/app/ops-job-crew-management/id6746662078"
+                ],
+                "contactPoint": {
+                  "@type": "ContactPoint",
+                  "contactType": "customer support",
+                  "url": "https://opsapp.co/resources"
+                }
+              },
+              {
+                "@context": "https://schema.org",
+                "@type": "WebSite",
+                "name": "OPS",
+                "url": "https://opsapp.co",
+                "description": "Job management software built for trades contractors and field crews. Track projects, schedule crews, document with photos, and manage your operation from one app.",
+                "publisher": {
+                  "@type": "Organization",
+                  "name": "OPS"
+                }
+              }
+            ])
+          }}
+        />
         <Analytics />
         <SpeedInsights />
         <GoogleAnalytics />

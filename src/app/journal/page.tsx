@@ -13,8 +13,8 @@ import NewsletterSignup from '@/components/shared/NewsletterSignup';
 import { getAllLivePosts, getBlogCategories } from '@/lib/blog';
 
 export const metadata: Metadata = {
-  title: 'Journal',
-  description: 'Insights, guides, and stories for trades professionals. Crew management, project operations, and building a better business in the field.',
+  title: 'Journal — OPS Blog',
+  description: 'Straight talk on running a trades business. Job costing, crew management, selling your company, and lessons from the field. Written by contractors, not consultants.',
   alternates: {
     canonical: 'https://opsapp.co/journal',
   },

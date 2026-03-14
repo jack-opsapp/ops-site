@@ -9,10 +9,10 @@ import { getLocale, getTDict } from '@/i18n/server';
 export async function generateMetadata(): Promise<Metadata> {
   const locale = await getLocale();
   return {
-    title: locale === 'es' ? 'Recursos' : 'Resources',
+    title: locale === 'es' ? 'Ayuda y Soporte' : 'Help & Support',
     description: locale === 'es'
-      ? 'Obtén ayuda con OPS. Descarga la app, lee las preguntas frecuentes, explora guías, o contacta al equipo directamente.'
-      : 'Get help with OPS. Download the app, read the FAQ, explore guides, or reach out to the team directly.',
+      ? 'Obtén ayuda con OPS. Descarga la app, lee las preguntas frecuentes, o habla directamente con el fundador. Sin tickets de soporte, sin chatbots.'
+      : 'Get help with OPS. Download the app, read the FAQ, or talk directly to the founder. No support tickets. No chatbots. Real answers from the person who built it.',
     alternates: {
       canonical: 'https://opsapp.co/resources',
     },
