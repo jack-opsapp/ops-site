@@ -18,7 +18,7 @@ import { getLocale, getTDict } from '@/i18n/server';
 export async function generateMetadata(): Promise<Metadata> {
   const locale = await getLocale();
   return {
-    title: locale === 'es' ? 'Herramientas para Contratistas' : 'Free Tools for Contractors',
+    title: locale === 'es' ? 'Herramientas para Profesionales' : 'Free Tools for Trades Professionals',
     description: locale === 'es'
       ? 'Herramientas gratuitas para profesionales de los oficios. Evaluación de liderazgo con IA, cursos para negocios de construcción y calculadoras de estimación.'
       : 'Free tools built for trades professionals. AI-powered leadership assessment, construction business courses, and estimating calculators. No signup required.',

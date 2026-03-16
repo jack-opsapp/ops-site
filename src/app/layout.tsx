@@ -19,8 +19,8 @@ export async function generateMetadata(): Promise<Metadata> {
       template: '%s | OPS',
     },
     description: locale === 'es'
-      ? 'App de gestión de trabajo para contratistas y equipos de campo. Seguimiento de proyectos, programación de equipos, documentación fotográfica y facturación. Sin entrenamiento necesario.'
-      : 'Job management app for contractors and field crews. Project tracking, crew scheduling, photo documentation, and invoicing. No training required — your crew opens it and knows what to do.',
+      ? 'App de gestión de trabajo para negocios de servicio y equipos de campo. Seguimiento de proyectos, programación de equipos, documentación fotográfica y facturación. Sin entrenamiento necesario.'
+      : 'Job management app for service-based businesses and field crews. Project tracking, crew scheduling, photo documentation, and invoicing. No training required — your crew opens it and knows what to do.',
     openGraph: {
       type: 'website',
       locale: locale === 'es' ? 'es_MX' : 'en_US',
@@ -65,7 +65,7 @@ export default async function RootLayout({
                 "name": "OPS",
                 "url": "https://opsapp.co",
                 "logo": "https://opsapp.co/images/ops-logo-white.png",
-                "description": "Field-first job management app built by a contractor for trades crews. Project tracking, crew scheduling, photo documentation, and invoicing — no training required.",
+                "description": "Field-first job management app built by a tradesperson for service-based businesses and field crews. Project tracking, crew scheduling, photo documentation, and invoicing — no training required.",
                 "founder": {
                   "@type": "Person",
                   "name": "Jack"
@@ -87,7 +87,7 @@ export default async function RootLayout({
                 "@type": "WebSite",
                 "name": "OPS",
                 "url": "https://opsapp.co",
-                "description": "Job management software built for trades contractors and field crews. Track projects, schedule crews, document with photos, and manage your operation from one app.",
+                "description": "Job management software built for service-based businesses and field crews. Track projects, schedule crews, document with photos, and manage your operation from one app.",
                 "publisher": {
                   "@type": "Organization",
                   "name": "OPS"

@@ -11,7 +11,7 @@ export async function generateMetadata(): Promise<Metadata> {
     title: locale === 'es' ? 'Nuestra Historia' : 'About OPS',
     description: locale === 'es'
       ? 'OPS fue creado por un contratista que escaló un negocio de decks de $0 a $1.6M en 4 años. Probó Jobber, ServiceTitan, Housecall Pro. Ninguno funcionó. Así que construyó el suyo.'
-      : 'OPS was built by a contractor who scaled a deck and railing business from $0 to $1.6M in 4 years. Tried Jobber, ServiceTitan, Housecall Pro. None worked for his crew. So he built his own.',
+      : 'OPS was built by a tradesperson who scaled a deck and railing business from $0 to $1.6M in 4 years. Tried Jobber, ServiceTitan, Housecall Pro in his last year. Crew wouldn\'t touch them. So he built his own.',
     alternates: {
       canonical: 'https://opsapp.co/company',
     },

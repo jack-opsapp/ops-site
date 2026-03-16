@@ -16,11 +16,11 @@ export async function generateMetadata(): Promise<Metadata> {
   const locale = await getLocale();
   return {
     title: locale === 'es'
-      ? 'OPS — Gestión de Trabajo para Contratistas y Equipos de Campo'
-      : 'OPS — Job Management for Contractors and Field Crews',
+      ? 'OPS — Gestión de Trabajo para Negocios de Servicio y Equipos de Campo'
+      : 'OPS — Job Management for Service-Based Businesses and Field Crews',
     description: locale === 'es'
-      ? 'La app de gestión de trabajo que tu equipo realmente usará. Programación de equipos, seguimiento de proyectos, documentación fotográfica. Construida por un contratista. Gratis para empezar.'
-      : 'The job management app your crew will actually use. Crew scheduling, project tracking, photo documentation. Built by a contractor who scaled to $1.6M. Free to start.',
+      ? 'La app de gestión de trabajo que tu equipo realmente usará. Programación de equipos, seguimiento de proyectos, documentación fotográfica. Construida por un profesional del oficio. Gratis para empezar.'
+      : 'The job management app your crew will actually use. Crew scheduling, project tracking, photo documentation. Built by a tradesperson who scaled to $1.6M. Free to start.',
     alternates: {
       canonical: 'https://opsapp.co',
     },
@@ -40,7 +40,7 @@ export default function HomePage() {
             "applicationCategory": "BusinessApplication",
             "operatingSystem": "iOS, Web",
             "url": "https://opsapp.co",
-            "description": "Field-first job management app for trades contractors. Track projects, schedule crews, document with photos, manage clients and invoicing. No training required — your crew opens it and knows what to do.",
+            "description": "Field-first job management app for service-based businesses and trades crews. Track projects, schedule crews, document with photos, manage clients and invoicing. No training required — your crew opens it and knows what to do.",
             "offers": {
               "@type": "AggregateOffer",
               "lowPrice": "0",

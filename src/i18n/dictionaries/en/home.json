@@ -46,9 +46,9 @@
   "socialProof.stat3.label": "JOBS COMPLETED",
 
   "whatIsOps.sectionLabel": "WHAT IS OPS",
-  "whatIsOps.heading": "JOB MANAGEMENT SOFTWARE BUILT FOR THE TRADES",
-  "whatIsOps.definition": "OPS is a field-first job management app for trades contractors and their crews. It handles project tracking, crew scheduling, photo documentation, client management, estimates, invoicing, and turn-by-turn navigation to job sites — all from one app that works offline.",
-  "whatIsOps.origin": "Built by a contractor who scaled a deck and railing business from $0 to $1.6M in 4 years using Jobber, ServiceTitan, and Housecall Pro — and watched his crew refuse to open any of them. OPS was built to be the app crews actually use.",
+  "whatIsOps.heading": "JOB MANAGEMENT SOFTWARE BUILT FOR SERVICE-BASED BUSINESSES",
+  "whatIsOps.definition": "OPS is a field-first job management app for service-based businesses and trades crews. It handles project tracking, crew scheduling, photo documentation, client management, estimates, invoicing, and turn-by-turn navigation to job sites — all from one app that works offline.",
+  "whatIsOps.origin": "Built by a tradesperson who scaled a deck and railing business from $0 to $1.6M in 4 years. In his last year, he tried Jobber, ServiceTitan, and Housecall Pro. His crew wouldn't touch any of them — too complex, too unintuitive. So he built OPS, and used it to break the million-dollar mark.",
   "whatIsOps.detail1.title": "Offline-first architecture",
   "whatIsOps.detail1.copy": "OPS works without cell signal. Changes save locally and sync automatically when connectivity returns. Built for basements, rural areas, underground, and anywhere service drops.",
   "whatIsOps.detail2.title": "Field-optimized design",
