@@ -20,7 +20,7 @@ export async function generateMetadata(): Promise<Metadata> {
       : 'OPS — Job Management for Service-Based Businesses and Field Crews',
     description: locale === 'es'
       ? 'La app de gestión de trabajo que tu equipo realmente usará. Programación de equipos, seguimiento de proyectos, documentación fotográfica. Construida por un profesional del oficio. Gratis para empezar.'
-      : 'The job management app your crew will actually use. Crew scheduling, project tracking, photo documentation. Built by a tradesperson who scaled to $1.6M. Free to start.',
+      : 'The job management app your crew will actually use. Crew scheduling, project tracking, photo documentation. Built by trades who scaled to $1.6M. Free to start.',
     alternates: {
       canonical: 'https://opsapp.co',
     },

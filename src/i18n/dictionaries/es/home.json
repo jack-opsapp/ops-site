@@ -48,7 +48,7 @@
   "whatIsOps.sectionLabel": "QUÉ ES OPS",
   "whatIsOps.heading": "SOFTWARE DE GESTIÓN DE TRABAJO PARA NEGOCIOS DE SERVICIO",
   "whatIsOps.definition": "OPS es una app de gestión de trabajo diseñada para negocios de servicio y equipos de campo. Maneja seguimiento de proyectos, programación de equipos, documentación fotográfica, gestión de clientes, estimaciones, facturación y navegación GPS a sitios de trabajo — todo desde una sola app que funciona sin conexión.",
-  "whatIsOps.origin": "Construido por un profesional del oficio que escaló un negocio de decks y barandas de $0 a $1.6M en 4 años. En su último año, probó Jobber, ServiceTitan y Housecall Pro. Su equipo no quiso usar ninguno — demasiado complejos, demasiado poco intuitivos. Así que construyó OPS, y lo usó para superar la marca del millón de dólares.",
+  "whatIsOps.origin": "Construido por un dueño-operador que escaló un negocio de decks y barandas de $0 a $1.6M en 4 años. En su último año, probó Jobber, ServiceTitan y Housecall Pro. Su equipo no quiso usar ninguno — demasiado complejos, demasiado poco intuitivos. Así que construyó OPS, y lo usó para superar la marca del millón de dólares.",
   "whatIsOps.detail1.title": "Arquitectura offline-first",
   "whatIsOps.detail1.copy": "OPS funciona sin señal de celular. Los cambios se guardan localmente y se sincronizan automáticamente cuando vuelve la conexión. Hecho para sótanos, áreas rurales, subterráneos y cualquier lugar sin servicio.",
   "whatIsOps.detail2.title": "Diseño optimizado para campo",
