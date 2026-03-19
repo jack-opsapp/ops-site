@@ -86,10 +86,14 @@ function PhoneSceneContent() {
   );
 }
 
-export default function PhoneScene() {
+interface PhoneSceneProps {
+  isVisible?: boolean;
+}
+
+export default function PhoneScene({ isVisible = true }: PhoneSceneProps) {
   return (
     <Canvas
-      frameloop="demand"
+      frameloop={isVisible ? 'demand' : 'never'}
       camera={{
         position: [1.5, 1.0, 3.5],
         fov: 45,
