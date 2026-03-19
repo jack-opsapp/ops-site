@@ -1,41 +1,55 @@
 'use client';
 
 /**
- * PhoneEnvironment — Lighting and ground shadow for the 3D phone scene.
+ * PhoneEnvironment — Lighting, environment map, and ground shadow.
  *
- * No HDR environment map (wrong aesthetic, too heavy).
- * Single directional light + ambient + ContactShadows from drei.
+ * Uses drei's <Environment> with a minimal preset for reflections on
+ * MeshPhysicalMaterial (clearcoat, metalness). The preset is lightweight
+ * (~50KB) and doesn't dominate the scene — just provides enough data for
+ * subtle specular highlights on the glass body and camera lenses.
  */
 
-import { ContactShadows } from '@react-three/drei';
+import { ContactShadows, Environment } from '@react-three/drei';
 
 export default function PhoneEnvironment() {
   return (
     <>
-      {/* Ambient light — ensures no edge disappears completely */}
-      <ambientLight intensity={0.2} />
+      {/* Environment map — provides reflection data for physical materials.
+          "night" preset: dark, low-key — matches the OPS aesthetic.
+          Only affects materials with envMapIntensity > 0. */}
+      <Environment preset="night" />
 
-      {/* Main directional light — from upper-left to catch wireframe edges */}
+      {/* Ambient light — base illumination so no surface goes fully black */}
+      <ambientLight intensity={0.3} />
+
+      {/* Key light — upper-left, catches edges and creates specular on glass */}
       <directionalLight
-        position={[-3, 4, 5]}
-        intensity={0.4}
+        position={[-4, 5, 6]}
+        intensity={0.6}
         color="#FFFFFF"
       />
 
-      {/* Subtle fill light from the opposite side */}
+      {/* Fill light — softer, from the right, accent-tinted */}
       <directionalLight
-        position={[2, 1, -3]}
-        intensity={0.1}
-        color="#597794" // Slight accent tint on fill
+        position={[3, 2, -4]}
+        intensity={0.15}
+        color="#597794"
       />
 
-      {/* Ground shadow — subtle, diffused, grounds the phone in space */}
+      {/* Rim light — from behind to outline the phone silhouette */}
+      <directionalLight
+        position={[0, 0, -6]}
+        intensity={0.2}
+        color="#FFFFFF"
+      />
+
+      {/* Ground shadow — subtle, diffused */}
       <ContactShadows
         position={[0, -2.2, 0]}
-        opacity={0.25}
-        scale={8}
+        opacity={0.3}
+        scale={10}
         blur={2.5}
-        far={4}
+        far={5}
         color="#000000"
       />
     </>
