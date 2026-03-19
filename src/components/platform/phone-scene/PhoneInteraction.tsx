@@ -24,11 +24,11 @@ import { CANVAS_HEIGHT, LAYOUT, TABS, type TabId } from './constants';
 
 /**
  * UV y threshold for tab bar detection.
- * With flipY=false, canvas top = UV y=0, canvas bottom = UV y=1.
+ * With flipY=true (default), canvas bottom maps to UV y=0.
  * Tab bar occupies the bottom LAYOUT.tabBarHeight pixels of the canvas,
- * so it sits at UV y > (1 - tabBarHeight/canvasHeight).
+ * so it sits at UV y < tabBarHeight/canvasHeight ≈ 0.078.
  */
-const TAB_BAR_UV_Y_MIN = 1 - LAYOUT.tabBarHeight / CANVAS_HEIGHT;
+const TAB_BAR_UV_THRESHOLD = LAYOUT.tabBarHeight / CANVAS_HEIGHT;
 
 /** Max pointer movement (px) between down/up to count as a tap, not a drag */
 const TAP_THRESHOLD_PX = 4;
@@ -67,10 +67,6 @@ export default function PhoneInteraction({
 
     const texture = new CanvasTexture(renderer.getCanvas());
     texture.colorSpace = SRGBColorSpace;
-    // Disable flipY so canvas Y and UV Y agree. Without this, the tab
-    // bar drawn at canvas bottom maps to UV y ≈ 1.0 instead of ≈ 0,
-    // and all tab-hit detection is inverted.
-    texture.flipY = false;
     textureRef.current = texture;
 
     // Apply texture to screen mesh material
@@ -146,8 +142,8 @@ export default function PhoneInteraction({
         const uv = intersects[0].uv;
         if (!uv) return;
 
-        // UV y > threshold → bottom of screen → tab bar zone
-        if (uv.y > TAB_BAR_UV_Y_MIN) {
+        // UV y < threshold → bottom of screen → tab bar zone
+        if (uv.y < TAB_BAR_UV_THRESHOLD) {
           const tabIndex = Math.floor(uv.x * 4);
           const clampedIndex = Math.max(0, Math.min(3, tabIndex));
           const tab = TABS[clampedIndex];
@@ -178,7 +174,7 @@ export default function PhoneInteraction({
 
       if (intersects.length > 0 && intersects[0].uv) {
         const uv = intersects[0].uv;
-        if (uv.y > TAB_BAR_UV_Y_MIN) {
+        if (uv.y < TAB_BAR_UV_THRESHOLD) {
           gl.domElement.style.cursor = 'pointer';
         } else {
           gl.domElement.style.cursor = 'grab';
