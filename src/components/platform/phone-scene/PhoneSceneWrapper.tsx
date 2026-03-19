@@ -21,7 +21,9 @@ const PhoneScene = dynamic(() => import('./PhoneScene'), {
 
 export default function PhoneSceneWrapper() {
   const containerRef = useRef<HTMLDivElement>(null);
-  const [isVisible, setIsVisible] = useState(false);
+  // Default to true — hero is above the fold, visible on initial load.
+  // IntersectionObserver will set to false when scrolled away.
+  const [isVisible, setIsVisible] = useState(true);
 
   useEffect(() => {
     const el = containerRef.current;

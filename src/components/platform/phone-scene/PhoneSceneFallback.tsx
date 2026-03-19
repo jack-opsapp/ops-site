@@ -1,3 +1,5 @@
+'use client';
+
 /**
  * PhoneSceneFallback — Static placeholder before 3D loads.
  * Matches the initial angle and size of the R3F phone scene.

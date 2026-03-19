@@ -40,6 +40,16 @@ function PhoneSceneContent({ isVisible }: PhoneSceneContentProps) {
     null,
   ) as React.MutableRefObject<OrbitControlsImpl | null>;
 
+  // State signal that flips when OrbitControls mounts, so useAutoRotation's
+  // drag-tracking effect re-runs with a non-null controlsRef.current.
+  const [controlsReady, setControlsReady] = useState(false);
+
+  // Callback ref for OrbitControls — populates controlsRef AND signals readiness
+  const controlsCallbackRef = useCallback((instance: OrbitControlsImpl | null) => {
+    controlsRef.current = instance;
+    setControlsReady(!!instance);
+  }, []);
+
   const { invalidate } = useThree();
 
   const [isMobile, setIsMobile] = useState(false);
@@ -55,6 +65,7 @@ function PhoneSceneContent({ isVisible }: PhoneSceneContentProps) {
   // Auto-rotation: disabled when off-screen or when user prefers reduced motion
   useAutoRotation({
     controlsRef,
+    controlsReady,
     isMobile,
     enabled: isVisible && !prefersReducedMotion,
   });
@@ -70,11 +81,12 @@ function PhoneSceneContent({ isVisible }: PhoneSceneContentProps) {
           controlsRef={controlsRef}
           invalidate={invalidate}
           prefersReducedMotion={prefersReducedMotion}
+          isVisible={isVisible}
         />
       )}
 
       <OrbitControls
-        ref={controlsRef}
+        ref={controlsCallbackRef}
         enabled={!isMobile}  // Disable drag-to-orbit on mobile (conflicts with page scroll)
         enableZoom={false}
         enablePan={false}

@@ -25,11 +25,12 @@ const MOBILE_PAUSE_MS = 1500;    // Pause duration on mobile tap
 
 interface UseAutoRotationParams {
   controlsRef: React.RefObject<OrbitControlsImpl | null>;
+  controlsReady: boolean; // State signal — flips true when OrbitControls mounts
   isMobile: boolean;
   enabled: boolean;
 }
 
-export function useAutoRotation({ controlsRef, isMobile, enabled }: UseAutoRotationParams) {
+export function useAutoRotation({ controlsRef, controlsReady, isMobile, enabled }: UseAutoRotationParams) {
   const currentSpeed = useRef(0);
   const targetSpeed = useRef(isMobile ? SPEED_MOBILE : SPEED_DEFAULT);
   const isDragging = useRef(false);
@@ -90,7 +91,10 @@ export function useAutoRotation({ controlsRef, isMobile, enabled }: UseAutoRotat
     };
   }, [gl.domElement, isMobile, updateTargetSpeed]);
 
-  // Drag state tracking via OrbitControls events
+  // Drag state tracking via OrbitControls events.
+  // controlsReady is a state signal that re-triggers this effect when
+  // OrbitControls mounts — without it, controlsRef.current is null on
+  // first run and the event listeners never attach.
   useEffect(() => {
     const controls = controlsRef.current;
     if (!controls) return;
@@ -116,7 +120,7 @@ export function useAutoRotation({ controlsRef, isMobile, enabled }: UseAutoRotat
       controls.removeEventListener('end', onEnd);
       if (resumeTimer.current) clearTimeout(resumeTimer.current);
     };
-  }, [controlsRef, isMobile, updateTargetSpeed]);
+  }, [controlsRef, controlsReady, isMobile, updateTargetSpeed]);
 
   return { isDragging };
 }

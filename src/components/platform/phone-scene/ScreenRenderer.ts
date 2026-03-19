@@ -33,6 +33,7 @@ export class ScreenRenderer {
   private pendingTab: TabId | null = null;
   private rafId: number | null = null;
   private onFrameCallback: (() => void) | null = null;
+  private paused = false;
 
   constructor() {
     this.canvas = document.createElement('canvas');
@@ -42,9 +43,9 @@ export class ScreenRenderer {
     if (!ctx) throw new Error('Canvas 2D context not available');
     this.ctx = ctx;
 
-    // Render a static frame immediately so the canvas is never blank
-    // (prevents flash when Sprint 3 maps this as a texture)
-    this.drawStatic();
+    // Canvas starts blank. PhoneInteraction calls drawStatic() or
+    // startInitialDraw() after registering onFrame, so the texture
+    // update propagates correctly through Three.js.
   }
 
   /** Get the canvas element (for use as CanvasTexture source) */
@@ -92,8 +93,30 @@ export class ScreenRenderer {
     }
   }
 
+  /** Pause/resume the RAF loop (e.g. when scrolled off-screen). */
+  setPaused(paused: boolean) {
+    if (this.paused === paused) return;
+    this.paused = paused;
+
+    if (paused && this.rafId) {
+      // Cancel running RAF to stop wasting cycles off-screen
+      cancelAnimationFrame(this.rafId);
+      this.rafId = null;
+    } else if (!paused && this.isAnimating && !this.rafId) {
+      // Resume: restart the RAF loop from where we left off
+      this.animationStartTime = performance.now();
+      this.animate();
+    }
+  }
+
   /** Main animation loop */
   private animate = () => {
+    // If paused (off-screen), stop scheduling frames
+    if (this.paused) {
+      this.rafId = null;
+      return;
+    }
+
     const now = performance.now();
     const elapsed = now - this.animationStartTime;
 

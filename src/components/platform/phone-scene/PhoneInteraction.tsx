@@ -22,8 +22,13 @@ import type { OrbitControls as OrbitControlsImpl } from 'three-stdlib';
 import { ScreenRenderer } from './ScreenRenderer';
 import { CANVAS_HEIGHT, LAYOUT, TABS, type TabId } from './constants';
 
-/** UV y threshold — below this value the click is in the tab bar zone */
-const TAB_BAR_UV_THRESHOLD = LAYOUT.tabBarHeight / CANVAS_HEIGHT;
+/**
+ * UV y threshold for tab bar detection.
+ * With flipY=false, canvas top = UV y=0, canvas bottom = UV y=1.
+ * Tab bar occupies the bottom LAYOUT.tabBarHeight pixels of the canvas,
+ * so it sits at UV y > (1 - tabBarHeight/canvasHeight).
+ */
+const TAB_BAR_UV_Y_MIN = 1 - LAYOUT.tabBarHeight / CANVAS_HEIGHT;
 
 /** Max pointer movement (px) between down/up to count as a tap, not a drag */
 const TAP_THRESHOLD_PX = 4;
@@ -33,6 +38,7 @@ interface PhoneInteractionProps {
   controlsRef: React.MutableRefObject<OrbitControlsImpl | null>;
   invalidate: () => void;
   prefersReducedMotion?: boolean;
+  isVisible?: boolean;
   onTabChange?: (tab: TabId) => void;
 }
 
@@ -41,6 +47,7 @@ export default function PhoneInteraction({
   controlsRef,
   invalidate,
   prefersReducedMotion = false,
+  isVisible = true,
   onTabChange,
 }: PhoneInteractionProps) {
   const rendererRef = useRef<ScreenRenderer | null>(null);
@@ -60,6 +67,10 @@ export default function PhoneInteraction({
 
     const texture = new CanvasTexture(renderer.getCanvas());
     texture.colorSpace = SRGBColorSpace;
+    // Disable flipY so canvas Y and UV Y agree. Without this, the tab
+    // bar drawn at canvas bottom maps to UV y ≈ 1.0 instead of ≈ 0,
+    // and all tab-hit detection is inverted.
+    texture.flipY = false;
     textureRef.current = texture;
 
     // Apply texture to screen mesh material
@@ -67,16 +78,16 @@ export default function PhoneInteraction({
     material.map = texture;
     material.needsUpdate = true;
 
-    // When the renderer draws a frame, flag the texture dirty and wake
-    // R3F's demand frame loop so useFrame runs to propagate the update.
-    // Without the invalidate() call here, frameloop="demand" never ticks
-    // and the initial draw-in animation shows a black screen.
+    // Register onFrame BEFORE triggering first draw — so the texture
+    // dirty flag + invalidate() fire on that first render. Without this
+    // ordering the constructor's draw (now removed) or startInitialDraw()
+    // would paint to a canvas that Three.js never picks up.
     renderer.onFrame(() => {
       needsUpdate.current = true;
       invalidate();
     });
 
-    // Reduced motion: render fully drawn instantly. No draw-in animation.
+    // Now trigger the first render with callback already registered.
     if (prefersReducedMotion) {
       renderer.drawStatic();
     } else {
@@ -88,6 +99,11 @@ export default function PhoneInteraction({
       texture.dispose();
     };
   }, [screenMesh, invalidate, prefersReducedMotion]);
+
+  // Pause/resume ScreenRenderer RAF loop when off-screen to save battery
+  useEffect(() => {
+    rendererRef.current?.setPaused(!isVisible);
+  }, [isVisible]);
 
   // Propagate texture updates into the Three.js render cycle.
   // invalidate() is called from onFrame above to wake the loop;
@@ -130,8 +146,8 @@ export default function PhoneInteraction({
         const uv = intersects[0].uv;
         if (!uv) return;
 
-        // UV y < threshold → bottom of screen → tab bar zone
-        if (uv.y < TAB_BAR_UV_THRESHOLD) {
+        // UV y > threshold → bottom of screen → tab bar zone
+        if (uv.y > TAB_BAR_UV_Y_MIN) {
           const tabIndex = Math.floor(uv.x * 4);
           const clampedIndex = Math.max(0, Math.min(3, tabIndex));
           const tab = TABS[clampedIndex];
@@ -162,7 +178,7 @@ export default function PhoneInteraction({
 
       if (intersects.length > 0 && intersects[0].uv) {
         const uv = intersects[0].uv;
-        if (uv.y < TAB_BAR_UV_THRESHOLD) {
+        if (uv.y > TAB_BAR_UV_Y_MIN) {
           gl.domElement.style.cursor = 'pointer';
         } else {
           gl.domElement.style.cursor = 'grab';
