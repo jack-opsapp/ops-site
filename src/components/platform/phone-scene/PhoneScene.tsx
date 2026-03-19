@@ -13,12 +13,13 @@
  * needs to write .current for auto-rotation speed interpolation.
  */
 
-import { Suspense, useRef, useState, useCallback } from 'react';
+import { Suspense, useRef, useState, useCallback, useEffect } from 'react';
 import { Canvas, useThree } from '@react-three/fiber';
 import { OrbitControls } from '@react-three/drei';
 import PhoneModel from './PhoneModel';
 import PhoneEnvironment from './PhoneEnvironment';
 import PhoneInteraction from './PhoneInteraction';
+import { useAutoRotation } from './useAutoRotation';
 import type { Mesh } from 'three';
 import type { OrbitControls as OrbitControlsImpl } from 'three-stdlib';
 
@@ -33,12 +34,27 @@ function PhoneSceneContent() {
     setScreenMesh(mesh);
   }, []);
 
-  // MutableRefObject so Sprint 4 auto-rotation can write .current
+  // MutableRefObject so auto-rotation can write .current
   const controlsRef = useRef<OrbitControlsImpl | null>(
     null,
   ) as React.MutableRefObject<OrbitControlsImpl | null>;
 
   const { invalidate } = useThree();
+
+  const [isMobile, setIsMobile] = useState(false);
+
+  useEffect(() => {
+    setIsMobile(window.innerWidth < 768);
+    const onResize = () => setIsMobile(window.innerWidth < 768);
+    window.addEventListener('resize', onResize);
+    return () => window.removeEventListener('resize', onResize);
+  }, []);
+
+  useAutoRotation({
+    controlsRef,
+    isMobile,
+    enabled: true, // Will be wired to intersection observer visibility in Task 4.4
+  });
 
   return (
     <>
