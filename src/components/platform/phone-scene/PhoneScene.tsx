@@ -71,6 +71,7 @@ function PhoneSceneContent() {
 
       <OrbitControls
         ref={controlsRef}
+        enabled={!isMobile}  // Disable drag-to-orbit on mobile (conflicts with page scroll)
         enableZoom={false}
         enablePan={false}
         minPolarAngle={Math.PI / 6}       // 30 degrees
