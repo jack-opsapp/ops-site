@@ -112,7 +112,7 @@ export default function PhoneScene({ isVisible = true }: PhoneSceneProps) {
     <Canvas
       frameloop={isVisible ? 'demand' : 'never'}
       camera={{
-        position: [1.5, 1.0, 3.5],
+        position: [2.0, 0.5, 5.5],
         fov: 45,
         near: 0.1,
         far: 100,
