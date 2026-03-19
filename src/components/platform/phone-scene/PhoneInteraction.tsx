@@ -25,9 +25,12 @@ import { CANVAS_HEIGHT, LAYOUT, TABS, type TabId } from './constants';
 /** UV y threshold — below this value the click is in the tab bar zone */
 const TAB_BAR_UV_THRESHOLD = LAYOUT.tabBarHeight / CANVAS_HEIGHT;
 
+/** Max pointer movement (px) between down/up to count as a tap, not a drag */
+const TAP_THRESHOLD_PX = 4;
+
 interface PhoneInteractionProps {
   screenMesh: Mesh;
-  controlsRef: React.RefObject<OrbitControlsImpl | null>;
+  controlsRef: React.MutableRefObject<OrbitControlsImpl | null>;
   invalidate: () => void;
   onTabChange?: (tab: TabId) => void;
 }
@@ -45,6 +48,9 @@ export default function PhoneInteraction({
   const pointer = useRef(new Vector2());
   const needsUpdate = useRef(false);
 
+  // Track pointer-down position for click/drag disambiguation
+  const pointerDownPos = useRef<{ x: number; y: number } | null>(null);
+
   // Initialize ScreenRenderer and CanvasTexture
   useEffect(() => {
     const renderer = new ScreenRenderer();
@@ -59,9 +65,13 @@ export default function PhoneInteraction({
     material.map = texture;
     material.needsUpdate = true;
 
-    // Flag texture update whenever renderer draws a frame
+    // When the renderer draws a frame, flag the texture dirty and wake
+    // R3F's demand frame loop so useFrame runs to propagate the update.
+    // Without the invalidate() call here, frameloop="demand" never ticks
+    // and the initial draw-in animation shows a black screen.
     renderer.onFrame(() => {
       needsUpdate.current = true;
+      invalidate();
     });
 
     // Kick off the initial draw-in animation
@@ -71,26 +81,42 @@ export default function PhoneInteraction({
       renderer.destroy();
       texture.dispose();
     };
-  }, [screenMesh]);
+  }, [screenMesh, invalidate]);
 
-  // Propagate texture updates into the demand-mode frame loop
+  // Propagate texture updates into the Three.js render cycle.
+  // invalidate() is called from onFrame above to wake the loop;
+  // this hook sets the actual texture flag so Three.js re-uploads.
   useFrame(() => {
     if (needsUpdate.current && textureRef.current) {
       textureRef.current.needsUpdate = true;
       needsUpdate.current = false;
-      invalidate();
     }
   });
 
-  // --- Click: detect tab taps via raycasting + UV coords ---
-  const handleClick = useCallback(
-    (event: PointerEvent) => {
-      if (!rendererRef.current) return;
+  // --- Pointer down: record start position for drag disambiguation ---
+  const handlePointerDown = useCallback((event: PointerEvent) => {
+    pointerDownPos.current = { x: event.clientX, y: event.clientY };
+  }, []);
 
+  // --- Pointer up: only fire tab logic if movement < TAP_THRESHOLD_PX ---
+  const handlePointerUp = useCallback(
+    (event: PointerEvent) => {
+      if (!rendererRef.current || !pointerDownPos.current) return;
+
+      // Measure drag distance — if too large this was an orbit, not a tap
+      const dx = event.clientX - pointerDownPos.current.x;
+      const dy = event.clientY - pointerDownPos.current.y;
+      const dist = Math.sqrt(dx * dx + dy * dy);
+      pointerDownPos.current = null;
+
+      if (dist >= TAP_THRESHOLD_PX) return;
+
+      // Calculate pointer position in NDC (-1 to +1)
       const rect = gl.domElement.getBoundingClientRect();
       pointer.current.x = ((event.clientX - rect.left) / rect.width) * 2 - 1;
       pointer.current.y = -((event.clientY - rect.top) / rect.height) * 2 + 1;
 
+      // Raycast against screen mesh
       raycaster.current.setFromCamera(pointer.current, camera);
       const intersects = raycaster.current.intersectObject(screenMesh);
 
@@ -114,7 +140,7 @@ export default function PhoneInteraction({
     [screenMesh, camera, gl.domElement, onTabChange],
   );
 
-  // --- Hover: cursor = pointer over tab bar, grab elsewhere ---
+  // --- Hover: pointer over tab bar, grab over phone screen, default elsewhere ---
   const handlePointerMove = useCallback(
     (event: PointerEvent) => {
       const rect = gl.domElement.getBoundingClientRect();
@@ -128,15 +154,18 @@ export default function PhoneInteraction({
         const uv = intersects[0].uv;
         if (uv.y < TAB_BAR_UV_THRESHOLD) {
           gl.domElement.style.cursor = 'pointer';
-          return;
+        } else {
+          gl.domElement.style.cursor = 'grab';
         }
+      } else {
+        // Raycast missed the phone — default cursor, not grab
+        gl.domElement.style.cursor = 'default';
       }
-      gl.domElement.style.cursor = 'grab';
     },
     [screenMesh, camera, gl.domElement],
   );
 
-  // --- Leave: reset cursor to default (not 'grab') ---
+  // --- Leave: reset cursor to default ---
   const handlePointerLeave = useCallback(() => {
     gl.domElement.style.cursor = 'default';
   }, [gl.domElement]);
@@ -144,16 +173,18 @@ export default function PhoneInteraction({
   // Attach / detach event listeners on the canvas element
   useEffect(() => {
     const canvas = gl.domElement;
-    canvas.addEventListener('click', handleClick);
+    canvas.addEventListener('pointerdown', handlePointerDown);
+    canvas.addEventListener('pointerup', handlePointerUp);
     canvas.addEventListener('pointermove', handlePointerMove);
     canvas.addEventListener('pointerleave', handlePointerLeave);
 
     return () => {
-      canvas.removeEventListener('click', handleClick);
+      canvas.removeEventListener('pointerdown', handlePointerDown);
+      canvas.removeEventListener('pointerup', handlePointerUp);
       canvas.removeEventListener('pointermove', handlePointerMove);
       canvas.removeEventListener('pointerleave', handlePointerLeave);
     };
-  }, [gl.domElement, handleClick, handlePointerMove, handlePointerLeave]);
+  }, [gl.domElement, handlePointerDown, handlePointerUp, handlePointerMove, handlePointerLeave]);
 
   // Behaviour-only component — no visual output
   return null;

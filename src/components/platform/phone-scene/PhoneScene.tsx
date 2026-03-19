@@ -9,11 +9,11 @@
  * frameloop="demand" — only re-renders when invalidated (texture update,
  * orbit drag, auto-rotation). Zero GPU work when static.
  *
- * controlsRef typed as OrbitControlsImpl from three-stdlib — Sprint 4
- * needs this for auto-rotation speed interpolation.
+ * controlsRef typed as MutableRefObject<OrbitControlsImpl> — Sprint 4
+ * needs to write .current for auto-rotation speed interpolation.
  */
 
-import { Suspense, useRef, useState, useEffect } from 'react';
+import { Suspense, useRef, useState, useCallback } from 'react';
 import { Canvas, useThree } from '@react-three/fiber';
 import { OrbitControls } from '@react-three/drei';
 import PhoneModel from './PhoneModel';
@@ -24,22 +24,25 @@ import type { OrbitControls as OrbitControlsImpl } from 'three-stdlib';
 
 /** Inner scene content — useThree must be called inside Canvas */
 function PhoneSceneContent() {
-  const screenRef = useRef<Mesh>(null);
-  const controlsRef = useRef<OrbitControlsImpl>(null);
   const [screenMesh, setScreenMesh] = useState<Mesh | null>(null);
-  const { invalidate } = useThree();
 
-  // Capture the screen mesh ref after PhoneModel mounts so
-  // PhoneInteraction can attach the CanvasTexture to it
-  useEffect(() => {
-    if (screenRef.current) {
-      setScreenMesh(screenRef.current);
-    }
+  // Callback ref — fires when PhoneModel's screen mesh mounts/unmounts.
+  // No race with Suspense: React guarantees the callback fires after the
+  // DOM node is attached, regardless of when rendering completes.
+  const screenCallbackRef = useCallback((mesh: Mesh | null) => {
+    setScreenMesh(mesh);
   }, []);
+
+  // MutableRefObject so Sprint 4 auto-rotation can write .current
+  const controlsRef = useRef<OrbitControlsImpl | null>(
+    null,
+  ) as React.MutableRefObject<OrbitControlsImpl | null>;
+
+  const { invalidate } = useThree();
 
   return (
     <>
-      <PhoneModel screenRef={screenRef} />
+      <PhoneModel screenRef={screenCallbackRef} />
       <PhoneEnvironment />
 
       {screenMesh && (

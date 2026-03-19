@@ -28,8 +28,8 @@ const SCREEN_HEIGHT = PHONE_HEIGHT - BEZEL * 2;
 export { SCREEN_WIDTH, SCREEN_HEIGHT };
 
 interface PhoneModelProps {
-  /** Ref to the screen plane mesh (for raycasting and texture mapping) */
-  screenRef?: React.RefObject<Mesh | null>;
+  /** Ref to the screen plane mesh — accepts callback refs (for Suspense safety) */
+  screenRef?: React.Ref<Mesh>;
 }
 
 export default function PhoneModel({ screenRef }: PhoneModelProps) {
