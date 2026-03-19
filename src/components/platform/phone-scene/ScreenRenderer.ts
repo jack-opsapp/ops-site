@@ -6,7 +6,7 @@
  */
 
 import { CANVAS_WIDTH, CANVAS_HEIGHT, TIMING, DEFAULT_TAB, TABS, LAYOUT } from './constants';
-import { drawTabBar, clearCanvas } from './draw-utils';
+import { drawTabBar, drawDynamicIsland, clearCanvas } from './draw-utils';
 import { drawHomeScreen } from './screens/home-screen';
 import { drawJobBoardScreen } from './screens/jobboard-screen';
 import { drawScheduleScreen } from './screens/schedule-screen';
@@ -162,6 +162,10 @@ export class ScreenRenderer {
     const h = CANVAS_HEIGHT;
 
     clearCanvas(ctx, w, h);
+
+    // Dynamic Island — drawn before screen content so it's behind any
+    // overlapping elements, but always visible as a structural landmark.
+    drawDynamicIsland(ctx, w, this.animationProgress);
 
     ctx.save();
     ctx.globalAlpha = this.fadeProgress;

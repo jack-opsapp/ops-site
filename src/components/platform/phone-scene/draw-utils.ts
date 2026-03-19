@@ -47,7 +47,7 @@ export function drawContentLine(
     body: COLORS.bodyLine,
     caption: COLORS.captionLine,
   };
-  const thicknessMap = { title: 3, body: 1.5, caption: 1 };
+  const thicknessMap = { title: 4, body: 2.5, caption: 1.5 }; // Boosted for 3D texture
 
   ctx.save();
   ctx.globalAlpha = progress;
@@ -308,6 +308,31 @@ export function phase(progress: number, start: number, end: number): number {
   if (progress <= start) return 0;
   if (progress >= end) return 1;
   return (progress - start) / (end - start);
+}
+
+/** Draw the Dynamic Island pill at the top center of the canvas */
+export function drawDynamicIsland(
+  ctx: CanvasRenderingContext2D,
+  canvasWidth: number,
+  progress = 1,
+) {
+  if (progress <= 0) return;
+  const w = 160;
+  const h = 36;
+  const x = (canvasWidth - w) / 2;
+  const y = 20;
+  const r = h / 2; // Full pill radius
+
+  ctx.save();
+  ctx.globalAlpha = progress;
+  ctx.beginPath();
+  ctx.roundRect(x, y, w, h, r);
+  ctx.fillStyle = '#1A1A1A';
+  ctx.fill();
+  ctx.strokeStyle = COLORS.border;
+  ctx.lineWidth = LAYOUT.borderWidth;
+  ctx.stroke();
+  ctx.restore();
 }
 
 /** Clear the entire canvas with background color */
