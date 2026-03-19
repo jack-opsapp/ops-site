@@ -12,7 +12,7 @@
 
 import { useRef, useMemo } from 'react';
 import { EdgesGeometry, type Mesh } from 'three';
-import { RoundedBoxGeometry } from '@react-three/drei';
+import { RoundedBoxGeometry } from 'three-stdlib';
 
 // Phone dimensions in 3D units (arbitrary scale, proportions matter)
 const PHONE_WIDTH = 2.0;
@@ -29,7 +29,7 @@ export { SCREEN_WIDTH, SCREEN_HEIGHT };
 
 interface PhoneModelProps {
   /** Ref to the screen plane mesh (for raycasting and texture mapping) */
-  screenRef?: React.Ref<Mesh>;
+  screenRef?: React.RefObject<Mesh | null>;
 }
 
 export default function PhoneModel({ screenRef }: PhoneModelProps) {
@@ -80,8 +80,8 @@ export default function PhoneModel({ screenRef }: PhoneModelProps) {
         <lineBasicMaterial color="#FFFFFF" transparent opacity={0.12} />
       </lineSegments>
 
-      {/* Side button suggestions (thin edge lines on the right side) */}
-      <group position={[PHONE_WIDTH / 2 + 0.001, 0, 0]}>
+      {/* Volume buttons on the left side (correct iPhone layout) */}
+      <group position={[-PHONE_WIDTH / 2 - 0.001, 0, 0]}>
         {/* Volume up */}
         <mesh position={[0, 0.6, 0]}>
           <boxGeometry args={[0.01, 0.25, 0.05]} />
@@ -94,8 +94,8 @@ export default function PhoneModel({ screenRef }: PhoneModelProps) {
         </mesh>
       </group>
 
-      {/* Power button on the left */}
-      <mesh position={[-PHONE_WIDTH / 2 - 0.001, 0.5, 0]}>
+      {/* Power button on the right side (correct iPhone layout) */}
+      <mesh position={[PHONE_WIDTH / 2 + 0.001, 0.5, 0]}>
         <boxGeometry args={[0.01, 0.35, 0.05]} />
         <meshBasicMaterial color="#FFFFFF" transparent opacity={0.08} />
       </mesh>

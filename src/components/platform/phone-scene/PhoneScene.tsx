@@ -12,17 +12,48 @@
  */
 
 import { Suspense, useRef } from 'react';
-import { Canvas } from '@react-three/fiber';
+import { Canvas, useThree } from '@react-three/fiber';
 import { OrbitControls } from '@react-three/drei';
 import PhoneModel from './PhoneModel';
 import PhoneEnvironment from './PhoneEnvironment';
 import type { Mesh } from 'three';
+import type { OrbitControls as OrbitControlsImpl } from 'three-stdlib';
 
-export default function PhoneScene() {
+/** Inner scene — useThree must be called inside Canvas */
+function Scene() {
   const screenRef = useRef<Mesh>(null);
+  const controlsRef = useRef<OrbitControlsImpl>(null);
+  const { invalidate } = useThree();
 
   return (
+    <>
+      <PhoneModel screenRef={screenRef} />
+      <PhoneEnvironment />
+
+      {/* Orbit controls — constrained per design spec.
+          controlsRef exposed for Sprint 4 auto-rotation.
+          onChange triggers re-render in demand frameloop mode. */}
+      <OrbitControls
+        ref={controlsRef}
+        enableZoom={false}
+        enablePan={false}
+        minPolarAngle={Math.PI / 6}     // 30 degrees
+        maxPolarAngle={Math.PI * 4 / 9} // 80 degrees
+        minAzimuthAngle={-Math.PI / 2}  // -90 degrees
+        maxAzimuthAngle={Math.PI / 2}   // 90 degrees
+        dampingFactor={0.08}
+        enableDamping
+        target={[0, 0, 0]}
+        onChange={() => invalidate()}
+      />
+    </>
+  );
+}
+
+export default function PhoneScene() {
+  return (
     <Canvas
+      frameloop="demand"
       camera={{
         position: [1.5, 1.0, 3.5],
         fov: 45,
@@ -34,22 +65,7 @@ export default function PhoneScene() {
       dpr={[1, 2]} // Clamp DPR to max 2 for performance
     >
       <Suspense fallback={null}>
-        <PhoneModel screenRef={screenRef} />
-        <PhoneEnvironment />
-
-        {/* Basic orbit controls — constrained per design spec */}
-        <OrbitControls
-          enableZoom={false}
-          enablePan={false}
-          minPolarAngle={Math.PI / 6}   // 30 degrees
-          maxPolarAngle={Math.PI * 4 / 9} // 80 degrees
-          minAzimuthAngle={-Math.PI / 2}  // -90 degrees
-          maxAzimuthAngle={Math.PI / 2}   // 90 degrees
-          dampingFactor={0.08}
-          enableDamping
-          // Initial target: look at center of phone
-          target={[0, 0, 0]}
-        />
+        <Scene />
       </Suspense>
     </Canvas>
   );
