@@ -72,6 +72,9 @@ function PhoneSceneContent({ isVisible }: PhoneSceneContentProps) {
 
   return (
     <>
+      {/* Phone tilted forward ~25° on X (top away, bottom toward camera)
+          and rotated ~15° on Y so the side edge is visible. */}
+      <group rotation={[-0.44, 0.26, 0]}>
       <PhoneModel screenRef={screenCallbackRef} />
       <PhoneEnvironment />
 
@@ -84,16 +87,13 @@ function PhoneSceneContent({ isVisible }: PhoneSceneContentProps) {
           isVisible={isVisible}
         />
       )}
+      </group>
 
       <OrbitControls
         ref={controlsCallbackRef}
         enabled={!isMobile}  // Disable drag-to-orbit on mobile (conflicts with page scroll)
         enableZoom={false}
         enablePan={false}
-        minPolarAngle={Math.PI / 6}       // 30 degrees
-        maxPolarAngle={(Math.PI * 4) / 9}  // 80 degrees
-        minAzimuthAngle={-Math.PI / 2}     // -90 degrees
-        maxAzimuthAngle={Math.PI / 2}      // 90 degrees
         dampingFactor={0.08}
         enableDamping
         target={[0, 0, 0]}
@@ -112,7 +112,7 @@ export default function PhoneScene({ isVisible = true }: PhoneSceneProps) {
     <Canvas
       frameloop={isVisible ? 'demand' : 'never'}
       camera={{
-        position: [2.0, 0.5, 5.5],
+        position: [3.0, 1.5, 7.0],
         fov: 45,
         near: 0.1,
         far: 100,
