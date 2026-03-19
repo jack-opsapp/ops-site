@@ -6,11 +6,9 @@
  * This is the dynamic import target. It sets up the Three.js canvas,
  * camera, and renders the phone model + environment + interaction layer.
  *
- * frameloop="demand" — only re-renders when invalidated (texture update,
- * orbit drag, auto-rotation). Zero GPU work when static.
- *
- * controlsRef typed as MutableRefObject<OrbitControlsImpl> — Sprint 4
- * needs to write .current for auto-rotation speed interpolation.
+ * frameloop switches between "demand" (visible) and "never" (off-screen)
+ * via IntersectionObserver in PhoneSceneWrapper. Zero GPU work when static
+ * or when scrolled out of view.
  */
 
 import { Suspense, useRef, useState, useCallback, useEffect } from 'react';
@@ -20,16 +18,19 @@ import PhoneModel from './PhoneModel';
 import PhoneEnvironment from './PhoneEnvironment';
 import PhoneInteraction from './PhoneInteraction';
 import { useAutoRotation } from './useAutoRotation';
+import { useReducedMotion } from './useReducedMotion';
 import type { Mesh } from 'three';
 import type { OrbitControls as OrbitControlsImpl } from 'three-stdlib';
 
+interface PhoneSceneContentProps {
+  isVisible: boolean;
+}
+
 /** Inner scene content — useThree must be called inside Canvas */
-function PhoneSceneContent() {
+function PhoneSceneContent({ isVisible }: PhoneSceneContentProps) {
   const [screenMesh, setScreenMesh] = useState<Mesh | null>(null);
 
   // Callback ref — fires when PhoneModel's screen mesh mounts/unmounts.
-  // No race with Suspense: React guarantees the callback fires after the
-  // DOM node is attached, regardless of when rendering completes.
   const screenCallbackRef = useCallback((mesh: Mesh | null) => {
     setScreenMesh(mesh);
   }, []);
@@ -42,6 +43,7 @@ function PhoneSceneContent() {
   const { invalidate } = useThree();
 
   const [isMobile, setIsMobile] = useState(false);
+  const prefersReducedMotion = useReducedMotion();
 
   useEffect(() => {
     setIsMobile(window.innerWidth < 768);
@@ -50,10 +52,11 @@ function PhoneSceneContent() {
     return () => window.removeEventListener('resize', onResize);
   }, []);
 
+  // Auto-rotation: disabled when off-screen or when user prefers reduced motion
   useAutoRotation({
     controlsRef,
     isMobile,
-    enabled: true, // Will be wired to intersection observer visibility in Task 4.4
+    enabled: isVisible && !prefersReducedMotion,
   });
 
   return (
@@ -66,6 +69,7 @@ function PhoneSceneContent() {
           screenMesh={screenMesh}
           controlsRef={controlsRef}
           invalidate={invalidate}
+          prefersReducedMotion={prefersReducedMotion}
         />
       )}
 
@@ -106,7 +110,7 @@ export default function PhoneScene({ isVisible = true }: PhoneSceneProps) {
       dpr={[1, 2]}
     >
       <Suspense fallback={null}>
-        <PhoneSceneContent />
+        <PhoneSceneContent isVisible={isVisible} />
       </Suspense>
     </Canvas>
   );

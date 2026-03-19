@@ -32,6 +32,7 @@ interface PhoneInteractionProps {
   screenMesh: Mesh;
   controlsRef: React.MutableRefObject<OrbitControlsImpl | null>;
   invalidate: () => void;
+  prefersReducedMotion?: boolean;
   onTabChange?: (tab: TabId) => void;
 }
 
@@ -39,6 +40,7 @@ export default function PhoneInteraction({
   screenMesh,
   controlsRef,
   invalidate,
+  prefersReducedMotion = false,
   onTabChange,
 }: PhoneInteractionProps) {
   const rendererRef = useRef<ScreenRenderer | null>(null);
@@ -74,14 +76,18 @@ export default function PhoneInteraction({
       invalidate();
     });
 
-    // Kick off the initial draw-in animation
-    renderer.startInitialDraw();
+    // Reduced motion: render fully drawn instantly. No draw-in animation.
+    if (prefersReducedMotion) {
+      renderer.drawStatic();
+    } else {
+      renderer.startInitialDraw();
+    }
 
     return () => {
       renderer.destroy();
       texture.dispose();
     };
-  }, [screenMesh, invalidate]);
+  }, [screenMesh, invalidate, prefersReducedMotion]);
 
   // Propagate texture updates into the Three.js render cycle.
   // invalidate() is called from onFrame above to wake the loop;
@@ -131,13 +137,17 @@ export default function PhoneInteraction({
           const tab = TABS[clampedIndex];
 
           if (tab && tab.id !== rendererRef.current.getActiveTab()) {
-            rendererRef.current.switchTab(tab.id);
+            if (prefersReducedMotion) {
+              rendererRef.current.switchTabInstant(tab.id);
+            } else {
+              rendererRef.current.switchTab(tab.id);
+            }
             onTabChange?.(tab.id);
           }
         }
       }
     },
-    [screenMesh, camera, gl.domElement, onTabChange],
+    [screenMesh, camera, gl.domElement, onTabChange, prefersReducedMotion],
   );
 
   // --- Hover: pointer over tab bar, grab over phone screen, default elsewhere ---

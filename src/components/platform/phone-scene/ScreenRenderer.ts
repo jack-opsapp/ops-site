@@ -157,6 +157,18 @@ export class ScreenRenderer {
     this.onFrameCallback?.();
   }
 
+  /** Switch tab with no draw-in animation (for reduced motion). */
+  switchTabInstant(newTab: TabId) {
+    if (newTab === this.activeTab) return;
+    this.activeTab = newTab;
+    this.animationProgress = 1;
+    this.fadeProgress = 1;
+    this.isFadingOut = false;
+    this.pendingTab = null;
+    this.isAnimating = false;
+    this.renderFrame();
+  }
+
   /** Draw a static frame at full progress (for fallback / no-animation mode) */
   drawStatic(tab?: TabId) {
     if (tab) this.activeTab = tab;
