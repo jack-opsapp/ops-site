@@ -3,25 +3,22 @@
  * Reference: Screenshot IMG_6166 (Settings tab)
  */
 
-import { COLORS, LAYOUT } from '../constants';
+import { COLORS, LAYOUT, TIMING } from '../constants';
 import {
   drawRoundedRect,
   drawContentLine,
   drawCircle,
   drawChevron,
-  clearCanvas,
   phase,
 } from '../draw-utils';
 import type { ScreenDrawParams } from './types';
 
 export function drawSettingsScreen({ ctx, width, height, progress }: ScreenDrawParams) {
-  clearCanvas(ctx, width, height);
-
   const p = LAYOUT.padding;
   const contentWidth = width - p * 2;
 
-  // --- Structure phase (0-50%) ---
-  const structP = phase(progress, 0, 0.5);
+  // --- Structure phase ---
+  const structP = phase(progress, TIMING.structurePhase[0], TIMING.structurePhase[1]);
 
   // Title line ("SETTINGS")
   drawContentLine(ctx, p, 80, contentWidth * 0.28, 'title', structP);
@@ -33,8 +30,8 @@ export function drawSettingsScreen({ ctx, width, height, progress }: ScreenDrawP
   const searchY = 130;
   drawRoundedRect(ctx, p, searchY, contentWidth, 50, LAYOUT.smallRadius, COLORS.border, COLORS.cardFill, structP);
 
-  // --- Content phase (33-83%) ---
-  const contentP = phase(progress, 0.33, 0.83);
+  // --- Content phase ---
+  const contentP = phase(progress, TIMING.contentPhase[0], TIMING.contentPhase[1]);
 
   // Magnifying glass circle in search bar
   drawCircle(ctx, p + 30, searchY + 25, 10, COLORS.captionLine, undefined, contentP);
@@ -129,7 +126,7 @@ export function drawSettingsScreen({ ctx, width, height, progress }: ScreenDrawP
   }
 
   // --- Section: DATA ---
-  const accentP = phase(progress, 0.67, 1.0);
+  const accentP = phase(progress, TIMING.accentPhase[0], TIMING.accentPhase[1]);
   const section3LabelY = group2Y + group2H + 25;
   if (section3LabelY < LAYOUT.tabBarY - 80) {
     drawContentLine(ctx, p, section3LabelY, contentWidth * 0.08, 'caption', accentP);

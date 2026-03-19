@@ -41,6 +41,10 @@ export class ScreenRenderer {
     const ctx = this.canvas.getContext('2d');
     if (!ctx) throw new Error('Canvas 2D context not available');
     this.ctx = ctx;
+
+    // Render a static frame immediately so the canvas is never blank
+    // (prevents flash when Sprint 3 maps this as a texture)
+    this.drawStatic();
   }
 
   /** Get the canvas element (for use as CanvasTexture source) */
@@ -67,10 +71,16 @@ export class ScreenRenderer {
     this.animate();
   }
 
-  /** Switch to a different tab with fade-out → draw-in transition */
+  /** Switch to a different tab with fade-out → draw-in transition.
+   *  Rapid taps update the pending target instead of being dropped. */
   switchTab(newTab: TabId) {
-    if (newTab === this.activeTab) return;
-    if (this.isFadingOut) return; // Already transitioning
+    if (newTab === this.activeTab && !this.isFadingOut) return;
+
+    if (this.isFadingOut) {
+      // Mid-transition: update target — the fade will resolve to the latest tap
+      this.pendingTab = newTab;
+      return;
+    }
 
     this.pendingTab = newTab;
     this.isFadingOut = true;

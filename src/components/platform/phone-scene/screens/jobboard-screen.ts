@@ -10,19 +10,16 @@ import {
   drawCircle,
   drawColoredLeftBorder,
   drawProgressBar,
-  clearCanvas,
   phase,
 } from '../draw-utils';
 import type { ScreenDrawParams } from './types';
 
 export function drawJobBoardScreen({ ctx, width, height, progress }: ScreenDrawParams) {
-  clearCanvas(ctx, width, height);
-
   const p = LAYOUT.padding;
   const contentWidth = width - p * 2;
 
-  // --- Structure phase (0-50%) ---
-  const structP = phase(progress, 0, 0.5);
+  // --- Structure phase ---
+  const structP = phase(progress, TIMING.structurePhase[0], TIMING.structurePhase[1]);
 
   // Title line + 4 toolbar icon circles
   drawContentLine(ctx, p, 80, contentWidth * 0.35, 'title', structP);
@@ -62,8 +59,8 @@ export function drawJobBoardScreen({ ctx, width, height, progress }: ScreenDrawP
   drawContentLine(ctx, p + segW + segW * 0.35, segY + segH / 2, segW * 0.3, 'caption', structP);
 
   // --- Kanban columns ---
-  const contentP = phase(progress, 0.33, 0.83);
-  const accentP = phase(progress, 0.67, 1.0);
+  const contentP = phase(progress, TIMING.contentPhase[0], TIMING.contentPhase[1]);
+  const accentP = phase(progress, TIMING.accentPhase[0], TIMING.accentPhase[1]);
 
   let colY = segY + segH + 24;
   const colH = 56; // Collapsed column height

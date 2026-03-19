@@ -214,19 +214,19 @@ export function drawTabBar(
     ctx.lineWidth = 1.5;
     ctx.fillStyle = 'transparent';
 
-    drawTabIcon(ctx, i, cx, iconY, isActive);
+    drawTabIcon(ctx, i, cx, iconY);
   }
 
   ctx.restore();
 }
 
-/** Draw individual tab icons (simplified SF Symbol interpretations) */
+/** Draw individual tab icons (simplified SF Symbol interpretations).
+ *  Stroke color is set by the caller (drawTabBar) before invocation. */
 function drawTabIcon(
   ctx: CanvasRenderingContext2D,
   index: number,
   cx: number,
   cy: number,
-  isActive: boolean,
 ) {
   const s = 18; // Base icon half-size
 

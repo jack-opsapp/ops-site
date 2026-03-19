@@ -9,13 +9,27 @@ import {
   drawContentLine,
   drawCircle,
   drawMapPin,
-  clearCanvas,
   phase,
 } from '../draw-utils';
 import type { ScreenDrawParams } from './types';
 
+// Road network as fractional coordinates — [xFrac of canvas width, yFrac of map height]
+// Hoisted to module level to avoid per-frame allocation.
+const ROAD_NETWORK: { points: [number, number][] }[] = [
+  // Horizontal-ish roads
+  { points: [[0, 0.3], [0.3, 0.28], [0.6, 0.35], [1, 0.32]] },
+  { points: [[0, 0.6], [0.4, 0.58], [0.7, 0.65], [1, 0.6]] },
+  { points: [[0, 0.85], [0.3, 0.82], [1, 0.88]] },
+  // Vertical-ish roads
+  { points: [[0.25, 0], [0.27, 0.5], [0.24, 1]] },
+  { points: [[0.55, 0], [0.53, 0.4], [0.56, 1]] },
+  { points: [[0.8, 0], [0.78, 0.6], [0.82, 1]] },
+  // Diagonal / curved roads
+  { points: [[0, 0.1], [0.5, 0.5], [1, 0.45]] },
+  { points: [[0.1, 1], [0.4, 0.4], [0.9, 0.15]] },
+];
+
 export function drawHomeScreen({ ctx, width, height, progress }: ScreenDrawParams) {
-  clearCanvas(ctx, width, height);
 
   const p = LAYOUT.padding;
   const contentWidth = width - p * 2;
@@ -85,31 +99,21 @@ export function drawHomeScreen({ ctx, width, height, progress }: ScreenDrawParam
     ctx.lineWidth = 1;
 
     // Main roads — organic curves suggesting a real street network
-    const roads = [
-      // Horizontal-ish roads
-      { points: [[0, mapY + mapH * 0.3], [width * 0.3, mapY + mapH * 0.28], [width * 0.6, mapY + mapH * 0.35], [width, mapY + mapH * 0.32]] },
-      { points: [[0, mapY + mapH * 0.6], [width * 0.4, mapY + mapH * 0.58], [width * 0.7, mapY + mapH * 0.65], [width, mapY + mapH * 0.6]] },
-      { points: [[0, mapY + mapH * 0.85], [width * 0.3, mapY + mapH * 0.82], [width, mapY + mapH * 0.88]] },
-      // Vertical-ish roads
-      { points: [[width * 0.25, mapY], [width * 0.27, mapY + mapH * 0.5], [width * 0.24, mapY + mapH]] },
-      { points: [[width * 0.55, mapY], [width * 0.53, mapY + mapH * 0.4], [width * 0.56, mapY + mapH]] },
-      { points: [[width * 0.8, mapY], [width * 0.78, mapY + mapH * 0.6], [width * 0.82, mapY + mapH]] },
-      // Diagonal / curved roads
-      { points: [[0, mapY + mapH * 0.1], [width * 0.5, mapY + mapH * 0.5], [width, mapY + mapH * 0.45]] },
-      { points: [[width * 0.1, mapY + mapH], [width * 0.4, mapY + mapH * 0.4], [width * 0.9, mapY + mapH * 0.15]] },
-    ];
-
-    for (const road of roads) {
+    for (const road of ROAD_NETWORK) {
       ctx.beginPath();
-      ctx.moveTo(road.points[0][0], road.points[0][1]);
+      const x0 = road.points[0][0] * width;
+      const y0 = mapY + road.points[0][1] * mapH;
+      ctx.moveTo(x0, y0);
       for (let i = 1; i < road.points.length; i++) {
+        const px = road.points[i][0] * width;
+        const py = mapY + road.points[i][1] * mapH;
         // Use quadratic curves for organic feel
         if (i < road.points.length - 1) {
-          const cpx = (road.points[i][0] + road.points[i + 1][0]) / 2;
-          const cpy = (road.points[i][1] + road.points[i + 1][1]) / 2;
-          ctx.quadraticCurveTo(road.points[i][0], road.points[i][1], cpx, cpy);
+          const nx = road.points[i + 1][0] * width;
+          const ny = mapY + road.points[i + 1][1] * mapH;
+          ctx.quadraticCurveTo(px, py, (px + nx) / 2, (py + ny) / 2);
         } else {
-          ctx.lineTo(road.points[i][0], road.points[i][1]);
+          ctx.lineTo(px, py);
         }
       }
       ctx.stroke();
@@ -118,7 +122,7 @@ export function drawHomeScreen({ ctx, width, height, progress }: ScreenDrawParam
   }
 
   // --- Accent phase (67-100%) — pins and glow ---
-  const accentP = phase(progress, 0.67, 1.0);
+  const accentP = phase(progress, TIMING.accentPhase[0], TIMING.accentPhase[1]);
 
   // Map pins
   drawMapPin(ctx, width * 0.45, mapY + mapH * 0.55, accentP);

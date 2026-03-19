@@ -9,19 +9,16 @@ import {
   drawContentLine,
   drawCircle,
   drawColoredLeftBorder,
-  clearCanvas,
   phase,
 } from '../draw-utils';
 import type { ScreenDrawParams } from './types';
 
 export function drawScheduleScreen({ ctx, width, height, progress }: ScreenDrawParams) {
-  clearCanvas(ctx, width, height);
-
   const p = LAYOUT.padding;
   const contentWidth = width - p * 2;
 
-  // --- Structure phase (0-50%) ---
-  const structP = phase(progress, 0, 0.5);
+  // --- Structure phase ---
+  const structP = phase(progress, TIMING.structurePhase[0], TIMING.structurePhase[1]);
 
   // Title line ("SCHEDULE")
   drawContentLine(ctx, p, 80, contentWidth * 0.32, 'title', structP);
@@ -76,8 +73,8 @@ export function drawScheduleScreen({ ctx, width, height, progress }: ScreenDrawP
   }
 
   // Task density bars below week strip
-  const contentP = phase(progress, 0.33, 0.83);
-  const accentP = phase(progress, 0.67, 1.0);
+  const contentP = phase(progress, TIMING.contentPhase[0], TIMING.contentPhase[1]);
+  const accentP = phase(progress, TIMING.accentPhase[0], TIMING.accentPhase[1]);
   const barsY = weekY + 15 + daySize + 8;
 
   const barColors = [
