@@ -8,6 +8,7 @@ import {
   drawRoundedRect,
   drawContentLine,
   drawCircle,
+  drawColoredLeftBorder,
   drawMapPin,
   phase,
 } from '../draw-utils';
@@ -30,7 +31,6 @@ const ROAD_NETWORK: { points: [number, number][] }[] = [
 ];
 
 export function drawHomeScreen({ ctx, width, height, progress }: ScreenDrawParams) {
-
   const p = LAYOUT.padding;
   const contentWidth = width - p * 2;
 
@@ -40,61 +40,79 @@ export function drawHomeScreen({ ctx, width, height, progress }: ScreenDrawParam
   // Greeting line (thick, ~60% width)
   drawContentLine(ctx, p, 80, contentWidth * 0.55, 'title', structP);
 
-  // Company name line (thin, ~45% width)
-  drawContentLine(ctx, p, 110, contentWidth * 0.40, 'caption', structP);
+  // Company name line (thin, ~50% width) + small green dot (trial indicator)
+  drawContentLine(ctx, p, 110, contentWidth * 0.45, 'caption', structP);
+  if (structP > 0) {
+    ctx.save();
+    ctx.globalAlpha = structP;
+    ctx.beginPath();
+    ctx.arc(p + contentWidth * 0.47, 110, 4, 0, Math.PI * 2);
+    ctx.fillStyle = COLORS.stageAccepted; // Green dot
+    ctx.fill();
+    ctx.restore();
+  }
 
-  // Avatar circle (top right)
-  drawCircle(ctx, width - p - 28, 85, 28, COLORS.border, COLORS.cardFill, structP);
+  // Notification bell circle (to the left of avatar)
+  drawCircle(ctx, width - p - 80, 85, 22, COLORS.border, undefined, structP);
 
-  // Carousel card
-  const cardY = 155;
-  const cardH = 140;
+  // Avatar circle (top right) — larger to match ref proportions
+  drawCircle(ctx, width - p - 30, 85, 32, COLORS.border, COLORS.cardFill, structP);
+
+  // --- Carousel card with colored left border ---
+  const cardY = 150;
+  const cardH = 150;
   drawRoundedRect(ctx, p, cardY, contentWidth, cardH, LAYOUT.cardRadius, COLORS.border, COLORS.cardFill, structP);
+
+  // Accent-colored left border on card (stage indicator)
+  drawColoredLeftBorder(ctx, p, cardY, cardH, COLORS.accent, phase(progress, TIMING.accentPhase[0], TIMING.accentPhase[1]));
 
   // --- Content phase ---
   const contentP = phase(progress, TIMING.contentPhase[0], TIMING.contentPhase[1]);
 
-  // Card content lines
-  drawContentLine(ctx, p + 20, cardY + 35, contentWidth * 0.55, 'title', contentP);
-  drawContentLine(ctx, p + 20, cardY + 60, contentWidth * 0.45, 'body', contentP);
-  drawContentLine(ctx, p + 20, cardY + 80, contentWidth * 0.50, 'caption', contentP);
+  // Card content lines (project name, client, address)
+  drawContentLine(ctx, p + 24, cardY + 35, contentWidth * 0.50, 'title', contentP);
+  drawContentLine(ctx, p + 24, cardY + 62, contentWidth * 0.40, 'body', contentP);
+  drawContentLine(ctx, p + 24, cardY + 85, contentWidth * 0.50, 'caption', contentP);
 
   // Stage badge (bottom right of card)
   drawRoundedRect(
-    ctx, width - p - 140, cardY + cardH - 45, 120, 30,
+    ctx, width - p - 150, cardY + cardH - 48, 130, 30,
     LAYOUT.smallRadius, COLORS.border, undefined, contentP,
   );
-  drawContentLine(ctx, width - p - 130, cardY + cardH - 28, 80, 'caption', contentP);
+  drawContentLine(ctx, width - p - 140, cardY + cardH - 30, 90, 'caption', contentP);
 
-  // Carousel dots
-  const dotY = cardY + cardH + 20;
-  const dotSpacing = 18;
-  const dotsStartX = width / 2 - (dotSpacing * 1.5);
-  for (let i = 0; i < 4; i++) {
-    const dotColor = i === 0 ? COLORS.dotActive : COLORS.dotInactive;
-    drawCircle(ctx, dotsStartX + i * dotSpacing, dotY, LAYOUT.dotSize / 2, dotColor, dotColor, contentP);
+  // Carousel dots — inside the card, top-right (matches ref)
+  const dotSpacing = 20;
+  const dotStartX = width - p - 30 - (4 * dotSpacing);
+  const dotY = cardY + 28;
+  for (let i = 0; i < 5; i++) {
+    // Last dot is active (accent colored), rest are inactive
+    const isActive = i === 4;
+    const dotColor = isActive ? COLORS.accent : 'rgba(255, 255, 255, 0.25)';
+    drawCircle(ctx, dotStartX + i * dotSpacing, dotY, LAYOUT.dotSize / 2, dotColor, dotColor, contentP);
   }
 
-  // Filter chips (3 small rects)
-  const chipY = dotY + 30;
-  const chipWidths = [130, 90, 60];
+  // Filter chips (3 rects — "TODAY [TASKS]", "ACTIVE", "ALL")
+  const chipY = cardY + cardH + 18;
+  const chipWidths = [150, 90, 60];
   let chipX = p;
   for (let i = 0; i < 3; i++) {
     const fill = i === 0 ? 'rgba(255,255,255,0.06)' : undefined;
-    drawRoundedRect(ctx, chipX, chipY, chipWidths[i], 36, LAYOUT.smallRadius, COLORS.border, fill, contentP);
-    drawContentLine(ctx, chipX + 12, chipY + 20, chipWidths[i] - 24, 'caption', contentP);
+    const stroke = i === 0 ? COLORS.accent : COLORS.border;
+    drawRoundedRect(ctx, chipX, chipY, chipWidths[i], 38, LAYOUT.smallRadius, stroke, fill, contentP);
+    drawContentLine(ctx, chipX + 14, chipY + 21, chipWidths[i] - 28, 'caption', contentP);
     chipX += chipWidths[i] + 12;
   }
 
   // --- Map area (fills remaining space above tab bar) ---
-  const mapY = chipY + 55;
+  const mapY = chipY + 52;
   const mapH = LAYOUT.tabBarY - mapY - 10;
 
   // Organic road network lines (very faint)
   const roadAlpha = phase(progress, 0.2, 0.7);
   if (roadAlpha > 0) {
     ctx.save();
-    ctx.globalAlpha = 0.06 * roadAlpha;
+    ctx.globalAlpha = 0.12 * roadAlpha; // Boosted for 3D texture visibility
     ctx.strokeStyle = '#FFFFFF';
     ctx.lineWidth = 1;
 
@@ -121,7 +139,7 @@ export function drawHomeScreen({ ctx, width, height, progress }: ScreenDrawParam
     ctx.restore();
   }
 
-  // --- Accent phase (67-100%) — pins and glow ---
+  // --- Accent phase — pins, glow, map buttons ---
   const accentP = phase(progress, TIMING.accentPhase[0], TIMING.accentPhase[1]);
 
   // Map pins
@@ -129,10 +147,15 @@ export function drawHomeScreen({ ctx, width, height, progress }: ScreenDrawParam
   drawMapPin(ctx, width * 0.7, mapY + mapH * 0.3, accentP);
   drawMapPin(ctx, width * 0.25, mapY + mapH * 0.72, accentP);
 
-  // Pin label line (above the first pin)
+  // Pin label lines (above the center pin — "Diagnostic" + "Runway Crack Repair")
   drawContentLine(ctx, width * 0.45 - 40, mapY + mapH * 0.55 - 25, 80, 'caption', accentP);
   drawContentLine(ctx, width * 0.45 - 50, mapY + mapH * 0.55 - 40, 100, 'caption', accentP);
 
-  // Location button (bottom right of map)
-  drawCircle(ctx, width - p - 30, LAYOUT.tabBarY - 50, 24, COLORS.border, COLORS.cardFill, accentP);
+  // Location arrow button (top of 2-button stack, right side of map)
+  const btnX = width - p - 30;
+  const btnBaseY = mapY + mapH * 0.45;
+  drawCircle(ctx, btnX, btnBaseY, 26, COLORS.border, COLORS.cardFill, accentP);
+
+  // Person/pin button (below location button)
+  drawCircle(ctx, btnX, btnBaseY + 65, 26, COLORS.border, COLORS.cardFill, accentP);
 }
