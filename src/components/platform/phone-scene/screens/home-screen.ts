@@ -143,8 +143,8 @@ export function drawHomeScreen({ ctx, width, height, progress }: ScreenDrawParam
   const contentWidth = width - p * 2;
 
   // --- Content starts below status bar + Dynamic Island ---
-  // Status bar is ~18px, Dynamic Island is at y=20 with h=36, so content starts ~75
-  const headerY = 80;
+  // Dynamic Island bottom edge = y 56. Match the real app's breathing room.
+  const headerY = 105;
 
   // --- Structure phase ---
   const structP = phase(progress, TIMING.structurePhase[0], TIMING.structurePhase[1]);
