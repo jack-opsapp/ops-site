@@ -14,9 +14,19 @@ import {
 } from '../draw-utils';
 import type { ScreenDrawParams } from './types';
 
-// --- Font constants (match next/font/google loaded on the page) ---
+// --- Fonts (loaded by next/font/google on the page) ---
 const MOHAVE = 'Mohave, sans-serif';
 const KOSUGI = 'Kosugi, sans-serif';
+
+// --- Pete's avatar — loaded once at module level ---
+let avatarImg: HTMLImageElement | null = null;
+let avatarLoaded = false;
+if (typeof window !== 'undefined') {
+  avatarImg = new Image();
+  avatarImg.crossOrigin = 'anonymous';
+  avatarImg.src = '/dev/pete-avatar.jpg';
+  avatarImg.onload = () => { avatarLoaded = true; };
+}
 
 // Road network as fractional coordinates — [xFrac of canvas width, yFrac of map height]
 const ROAD_NETWORK: { points: [number, number][] }[] = [
@@ -30,7 +40,7 @@ const ROAD_NETWORK: { points: [number, number][] }[] = [
   { points: [[0.1, 1], [0.4, 0.4], [0.9, 0.15]] },
 ];
 
-// --- Helper: draw text with consistent style ---
+// --- Helper: draw text ---
 function drawText(
   ctx: CanvasRenderingContext2D,
   text: string,
@@ -52,117 +62,186 @@ function drawText(
   ctx.restore();
 }
 
+// --- Helper: draw avatar with circular clip ---
+function drawAvatar(
+  ctx: CanvasRenderingContext2D,
+  cx: number,
+  cy: number,
+  radius: number,
+  progress: number,
+) {
+  if (progress <= 0) return;
+  if (avatarLoaded && avatarImg) {
+    ctx.save();
+    ctx.globalAlpha = progress;
+    ctx.beginPath();
+    ctx.arc(cx, cy, radius, 0, Math.PI * 2);
+    ctx.clip();
+    ctx.drawImage(avatarImg, cx - radius, cy - radius, radius * 2, radius * 2);
+    ctx.restore();
+    // Subtle border ring
+    ctx.save();
+    ctx.globalAlpha = progress * 0.3;
+    ctx.beginPath();
+    ctx.arc(cx, cy, radius, 0, Math.PI * 2);
+    ctx.strokeStyle = COLORS.border;
+    ctx.lineWidth = 1.5;
+    ctx.stroke();
+    ctx.restore();
+  } else {
+    // Fallback circle
+    drawCircle(ctx, cx, cy, radius, COLORS.border, COLORS.cardFill, progress);
+  }
+}
+
+// --- Helper: draw notification bell badge overlaid on avatar ---
+function drawNotificationBell(
+  ctx: CanvasRenderingContext2D,
+  avatarCx: number,
+  avatarCy: number,
+  avatarRadius: number,
+  progress: number,
+) {
+  if (progress <= 0) return;
+  // Position: bottom-left of avatar circle
+  const bx = avatarCx - avatarRadius * 0.65;
+  const by = avatarCy + avatarRadius * 0.45;
+  const bellR = 16;
+
+  ctx.save();
+  ctx.globalAlpha = progress;
+
+  // Black circle background (no outline)
+  ctx.beginPath();
+  ctx.arc(bx, by, bellR, 0, Math.PI * 2);
+  ctx.fillStyle = '#0A0A0A';
+  ctx.fill();
+
+  // White bell stroke
+  ctx.strokeStyle = 'rgba(255,255,255,0.7)';
+  ctx.lineWidth = 1.5;
+  ctx.lineCap = 'round';
+  // Bell body
+  ctx.beginPath();
+  ctx.moveTo(bx - 6, by + 2);
+  ctx.quadraticCurveTo(bx - 6, by - 7, bx, by - 9);
+  ctx.quadraticCurveTo(bx + 6, by - 7, bx + 6, by + 2);
+  ctx.lineTo(bx + 7, by + 3);
+  ctx.lineTo(bx - 7, by + 3);
+  ctx.closePath();
+  ctx.stroke();
+  // Clapper
+  ctx.beginPath();
+  ctx.arc(bx, by + 6, 2.5, 0, Math.PI);
+  ctx.stroke();
+
+  ctx.restore();
+}
+
 export function drawHomeScreen({ ctx, width, height, progress }: ScreenDrawParams) {
   const p = LAYOUT.padding;
   const contentWidth = width - p * 2;
 
+  // --- Content starts below status bar + Dynamic Island ---
+  // Status bar is ~18px, Dynamic Island is at y=20 with h=36, so content starts ~75
+  const headerY = 80;
+
   // --- Structure phase ---
   const structP = phase(progress, TIMING.structurePhase[0], TIMING.structurePhase[1]);
 
-  // Greeting — "GOOD AFTERNOON, PETE"
-  drawText(ctx, 'GOOD AFTERNOON, PETE', p, 82, `bold 38px ${MOHAVE}`, COLORS.titleLine, structP);
+  // Avatar with photo (top right) — positioned first for reference by bell
+  const avatarR = 36;
+  const avatarCx = width - p - avatarR - 2;
+  const avatarCy = headerY + 20;
+  drawAvatar(ctx, avatarCx, avatarCy, avatarR, structP);
 
-  // Company line — "MAVERICK PROJECTS LTD" + green trial dot + "TRIAL ENDS Apr 10"
-  drawText(ctx, 'MAVERICK PROJECTS LTD', p, 118, `14px ${KOSUGI}`, COLORS.captionLine, structP);
+  // Notification bell badge — overlaid on avatar
+  drawNotificationBell(ctx, avatarCx, avatarCy, avatarR, structP);
+
+  // Greeting — Kosugi, all caps (per user feedback)
+  drawText(ctx, 'GOOD AFTERNOON, PETE', p, headerY + 10, `bold 34px ${MOHAVE}`, COLORS.titleLine, structP);
+
+  // Company line — Kosugi, all caps + green trial dot + trial text
+  const companyY = headerY + 50;
+  drawText(ctx, 'MAVERICK PROJECTS LTD', p, companyY, `13px ${KOSUGI}`, COLORS.captionLine, structP);
   if (structP > 0) {
     ctx.save();
     ctx.globalAlpha = structP;
+    const dotX = p + 262;
     // Green dot
     ctx.beginPath();
-    ctx.arc(p + 275, 118, 4, 0, Math.PI * 2);
+    ctx.arc(dotX, companyY, 4, 0, Math.PI * 2);
     ctx.fillStyle = COLORS.stageAccepted;
     ctx.fill();
     // Trial text
-    ctx.font = `14px ${KOSUGI}`;
+    ctx.font = `13px ${KOSUGI}`;
     ctx.fillStyle = COLORS.stageAccepted;
     ctx.textBaseline = 'middle';
-    ctx.fillText('TRIAL ENDS Apr 10', p + 288, 118);
+    ctx.textAlign = 'left';
+    ctx.fillText('TRIAL ENDS Apr 10', dotX + 12, companyY);
     ctx.restore();
   }
-
-  // Notification bell circle (left of avatar)
-  drawCircle(ctx, width - p - 85, 85, 24, COLORS.border, undefined, structP);
-  // Bell icon stroke inside
-  if (structP > 0) {
-    ctx.save();
-    ctx.globalAlpha = structP * 0.5;
-    ctx.strokeStyle = COLORS.bodyLine;
-    ctx.lineWidth = 1.5;
-    const bx = width - p - 85, by = 85;
-    // Bell body
-    ctx.beginPath();
-    ctx.moveTo(bx - 8, by + 4);
-    ctx.quadraticCurveTo(bx - 8, by - 10, bx, by - 12);
-    ctx.quadraticCurveTo(bx + 8, by - 10, bx + 8, by + 4);
-    ctx.lineTo(bx + 10, by + 6);
-    ctx.lineTo(bx - 10, by + 6);
-    ctx.closePath();
-    ctx.stroke();
-    // Clapper
-    ctx.beginPath();
-    ctx.arc(bx, by + 10, 3, 0, Math.PI);
-    ctx.stroke();
-    ctx.restore();
-  }
-
-  // Avatar circle (top right)
-  drawCircle(ctx, width - p - 32, 85, 34, COLORS.border, COLORS.cardFill, structP);
 
   // --- Carousel card ---
-  const cardY = 152;
-  const cardH = 160;
+  const cardY = companyY + 30;
+  const cardH = 170;
   drawRoundedRect(ctx, p, cardY, contentWidth, cardH, LAYOUT.cardRadius, COLORS.border, COLORS.cardFill, structP);
 
-  // Colored left border (accent — project stage indicator)
-  drawColoredLeftBorder(ctx, p, cardY, cardH, COLORS.accent, phase(progress, TIMING.accentPhase[0], TIMING.accentPhase[1]));
+  // Colored left border (accent — stage indicator)
+  const accentP = phase(progress, TIMING.accentPhase[0], TIMING.accentPhase[1]);
+  drawColoredLeftBorder(ctx, p, cardY, cardH, COLORS.accent, accentP);
 
   // --- Content phase ---
   const contentP = phase(progress, TIMING.contentPhase[0], TIMING.contentPhase[1]);
 
-  // Project title
-  drawText(ctx, 'RUNWAY CRACK REPAIR', p + 24, cardY + 40, `bold 26px ${MOHAVE}`, COLORS.titleLine, contentP);
+  // Project title — Mohave bold, all caps
+  drawText(ctx, 'RUNWAY CRACK REPAIR', p + 24, cardY + 42, `bold 28px ${MOHAVE}`, COLORS.titleLine, contentP);
 
   // Client name
-  drawText(ctx, 'Miramar Flight Academy', p + 24, cardY + 70, `15px ${KOSUGI}`, COLORS.bodyLine, contentP);
+  drawText(ctx, 'Miramar Flight Academy', p + 24, cardY + 76, `15px ${KOSUGI}`, COLORS.bodyLine, contentP);
 
   // Address
-  drawText(ctx, '9800 Anderson St, San Diego', p + 24, cardY + 95, `14px ${KOSUGI}`, COLORS.captionLine, contentP);
+  drawText(ctx, '9800 Anderson St, San Diego', p + 24, cardY + 104, `14px ${KOSUGI}`, COLORS.captionLine, contentP);
 
-  // Stage badge — "DIAGNOSTIC"
-  const badgeText = 'DIAGNOSTIC';
-  const badgeW = 140;
-  const badgeH = 30;
-  const badgeX = width - p - badgeW - 16;
-  const badgeY = cardY + cardH - 48;
-  drawRoundedRect(ctx, badgeX, badgeY, badgeW, badgeH, LAYOUT.smallRadius, COLORS.border, undefined, contentP);
-  drawText(ctx, badgeText, badgeX + badgeW / 2, badgeY + badgeH / 2, `bold 13px ${KOSUGI}`, COLORS.captionLine, contentP, 'center');
+  // Stage badge — "DIAGNOSTIC" with colored fill, border, and text
+  const badgeW = 150;
+  const badgeH = 32;
+  const badgeX = width - p - badgeW - 18;
+  const badgeY = cardY + cardH - 50;
+  // Colored fill (low opacity)
+  drawRoundedRect(ctx, badgeX, badgeY, badgeW, badgeH, LAYOUT.smallRadius,
+    COLORS.accent, 'rgba(89, 119, 148, 0.15)', contentP);
+  // Colored text
+  drawText(ctx, 'DIAGNOSTIC', badgeX + badgeW / 2, badgeY + badgeH / 2,
+    `bold 14px ${KOSUGI}`, COLORS.accent, contentP, 'center');
 
   // Carousel dots — inside the card, top-right (5 dots, last one accent)
   const dotSpacing = 22;
   const dotStartX = width - p - 28 - (4 * dotSpacing);
-  const dotY = cardY + 30;
+  const dotY = cardY + 32;
   for (let i = 0; i < 5; i++) {
     const isActive = i === 4;
-    const dotColor = isActive ? COLORS.accent : 'rgba(255, 255, 255, 0.20)';
+    const dotColor = isActive ? COLORS.accent : 'rgba(255, 255, 255, 0.18)';
     drawCircle(ctx, dotStartX + i * dotSpacing, dotY, 7, dotColor, dotColor, contentP);
   }
 
   // --- Filter chips ---
   const chipY = cardY + cardH + 20;
   const chips = ['TODAY [TASKS]', 'ACTIVE', 'ALL'];
-  const chipWidths = [170, 100, 65];
+  const chipWidths = [180, 108, 72];
   let chipX = p;
   for (let i = 0; i < 3; i++) {
     const isSelected = i === 0;
     const fill = isSelected ? 'rgba(255,255,255,0.06)' : undefined;
     const stroke = isSelected ? COLORS.accent : COLORS.border;
-    drawRoundedRect(ctx, chipX, chipY, chipWidths[i], 40, LAYOUT.smallRadius, stroke, fill, contentP);
-    drawText(ctx, chips[i], chipX + chipWidths[i] / 2, chipY + 21, `bold 13px ${KOSUGI}`, isSelected ? COLORS.bodyLine : COLORS.captionLine, contentP, 'center');
-    chipX += chipWidths[i] + 12;
+    drawRoundedRect(ctx, chipX, chipY, chipWidths[i], 42, LAYOUT.smallRadius, stroke, fill, contentP);
+    drawText(ctx, chips[i], chipX + chipWidths[i] / 2, chipY + 22,
+      `bold 16px ${KOSUGI}`, isSelected ? COLORS.bodyLine : COLORS.captionLine, contentP, 'center');
+    chipX += chipWidths[i] + 14;
   }
 
   // --- Map area ---
-  const mapY = chipY + 56;
+  const mapY = chipY + 58;
   const mapH = LAYOUT.tabBarY - mapY - 10;
 
   // Road network lines
@@ -194,7 +273,6 @@ export function drawHomeScreen({ ctx, width, height, progress }: ScreenDrawParam
   }
 
   // --- Accent phase — pins, labels, map buttons ---
-  const accentP = phase(progress, TIMING.accentPhase[0], TIMING.accentPhase[1]);
 
   // Map pins
   drawMapPin(ctx, width * 0.45, mapY + mapH * 0.52, accentP);
@@ -209,9 +287,9 @@ export function drawHomeScreen({ ctx, width, height, progress }: ScreenDrawParam
 
   // Location arrow button (right side of map)
   const btnX = width - p - 32;
-  const btnBaseY = mapY + mapH * 0.40;
+  const btnBaseY = mapY + mapH * 0.35;
   drawCircle(ctx, btnX, btnBaseY, 28, COLORS.border, COLORS.cardFill, accentP);
-  // Arrow stroke inside
+  // Arrow stroke
   if (accentP > 0) {
     ctx.save();
     ctx.globalAlpha = accentP * 0.6;
@@ -232,22 +310,20 @@ export function drawHomeScreen({ ctx, width, height, progress }: ScreenDrawParam
 
   // Person button (below location button)
   drawCircle(ctx, btnX, btnBaseY + 68, 28, COLORS.border, COLORS.cardFill, accentP);
-  // Person stroke inside
+  // Person stroke
   if (accentP > 0) {
     ctx.save();
     ctx.globalAlpha = accentP * 0.6;
     ctx.strokeStyle = COLORS.bodyLine;
     ctx.lineWidth = 2;
-    const px = btnX, py = btnBaseY + 68;
-    // Head
+    const px2 = btnX, py2 = btnBaseY + 68;
     ctx.beginPath();
-    ctx.arc(px, py - 6, 5, 0, Math.PI * 2);
+    ctx.arc(px2, py2 - 6, 5, 0, Math.PI * 2);
     ctx.stroke();
-    // Body
     ctx.beginPath();
-    ctx.moveTo(px - 8, py + 10);
-    ctx.quadraticCurveTo(px - 8, py + 2, px, py + 1);
-    ctx.quadraticCurveTo(px + 8, py + 2, px + 8, py + 10);
+    ctx.moveTo(px2 - 8, py2 + 10);
+    ctx.quadraticCurveTo(px2 - 8, py2 + 2, px2, py2 + 1);
+    ctx.quadraticCurveTo(px2 + 8, py2 + 2, px2 + 8, py2 + 10);
     ctx.stroke();
     ctx.restore();
   }

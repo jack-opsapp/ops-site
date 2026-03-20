@@ -6,7 +6,7 @@
  */
 
 import { CANVAS_WIDTH, CANVAS_HEIGHT, TIMING, DEFAULT_TAB, TABS, LAYOUT } from './constants';
-import { drawTabBar, drawDynamicIsland, drawFAB, clearCanvas } from './draw-utils';
+import { drawTabBar, drawStatusBar, drawDynamicIsland, drawFAB, clearCanvas } from './draw-utils';
 import { drawHomeScreen } from './screens/home-screen';
 import { drawJobBoardScreen } from './screens/jobboard-screen';
 import { drawScheduleScreen } from './screens/schedule-screen';
@@ -163,8 +163,8 @@ export class ScreenRenderer {
 
     clearCanvas(ctx, w, h);
 
-    // Dynamic Island — drawn before screen content so it's behind any
-    // overlapping elements, but always visible as a structural landmark.
+    // Static chrome — status bar + Dynamic Island drawn before screen content
+    drawStatusBar(ctx, w, this.animationProgress);
     drawDynamicIsland(ctx, w, this.animationProgress);
 
     ctx.save();

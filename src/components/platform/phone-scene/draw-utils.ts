@@ -310,6 +310,101 @@ export function phase(progress: number, start: number, end: number): number {
   return (progress - start) / (end - start);
 }
 
+/** Draw the iOS status bar — time, location arrow, signal, wifi, battery */
+export function drawStatusBar(
+  ctx: CanvasRenderingContext2D,
+  canvasWidth: number,
+  progress = 1,
+) {
+  if (progress <= 0) return;
+  const KOSUGI = 'Kosugi, sans-serif';
+  const y = 18; // Baseline for status bar text
+  const p = LAYOUT.padding;
+
+  ctx.save();
+  ctx.globalAlpha = progress;
+  ctx.textBaseline = 'middle';
+
+  // Time — left side
+  ctx.font = `bold 20px ${KOSUGI}`;
+  ctx.fillStyle = COLORS.titleLine;
+  ctx.textAlign = 'left';
+  ctx.fillText('1:29', p - 4, y);
+
+  // Location arrow — small triangle after time
+  const arrowX = p + 60;
+  ctx.strokeStyle = COLORS.accent;
+  ctx.fillStyle = COLORS.accent;
+  ctx.lineWidth = 1.5;
+  ctx.beginPath();
+  ctx.moveTo(arrowX, y - 7);
+  ctx.lineTo(arrowX + 5, y + 3);
+  ctx.lineTo(arrowX - 1, y + 1);
+  ctx.closePath();
+  ctx.fill();
+
+  // Right side cluster: SOS, signal dots, wifi, battery
+  const rightX = canvasWidth - p;
+
+  // Battery — rightmost
+  const batW = 38, batH = 18;
+  const batX = rightX - batW;
+  const batY = y - batH / 2;
+  // Battery outline
+  ctx.strokeStyle = COLORS.bodyLine;
+  ctx.lineWidth = 1.2;
+  ctx.beginPath();
+  ctx.roundRect(batX, batY, batW - 4, batH, 3);
+  ctx.stroke();
+  // Battery tip
+  ctx.fillStyle = COLORS.bodyLine;
+  ctx.fillRect(batX + batW - 4, batY + 5, 3, 8);
+  // Battery fill (green = full)
+  ctx.fillStyle = '#4CAF50';
+  ctx.beginPath();
+  ctx.roundRect(batX + 2, batY + 2, batW - 9, batH - 4, 2);
+  ctx.fill();
+  // "100" text inside battery
+  ctx.font = `bold 11px ${KOSUGI}`;
+  ctx.fillStyle = '#000';
+  ctx.textAlign = 'center';
+  ctx.fillText('100', batX + (batW - 4) / 2, y + 1);
+
+  // Wifi icon — to the left of battery
+  const wifiX = batX - 28;
+  ctx.strokeStyle = COLORS.titleLine;
+  ctx.lineWidth = 1.5;
+  // Three arcs
+  for (let i = 0; i < 3; i++) {
+    const r = 5 + i * 5;
+    ctx.beginPath();
+    ctx.arc(wifiX, y + 6, r, -Math.PI * 0.75, -Math.PI * 0.25);
+    ctx.stroke();
+  }
+  // Center dot
+  ctx.beginPath();
+  ctx.arc(wifiX, y + 6, 2, 0, Math.PI * 2);
+  ctx.fillStyle = COLORS.titleLine;
+  ctx.fill();
+
+  // Signal dots — 4 dots to the left of wifi
+  const dotsX = wifiX - 38;
+  for (let i = 0; i < 4; i++) {
+    ctx.beginPath();
+    ctx.arc(dotsX + i * 9, y, 3, 0, Math.PI * 2);
+    ctx.fillStyle = i < 2 ? COLORS.titleLine : COLORS.captionLine;
+    ctx.fill();
+  }
+
+  // "SOS" text — to the left of signal dots
+  ctx.font = `bold 16px ${KOSUGI}`;
+  ctx.fillStyle = COLORS.titleLine;
+  ctx.textAlign = 'right';
+  ctx.fillText('SOS', dotsX - 10, y);
+
+  ctx.restore();
+}
+
 /** Draw the Dynamic Island pill at the top center of the canvas */
 export function drawDynamicIsland(
   ctx: CanvasRenderingContext2D,
@@ -347,7 +442,7 @@ export function drawFAB(
 
   const radius = 48;
   const cx = canvasWidth - LAYOUT.padding - radius - 8;
-  const cy = tabBarY - radius - 20;
+  const cy = tabBarY - radius - 80; // Higher up — overlaps content like the real app
 
   ctx.save();
   ctx.globalAlpha = progress;
