@@ -15,9 +15,9 @@ import { useRef, useEffect, useCallback } from 'react';
 import { useFrame, useThree } from '@react-three/fiber';
 import type { OrbitControls as OrbitControlsImpl } from 'three-stdlib';
 
-const SPEED_DEFAULT = 0.21;      // ~12 deg/s in radians
-const SPEED_HOVER = 0.035;       // ~2 deg/s in radians
-const SPEED_MOBILE = 0.14;       // ~8 deg/s in radians
+const SPEED_DEFAULT = -0.21;     // ~12 deg/s — negative = continues intro direction (decreasing azimuth)
+const SPEED_HOVER = -0.035;      // ~2 deg/s — slow on hover, same direction
+const SPEED_MOBILE = -0.14;      // ~8 deg/s — mobile, same direction
 const SPEED_ZERO = 0;
 const LERP_FACTOR = 0.04;        // Smooth interpolation per frame (~1s to full speed)
 const RESUME_DELAY_MS = 3000;    // Delay before resuming after drag release
@@ -28,15 +28,16 @@ interface UseAutoRotationParams {
   controlsReady: boolean; // State signal — flips true when OrbitControls mounts
   isMobile: boolean;
   enabled: boolean;
+  isHoveringPhone?: boolean; // Raycast-based hover from PhoneInteraction
 }
 
-export function useAutoRotation({ controlsRef, controlsReady, isMobile, enabled }: UseAutoRotationParams) {
+export function useAutoRotation({ controlsRef, controlsReady, isMobile, enabled, isHoveringPhone = false }: UseAutoRotationParams) {
   const currentSpeed = useRef(0);
   const targetSpeed = useRef(isMobile ? SPEED_MOBILE : SPEED_DEFAULT);
   const isDragging = useRef(false);
   const isHovering = useRef(false);
   const resumeTimer = useRef<ReturnType<typeof setTimeout> | null>(null);
-  const { gl, invalidate } = useThree();
+  const { invalidate } = useThree();
 
   // Determine target speed based on current state
   const updateTargetSpeed = useCallback(() => {
@@ -68,28 +69,12 @@ export function useAutoRotation({ controlsRef, controlsReady, isMobile, enabled 
     }
   });
 
-  // Hover detection (desktop only)
+  // Hover detection — driven by raycast-based signal from PhoneInteraction
   useEffect(() => {
     if (isMobile) return;
-    const canvas = gl.domElement;
-
-    const onEnter = () => {
-      isHovering.current = true;
-      updateTargetSpeed();
-    };
-    const onLeave = () => {
-      isHovering.current = false;
-      updateTargetSpeed();
-      canvas.style.cursor = 'default'; // Reset cursor on leave
-    };
-
-    canvas.addEventListener('pointerenter', onEnter);
-    canvas.addEventListener('pointerleave', onLeave);
-    return () => {
-      canvas.removeEventListener('pointerenter', onEnter);
-      canvas.removeEventListener('pointerleave', onLeave);
-    };
-  }, [gl.domElement, isMobile, updateTargetSpeed]);
+    isHovering.current = isHoveringPhone;
+    updateTargetSpeed();
+  }, [isHoveringPhone, isMobile, updateTargetSpeed]);
 
   // Drag state tracking via OrbitControls events.
   // controlsReady is a state signal that re-triggers this effect when

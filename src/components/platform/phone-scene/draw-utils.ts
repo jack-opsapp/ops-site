@@ -103,29 +103,44 @@ export function drawCircle(
   ctx.restore();
 }
 
-/** Draw a pin marker with radial glow */
+/** Draw a project pin — matches iOS ProjectAnnotationRenderer exactly.
+ *  Structure: solid center dot (task type color) + 2pt stroke ring (status color) with 2pt gap.
+ *  iOS dims: dot 12pt, ring 20pt total → at canvas 2x scale: dot 24px, ring 40px.
+ *  @param dotColor  Task type color (center fill — inner circle)
+ *  @param ringColor Pipeline status color (ring stroke — outer circle), defaults to dotColor */
 export function drawMapPin(
   ctx: CanvasRenderingContext2D,
   cx: number,
   cy: number,
+  dotColor: string,
+  ringColor?: string,
   progress = 1,
 ) {
   if (progress <= 0) return;
+  const ring = ringColor ?? dotColor;
+
+  // iOS: dot diameter 12pt → 24px at 2x scale → radius 12
+  const dotR = 12;
+  // iOS: ring total diameter 20pt → 40px → radius 20, stroke 2pt → 4px
+  const ringR = 20;
+  const ringStroke = 4;
+
   ctx.save();
   ctx.globalAlpha = progress;
 
-  // Radial glow
-  const gradient = ctx.createRadialGradient(cx, cy, 0, cx, cy, LAYOUT.pinSize * 2.5);
-  gradient.addColorStop(0, COLORS.accentGlow);
-  gradient.addColorStop(1, 'transparent');
-  ctx.fillStyle = gradient;
-  ctx.fillRect(cx - LAYOUT.pinSize * 3, cy - LAYOUT.pinSize * 3, LAYOUT.pinSize * 6, LAYOUT.pinSize * 6);
-
-  // Pin circle
+  // Ring — full opacity
   ctx.beginPath();
-  ctx.arc(cx, cy, LAYOUT.pinSize / 2, 0, Math.PI * 2);
-  ctx.fillStyle = COLORS.accent;
+  ctx.arc(cx, cy, ringR, 0, Math.PI * 2);
+  ctx.strokeStyle = ring;
+  ctx.lineWidth = ringStroke;
+  ctx.stroke();
+
+  // Center dot — solid fill, full opacity
+  ctx.beginPath();
+  ctx.arc(cx, cy, dotR, 0, Math.PI * 2);
+  ctx.fillStyle = dotColor;
   ctx.fill();
+
   ctx.restore();
 }
 
@@ -179,6 +194,7 @@ export function drawTabBar(
   canvasWidth: number,
   tabBarY: number,
   progress = 1,
+  hoverOpacities: number[] = [0, 0, 0, 0],
 ) {
   if (progress <= 0) return;
   const tabWidth = canvasWidth / 4;
@@ -187,17 +203,45 @@ export function drawTabBar(
   ctx.save();
   ctx.globalAlpha = progress;
 
-  // Separator line above tab bar
-  ctx.strokeStyle = COLORS.separator;
-  ctx.lineWidth = 1;
+  // Frosted glass background — taller than icon area, bleeds off bottom edge
+  // Start 20px above tabBarY for extra height; extend 200px past canvas bottom
+  const tabBgTop = tabBarY - 20;
+  const tabBgBottom = tabBarY + 400; // Well past canvas height (1540), guarantees bleed
+  ctx.save();
   ctx.beginPath();
-  ctx.moveTo(0, tabBarY + 10);
-  ctx.lineTo(canvasWidth, tabBarY + 10);
+  ctx.rect(0, tabBgTop, canvasWidth, tabBgBottom - tabBgTop);
+  ctx.clip();
+  ctx.filter = 'blur(32px)';
+  // Draw the full canvas into itself within the clip — use raw pixel dims for src
+  ctx.drawImage(ctx.canvas, 0, 0);
+  ctx.filter = 'none';
+  ctx.fillStyle = 'rgba(10, 10, 10, 0.50)';
+  ctx.fillRect(0, tabBgTop, canvasWidth, tabBgBottom - tabBgTop);
+  ctx.restore();
+
+  // Top border of tab bar
+  ctx.strokeStyle = COLORS.border;
+  ctx.lineWidth = LAYOUT.borderWidth;
+  ctx.beginPath();
+  ctx.moveTo(0, tabBgTop);
+  ctx.lineTo(canvasWidth, tabBgTop);
   ctx.stroke();
 
   for (let i = 0; i < 4; i++) {
     const cx = tabWidth * i + tabWidth / 2;
     const isActive = i === activeIndex;
+    const hoverAlpha = isActive ? 0 : (hoverOpacities[i] || 0);
+
+    // Hover highlight — animated rounded rect background behind icon
+    if (hoverAlpha > 0.01) {
+      ctx.save();
+      ctx.fillStyle = `rgba(255, 255, 255, ${(0.08 * hoverAlpha).toFixed(3)})`;
+      const hW = tabWidth * 0.7, hH = 70, hR = 12;
+      ctx.beginPath();
+      ctx.roundRect(cx - hW / 2, iconY - hH / 2, hW, hH, hR);
+      ctx.fill();
+      ctx.restore();
+    }
 
     // Active indicator line above icon
     if (isActive) {
@@ -209,10 +253,10 @@ export function drawTabBar(
       ctx.stroke();
     }
 
-    // Icon strokes (simplified SF Symbols)
-    ctx.strokeStyle = isActive ? COLORS.accent : COLORS.bodyLine;
-    ctx.lineWidth = 1.5;
-    ctx.fillStyle = 'transparent';
+    // Icon strokes — boosted line width for visibility
+    ctx.strokeStyle = isActive ? COLORS.accent : COLORS.titleLine;
+    ctx.lineWidth = 2;
+    ctx.fillStyle = isActive ? COLORS.accent : COLORS.titleLine;
 
     drawTabIcon(ctx, i, cx, iconY);
   }
@@ -256,46 +300,96 @@ function drawTabIcon(
       ctx.stroke();
       break;
 
-    case 2: // Schedule — grid/calendar outline
-      ctx.strokeRect(cx - s, cy - s, s * 2, s * 2);
-      // Horizontal grid line
-      ctx.beginPath();
-      ctx.moveTo(cx - s, cy);
-      ctx.lineTo(cx + s, cy);
-      ctx.stroke();
-      // Vertical grid line
-      ctx.beginPath();
-      ctx.moveTo(cx, cy - s);
-      ctx.lineTo(cx, cy + s);
-      ctx.stroke();
+    case 2: // Schedule — calendar outline (matches iOS calendar.badge SF Symbol)
+      {
+        const calW = s * 2;
+        const calH = s * 2;
+        const calX = cx - s;
+        const calY = cy - s + 3;
+
+        // Calendar body with rounded corners
+        ctx.beginPath();
+        ctx.roundRect(calX, calY, calW, calH - 2, 3);
+        ctx.stroke();
+
+        // Header bar line (separates month header from date grid)
+        ctx.beginPath();
+        ctx.moveTo(calX, calY + calH * 0.3);
+        ctx.lineTo(calX + calW, calY + calH * 0.3);
+        ctx.stroke();
+
+        // Two pins sticking up from top edge
+        ctx.lineWidth = 2;
+        ctx.beginPath();
+        ctx.moveTo(calX + calW * 0.3, calY - 3);
+        ctx.lineTo(calX + calW * 0.3, calY + 4);
+        ctx.moveTo(calX + calW * 0.7, calY - 3);
+        ctx.lineTo(calX + calW * 0.7, calY + 4);
+        ctx.stroke();
+        ctx.lineWidth = 1.5;
+
+        // Small grid dots in the date area (3×2 grid)
+        const gridStartX = calX + calW * 0.2;
+        const gridStartY = calY + calH * 0.42;
+        const gridSpaceX = calW * 0.3;
+        const gridSpaceY = (calH * 0.5) / 2;
+        for (let r = 0; r < 2; r++) {
+          for (let c = 0; c < 3; c++) {
+            ctx.beginPath();
+            ctx.arc(gridStartX + c * gridSpaceX, gridStartY + r * gridSpaceY, 2, 0, Math.PI * 2);
+            ctx.fill();
+          }
+        }
+      }
       break;
 
-    case 3: // Settings — gear outline (simplified: circle with 4 notches)
-      ctx.beginPath();
-      ctx.arc(cx, cy, s * 0.6, 0, Math.PI * 2);
-      ctx.stroke();
-      // Notches at 4 cardinal points
-      for (let angle = 0; angle < Math.PI * 2; angle += Math.PI / 2) {
-        const nx = cx + Math.cos(angle) * s;
-        const ny = cy + Math.sin(angle) * s;
+    case 3: // Settings — 5-tooth gear, each tooth a perfect rectangle
+      {
+        const teeth = 6;
+        const innerR = s * 0.48;   // Valley radius (base of teeth)
+        const outerR = s * 0.88;   // Tooth tip radius
+        const halfW = s * 0.20;    // Half-width of each tooth (canvas units, not angular)
+        const step = (Math.PI * 2) / teeth;
+
+        // Each tooth is a true rectangle built from radial + tangent unit vectors.
+        // Sides are parallel, top is perpendicular to sides — all corners 90°.
         ctx.beginPath();
-        ctx.moveTo(
-          cx + Math.cos(angle) * s * 0.75,
-          cy + Math.sin(angle) * s * 0.75,
-        );
-        ctx.lineTo(nx, ny);
+        for (let i = 0; i < teeth; i++) {
+          const mid = step * i - Math.PI / 2;
+          // Radial unit vector (points outward from center)
+          const rx = Math.cos(mid), ry = Math.sin(mid);
+          // Tangent unit vector (perpendicular to radial, 90° CCW)
+          const tx = -Math.sin(mid), ty = Math.cos(mid);
+
+          // 4 corners of the rectangular tooth
+          const ilx = cx + rx * innerR - tx * halfW;
+          const ily = cy + ry * innerR - ty * halfW;
+          const olx = cx + rx * outerR - tx * halfW;
+          const oly = cy + ry * outerR - ty * halfW;
+          const orx = cx + rx * outerR + tx * halfW;
+          const ory = cy + ry * outerR + ty * halfW;
+          const irx = cx + rx * innerR + tx * halfW;
+          const iry = cy + ry * innerR + ty * halfW;
+
+          // Next tooth's inner-left corner (for valley floor line)
+          const nMid = step * (i + 1) - Math.PI / 2;
+          const nrx = Math.cos(nMid), nry = Math.sin(nMid);
+          const ntx = -Math.sin(nMid), nty = Math.cos(nMid);
+          const nilx = cx + nrx * innerR - ntx * halfW;
+          const nily = cy + nry * innerR - nty * halfW;
+
+          if (i === 0) ctx.moveTo(ilx, ily);
+          ctx.lineTo(olx, oly); // Left side (radial — straight out)
+          ctx.lineTo(orx, ory); // Top (tangential — perpendicular to sides)
+          ctx.lineTo(irx, iry); // Right side (radial — straight in)
+          ctx.lineTo(nilx, nily); // Valley floor (straight to next tooth)
+        }
+        ctx.closePath();
         ctx.stroke();
-      }
-      // Add diagonal notches for a more gear-like look
-      for (let angle = Math.PI / 4; angle < Math.PI * 2; angle += Math.PI / 2) {
-        const nx = cx + Math.cos(angle) * s * 0.9;
-        const ny = cy + Math.sin(angle) * s * 0.9;
+
+        // Center hole
         ctx.beginPath();
-        ctx.moveTo(
-          cx + Math.cos(angle) * s * 0.75,
-          cy + Math.sin(angle) * s * 0.75,
-        );
-        ctx.lineTo(nx, ny);
+        ctx.arc(cx, cy, s * 0.22, 0, Math.PI * 2);
         ctx.stroke();
       }
       break;
@@ -326,7 +420,7 @@ export function drawStatusBar(
 ) {
   if (progress <= 0) return;
   const SYS_FONT = '-apple-system, SF Pro Text, Helvetica Neue, sans-serif';
-  const y = ISLAND_CENTER_Y;
+  const y = ISLAND_CENTER_Y + 4; // Nudged down to sit lower in status bar area
   const margin = LAYOUT.padding + 16; // Extra inset from screen edges
   const iconH = ISLAND_H / 2; // ~24px — target height for all icons
 
@@ -363,65 +457,97 @@ export function drawStatusBar(
   ctx.stroke();
   ctx.restore();
 
-  // --- RIGHT SIDE: Cellular bars, wifi, battery ---
-  // Consistent gap between all icon groups
+  // --- RIGHT SIDE: cellular bars, wifi, battery ---
+  // Matches reference: clean solid white iOS icons (signal, wifi, battery)
   const rightEdge = canvasWidth - margin;
-  const iconGap = 16; // Uniform padding between each icon group
+  const iconGap = 14;
 
-  // Battery — rightmost, ~iconH tall
-  const batW = 48, batH = iconH;
-  const batX = rightEdge - batW;
-  const batY = y - batH / 2;
-  ctx.strokeStyle = COLORS.bodyLine;
-  ctx.lineWidth = 1.5;
-  ctx.beginPath();
-  ctx.roundRect(batX, batY, batW - 5, batH, 4);
-  ctx.stroke();
-  // Battery tip
-  ctx.fillStyle = COLORS.bodyLine;
-  ctx.fillRect(batX + batW - 5, batY + 6, 4, batH - 12);
-  // Battery fill — white
-  ctx.fillStyle = 'rgba(255, 255, 255, 0.85)';
-  ctx.beginPath();
-  ctx.roundRect(batX + 2.5, batY + 2.5, batW - 11, batH - 5, 2.5);
-  ctx.fill();
-  // "100" inside
-  ctx.font = `bold ${batH * 0.52}px ${SYS_FONT}`;
-  ctx.fillStyle = '#0A0A0A';
-  ctx.textAlign = 'center';
-  ctx.fillText('100', batX + (batW - 5) / 2, y + 1);
+  // ── Battery icon ──
+  // Wider proportions, visible gap between outline and fill, smooth nub
+  const batShellW = 42;
+  const batShellH = 20;
+  const batShellX = rightEdge - batShellW - 6; // Room for nub
+  const batShellY = y - batShellH / 2;
+  const batCorner = 5;
+  const batStroke = 2.4;
 
-  // Wifi icon — 3 arcs, sized to ~iconH. Positioned with consistent gap from battery.
-  const wifiOuterR = 20; // Outermost arc radius
-  const wifiX = batX - iconGap - wifiOuterR;
-  const wifiBottom = y + iconH * 0.35;
-  ctx.strokeStyle = COLORS.titleLine;
-  ctx.lineWidth = 3;
-  for (let i = 0; i < 3; i++) {
-    const r = 6 + i * 7;
-    ctx.beginPath();
-    ctx.arc(wifiX, wifiBottom, r, -Math.PI * 0.75, -Math.PI * 0.25);
-    ctx.stroke();
-  }
-  // Center dot
-  ctx.beginPath();
-  ctx.arc(wifiX, wifiBottom, 2.5, 0, Math.PI * 2);
+  // Nub (positive terminal) — smooth rounded bullet on right side
+  const nubW = 5;
+  const nubH = 8;
+  const nubX = batShellX + batShellW + 0.5;
+  const nubY = y - nubH / 2;
   ctx.fillStyle = COLORS.titleLine;
+  ctx.beginPath();
+  ctx.roundRect(nubX, nubY, nubW, nubH, [0, nubW / 2, nubW / 2, 0]);
   ctx.fill();
 
-  // Cellular bars — 4 vertical bars, consistent gap from wifi
-  const barW = 5;
+  // Shell outline
+  ctx.strokeStyle = COLORS.titleLine;
+  ctx.lineWidth = batStroke;
+  ctx.beginPath();
+  ctx.roundRect(batShellX, batShellY, batShellW, batShellH, batCorner);
+  ctx.stroke();
+
+  // Inner fill — inset enough to show dark gap on all sides
+  const fillInset = 4.5;
+  ctx.fillStyle = COLORS.titleLine;
+  ctx.beginPath();
+  ctx.roundRect(
+    batShellX + fillInset,
+    batShellY + fillInset,
+    batShellW - fillInset * 2,
+    batShellH - fillInset * 2,
+    2,
+  );
+  ctx.fill();
+
+  // ── WiFi icon ──
+  // Pie-slice fan: bottom tapers to a point, 3 filled arc bands (no outer ring)
+  // Use consistent gap: center offset = wifiOuterR + gap, so visual edges are equidistant
+  const wifiGap = 12; // Visual gap between icon group edges
+  const wifiOuterR = 26; // Outer band radius — used to compute visual extent
+  const wifiCenterX = batShellX - wifiGap - Math.round(wifiOuterR * Math.sin(0.72));
+  const wifiBaseY = y + iconH * 0.32;
+
+  ctx.fillStyle = COLORS.titleLine;
+
+  const sweep = 0.72; // Half-angle each side of vertical (~41°)
+  // 3 elements: pie wedge (point) + 2 arc bands
+  const bands = [
+    { innerR: 0, outerR: 8 },    // Pie wedge — tapers to point
+    { innerR: 10, outerR: 17 },  // Inner band
+    { innerR: 19, outerR: 26 },  // Outer band
+  ];
+
+  for (const band of bands) {
+    ctx.beginPath();
+    if (band.innerR === 0) {
+      ctx.moveTo(wifiCenterX, wifiBaseY);
+      ctx.arc(wifiCenterX, wifiBaseY, band.outerR, -Math.PI / 2 - sweep, -Math.PI / 2 + sweep);
+      ctx.closePath();
+    } else {
+      ctx.arc(wifiCenterX, wifiBaseY, band.outerR, -Math.PI / 2 - sweep, -Math.PI / 2 + sweep);
+      ctx.arc(wifiCenterX, wifiBaseY, band.innerR, -Math.PI / 2 + sweep, -Math.PI / 2 - sweep, true);
+      ctx.closePath();
+    }
+    ctx.fill();
+  }
+
+  // ── Cellular signal bars ──
+  // 4 chunky ascending bars, bottom-aligned, pill-like rounding
+  const barW = 7;
   const barGap = 3;
-  const barsGroupW = 4 * barW + 3 * barGap; // Total width of the 4 bars
-  const barsX = wifiX - wifiOuterR - iconGap; // Left edge of rightmost bar
-  const barHeights = [0.35, 0.5, 0.7, 1.0]; // Fraction of iconH
+  const barsGroupW = 4 * barW + 3 * barGap;
+  const barsStartX = wifiCenterX - Math.round(wifiOuterR * Math.sin(0.72)) - wifiGap - barsGroupW;
+  const barBottom = y + iconH / 2;
+  const barHeights = [0.28, 0.48, 0.72, 1.0];
+  ctx.fillStyle = COLORS.titleLine;
   for (let i = 0; i < 4; i++) {
     const bh = iconH * barHeights[i];
-    const bx = barsX - barsGroupW + i * (barW + barGap);
-    const by = y + iconH / 2 - bh; // Bottom-aligned
+    const bx = barsStartX + i * (barW + barGap);
+    const by = barBottom - bh;
     ctx.beginPath();
-    ctx.roundRect(bx, by, barW, bh, 1.5);
-    ctx.fillStyle = COLORS.titleLine;
+    ctx.roundRect(bx, by, barW, bh, 2);
     ctx.fill();
   }
 
@@ -461,41 +587,55 @@ export function drawFAB(
 ) {
   if (progress <= 0) return;
 
-  const radius = 48;
+  const radius = 62;
   const cx = canvasWidth - LAYOUT.padding - radius - 8;
-  const cy = tabBarY - radius - 80; // Higher up — overlaps content like the real app
+  const cy = tabBarY - radius - 60; // Overlaps content like the real app
 
   ctx.save();
   ctx.globalAlpha = progress;
 
-  // Outer ring
+  // Frosted glass circle background
+  ctx.save();
   ctx.beginPath();
   ctx.arc(cx, cy, radius, 0, Math.PI * 2);
-  ctx.fillStyle = '#0A0A0A';
-  ctx.fill();
+  ctx.clip();
+  ctx.filter = 'blur(16px)';
+  const fabCanvasW = ctx.canvas.width;
+  const fabCanvasH = ctx.canvas.height;
+  const fabLogicalH = fabCanvasH / (fabCanvasW / canvasWidth);
+  ctx.drawImage(ctx.canvas, 0, 0, fabCanvasW, fabCanvasH,
+    0, 0, canvasWidth, fabLogicalH);
+  ctx.filter = 'none';
+  ctx.fillStyle = 'rgba(10, 10, 10, 0.45)';
+  ctx.fillRect(cx - radius, cy - radius, radius * 2, radius * 2);
+  ctx.restore();
+
+  // Border ring
+  ctx.beginPath();
+  ctx.arc(cx, cy, radius, 0, Math.PI * 2);
   ctx.strokeStyle = 'rgba(255, 255, 255, 0.25)';
-  ctx.lineWidth = 2.5;
+  ctx.lineWidth = 3;
   ctx.stroke();
 
-  // Lightning bolt stroke
-  ctx.strokeStyle = 'rgba(255, 255, 255, 0.75)';
-  ctx.lineWidth = 3;
+  // Lightning bolt — scaled up for larger button
+  ctx.strokeStyle = 'rgba(255, 255, 255, 0.80)';
+  ctx.lineWidth = 3.5;
   ctx.lineJoin = 'round';
   ctx.lineCap = 'round';
   ctx.beginPath();
-  ctx.moveTo(cx + 2, cy - 22);    // Top
-  ctx.lineTo(cx - 10, cy + 2);    // Left mid
-  ctx.lineTo(cx + 2, cy + 2);     // Center
-  ctx.lineTo(cx - 2, cy + 22);    // Bottom
-  ctx.lineTo(cx + 10, cy - 2);    // Right mid
-  ctx.lineTo(cx - 2, cy - 2);     // Center
+  ctx.moveTo(cx + 3, cy - 28);    // Top
+  ctx.lineTo(cx - 13, cy + 3);    // Left mid
+  ctx.lineTo(cx + 3, cy + 3);     // Center
+  ctx.lineTo(cx - 3, cy + 28);    // Bottom
+  ctx.lineTo(cx + 13, cy - 3);    // Right mid
+  ctx.lineTo(cx - 3, cy - 3);     // Center
   ctx.closePath();
   ctx.stroke();
 
-  // Notification badge — small gold circle with count
-  const badgeR = 14;
-  const badgeX = cx + radius * 0.65;
-  const badgeY = cy - radius * 0.65;
+  // Notification badge — gold circle with count
+  const badgeR = 18;
+  const badgeX = cx + radius * 0.62;
+  const badgeY = cy - radius * 0.62;
   ctx.beginPath();
   ctx.arc(badgeX, badgeY, badgeR, 0, Math.PI * 2);
   ctx.fillStyle = COLORS.stageInProgress; // Gold
@@ -503,7 +643,7 @@ export function drawFAB(
 
   // Badge count
   ctx.fillStyle = '#0A0A0A';
-  ctx.font = 'bold 16px sans-serif';
+  ctx.font = 'bold 20px sans-serif';
   ctx.textAlign = 'center';
   ctx.textBaseline = 'middle';
   ctx.fillText('16', badgeX, badgeY + 1);

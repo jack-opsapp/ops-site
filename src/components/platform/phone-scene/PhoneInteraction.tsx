@@ -15,8 +15,10 @@ import {
   Raycaster,
   Vector2,
   SRGBColorSpace,
+  LinearFilter,
+  LinearMipmapLinearFilter,
   type Mesh,
-  type MeshBasicMaterial,
+  type MeshPhysicalMaterial,
 } from 'three';
 import type { OrbitControls as OrbitControlsImpl } from 'three-stdlib';
 import { ScreenRenderer } from './ScreenRenderer';
@@ -40,6 +42,8 @@ interface PhoneInteractionProps {
   prefersReducedMotion?: boolean;
   isVisible?: boolean;
   onTabChange?: (tab: TabId) => void;
+  onHoverChange?: (hovering: boolean) => void;
+  onCursorOffset?: (offset: { x: number; y: number } | null) => void;
 }
 
 export default function PhoneInteraction({
@@ -49,6 +53,8 @@ export default function PhoneInteraction({
   prefersReducedMotion = false,
   isVisible = true,
   onTabChange,
+  onHoverChange,
+  onCursorOffset,
 }: PhoneInteractionProps) {
   const rendererRef = useRef<ScreenRenderer | null>(null);
   const textureRef = useRef<CanvasTexture | null>(null);
@@ -67,11 +73,21 @@ export default function PhoneInteraction({
 
     const texture = new CanvasTexture(renderer.getCanvas());
     texture.colorSpace = SRGBColorSpace;
+    // Sharp at oblique angles — max anisotropy prevents blur when phone is tilted
+    texture.anisotropy = gl.capabilities.getMaxAnisotropy();
+    // Mipmaps for quality at distance + smooth minification
+    texture.generateMipmaps = true;
+    texture.minFilter = LinearMipmapLinearFilter;
+    texture.magFilter = LinearFilter;
     textureRef.current = texture;
 
     // Apply texture to screen mesh material
-    const material = screenMesh.material as MeshBasicMaterial;
-    material.map = texture;
+    // Emissive screen: texture drives self-illumination (like a real OLED display),
+    // while the material's clearcoat provides glass reflections on top.
+    const material = screenMesh.material as MeshPhysicalMaterial;
+    material.emissive.set('#FFFFFF');
+    material.emissiveMap = texture;
+    material.emissiveIntensity = 0.8;
     material.needsUpdate = true;
 
     // Register onFrame BEFORE triggering first draw — so the texture
@@ -162,7 +178,7 @@ export default function PhoneInteraction({
     [screenMesh, camera, gl.domElement, onTabChange, prefersReducedMotion],
   );
 
-  // --- Hover: pointer over tab bar, grab over phone screen, default elsewhere ---
+  // --- Hover: raycast against screen to detect actual phone hover ---
   const handlePointerMove = useCallback(
     (event: PointerEvent) => {
       const rect = gl.domElement.getBoundingClientRect();
@@ -172,25 +188,43 @@ export default function PhoneInteraction({
       raycaster.current.setFromCamera(pointer.current, camera);
       const intersects = raycaster.current.intersectObject(screenMesh);
 
-      if (intersects.length > 0 && intersects[0].uv) {
-        const uv = intersects[0].uv;
+      const hitPhone = intersects.length > 0 && intersects[0].uv != null;
+
+      // Notify hover state for auto-rotation slowdown
+      if (onHoverChange) {
+        onHoverChange(hitPhone);
+      }
+
+      if (hitPhone) {
+        const uv = intersects[0].uv!;
+
+        // Cursor offset from phone center: -1 to +1
+        // Used for physical recoil effect
+        onCursorOffset?.({ x: (uv.x - 0.5) * 2, y: (uv.y - 0.5) * 2 });
+
         if (uv.y < TAB_BAR_UV_THRESHOLD) {
           gl.domElement.style.cursor = 'pointer';
+          const tabIndex = Math.max(0, Math.min(3, Math.floor(uv.x * 4)));
+          rendererRef.current?.setHoveredTab(tabIndex);
         } else {
           gl.domElement.style.cursor = 'grab';
+          rendererRef.current?.setHoveredTab(-1);
         }
       } else {
-        // Raycast missed the phone — default cursor, not grab
         gl.domElement.style.cursor = 'default';
+        rendererRef.current?.setHoveredTab(-1);
+        onCursorOffset?.(null);
       }
     },
     [screenMesh, camera, gl.domElement],
   );
 
-  // --- Leave: reset cursor to default ---
+  // --- Leave: reset cursor, hover state, and cursor offset ---
   const handlePointerLeave = useCallback(() => {
     gl.domElement.style.cursor = 'default';
-  }, [gl.domElement]);
+    onHoverChange?.(false);
+    onCursorOffset?.(null);
+  }, [gl.domElement, onHoverChange, onCursorOffset]);
 
   // Attach / detach event listeners on the canvas element
   useEffect(() => {

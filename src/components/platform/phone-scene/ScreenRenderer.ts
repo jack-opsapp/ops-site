@@ -6,7 +6,7 @@
  */
 
 import { CANVAS_WIDTH, CANVAS_HEIGHT, TIMING, DEFAULT_TAB, TABS, LAYOUT } from './constants';
-import { drawTabBar, drawStatusBar, drawDynamicIsland, drawFAB, clearCanvas } from './draw-utils';
+import { drawTabBar, drawStatusBar, drawFAB, clearCanvas } from './draw-utils';
 import { drawHomeScreen } from './screens/home-screen';
 import { drawJobBoardScreen } from './screens/jobboard-screen';
 import { drawScheduleScreen } from './screens/schedule-screen';
@@ -34,13 +34,20 @@ export class ScreenRenderer {
   private rafId: number | null = null;
   private onFrameCallback: (() => void) | null = null;
   private paused = false;
+  private hoveredTabIndex = -1;
+  private hoverOpacities = [0, 0, 0, 0]; // Per-tab hover opacity (0-1), animated
 
   constructor() {
+    // 2x DPR for sharp rendering when mapped to the 3D screen texture.
+    // Drawing code still uses CANVAS_WIDTH/HEIGHT as logical coords;
+    // ctx.scale(DPR, DPR) handles the upscaling transparently.
+    const DPR = 2;
     this.canvas = document.createElement('canvas');
-    this.canvas.width = CANVAS_WIDTH;
-    this.canvas.height = CANVAS_HEIGHT;
+    this.canvas.width = CANVAS_WIDTH * DPR;
+    this.canvas.height = CANVAS_HEIGHT * DPR;
     const ctx = this.canvas.getContext('2d');
     if (!ctx) throw new Error('Canvas 2D context not available');
+    ctx.scale(DPR, DPR);
     this.ctx = ctx;
 
     // Canvas starts blank. PhoneInteraction calls drawStatic() or
@@ -56,6 +63,17 @@ export class ScreenRenderer {
   /** Get current active tab */
   getActiveTab(): TabId {
     return this.activeTab;
+  }
+
+  /** Set which tab icon is being hovered (-1 = none). Animates opacity. */
+  setHoveredTab(index: number) {
+    if (this.hoveredTabIndex === index) return;
+    this.hoveredTabIndex = index;
+    // Kick off animation loop if not already running
+    if (!this.isAnimating && !this.rafId) {
+      this.isAnimating = true;
+      this.animate();
+    }
   }
 
   /** Set a callback to fire every animation frame (for texture.needsUpdate) */
@@ -144,13 +162,17 @@ export class ScreenRenderer {
     // Render current frame
     this.renderFrame();
 
-    // Continue or stop
-    if (this.isFadingOut || this.animationProgress < 1) {
+    // Continue or stop — also keep running while hover opacities are transitioning
+    const hoverTransitioning = this.hoverOpacities.some((o, i) => {
+      const target = i === this.hoveredTabIndex ? 1 : 0;
+      return Math.abs(o - target) > 0.01;
+    });
+    if (this.isFadingOut || this.animationProgress < 1 || hoverTransitioning) {
       this.rafId = requestAnimationFrame(this.animate);
     } else {
       this.isAnimating = false;
       this.rafId = null;
-      // One final render at progress=1 to ensure crisp final state
+      // One final render to ensure crisp final state
       this.renderFrame();
     }
   };
@@ -163,25 +185,47 @@ export class ScreenRenderer {
 
     clearCanvas(ctx, w, h);
 
-    // Static chrome — status bar + Dynamic Island drawn before screen content
-    drawStatusBar(ctx, w, this.animationProgress);
-    drawDynamicIsland(ctx, w, this.animationProgress);
-
     ctx.save();
     ctx.globalAlpha = this.fadeProgress;
 
-    // Draw active screen
+    // Draw active screen (may include full-bleed background like the map)
     const drawFn = SCREEN_DRAW_MAP[this.activeTab];
     drawFn({ ctx, width: w, height: h, progress: this.animationProgress });
 
+    // Animate hover opacities (lerp toward target)
+    const lerpSpeed = 0.18;
+    let hoverAnimating = false;
+    for (let i = 0; i < 4; i++) {
+      const target = i === this.hoveredTabIndex ? 1 : 0;
+      const diff = target - this.hoverOpacities[i];
+      if (Math.abs(diff) > 0.01) {
+        this.hoverOpacities[i] += diff * lerpSpeed;
+        hoverAnimating = true;
+      } else {
+        this.hoverOpacities[i] = target;
+      }
+    }
+    // Keep animation loop alive while hover is transitioning
+    if (hoverAnimating && !this.isAnimating) {
+      this.isAnimating = true;
+      if (!this.rafId) this.animate();
+    }
+
     // Draw tab bar (always drawn with the screen's progress)
     const activeIndex = TABS.findIndex((t) => t.id === this.activeTab);
-    drawTabBar(ctx, activeIndex, w, LAYOUT.tabBarY, this.animationProgress);
+    drawTabBar(ctx, activeIndex, w, LAYOUT.tabBarY, this.animationProgress, this.hoverOpacities);
 
     ctx.restore();
 
+    // Static chrome — status bar drawn AFTER screen content so full-bleed
+    // backgrounds (like the home map) don't cover it
+    drawStatusBar(ctx, w, this.animationProgress);
+
     // Static overlays — drawn outside the fade alpha so they persist across tab transitions
-    drawFAB(ctx, w, LAYOUT.tabBarY, this.animationProgress);
+    // FAB is NOT shown on the settings tab (matches real iOS app behavior)
+    if (this.activeTab !== 'settings') {
+      drawFAB(ctx, w, LAYOUT.tabBarY, this.animationProgress);
+    }
 
     // Notify listener (for Three.js texture update)
     this.onFrameCallback?.();
