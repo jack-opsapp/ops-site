@@ -342,26 +342,30 @@ export function drawStatusBar(
   ctx.textAlign = 'left';
   ctx.fillText('1:29', margin, y);
 
-  // Location services icon — iOS diagonal arrow (paper-plane style, pointing upper-right)
-  const arrowX = margin + 82;
-  const arrowS = 8; // Half-size
+  // Location services icon — iOS diagonal arrow, white, pointing upper-left
+  // (mirrored on Y axis from the default upper-right orientation)
+  const arrowX = margin + 84;
+  const arrowS = 14; // Half-size — scaled up to match status bar icon height
   ctx.save();
   ctx.translate(arrowX, y);
-  ctx.rotate(-Math.PI / 4); // Rotate 45° so it points upper-right
-  ctx.fillStyle = COLORS.accent;
+  ctx.scale(-1, 1); // Mirror on Y axis
+  ctx.rotate(-Math.PI / 4); // Rotate 45°
+  ctx.fillStyle = COLORS.titleLine; // White
   ctx.beginPath();
-  ctx.moveTo(0, -arrowS);          // Top point
-  ctx.lineTo(arrowS * 0.6, arrowS * 0.4);  // Right
-  ctx.lineTo(0, 0);                // Notch center
-  ctx.lineTo(-arrowS * 0.6, arrowS * 0.4); // Left
+  ctx.moveTo(0, -arrowS);                  // Top point
+  ctx.lineTo(arrowS * 0.55, arrowS * 0.4); // Right wing
+  ctx.lineTo(0, arrowS * 0.05);            // Notch center
+  ctx.lineTo(-arrowS * 0.55, arrowS * 0.4);// Left wing
   ctx.closePath();
   ctx.fill();
   ctx.restore();
 
   // --- RIGHT SIDE: Cellular bars, wifi, battery ---
+  // Consistent gap between all icon groups
   const rightEdge = canvasWidth - margin;
+  const iconGap = 16; // Uniform padding between each icon group
 
-  // Battery — ~iconH tall
+  // Battery — rightmost, ~iconH tall
   const batW = 48, batH = iconH;
   const batX = rightEdge - batW;
   const batY = y - batH / 2;
@@ -384,8 +388,9 @@ export function drawStatusBar(
   ctx.textAlign = 'center';
   ctx.fillText('100', batX + (batW - 5) / 2, y + 1);
 
-  // Wifi icon — 3 arcs, sized to ~iconH
-  const wifiX = batX - 34;
+  // Wifi icon — 3 arcs, sized to ~iconH. Positioned with consistent gap from battery.
+  const wifiOuterR = 20; // Outermost arc radius
+  const wifiX = batX - iconGap - wifiOuterR;
   const wifiBottom = y + iconH * 0.35;
   ctx.strokeStyle = COLORS.titleLine;
   ctx.lineWidth = 2;
@@ -401,14 +406,15 @@ export function drawStatusBar(
   ctx.fillStyle = COLORS.titleLine;
   ctx.fill();
 
-  // Cellular bars — 4 vertical bars increasing height
-  const barsX = wifiX - 56; // Extra padding between wifi and cellular
+  // Cellular bars — 4 vertical bars, consistent gap from wifi
   const barW = 5;
   const barGap = 3;
+  const barsGroupW = 4 * barW + 3 * barGap; // Total width of the 4 bars
+  const barsX = wifiX - wifiOuterR - iconGap; // Left edge of rightmost bar
   const barHeights = [0.35, 0.5, 0.7, 1.0]; // Fraction of iconH
   for (let i = 0; i < 4; i++) {
     const bh = iconH * barHeights[i];
-    const bx = barsX + i * (barW + barGap);
+    const bx = barsX - barsGroupW + i * (barW + barGap);
     const by = y + iconH / 2 - bh; // Bottom-aligned
     ctx.beginPath();
     ctx.roundRect(bx, by, barW, bh, 1.5);
