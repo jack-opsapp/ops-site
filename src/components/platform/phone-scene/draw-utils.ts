@@ -342,15 +342,21 @@ export function drawStatusBar(
   ctx.textAlign = 'left';
   ctx.fillText('1:29', margin, y);
 
-  // Location arrow — filled triangle
-  const arrowX = margin + 80;
+  // Location services icon — iOS diagonal arrow (paper-plane style, pointing upper-right)
+  const arrowX = margin + 82;
+  const arrowS = 8; // Half-size
+  ctx.save();
+  ctx.translate(arrowX, y);
+  ctx.rotate(-Math.PI / 4); // Rotate 45° so it points upper-right
   ctx.fillStyle = COLORS.accent;
   ctx.beginPath();
-  ctx.moveTo(arrowX, y - 10);
-  ctx.lineTo(arrowX + 8, y + 5);
-  ctx.lineTo(arrowX - 1, y + 2);
+  ctx.moveTo(0, -arrowS);          // Top point
+  ctx.lineTo(arrowS * 0.6, arrowS * 0.4);  // Right
+  ctx.lineTo(0, 0);                // Notch center
+  ctx.lineTo(-arrowS * 0.6, arrowS * 0.4); // Left
   ctx.closePath();
   ctx.fill();
+  ctx.restore();
 
   // --- RIGHT SIDE: Cellular bars, wifi, battery ---
   const rightEdge = canvasWidth - margin;
@@ -395,8 +401,8 @@ export function drawStatusBar(
   ctx.fillStyle = COLORS.titleLine;
   ctx.fill();
 
-  // Cellular bars — 4 vertical bars increasing height (replaces SOS + dots)
-  const barsX = wifiX - 42;
+  // Cellular bars — 4 vertical bars increasing height
+  const barsX = wifiX - 56; // Extra padding between wifi and cellular
   const barW = 5;
   const barGap = 3;
   const barHeights = [0.35, 0.5, 0.7, 1.0]; // Fraction of iconH
