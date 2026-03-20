@@ -343,14 +343,16 @@ export function drawStatusBar(
   ctx.fillText('1:29', margin, y);
 
   // Location services icon — iOS diagonal arrow, white, pointing upper-left
-  // (mirrored on Y axis from the default upper-right orientation)
-  const arrowX = margin + 84;
-  const arrowS = 14; // Half-size — scaled up to match status bar icon height
+  const arrowX = margin + 86;
+  const arrowS = 18; // Half-size — matches status bar icon scale
   ctx.save();
   ctx.translate(arrowX, y);
   ctx.scale(-1, 1); // Mirror on Y axis
   ctx.rotate(-Math.PI / 4); // Rotate 45°
   ctx.fillStyle = COLORS.titleLine; // White
+  ctx.strokeStyle = COLORS.titleLine;
+  ctx.lineWidth = 2.5;
+  ctx.lineJoin = 'round';
   ctx.beginPath();
   ctx.moveTo(0, -arrowS);                  // Top point
   ctx.lineTo(arrowS * 0.55, arrowS * 0.4); // Right wing
@@ -358,6 +360,7 @@ export function drawStatusBar(
   ctx.lineTo(-arrowS * 0.55, arrowS * 0.4);// Left wing
   ctx.closePath();
   ctx.fill();
+  ctx.stroke();
   ctx.restore();
 
   // --- RIGHT SIDE: Cellular bars, wifi, battery ---
@@ -393,7 +396,7 @@ export function drawStatusBar(
   const wifiX = batX - iconGap - wifiOuterR;
   const wifiBottom = y + iconH * 0.35;
   ctx.strokeStyle = COLORS.titleLine;
-  ctx.lineWidth = 2;
+  ctx.lineWidth = 3;
   for (let i = 0; i < 3; i++) {
     const r = 6 + i * 7;
     ctx.beginPath();
