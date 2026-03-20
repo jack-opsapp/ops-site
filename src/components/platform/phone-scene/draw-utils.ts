@@ -310,35 +310,35 @@ export function phase(progress: number, start: number, end: number): number {
   return (progress - start) / (end - start);
 }
 
-/** Draw the iOS status bar — time, location arrow, signal, wifi, battery */
+/** Draw the iOS status bar — time, location arrow, signal, wifi, battery.
+ *  Vertically centered with the Dynamic Island (center = y 38). */
 export function drawStatusBar(
   ctx: CanvasRenderingContext2D,
   canvasWidth: number,
   progress = 1,
 ) {
   if (progress <= 0) return;
-  const KOSUGI = 'Kosugi, sans-serif';
-  const y = 18; // Baseline for status bar text
+  const SYS_FONT = '-apple-system, SF Pro Text, Helvetica Neue, sans-serif';
+  // Dynamic Island center: y=20 (top) + 36/2 = y=38
+  const y = 38;
   const p = LAYOUT.padding;
 
   ctx.save();
   ctx.globalAlpha = progress;
   ctx.textBaseline = 'middle';
 
-  // Time — left side
-  ctx.font = `bold 20px ${KOSUGI}`;
+  // Time — left side, bold system font
+  ctx.font = `bold 22px ${SYS_FONT}`;
   ctx.fillStyle = COLORS.titleLine;
   ctx.textAlign = 'left';
   ctx.fillText('1:29', p - 4, y);
 
-  // Location arrow — small triangle after time
-  const arrowX = p + 60;
-  ctx.strokeStyle = COLORS.accent;
+  // Location arrow — small filled triangle after time
+  const arrowX = p + 62;
   ctx.fillStyle = COLORS.accent;
-  ctx.lineWidth = 1.5;
   ctx.beginPath();
-  ctx.moveTo(arrowX, y - 7);
-  ctx.lineTo(arrowX + 5, y + 3);
+  ctx.moveTo(arrowX, y - 8);
+  ctx.lineTo(arrowX + 6, y + 4);
   ctx.lineTo(arrowX - 1, y + 1);
   ctx.closePath();
   ctx.fill();
@@ -347,7 +347,7 @@ export function drawStatusBar(
   const rightX = canvasWidth - p;
 
   // Battery — rightmost
-  const batW = 38, batH = 18;
+  const batW = 40, batH = 18;
   const batX = rightX - batW;
   const batY = y - batH / 2;
   // Battery outline
@@ -359,14 +359,14 @@ export function drawStatusBar(
   // Battery tip
   ctx.fillStyle = COLORS.bodyLine;
   ctx.fillRect(batX + batW - 4, batY + 5, 3, 8);
-  // Battery fill (green = full)
-  ctx.fillStyle = '#4CAF50';
+  // Battery fill — white
+  ctx.fillStyle = 'rgba(255, 255, 255, 0.85)';
   ctx.beginPath();
   ctx.roundRect(batX + 2, batY + 2, batW - 9, batH - 4, 2);
   ctx.fill();
   // "100" text inside battery
-  ctx.font = `bold 11px ${KOSUGI}`;
-  ctx.fillStyle = '#000';
+  ctx.font = `bold 11px ${SYS_FONT}`;
+  ctx.fillStyle = '#0A0A0A';
   ctx.textAlign = 'center';
   ctx.fillText('100', batX + (batW - 4) / 2, y + 1);
 
@@ -374,14 +374,12 @@ export function drawStatusBar(
   const wifiX = batX - 28;
   ctx.strokeStyle = COLORS.titleLine;
   ctx.lineWidth = 1.5;
-  // Three arcs
   for (let i = 0; i < 3; i++) {
     const r = 5 + i * 5;
     ctx.beginPath();
     ctx.arc(wifiX, y + 6, r, -Math.PI * 0.75, -Math.PI * 0.25);
     ctx.stroke();
   }
-  // Center dot
   ctx.beginPath();
   ctx.arc(wifiX, y + 6, 2, 0, Math.PI * 2);
   ctx.fillStyle = COLORS.titleLine;
@@ -397,7 +395,7 @@ export function drawStatusBar(
   }
 
   // "SOS" text — to the left of signal dots
-  ctx.font = `bold 16px ${KOSUGI}`;
+  ctx.font = `bold 16px ${SYS_FONT}`;
   ctx.fillStyle = COLORS.titleLine;
   ctx.textAlign = 'right';
   ctx.fillText('SOS', dotsX - 10, y);
