@@ -158,27 +158,33 @@ export function drawHomeScreen({ ctx, width, height, progress }: ScreenDrawParam
   // Notification bell badge — overlaid on avatar
   drawNotificationBell(ctx, avatarCx, avatarCy, avatarR, structP);
 
-  // Greeting — Kosugi, all caps (per user feedback)
-  drawText(ctx, 'GOOD AFTERNOON, PETE', p, headerY + 10, `bold 34px ${MOHAVE}`, COLORS.titleLine, structP);
+  // Greeting — Kosugi-Regular 22pt → 44px at 2x canvas scale
+  // (iOS uses Font.subtitle = Kosugi-Regular 22pt for home greeting)
+  drawText(ctx, 'GOOD AFTERNOON, PETE', p, headerY + 14, `44px ${KOSUGI}`, COLORS.titleLine, structP);
 
-  // Company line — Kosugi, all caps + green trial dot + trial text
-  const companyY = headerY + 50;
-  drawText(ctx, 'MAVERICK PROJECTS LTD', p, companyY, `13px ${KOSUGI}`, COLORS.captionLine, structP);
+  // Company name — Kosugi-Regular 14pt → 28px at 2x canvas scale
+  // (iOS uses Font.caption = Kosugi-Regular 14pt)
+  const companyY = headerY + 58;
+  drawText(ctx, 'MAVERICK PROJECTS LTD', p, companyY, `28px ${KOSUGI}`, COLORS.captionLine, structP);
   if (structP > 0) {
     ctx.save();
     ctx.globalAlpha = structP;
-    const dotX = p + 262;
+    // Measure company text width to position dot after it
+    ctx.font = `28px ${KOSUGI}`;
+    const companyW = ctx.measureText('MAVERICK PROJECTS LTD').width;
+    const dotX = p + companyW + 16;
     // Green dot
     ctx.beginPath();
-    ctx.arc(dotX, companyY, 4, 0, Math.PI * 2);
+    ctx.arc(dotX, companyY, 6, 0, Math.PI * 2);
     ctx.fillStyle = COLORS.stageAccepted;
     ctx.fill();
-    // Trial text
-    ctx.font = `13px ${KOSUGI}`;
+    // Trial status — Kosugi-Regular 12pt → 24px at 2x
+    // (iOS uses Font.smallCaption = Kosugi-Regular 12pt)
+    ctx.font = `24px ${KOSUGI}`;
     ctx.fillStyle = COLORS.stageAccepted;
     ctx.textBaseline = 'middle';
     ctx.textAlign = 'left';
-    ctx.fillText('TRIAL ENDS Apr 10', dotX + 12, companyY);
+    ctx.fillText('TRIAL ENDS Apr 10', dotX + 14, companyY);
     ctx.restore();
   }
 
@@ -194,26 +200,28 @@ export function drawHomeScreen({ ctx, width, height, progress }: ScreenDrawParam
   // --- Content phase ---
   const contentP = phase(progress, TIMING.contentPhase[0], TIMING.contentPhase[1]);
 
-  // Project title — Mohave bold, all caps
-  drawText(ctx, 'RUNWAY CRACK REPAIR', p + 24, cardY + 42, `bold 28px ${MOHAVE}`, COLORS.titleLine, contentP);
+  // Project title — Mohave-Medium 18pt → 36px at 2x
+  // (iOS uses Font.cardTitle = Mohave-Medium 18pt)
+  drawText(ctx, 'RUNWAY CRACK REPAIR', p + 24, cardY + 45, `500 36px ${MOHAVE}`, COLORS.titleLine, contentP);
 
-  // Client name
-  drawText(ctx, 'Miramar Flight Academy', p + 24, cardY + 76, `15px ${KOSUGI}`, COLORS.bodyLine, contentP);
+  // Client name — Kosugi-Regular 15pt → 30px at 2x
+  // (iOS uses Font.cardSubtitle = Kosugi-Regular 15pt)
+  drawText(ctx, 'Miramar Flight Academy', p + 24, cardY + 82, `30px ${KOSUGI}`, COLORS.bodyLine, contentP);
 
-  // Address
-  drawText(ctx, '9800 Anderson St, San Diego', p + 24, cardY + 104, `14px ${KOSUGI}`, COLORS.captionLine, contentP);
+  // Address — Mohave-Regular 14pt → 28px at 2x
+  // (iOS uses Font.cardBody = Mohave-Regular 14pt)
+  drawText(ctx, '9800 Anderson St, San Diego', p + 24, cardY + 114, `28px ${MOHAVE}`, COLORS.captionLine, contentP);
 
-  // Stage badge — "DIAGNOSTIC" with colored fill, border, and text
-  const badgeW = 150;
-  const badgeH = 32;
+  // Stage badge — "DIAGNOSTIC" — Kosugi-Regular 12pt → 24px at 2x
+  // (iOS uses Font.tagLabel = Kosugi-Regular 12pt)
+  const badgeW = 170;
+  const badgeH = 38;
   const badgeX = width - p - badgeW - 18;
-  const badgeY = cardY + cardH - 50;
-  // Colored fill (low opacity)
+  const badgeY = cardY + cardH - 56;
   drawRoundedRect(ctx, badgeX, badgeY, badgeW, badgeH, LAYOUT.smallRadius,
     COLORS.accent, 'rgba(89, 119, 148, 0.15)', contentP);
-  // Colored text
   drawText(ctx, 'DIAGNOSTIC', badgeX + badgeW / 2, badgeY + badgeH / 2,
-    `bold 14px ${KOSUGI}`, COLORS.accent, contentP, 'center');
+    `24px ${KOSUGI}`, COLORS.accent, contentP, 'center');
 
   // Carousel dots — inside the card, top-right (5 dots, last one accent)
   const dotSpacing = 22;
@@ -228,15 +236,18 @@ export function drawHomeScreen({ ctx, width, height, progress }: ScreenDrawParam
   // --- Filter chips ---
   const chipY = cardY + cardH + 20;
   const chips = ['TODAY [TASKS]', 'ACTIVE', 'ALL'];
-  const chipWidths = [180, 108, 72];
+  const chipWidths = [220, 120, 80];
+  const chipH = 48;
   let chipX = p;
   for (let i = 0; i < 3; i++) {
     const isSelected = i === 0;
     const fill = isSelected ? 'rgba(255,255,255,0.06)' : undefined;
     const stroke = isSelected ? COLORS.accent : COLORS.border;
-    drawRoundedRect(ctx, chipX, chipY, chipWidths[i], 42, LAYOUT.smallRadius, stroke, fill, contentP);
-    drawText(ctx, chips[i], chipX + chipWidths[i] / 2, chipY + 22,
-      `bold 16px ${KOSUGI}`, isSelected ? COLORS.bodyLine : COLORS.captionLine, contentP, 'center');
+    drawRoundedRect(ctx, chipX, chipY, chipWidths[i], chipH, LAYOUT.smallRadius, stroke, fill, contentP);
+    // Filter chip text — Kosugi-Regular 14pt → 28px at 2x
+    // (iOS uses Font.button = Kosugi-Regular 14pt)
+    drawText(ctx, chips[i], chipX + chipWidths[i] / 2, chipY + 24,
+      `28px ${KOSUGI}`, isSelected ? COLORS.bodyLine : COLORS.captionLine, contentP, 'center');
     chipX += chipWidths[i] + 14;
   }
 
@@ -282,8 +293,9 @@ export function drawHomeScreen({ ctx, width, height, progress }: ScreenDrawParam
   // Pin label — "Diagnostic" + "Runway Crack Repair" above center pin
   const pinLabelX = width * 0.45;
   const pinLabelY = mapY + mapH * 0.52;
-  drawText(ctx, 'Diagnostic', pinLabelX, pinLabelY - 38, `bold 14px ${KOSUGI}`, COLORS.captionLine, accentP, 'center');
-  drawText(ctx, 'Runway Crack Repair', pinLabelX, pinLabelY - 22, `12px ${KOSUGI}`, 'rgba(255,255,255,0.20)', accentP, 'center');
+  // Pin labels — Kosugi-Regular 14pt/12pt → 28px/24px at 2x
+  drawText(ctx, 'Diagnostic', pinLabelX, pinLabelY - 44, `28px ${KOSUGI}`, COLORS.captionLine, accentP, 'center');
+  drawText(ctx, 'Runway Crack Repair', pinLabelX, pinLabelY - 18, `24px ${KOSUGI}`, 'rgba(255,255,255,0.20)', accentP, 'center');
 
   // Location arrow button (right side of map)
   const btnX = width - p - 32;
