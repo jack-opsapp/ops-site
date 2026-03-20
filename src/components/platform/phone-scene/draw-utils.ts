@@ -335,6 +335,66 @@ export function drawDynamicIsland(
   ctx.restore();
 }
 
+/** Draw the floating action button (lightning bolt) — static across all tabs.
+ *  Positioned bottom-right, just above the tab bar. */
+export function drawFAB(
+  ctx: CanvasRenderingContext2D,
+  canvasWidth: number,
+  tabBarY: number,
+  progress = 1,
+) {
+  if (progress <= 0) return;
+
+  const radius = 48;
+  const cx = canvasWidth - LAYOUT.padding - radius - 8;
+  const cy = tabBarY - radius - 20;
+
+  ctx.save();
+  ctx.globalAlpha = progress;
+
+  // Outer ring
+  ctx.beginPath();
+  ctx.arc(cx, cy, radius, 0, Math.PI * 2);
+  ctx.fillStyle = '#0A0A0A';
+  ctx.fill();
+  ctx.strokeStyle = 'rgba(255, 255, 255, 0.25)';
+  ctx.lineWidth = 2.5;
+  ctx.stroke();
+
+  // Lightning bolt stroke
+  ctx.strokeStyle = 'rgba(255, 255, 255, 0.75)';
+  ctx.lineWidth = 3;
+  ctx.lineJoin = 'round';
+  ctx.lineCap = 'round';
+  ctx.beginPath();
+  ctx.moveTo(cx + 2, cy - 22);    // Top
+  ctx.lineTo(cx - 10, cy + 2);    // Left mid
+  ctx.lineTo(cx + 2, cy + 2);     // Center
+  ctx.lineTo(cx - 2, cy + 22);    // Bottom
+  ctx.lineTo(cx + 10, cy - 2);    // Right mid
+  ctx.lineTo(cx - 2, cy - 2);     // Center
+  ctx.closePath();
+  ctx.stroke();
+
+  // Notification badge — small gold circle with count
+  const badgeR = 14;
+  const badgeX = cx + radius * 0.65;
+  const badgeY = cy - radius * 0.65;
+  ctx.beginPath();
+  ctx.arc(badgeX, badgeY, badgeR, 0, Math.PI * 2);
+  ctx.fillStyle = COLORS.stageInProgress; // Gold
+  ctx.fill();
+
+  // Badge count
+  ctx.fillStyle = '#0A0A0A';
+  ctx.font = 'bold 16px sans-serif';
+  ctx.textAlign = 'center';
+  ctx.textBaseline = 'middle';
+  ctx.fillText('16', badgeX, badgeY + 1);
+
+  ctx.restore();
+}
+
 /** Clear the entire canvas with background color */
 export function clearCanvas(ctx: CanvasRenderingContext2D, w: number, h: number) {
   ctx.fillStyle = COLORS.background;

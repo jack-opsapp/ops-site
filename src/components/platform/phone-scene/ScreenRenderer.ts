@@ -6,7 +6,7 @@
  */
 
 import { CANVAS_WIDTH, CANVAS_HEIGHT, TIMING, DEFAULT_TAB, TABS, LAYOUT } from './constants';
-import { drawTabBar, drawDynamicIsland, clearCanvas } from './draw-utils';
+import { drawTabBar, drawDynamicIsland, drawFAB, clearCanvas } from './draw-utils';
 import { drawHomeScreen } from './screens/home-screen';
 import { drawJobBoardScreen } from './screens/jobboard-screen';
 import { drawScheduleScreen } from './screens/schedule-screen';
@@ -179,6 +179,9 @@ export class ScreenRenderer {
     drawTabBar(ctx, activeIndex, w, LAYOUT.tabBarY, this.animationProgress);
 
     ctx.restore();
+
+    // Static overlays — drawn outside the fade alpha so they persist across tab transitions
+    drawFAB(ctx, w, LAYOUT.tabBarY, this.animationProgress);
 
     // Notify listener (for Three.js texture update)
     this.onFrameCallback?.();
