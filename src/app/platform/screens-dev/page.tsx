@@ -6,8 +6,17 @@ import { TABS } from '../../../components/platform/phone-scene/constants';
 import type { TabId } from '../../../components/platform/phone-scene/constants';
 
 const STATIC_WIDTH = 300;
+const REF_HEIGHT = STATIC_WIDTH / (750 / 1540); // Match wireframe canvas height
 const INTERACTIVE_WIDTH = 400;
 const ASPECT = 750 / 1540;
+
+// Reference screenshots from the real app, mapped per tab
+const REF_IMAGES: Record<TabId, string[]> = {
+  home: ['/dev/ref-home.png'],
+  jobboard: ['/dev/ref-jobboard-1.png', '/dev/ref-jobboard-2.png', '/dev/ref-jobboard-3.png'],
+  schedule: ['/dev/ref-schedule.png'],
+  settings: ['/dev/ref-settings.png'],
+};
 
 /** Mount a ScreenRenderer's canvas into a container div, scaled to targetWidth */
 function useStaticRenderer(tab: TabId, targetWidth: number) {
@@ -37,24 +46,53 @@ function useStaticRenderer(tab: TabId, targetWidth: number) {
   return containerRef;
 }
 
-/** Static preview card for a single tab */
+/** Static preview card for a single tab, with reference screenshots alongside */
 function StaticPreview({ tab }: { tab: TabId }) {
   const ref = useStaticRenderer(tab, STATIC_WIDTH);
+  const refs = REF_IMAGES[tab];
   return (
-    <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', gap: 8 }}>
-      <div
-        ref={ref}
-        style={{
-          width: STATIC_WIDTH,
-          height: STATIC_WIDTH / ASPECT,
-          borderRadius: 8,
-          overflow: 'hidden',
-          border: '1px solid rgba(255,255,255,0.1)',
-        }}
-      />
+    <div style={{ display: 'flex', flexDirection: 'column', gap: 8 }}>
       <span style={{ color: 'rgba(255,255,255,0.6)', fontSize: 13, fontFamily: 'monospace' }}>
         {tab}
       </span>
+      <div style={{ display: 'flex', gap: 12, alignItems: 'flex-start' }}>
+        {/* Wireframe canvas */}
+        <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', gap: 4 }}>
+          <div
+            ref={ref}
+            style={{
+              width: STATIC_WIDTH,
+              height: REF_HEIGHT,
+              borderRadius: 8,
+              overflow: 'hidden',
+              border: '1px solid rgba(255,255,255,0.1)',
+            }}
+          />
+          <span style={{ color: 'rgba(255,255,255,0.3)', fontSize: 11, fontFamily: 'monospace' }}>
+            wireframe
+          </span>
+        </div>
+        {/* Reference screenshots */}
+        {refs.map((src, i) => (
+          <div key={src} style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', gap: 4 }}>
+            <img
+              src={src}
+              alt={`${tab} reference ${i + 1}`}
+              style={{
+                width: STATIC_WIDTH,
+                height: REF_HEIGHT,
+                objectFit: 'cover',
+                objectPosition: 'top',
+                borderRadius: 8,
+                border: '1px solid rgba(255,255,255,0.1)',
+              }}
+            />
+            <span style={{ color: 'rgba(255,255,255,0.3)', fontSize: 11, fontFamily: 'monospace' }}>
+              ref{refs.length > 1 ? ` ${i + 1}` : ''}
+            </span>
+          </div>
+        ))}
+      </div>
     </div>
   );
 }
@@ -158,7 +196,7 @@ export default function ScreensDevPage() {
         </p>
       </div>
 
-      <div style={{ display: 'flex', gap: 24, flexWrap: 'wrap' }}>
+      <div style={{ display: 'flex', flexDirection: 'column', gap: 40 }}>
         {TABS.map((t) => (
           <StaticPreview key={t.id} tab={t.id} />
         ))}
