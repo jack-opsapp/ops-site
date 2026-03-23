@@ -184,7 +184,7 @@ const tiltConfigs: Record<
   tablet: { perspective: '1000px', rotateY: -10, rotateX: 4, viewBox: '0 0 480 340', maxWidth: '400px' },
 };
 
-const springConfig = { type: 'spring' as const, stiffness: 120, damping: 18 };
+const enterConfig = { duration: 0.3, ease: [0.16, 1, 0.3, 1] as const };
 
 /* ─── Phone Shell ─── */
 function PhoneShell({ isActive, reducedMotion }: { isActive: boolean; reducedMotion: boolean }) {
@@ -202,7 +202,7 @@ function PhoneShell({ isActive, reducedMotion }: { isActive: boolean; reducedMot
             ? {}
             : { rotateY: isActive ? cfg.rotateY : 0, rotateX: isActive ? cfg.rotateX : 0 }
         }
-        transition={springConfig}
+        transition={enterConfig}
       >
         <rect x="4" y="4" width="212" height="412" rx="24" stroke="currentColor" strokeWidth="1" fill="none" />
         <rect x="12" y="48" width="196" height="332" rx="4" stroke="currentColor" strokeWidth="0.5" fill="none" opacity="0.15" />
@@ -230,7 +230,7 @@ function LaptopShell({ isActive, reducedMotion }: { isActive: boolean; reducedMo
             ? {}
             : { rotateY: isActive ? cfg.rotateY : 0, rotateX: isActive ? cfg.rotateX : 0 }
         }
-        transition={springConfig}
+        transition={enterConfig}
       >
         <rect x="4" y="4" width="512" height="280" rx="12" stroke="currentColor" strokeWidth="1" fill="none" />
         <rect x="20" y="16" width="480" height="256" rx="4" stroke="currentColor" strokeWidth="0.5" fill="none" opacity="0.15" />
@@ -259,7 +259,7 @@ function TabletShell({ isActive, reducedMotion }: { isActive: boolean; reducedMo
             ? {}
             : { rotateY: isActive ? cfg.rotateY : 0, rotateX: isActive ? cfg.rotateX : 0 }
         }
-        transition={springConfig}
+        transition={enterConfig}
       >
         <rect x="4" y="4" width="472" height="332" rx="16" stroke="currentColor" strokeWidth="1" fill="none" />
         <rect x="16" y="16" width="448" height="308" rx="4" stroke="currentColor" strokeWidth="0.5" fill="none" opacity="0.15" />

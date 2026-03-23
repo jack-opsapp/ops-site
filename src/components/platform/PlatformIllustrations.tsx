@@ -23,8 +23,10 @@ const ACCENT = '#597794';
 const ACCENT_STROKE = 'rgba(89,119,148,0.6)';
 const ACCENT_FILL = 'rgba(89,119,148,0.12)';
 
-const spring = { type: 'spring' as const, stiffness: 200, damping: 15 };
-const springBouncy = { type: 'spring' as const, stiffness: 300, damping: 12 };
+/** Decisive entry — arrives and stops. No settling, no bounce. */
+const spring = { duration: 0.3, ease: [0.16, 1, 0.3, 1] as const };
+/** Snappy impact — checkmarks, badges, star moments. Lands clean. */
+const springBouncy = { duration: 0.25, ease: [0.16, 1, 0.3, 1] as const };
 const drawEase = [0.22, 1, 0.36, 1] as const;
 
 /**
@@ -400,7 +402,7 @@ export function ProjectManagementIllustration() {
                 backgroundColor: 'rgba(89,119,148,0.08)',
                 borderRadius: '2px',
               }}
-              transition={{ type: 'spring', stiffness: 400, damping: 25 }}
+              transition={{ duration: 0.2, ease: [0.16, 1, 0.3, 1] }}
             >
               {/* Empty — visual is rendered in SVG */}
             </Reorder.Item>
@@ -525,8 +527,8 @@ export function SchedulingIllustration() {
               }}
               initial={{ y: gy + bar.row * rowH + 20 }}
               transition={{
-                y: { type: 'spring', stiffness: 300, damping: 20 },
-                scaleX: { type: 'spring', stiffness: 250, damping: 14 },
+                y: { duration: 0.35, ease: [0.16, 1, 0.3, 1] },
+                scaleX: { duration: 0.3, ease: [0.16, 1, 0.3, 1] },
               }}
               filter={bar.glow && p >= 3 + i ? 'url(#accentGlow)' : undefined}
             />
@@ -548,7 +550,7 @@ export function SchedulingIllustration() {
               animate={{ opacity: [0.5, 1, 0.5], y: by }}
               transition={{
                 opacity: { repeat: Infinity, duration: 1.2 },
-                y: { type: 'spring', stiffness: 300, damping: 20 },
+                y: { duration: 0.35, ease: [0.16, 1, 0.3, 1] },
               }}
               filter="url(#accentGlow)"
             />
@@ -989,7 +991,7 @@ export function InvoicingIllustration() {
         <motion.g
           style={{ transformOrigin: '160px 180px' }}
           animate={{ scale: p >= 7 ? 1 : 0, rotate: p >= 7 ? -12 : -40, opacity: p >= 7 ? 1 : 0 }}
-          transition={{ type: 'spring', stiffness: 400, damping: 10 }}
+          transition={{ duration: 0.25, ease: [0.16, 1, 0.3, 1] }}
         >
           <motion.rect x="100" y="150" width="120" height="50" rx="4"
             strokeWidth="2.5" fill="none"
@@ -1103,7 +1105,7 @@ export function JobBoardIllustration() {
             {/* STAR MOMENT: Card slides LEADS → ACTIVE */}
             <motion.g
               animate={{ x: p >= 4 ? colX[1] - colX[0] : 0 }}
-              transition={{ type: 'spring', stiffness: 150, damping: 14 }}
+              transition={{ duration: 0.4, ease: [0.16, 1, 0.3, 1] }}
             >
               <motion.g animate={{ opacity: p >= 3 ? 1 : 0 }} transition={{ duration: 0.2 }}>
                 <rect x={colX[0] + 8} y="205" width={colW - 16} height="38" rx="3" stroke={ACCENT_STROKE} strokeWidth="1.5" fill={ACCENT_FILL} filter={p >= 4 ? 'url(#accentGlow)' : undefined} />
@@ -1115,7 +1117,7 @@ export function JobBoardIllustration() {
             {/* Card slides ACTIVE → DONE */}
             <motion.g
               animate={{ x: p >= 6 ? colX[2] - colX[1] : 0 }}
-              transition={{ type: 'spring', stiffness: 150, damping: 14 }}
+              transition={{ duration: 0.4, ease: [0.16, 1, 0.3, 1] }}
             >
               <motion.g
                 animate={{ opacity: p >= 5 ? 1 : 0, scale: p >= 5 ? 1 : 0.9 }}
@@ -1151,7 +1153,7 @@ export function JobBoardIllustration() {
               key={`ic-${ci}`}
               animate={{ x: cx, y: cy }}
               initial={{ x: cx, y: cy }}
-              transition={{ type: 'spring', stiffness: 200, damping: 18 }}
+              transition={{ duration: 0.3, ease: [0.16, 1, 0.3, 1] }}
               onClick={() => advanceCard(ci)}
               style={{ cursor: 'pointer' }}
             >
@@ -1234,7 +1236,7 @@ export function PipelineIllustration() {
   }
 
   const isHovering = hoveredIdx !== null && interactive;
-  const springWidth = { type: 'spring' as const, stiffness: 300, damping: 20 };
+  const widthTransition = { duration: 0.35, ease: [0.16, 1, 0.3, 1] as const };
 
   /** Gain on WON when hovering */
   const wonGain = (() => {
@@ -1313,7 +1315,7 @@ export function PipelineIllustration() {
               transition={{
                 scaleX: { duration: 0.6, ease: drawEase },
                 opacity: { duration: 0.6, ease: drawEase },
-                width: springWidth,
+                width: widthTransition,
               }}
               filter={i === 4 && p >= 6 ? 'url(#accentGlow)' : undefined}
               onMouseEnter={interactive ? () => setHoveredIdx(i) : undefined}
@@ -1352,7 +1354,7 @@ export function PipelineIllustration() {
                 fontSize="9" fontFamily="var(--font-mohave)" fontWeight="bold"
                 fill="rgba(255,255,255,0.4)"
                 animate={{ x: barX + displayWidth + 10 }}
-                transition={springWidth}
+                transition={widthTransition}
               >
                 {stage.count}
               </motion.text>
@@ -1361,7 +1363,7 @@ export function PipelineIllustration() {
                 fontSize="8" fontFamily="var(--font-kosugi)"
                 fill="rgba(255,255,255,0.2)"
                 animate={{ x: barX + displayWidth + 10 }}
-                transition={springWidth}
+                transition={widthTransition}
               >
                 {displayValue}
               </motion.text>
@@ -1374,7 +1376,7 @@ export function PipelineIllustration() {
                     opacity: isHovering ? 0 : 1,
                     x: barX + displayWidth + 46,
                   }}
-                  transition={{ opacity: { duration: 0.2 }, x: springWidth }}
+                  transition={{ opacity: { duration: 0.2 }, x: widthTransition }}
                 >
                   {stage.lost}
                 </motion.text>

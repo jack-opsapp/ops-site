@@ -16,7 +16,7 @@ export default async function PlatformHero() {
   };
 
   return (
-    <section className="relative min-h-screen w-full overflow-hidden bg-ops-background">
+    <section className="relative min-h-screen w-full overflow-clip bg-ops-background">
       {/* Background gradients */}
       <div className="absolute inset-0 bg-gradient-to-br from-[#111111] via-ops-background to-[#050508]" />
       <div className="absolute inset-0 bg-gradient-to-tr from-[#0A0A0A] via-transparent to-[#0D1117]/30" />
@@ -36,15 +36,19 @@ export default async function PlatformHero() {
 
       <GradientOverlay direction="to-bottom" opacity={0.7} />
 
-      {/* Content layout: flex row on desktop, stacked on mobile */}
-      <div className="relative z-10 flex min-h-screen flex-col lg:flex-row items-end lg:items-end">
-        {/* Left: Copy */}
-        <div className="flex-1 flex flex-col justify-end px-6 pb-12 sm:px-10 md:px-16 lg:px-24 lg:pb-[clamp(4rem,10vh,8rem)]">
+      {/* Content layout:
+          Phone is ALWAYS absolutely positioned — never affects text flow.
+          Desktop: phone right-aligned, text left with z-priority. As viewport
+          narrows, phone naturally slides behind text.
+          Mobile (<lg): phone drops lower, text moves to top. Phone top edge
+          tucks behind the last line of text via positioning. */}
+      <div className="relative z-10 min-h-screen">
+        {/* Copy — always on top, never affected by phone position */}
+        <div className="relative z-20 flex flex-col justify-end min-h-screen px-6 pb-[30vh] sm:px-10 md:px-16 md:pb-[clamp(4rem,10vh,8rem)] lg:px-24 pointer-events-none [&_*]:pointer-events-none">
           <SectionLabel label={t('hero.sectionLabel')} className="mb-6" />
 
           <h1
-            className="font-heading font-bold uppercase leading-[0.95] tracking-tight text-ops-text-primary"
-            style={{ fontSize: 'clamp(3rem, 6vw, 5rem)' }}
+            className="font-heading font-bold uppercase leading-[0.95] tracking-tight text-ops-text-primary text-[2.5rem] sm:text-[5rem]"
           >
             {t('hero.headingLine1')}
             <br />
@@ -58,9 +62,15 @@ export default async function PlatformHero() {
           </p>
         </div>
 
-        {/* Right: 3D Phone Scene */}
+        {/* 3D Phone Scene — always absolutely positioned, behind text.
+            Desktop: right-aligned, full height.
+            Mobile: centered-right, shorter, scaled down via viewport units. */}
+        {/* Phone container — always absolutely positioned, scales with viewport.
+            lg+: right-aligned, 55% width, full height.
+            md-lg: right-aligned, 70vw, full height (phone slides behind text).
+            <md: centered, 100vw, lower 65% of hero. */}
         <div
-          className="w-full lg:w-[50%] h-[450px] sm:h-[500px] lg:h-screen lg:max-h-screen"
+          className="absolute z-10 top-0 h-full right-0 w-[55%] max-lg:w-[70vw] max-md:w-[100vw] max-md:right-auto max-md:left-1/2 max-md:-translate-x-1/2 max-md:top-[35%] max-md:h-[65%]"
           aria-hidden="true"
         >
           <PhoneSceneWrapper />

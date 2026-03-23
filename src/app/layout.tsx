@@ -14,8 +14,8 @@ export async function generateMetadata(): Promise<Metadata> {
     metadataBase: new URL('https://opsapp.co'),
     title: {
       default: locale === 'es'
-        ? 'OPS — Sistema Operativo de Proyectos'
-        : 'OPS — Operational Project System',
+        ? 'OPS — Gestión de Trabajos y Equipos'
+        : 'OPS — Job and Crew Management',
       template: '%s | OPS',
     },
     description: locale === 'es'

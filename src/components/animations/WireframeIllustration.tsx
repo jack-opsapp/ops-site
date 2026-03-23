@@ -60,7 +60,7 @@ function MessagesIllustration({ isActive, size }: { isActive: boolean; size: num
     };
   }, [isActive]);
 
-  const bubbleSpring = { type: 'spring' as const, stiffness: 180, damping: 14 };
+  const bubbleEnter = { duration: 0.25, ease: [0.16, 1, 0.3, 1] as const };
 
   // Chaos jitter keyframes — includes opacity/scale so callers don't duplicate
   const jitterBubble = (seed: number) => ({
@@ -103,7 +103,7 @@ function MessagesIllustration({ isActive, size }: { isActive: boolean; size: num
             ? jitterBubble(1)
             : { opacity: showBubble1 ? 1 : 0, scale: showBubble1 ? 1 : 0.5 }
         }
-        transition={jittering ? { duration: 0.8, repeat: Infinity, repeatType: 'mirror' } : bubbleSpring}
+        transition={jittering ? { duration: 0.8, repeat: Infinity, repeatType: 'mirror' } : bubbleEnter}
       >
         <motion.rect x="20" y="40" width="90" height="36" rx="4" />
         <motion.line x1="30" y1="52" x2="80" y2="52" strokeWidth="1" />
@@ -140,7 +140,7 @@ function MessagesIllustration({ isActive, size }: { isActive: boolean; size: num
           textAnchor="middle"
           initial={{ opacity: 0, scale: 0.3 }}
           animate={{ opacity: 0.7, scale: 1 }}
-          transition={{ type: 'spring', stiffness: 200, damping: 12 }}
+          transition={{ duration: 0.2, ease: [0.16, 1, 0.3, 1] }}
         >
           ?
         </motion.text>
@@ -154,7 +154,7 @@ function MessagesIllustration({ isActive, size }: { isActive: boolean; size: num
             ? jitterBubble(2.3)
             : { opacity: showBubble2 ? 1 : 0, scale: showBubble2 ? 1 : 0.5 }
         }
-        transition={jittering ? { duration: 0.7, repeat: Infinity, repeatType: 'mirror' } : bubbleSpring}
+        transition={jittering ? { duration: 0.7, repeat: Infinity, repeatType: 'mirror' } : bubbleEnter}
       >
         <motion.rect x="90" y="90" width="90" height="36" rx="4" />
         <motion.line x1="100" y1="102" x2="155" y2="102" strokeWidth="1" />
@@ -191,7 +191,7 @@ function MessagesIllustration({ isActive, size }: { isActive: boolean; size: num
           textAnchor="middle"
           initial={{ opacity: 0, scale: 0.3 }}
           animate={{ opacity: 0.7, scale: 1 }}
-          transition={{ type: 'spring', stiffness: 200, damping: 12 }}
+          transition={{ duration: 0.2, ease: [0.16, 1, 0.3, 1] }}
         >
           ?
         </motion.text>
@@ -205,7 +205,7 @@ function MessagesIllustration({ isActive, size }: { isActive: boolean; size: num
             ? jitterBubble(4.1)
             : { opacity: showBubble3 ? 1 : 0, scale: showBubble3 ? 1 : 0.5 }
         }
-        transition={jittering ? { duration: 0.9, repeat: Infinity, repeatType: 'mirror' } : bubbleSpring}
+        transition={jittering ? { duration: 0.9, repeat: Infinity, repeatType: 'mirror' } : bubbleEnter}
       >
         <motion.rect x="10" y="136" width="100" height="36" rx="4" />
         <motion.line x1="20" y1="148" x2="85" y2="148" strokeWidth="1" />
@@ -249,14 +249,14 @@ function MessagesIllustration({ isActive, size }: { isActive: boolean; size: num
  * ──────────────────────────────────────────── */
 
 function DashboardIllustration({ isActive, size }: { isActive: boolean; size: number }) {
-  const clutterSpring = { type: 'spring' as const, stiffness: 140, damping: 16 };
+  const clutterEnter = { duration: 0.3, ease: [0.16, 1, 0.3, 1] as const };
 
   const clutterIn = (delay: number) => ({
     initial: { opacity: 0, scale: 0.9 },
     animate: isActive
       ? { opacity: 1, scale: 1 }
       : { opacity: 0, scale: 0.9 },
-    transition: { ...clutterSpring, delay: isActive ? delay : 0 },
+    transition: { ...clutterEnter, delay: isActive ? delay : 0 },
   });
 
   return (
@@ -372,7 +372,7 @@ function AppsIllustration({ isActive, size }: { isActive: boolean; size: number 
     return () => clearTimeout(timer);
   }, [isActive]);
 
-  const toolSpring = { type: 'spring' as const, stiffness: 120, damping: 14 };
+  const toolEnter = { duration: 0.35, ease: [0.16, 1, 0.3, 1] as const };
 
   // Positions: evenly-spaced 2x2 grid vs spread vs drift
   const toolPositions = {
@@ -427,7 +427,7 @@ function AppsIllustration({ isActive, size }: { isActive: boolean; size: number 
       {/* Calendar icon */}
       <motion.g
         animate={getPos('calendar')}
-        transition={toolSpring}
+        transition={toolEnter}
       >
         <motion.rect x="0" y="0" width="28" height="28" rx="3" />
         <motion.line x1="0" y1="8" x2="28" y2="8" strokeWidth="1" />
@@ -444,7 +444,7 @@ function AppsIllustration({ isActive, size }: { isActive: boolean; size: number 
       {/* Camera icon */}
       <motion.g
         animate={getPos('camera')}
-        transition={toolSpring}
+        transition={toolEnter}
       >
         <motion.rect x="0" y="6" width="28" height="20" rx="3" />
         <motion.circle cx="14" cy="16" r="6" />
@@ -454,7 +454,7 @@ function AppsIllustration({ isActive, size }: { isActive: boolean; size: number 
       {/* Clock icon */}
       <motion.g
         animate={getPos('clock')}
-        transition={toolSpring}
+        transition={toolEnter}
       >
         <motion.circle cx="14" cy="14" r="13" />
         <motion.line x1="14" y1="14" x2="14" y2="6" strokeWidth="1.5" />
@@ -465,7 +465,7 @@ function AppsIllustration({ isActive, size }: { isActive: boolean; size: number 
       {/* Chat bubble icon */}
       <motion.g
         animate={getPos('chat')}
-        transition={toolSpring}
+        transition={toolEnter}
       >
         <motion.rect x="0" y="0" width="28" height="22" rx="4" />
         <motion.path d="M6 22 L2 30 L14 22" strokeWidth="1" />
@@ -495,9 +495,8 @@ function AppsIllustration({ isActive, size }: { isActive: boolean; size: number 
               : { opacity: 0, scale: 0.3, rotate: 0 }
           }
           transition={{
-            type: 'spring',
-            stiffness: 120,
-            damping: 10,
+            duration: 0.35,
+            ease: [0.16, 1, 0.3, 1],
             delay: isActive ? ds.delay : 0,
           }}
         >

@@ -13,14 +13,14 @@ export const ASPECT_RATIO = CANVAS_WIDTH / CANVAS_HEIGHT; // ~0.487
 // --- Colors (from OPSStyle) ---
 export const COLORS = {
   background: '#0A0A0A',
-  cardFill: 'rgba(20, 20, 20, 0.4)',       // surfaceElevated @ 40%
-  border: 'rgba(255, 255, 255, 0.10)',       // OPSStyle cardBorder
-  separator: 'rgba(255, 255, 255, 0.10)',    // OPSStyle separator
+  cardFill: 'rgba(255, 255, 255, 0.06)',    // Subtle lift from background — boosted for 3D texture visibility
+  border: 'rgba(255, 255, 255, 0.18)',       // Card outlines — boosted for 3D readability
+  separator: 'rgba(255, 255, 255, 0.15)',    // Divider lines — boosted for 3D readability
 
   // Content line opacities (replacing text hierarchy)
-  titleLine: 'rgba(255, 255, 255, 0.70)',    // textPrimary mapped
-  bodyLine: 'rgba(255, 255, 255, 0.40)',     // textSecondary mapped
-  captionLine: 'rgba(255, 255, 255, 0.25)', // tertiaryText mapped
+  titleLine: 'rgba(255, 255, 255, 0.80)',    // textPrimary mapped — boosted
+  bodyLine: 'rgba(255, 255, 255, 0.50)',     // textSecondary mapped — boosted
+  captionLine: 'rgba(255, 255, 255, 0.30)', // tertiaryText mapped — boosted
 
   // Accent
   accent: '#597794',                          // primaryAccent
@@ -44,10 +44,10 @@ export const COLORS = {
 // --- Layout Constants ---
 export const LAYOUT = {
   padding: 40,             // Screen edge padding (~16pt at canvas scale)
-  cardRadius: 10,          // ~4pt at canvas scale (OPSStyle cardCornerRadius)
+  cardRadius: 6,           // 3pt * ~2x scale (OPSStyle.Layout.cornerRadius = 3pt)
   smallRadius: 8,          // ~3pt at canvas scale (OPSStyle standardCornerRadius)
-  borderWidth: 1,
-  thickBorder: 2,          // For title-weight lines
+  borderWidth: 1.5,           // Boosted for 3D readability
+  thickBorder: 3,            // For title-weight lines — boosted
   coloredBorderWidth: 8,   // 4pt colored left borders at canvas scale
   iconCircleSize: 56,      // ~28pt icon button circles at canvas scale
   tabBarHeight: 120,       // Bottom tab bar zone height

@@ -41,8 +41,6 @@ export const theme = {
   },
   animation: {
     easing: [0.22, 1, 0.36, 1] as const,
-    springDefault: { stiffness: 120, damping: 18 },
-    springSnappy: { stiffness: 200, damping: 15 },
     fadeInUp: {
       initial: { opacity: 0, y: 20 },
       whileInView: { opacity: 1, y: 0 },
