@@ -58,6 +58,10 @@ export default async function LegalPage({
       <div className="max-w-[900px] mx-auto px-6 pt-32 py-16 mb-16">
         <SectionLabel label={t('sectionLabel')} className="text-ops-text-secondary" />
 
+        <h1 className="font-heading font-bold uppercase leading-[0.95] tracking-tight text-ops-text-dark text-3xl md:text-4xl mt-4 mb-2">
+          {activeDocument?.title ?? 'Legal'}
+        </h1>
+
         <Suspense fallback={null}>
           <LegalTabs activeTab={activeTab} legalDict={dict} />
         </Suspense>

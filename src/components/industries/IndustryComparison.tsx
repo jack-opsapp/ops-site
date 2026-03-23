@@ -1,4 +1,17 @@
+import Link from 'next/link';
 import { SectionLabel, FadeInUp } from '@/components/ui';
+
+/** Map competitor display names to their /compare/ slugs */
+const COMPARE_SLUGS: Record<string, string> = {
+  'Jobber': 'jobber',
+  'ServiceTitan': 'servicetitan',
+  'Housecall Pro': 'housecall-pro',
+  'BuildOps': 'buildops',
+  'FieldPulse': 'fieldpulse',
+  'Simpro': 'simpro',
+  'FieldEdge': 'fieldedge',
+  'Zuper': 'zuper',
+};
 
 const CHECK = (
   <svg width="20" height="20" viewBox="0 0 20 20" fill="none" aria-label="Included">
@@ -53,10 +66,18 @@ export default function IndustryComparison({ competitors, rows }: IndustryCompar
                     OPS
                   </th>
                   <th className="text-left p-4 pb-6 font-caption uppercase tracking-[0.15em] text-xs text-ops-text-secondary">
-                    {competitors[0]}
+                    {COMPARE_SLUGS[competitors[0]] ? (
+                      <Link href={`/compare/${COMPARE_SLUGS[competitors[0]]}`} className="hover:text-ops-text-primary transition-colors underline decoration-ops-border hover:decoration-ops-text-primary">
+                        {competitors[0]}
+                      </Link>
+                    ) : competitors[0]}
                   </th>
                   <th className="text-left p-4 pb-6 font-caption uppercase tracking-[0.15em] text-xs text-ops-text-secondary">
-                    {competitors[1]}
+                    {COMPARE_SLUGS[competitors[1]] ? (
+                      <Link href={`/compare/${COMPARE_SLUGS[competitors[1]]}`} className="hover:text-ops-text-primary transition-colors underline decoration-ops-border hover:decoration-ops-text-primary">
+                        {competitors[1]}
+                      </Link>
+                    ) : competitors[1]}
                   </th>
                 </tr>
               </thead>

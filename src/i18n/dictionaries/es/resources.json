@@ -16,6 +16,13 @@
   "contact.heading": "HABLA CON EL EQUIPO",
   "contact.responseTime": "Respondemos en menos de 24 horas. Generalmente más rápido.",
   "contact.ctaText": "ENVÍANOS UN MENSAJE ->",
+  "contact.form.name": "TU NOMBRE",
+  "contact.form.email": "CORREO",
+  "contact.form.message": "MENSAJE",
+  "contact.form.submit": "ENVIAR MENSAJE ->",
+  "contact.form.sending": "ENVIANDO...",
+  "contact.form.success": "MENSAJE ENVIADO. TE CONTACTAREMOS PRONTO.",
+  "contact.form.error": "Algo salió mal. Inténtalo de nuevo o escribe a info@opsapp.co directamente.",
 
   "faq.sectionLabel": "PREGUNTAS COMUNES",
   "faq.q1.question": "¿Cómo empiezo?",
@@ -29,7 +36,7 @@
   "faq.q5.question": "¿En qué dispositivos funciona OPS?",
   "faq.q5.answer": "OPS está disponible en iPhone y iPad a través de la App Store, y en cualquier dispositivo a través de la web app en app.opsapp.co.",
   "faq.q6.question": "¿Cómo puedo obtener ayuda?",
-  "faq.q6.answer": "Envía un correo a hello@opsapp.co o usa el botón de retroalimentación en la app. Respondemos en menos de 24 horas — generalmente mucho más rápido.",
+  "faq.q6.answer": "Envía un correo a info@opsapp.co o usa el botón de retroalimentación en la app. Respondemos en menos de 24 horas — generalmente mucho más rápido.",
 
   "bottomCta.heading": "EMPIEZA A DIRIGIR TU OPERACIÓN",
   "bottomCta.subtext": "Descarga OPS hoy.",

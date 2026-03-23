@@ -26,12 +26,12 @@ Every competitor has these. OPS needs them for credibility, but wins by speaking
 | 2 | **Plumbing** | `/industries/plumbing` | High volume, often bundled with HVAC in search | DONE |
 | 3 | **Electrical** | `/industries/electrical` | Less ServiceTitan-dominated than HVAC/plumbing | DONE |
 | 4 | **Roofing** | `/industries/roofing` | Very low FSM adoption despite high pain. Huge gap | DONE |
-| 5 | **Landscaping & Lawn Care** | `/industries/landscaping` | 11% of FSM users, few dedicated tools with good SEO | |
+| 5 | **Landscaping & Lawn Care** | `/industries/landscaping` | 11% of FSM users, few dedicated tools with good SEO | DONE |
 | 6 | **Pest Control** | `/industries/pest-control` | Growing industry, fragmented software landscape | DONE |
-| 7 | **Painting** | `/industries/painting` | Some basic tools exist, none dominant | |
-| 8 | **General Contracting** | `/industries/general-contracting` | Broad catch-all, high search volume | |
+| 7 | **Painting** | `/industries/painting` | Some basic tools exist, none dominant | DONE |
+| 8 | **General Contracting** | `/industries/general-contracting` | Broad catch-all, high search volume | DONE |
 | 9 | **Cleaning & Janitorial** | `/industries/cleaning` | "Digital sophistication non-existent" — massive opportunity | DONE |
-| 10 | **Property Maintenance** | `/industries/property-maintenance` | 10% of FSM users, recurring revenue model | |
+| 10 | **Property Maintenance** | `/industries/property-maintenance` | 10% of FSM users, recurring revenue model | DONE |
 
 ---
 
@@ -41,21 +41,21 @@ Some competitors have pages for a few of these. Most don't. **This is where OPS 
 
 | # | Industry Page | URL Slug | Why | Brief |
 |---|---|---|---|---|
-| 11 | **Pool Service** | `/industries/pool-service` | "Lose 11 jobs/week from no follow-up" — acute pain | |
-| 12 | **Garage Door** | `/industries/garage-door` | Only ServiceTitan/Workiz have pages. High-margin trade | |
-| 13 | **Fencing** | `/industries/fencing` | Zero targeted software marketing. Easy rank | |
-| 14 | **Tree Service & Arborist** | `/industries/tree-service` | Only Jobber has a page. Seasonal but high-ticket | |
-| 15 | **Concrete & Masonry** | `/industries/concrete` | Completely ignored by FSM marketing | |
-| 16 | **Flooring** | `/industries/flooring` | No representation in FSM marketing at all | |
+| 11 | **Pool Service** | `/industries/pool-service` | "Lose 11 jobs/week from no follow-up" — acute pain | DONE |
+| 12 | **Garage Door** | `/industries/garage-door` | Only ServiceTitan/Workiz have pages. High-margin trade | DONE |
+| 13 | **Fencing** | `/industries/fencing` | Zero targeted software marketing. Easy rank | DONE |
+| 14 | **Tree Service & Arborist** | `/industries/tree-service` | Only Jobber has a page. Seasonal but high-ticket | DONE |
+| 15 | **Concrete & Masonry** | `/industries/concrete` | Completely ignored by FSM marketing | DONE |
+| 16 | **Flooring** | `/industries/flooring` | No representation in FSM marketing at all | DONE |
 | 17 | **Glass & Windows** | `/industries/glass` | Acute quoting pain ("3 days to quote"), zero FSM leader | DONE |
-| 18 | **Drywall & Framing** | `/industries/drywall` | Construction subs, completely underserved | |
-| 19 | **Appliance Repair** | `/industries/appliance-repair` | Only ServiceTitan has a page. Growing with smart appliances | |
-| 20 | **Handyman Services** | `/industries/handyman` | Huge market of solos + small crews, price-sensitive | |
-| 21 | **Pressure Washing** | `/industries/pressure-washing` | Low barrier to entry trade, tons of new businesses | |
-| 22 | **Snow Removal & Plowing** | `/industries/snow-removal` | Seasonal but critical, crew coordination pain | |
-| 23 | **Window Cleaning** | `/industries/window-cleaning` | Residential + commercial, route-based scheduling | |
-| 24 | **Chimney Sweep** | `/industries/chimney-sweep` | Niche but loyal customer base, seasonal | |
-| 25 | **Locksmith** | `/industries/locksmith` | Dispatch-heavy, 24/7 emergency model | |
+| 18 | **Drywall & Framing** | `/industries/drywall` | Construction subs, completely underserved | DONE |
+| 19 | **Appliance Repair** | `/industries/appliance-repair` | Only ServiceTitan has a page. Growing with smart appliances | DONE |
+| 20 | **Handyman Services** | `/industries/handyman` | Huge market of solos + small crews, price-sensitive | DONE |
+| 21 | **Pressure Washing** | `/industries/pressure-washing` | Low barrier to entry trade, tons of new businesses | DONE |
+| 22 | **Snow Removal & Plowing** | `/industries/snow-removal` | Seasonal but critical, crew coordination pain | DONE |
+| 23 | **Window Cleaning** | `/industries/window-cleaning` | Residential + commercial, route-based scheduling | DONE |
+| 24 | **Chimney Sweep** | `/industries/chimney-sweep` | Niche but loyal customer base, seasonal | DONE |
+| 25 | **Locksmith** | `/industries/locksmith` | Dispatch-heavy, 24/7 emergency model | DONE |
 
 ---
 
@@ -63,30 +63,30 @@ Some competitors have pages for a few of these. Most don't. **This is where OPS 
 
 Almost no competitors target these. **Extremely easy to rank #1.** Each page becomes the authoritative source LLMs will cite.
 
-| # | Industry Page | URL Slug | Why |
-|---|---|---|---|
-| 26 | **Septic & Sewer** | `/industries/septic` | Scheduling + compliance tracking, underserved |
-| 27 | **Irrigation & Sprinkler** | `/industries/irrigation` | Seasonal, route-based, zero FSM marketing |
-| 28 | **Water Treatment** | `/industries/water-treatment` | Recurring service model, high-value contracts |
-| 29 | **Insulation** | `/industries/insulation` | Only FieldGroove targets this. Growing with energy codes |
-| 30 | **Fire Protection & Sprinkler Systems** | `/industries/fire-protection` | High-value commercial contracts, compliance-driven |
-| 31 | **Demolition** | `/industries/demolition` | Ultra-niche, zero competition |
-| 32 | **Restoration & Water Damage** | `/industries/restoration` | $50B market by 2026, emergency dispatch model |
-| 33 | **Mold Remediation** | `/industries/mold-remediation` | Compliance-heavy, documentation-critical |
-| 34 | **Waterproofing & Foundation Repair** | `/industries/waterproofing` | High-ticket jobs, no FSM leader |
-| 35 | **Siding & Exterior** | `/industries/siding` | Often bundled with roofing, rarely targeted alone |
-| 36 | **Gutter Installation & Cleaning** | `/industries/gutters` | Seasonal, route-based, easy scheduling pain |
-| 37 | **Paving & Seal Coating** | `/industries/paving` | Crew-heavy, scheduling-critical |
-| 38 | **Welding & Metal Fabrication** | `/industries/welding` | Field welding crews are totally underserved |
-| 39 | **Excavation & Earthwork** | `/industries/excavation` | Equipment + crew scheduling, zero FSM presence |
-| 40 | **Tile Installation** | `/industries/tile` | Subcontractor trade, no targeted software |
-| 41 | **Stucco & Plastering** | `/industries/stucco` | Regional but loyal niche |
-| 42 | **Carpentry & Finish Work** | `/industries/carpentry` | Massive trade, weirdly no FSM targets it |
-| 43 | **Cabinet & Countertop Installation** | `/industries/cabinets` | Installation crews need scheduling + client comms |
-| 44 | **Overhead & Commercial Door** | `/industries/commercial-door` | High-value commercial, service contract model |
-| 45 | **Elevator & Escalator Service** | `/industries/elevator` | Compliance-critical, recurring maintenance |
-| 46 | **Audio Visual & Home Theater** | `/industries/audio-visual` | Only ServiceTitan has a page. Smart home boom |
-| 47 | **Scaffolding** | `/industries/scaffolding` | Rental + crew dispatch, zero FSM marketing |
+| # | Industry Page | URL Slug | Why | Status |
+|---|---|---|---|---|
+| 26 | **Septic & Sewer** | `/industries/septic` | Scheduling + compliance tracking, underserved | DONE |
+| 27 | **Irrigation & Sprinkler** | `/industries/irrigation` | Seasonal, route-based, zero FSM marketing | DONE |
+| 28 | **Water Treatment** | `/industries/water-treatment` | Recurring service model, high-value contracts | DONE |
+| 29 | **Insulation** | `/industries/insulation` | Only FieldGroove targets this. Growing with energy codes | DONE |
+| 30 | **Fire Protection & Sprinkler Systems** | `/industries/fire-protection` | High-value commercial contracts, compliance-driven | DONE |
+| 31 | **Demolition** | `/industries/demolition` | Ultra-niche, zero competition | DONE |
+| 32 | **Restoration & Water Damage** | `/industries/restoration` | $50B market by 2026, emergency dispatch model | DONE |
+| 33 | **Mold Remediation** | `/industries/mold-remediation` | Compliance-heavy, documentation-critical | DONE |
+| 34 | **Waterproofing & Foundation Repair** | `/industries/waterproofing` | High-ticket jobs, no FSM leader | DONE |
+| 35 | **Siding & Exterior** | `/industries/siding` | Often bundled with roofing, rarely targeted alone | DONE |
+| 36 | **Gutter Installation & Cleaning** | `/industries/gutters` | Seasonal, route-based, easy scheduling pain | DONE |
+| 37 | **Paving & Seal Coating** | `/industries/paving` | Crew-heavy, scheduling-critical | DONE |
+| 38 | **Welding & Metal Fabrication** | `/industries/welding` | Field welding crews are totally underserved | DONE |
+| 39 | **Excavation & Earthwork** | `/industries/excavation` | Equipment + crew scheduling, zero FSM presence | DONE |
+| 40 | **Tile Installation** | `/industries/tile` | Subcontractor trade, no targeted software | DONE |
+| 41 | **Stucco & Plastering** | `/industries/stucco` | Regional but loyal niche | DONE |
+| 42 | **Carpentry & Finish Work** | `/industries/carpentry` | Massive trade, weirdly no FSM targets it | DONE |
+| 43 | **Cabinet & Countertop Installation** | `/industries/cabinets` | Installation crews need scheduling + client comms | DONE |
+| 44 | **Overhead & Commercial Door** | `/industries/commercial-door` | High-value commercial, service contract model | DONE |
+| 45 | **Elevator & Escalator Service** | `/industries/elevator` | Compliance-critical, recurring maintenance | DONE |
+| 46 | **Audio Visual & Home Theater** | `/industries/audio-visual` | Only ServiceTitan has a page. Smart home boom | DONE |
+| 47 | **Scaffolding** | `/industries/scaffolding` | Rental + crew dispatch, zero FSM marketing | DONE |
 
 ---
 
@@ -132,10 +132,10 @@ These convert at the highest rate — users are actively shopping.
 | 63 | **Jobber Alternative** | `/compare/jobber` | "jobber alternative" — feature-gated frustration | DONE |
 | 64 | **Housecall Pro Alternative** | `/compare/housecall-pro` | "housecall pro alternative" — support collapse anger | DONE |
 | 65 | **BuildOps Alternative** | `/compare/buildops` | "buildops alternative" — price shock, implementation failures | DONE |
-| 66 | **FieldPulse Alternative** | `/compare/fieldpulse` | "fieldpulse alternative" — hidden pricing frustration | |
-| 67 | **Simpro Alternative** | `/compare/simpro` | "simpro alternative" — ERP-on-phone complexity | |
-| 68 | **FieldEdge Alternative** | `/compare/fieldedge` | "fieldedge alternative" — legacy frustration | |
-| 69 | **Zuper Alternative** | `/compare/zuper` | "zuper alternative" — generic/no trade identity | |
+| 66 | **FieldPulse Alternative** | `/compare/fieldpulse` | "fieldpulse alternative" — hidden pricing frustration | DONE |
+| 67 | **Simpro Alternative** | `/compare/simpro` | "simpro alternative" — ERP-on-phone complexity | DONE |
+| 68 | **FieldEdge Alternative** | `/compare/fieldedge` | "fieldedge alternative" — legacy frustration | DONE |
+| 69 | **Zuper Alternative** | `/compare/zuper` | "zuper alternative" — generic/no trade identity | DONE |
 
 ---
 

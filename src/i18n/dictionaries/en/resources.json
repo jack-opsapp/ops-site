@@ -16,6 +16,13 @@
   "contact.heading": "TALK TO THE TEAM",
   "contact.responseTime": "We respond within 24 hours. Usually faster.",
   "contact.ctaText": "SEND US A MESSAGE ->",
+  "contact.form.name": "YOUR NAME",
+  "contact.form.email": "EMAIL",
+  "contact.form.message": "MESSAGE",
+  "contact.form.submit": "SEND MESSAGE ->",
+  "contact.form.sending": "SENDING...",
+  "contact.form.success": "MESSAGE SENT. WE'LL BE IN TOUCH.",
+  "contact.form.error": "Something went wrong. Try again or email info@opsapp.co directly.",
 
   "faq.sectionLabel": "COMMON QUESTIONS",
   "faq.q1.question": "How do I get started?",
@@ -29,7 +36,7 @@
   "faq.q5.question": "What devices does OPS support?",
   "faq.q5.answer": "OPS is available on iPhone and iPad via the App Store, and on any device through the web app at app.opsapp.co.",
   "faq.q6.question": "How do I get help?",
-  "faq.q6.answer": "Email hello@opsapp.co or use the in-app feedback button. We respond within 24 hours — usually much faster.",
+  "faq.q6.answer": "Email info@opsapp.co or use the in-app feedback button. We respond within 24 hours — usually much faster.",
 
   "bottomCta.heading": "START RUNNING YOUR OPERATION",
   "bottomCta.subtext": "Download OPS today.",

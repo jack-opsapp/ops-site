@@ -50,8 +50,8 @@ export default function Footer({ commonDict }: FooterProps) {
       links: [
         { label: t('footer.appStore'), href: 'https://apps.apple.com/us/app/ops-job-crew-management/id6746662078', external: true },
         { label: t('footer.webApp'), href: 'https://app.opsapp.co', external: true },
-        { label: t('footer.instagram'), href: 'https://instagram.com/ops.app.co', external: true },
-        { label: t('footer.linkedin'), href: 'https://linkedin.com/company/ops-app', external: true },
+        { label: t('footer.instagram'), href: 'https://instagram.com/opsapp.co', external: true },
+        { label: t('footer.linkedin'), href: 'https://linkedin.com/company/opsapp', external: true },
       ],
     },
   ];

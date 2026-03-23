@@ -14,8 +14,8 @@ export async function generateMetadata(): Promise<Metadata> {
     metadataBase: new URL('https://opsapp.co'),
     title: {
       default: locale === 'es'
-        ? 'OPS — Gestión de Trabajos y Equipos'
-        : 'OPS — Job and Crew Management',
+        ? 'OPS — Gestión de Trabajo para Equipos de Campo'
+        : 'OPS — Job Management for Trades Crews',
       template: '%s | OPS',
     },
     description: locale === 'es'
@@ -72,8 +72,8 @@ export default async function RootLayout({
                 },
                 "foundingDate": "2024",
                 "sameAs": [
-                  "https://instagram.com/ops.app.co",
-                  "https://linkedin.com/company/ops-app",
+                  "https://instagram.com/opsapp.co",
+                  "https://linkedin.com/company/opsapp",
                   "https://apps.apple.com/us/app/ops-job-crew-management/id6746662078"
                 ],
                 "contactPoint": {

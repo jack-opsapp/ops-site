@@ -5,8 +5,21 @@
  * Jobber, ServiceTitan, and Housecall Pro across key features.
  */
 
+import Link from 'next/link';
 import { SectionLabel, FadeInUp } from '@/components/ui';
 import { getTDict } from '@/i18n/server';
+
+/** Map competitor display names to their /compare/ slugs */
+const COMPARE_SLUGS: Record<string, string> = {
+  'Jobber': 'jobber',
+  'ServiceTitan': 'servicetitan',
+  'Housecall Pro': 'housecall-pro',
+  'BuildOps': 'buildops',
+  'FieldPulse': 'fieldpulse',
+  'Simpro': 'simpro',
+  'FieldEdge': 'fieldedge',
+  'Zuper': 'zuper',
+};
 
 const CHECK = (
   <svg
@@ -91,13 +104,19 @@ export default async function ComparisonSection() {
                     OPS
                   </th>
                   <th className="text-left p-4 pb-6 font-caption uppercase tracking-[0.15em] text-xs text-ops-text-secondary">
-                    Jobber
+                    <Link href="/compare/jobber" className="hover:text-ops-text-primary transition-colors underline decoration-ops-border hover:decoration-ops-text-primary">
+                      Jobber
+                    </Link>
                   </th>
                   <th className="text-left p-4 pb-6 font-caption uppercase tracking-[0.15em] text-xs text-ops-text-secondary">
-                    ServiceTitan
+                    <Link href="/compare/servicetitan" className="hover:text-ops-text-primary transition-colors underline decoration-ops-border hover:decoration-ops-text-primary">
+                      ServiceTitan
+                    </Link>
                   </th>
                   <th className="text-left p-4 pb-6 font-caption uppercase tracking-[0.15em] text-xs text-ops-text-secondary">
-                    Housecall Pro
+                    <Link href="/compare/housecall-pro" className="hover:text-ops-text-primary transition-colors underline decoration-ops-border hover:decoration-ops-text-primary">
+                      Housecall Pro
+                    </Link>
                   </th>
                 </tr>
               </thead>

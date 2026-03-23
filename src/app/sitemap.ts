@@ -7,7 +7,7 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
   const baseUrl = 'https://opsapp.co';
 
   // Static pages — use a fixed date representing last meaningful update
-  const lastUpdated = new Date('2025-03-07');
+  const lastUpdated = new Date('2026-03-23');
   const staticPages: MetadataRoute.Sitemap = [
     { url: baseUrl, lastModified: lastUpdated, changeFrequency: 'weekly', priority: 1 },
     { url: `${baseUrl}/platform`, lastModified: lastUpdated, changeFrequency: 'monthly', priority: 0.9 },
