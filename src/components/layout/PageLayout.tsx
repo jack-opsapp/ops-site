@@ -1,5 +1,9 @@
 /**
- * PageLayout — Wraps every page with Navigation + Footer + ambient edge glows
+ * PageLayout — Wraps every page with Navigation + Footer + ambient edge glows.
+ *
+ * The orbs container uses `relative` on a wrapping div so the orbs are
+ * positioned relative to the full page height (not just the viewport).
+ * All orbs use pixel-based offsets starting well below the hero fold.
  */
 
 import Navigation from './Navigation';
@@ -12,20 +16,21 @@ export default async function PageLayout({ children }: { children: React.ReactNo
   const commonDict = await getTDict('common') as Dictionary;
 
   return (
-    <>
+    <div className="relative">
       <Navigation commonDict={commonDict} />
       <LanguageBanner commonDict={commonDict} />
       <main>{children}</main>
       <Footer commonDict={commonDict} />
 
-      {/* Ambient page-edge glows — absolute, pointer-events-none */}
+      {/* Ambient page-edge glows — spans the full page via the relative parent.
+          All orbs positioned with calc(100vh + offset) so they never touch the hero. */}
       <div className="pointer-events-none absolute inset-0 z-0 overflow-hidden" aria-hidden="true">
-        {/* Left edge — blue, upper area */}
+        {/* Left edge — blue */}
         <div
           className="absolute"
           style={{
             left: '-300px',
-            top: '8%',
+            top: 'calc(100vh + 400px)',
             width: '700px',
             height: '700px',
             borderRadius: '50%',
@@ -33,12 +38,12 @@ export default async function PageLayout({ children }: { children: React.ReactNo
           }}
         />
 
-        {/* Right edge — orange, upper-mid */}
+        {/* Right edge — orange */}
         <div
           className="absolute"
           style={{
             right: '-250px',
-            top: '18%',
+            top: 'calc(100vh + 800px)',
             width: '600px',
             height: '600px',
             borderRadius: '50%',
@@ -46,12 +51,12 @@ export default async function PageLayout({ children }: { children: React.ReactNo
           }}
         />
 
-        {/* Left edge — orange, mid section */}
+        {/* Left edge — orange */}
         <div
           className="absolute"
           style={{
             left: '-200px',
-            top: '35%',
+            top: 'calc(100vh + 1400px)',
             width: '500px',
             height: '500px',
             borderRadius: '50%',
@@ -59,12 +64,12 @@ export default async function PageLayout({ children }: { children: React.ReactNo
           }}
         />
 
-        {/* Right edge — blue, mid section */}
+        {/* Right edge — blue */}
         <div
           className="absolute"
           style={{
             right: '-280px',
-            top: '45%',
+            top: 'calc(100vh + 2000px)',
             width: '650px',
             height: '650px',
             borderRadius: '50%',
@@ -72,12 +77,12 @@ export default async function PageLayout({ children }: { children: React.ReactNo
           }}
         />
 
-        {/* Left edge — blue, lower-mid */}
+        {/* Left edge — blue */}
         <div
           className="absolute"
           style={{
             left: '-250px',
-            top: '60%',
+            top: 'calc(100vh + 2800px)',
             width: '600px',
             height: '600px',
             borderRadius: '50%',
@@ -85,12 +90,12 @@ export default async function PageLayout({ children }: { children: React.ReactNo
           }}
         />
 
-        {/* Right edge — orange, lower section */}
+        {/* Right edge — orange */}
         <div
           className="absolute"
           style={{
             right: '-200px',
-            top: '72%',
+            top: 'calc(100vh + 3600px)',
             width: '550px',
             height: '550px',
             borderRadius: '50%',
@@ -98,12 +103,12 @@ export default async function PageLayout({ children }: { children: React.ReactNo
           }}
         />
 
-        {/* Left edge — orange, bottom */}
+        {/* Left edge — orange */}
         <div
           className="absolute"
           style={{
             left: '-220px',
-            top: '85%',
+            top: 'calc(100vh + 4400px)',
             width: '500px',
             height: '500px',
             borderRadius: '50%',
@@ -111,12 +116,12 @@ export default async function PageLayout({ children }: { children: React.ReactNo
           }}
         />
 
-        {/* Right edge — blue, bottom */}
+        {/* Right edge — blue */}
         <div
           className="absolute"
           style={{
             right: '-300px',
-            top: '90%',
+            top: 'calc(100vh + 5200px)',
             width: '700px',
             height: '700px',
             borderRadius: '50%',
@@ -124,6 +129,6 @@ export default async function PageLayout({ children }: { children: React.ReactNo
           }}
         />
       </div>
-    </>
+    </div>
   );
 }
