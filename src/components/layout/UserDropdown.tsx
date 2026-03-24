@@ -38,6 +38,7 @@ export default function UserDropdown({ isOpen, onClose, userName }: UserDropdown
 
   const handleSignOut = async () => {
     const supabase = createClient();
+    if (!supabase) return;
     await supabase.auth.signOut();
     onClose();
     window.location.reload();

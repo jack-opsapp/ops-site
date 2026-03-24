@@ -54,6 +54,7 @@ export default function Navigation({ commonDict }: NavigationProps) {
   // Lightweight auth check
   useEffect(() => {
     const supabase = createClient();
+    if (!supabase) return;
     supabase.auth.getUser().then(({ data: { user: authUser } }) => {
       if (authUser) {
         setUser({
