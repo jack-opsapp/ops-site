@@ -173,14 +173,6 @@ function PhoneSceneContent({ isVisible }: PhoneSceneContentProps) {
         target={[0, 0, 0]}
         onChange={() => {
           invalidate();
-          if (controlsRef.current) {
-            const az = controlsRef.current.getAzimuthalAngle();
-            const pol = controlsRef.current.getPolarAngle();
-            const el = document.getElementById('angle-debug');
-            if (el) {
-              el.textContent = `azimuth: ${az.toFixed(3)} rad (${(az * 180 / Math.PI).toFixed(1)}°)  |  polar: ${pol.toFixed(3)} rad (${(pol * 180 / Math.PI).toFixed(1)}°)`;
-            }
-          }
         }}
       />
     </>
@@ -194,14 +186,6 @@ interface PhoneSceneProps {
 export default function PhoneScene({ isVisible = true }: PhoneSceneProps) {
   return (
     <>
-    <div id="angle-debug" style={{
-      position: 'fixed', top: 60, left: 12, zIndex: 9999,
-      color: '#0f0', background: 'rgba(0,0,0,0.85)', padding: '6px 12px',
-      fontFamily: 'monospace', fontSize: 14, borderRadius: 4,
-      pointerEvents: 'none',
-    }}>
-      Orbit the phone — angles will appear here
-    </div>
     <Canvas
       frameloop={isVisible ? 'demand' : 'never'}
       camera={{
