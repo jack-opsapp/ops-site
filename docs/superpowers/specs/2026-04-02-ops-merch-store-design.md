@@ -221,8 +221,8 @@ When the user clicks "Continue to Payment" (Step 1 → Step 2):
 
 ### 6.1 Confirmation Email
 
-Triggered by a Supabase Edge Function on order creation (database webhook on `shop_orders` insert where `status = 'paid'`):
-- Send via Resend (or SendGrid)
+Triggered directly from the `confirm-order` API route (no Edge Functions — none exist in the OPS ecosystem):
+- Send via Resend (or SendGrid — OPS-Web already uses SendGrid with `SENDGRID_API_KEY`)
 - Content mirrors the confirmation page: order number, items, totals, shipping address
 - Plain, text-heavy email styled with OPS brand colors (dark bg, white text, accent highlights)
 - Include a "Questions? Reply to this email" footer
@@ -405,20 +405,22 @@ Handles `payment_intent.succeeded` and `payment_intent.payment_failed` events as
 
 | Element | Animation | Duration | Easing |
 |---------|-----------|----------|--------|
-| Product cards entrance | FadeInUp, staggered | 600ms | cubic-bezier(0.25, 0.46, 0.45, 0.94) |
-| Category filter transition | Framer Motion `AnimatePresence` + `layout` | 400ms | spring (stiffness: 300, damping: 30) |
-| Card expansion | Framer Motion `layoutId` morph | 400ms | ease-out |
-| Sibling cards push down | Spring physics, staggered 50ms | 400ms | spring |
-| Expanded detail fade-in | Opacity 0→1 (size, qty, add-to-cart) | 200ms | ease-in, 200ms delay |
-| Card collapse | Reverse of expansion | 350ms | ease-in |
-| Cart drawer slide-in | translateX(100%) → 0 | 300ms | ease-out |
-| Cart backdrop fade | Opacity 0→0.6 | 300ms | ease-out |
+| Product cards entrance | FadeInUp, staggered | 600ms | `[0.22, 1, 0.36, 1]` (theme.animation.easing) |
+| Category filter transition | Framer Motion `AnimatePresence` + `layout` | 400ms | `[0.22, 1, 0.36, 1]` |
+| Card expansion | Framer Motion `layoutId` morph | 400ms | `[0.22, 1, 0.36, 1]` |
+| Sibling cards push down | Spring physics, staggered 50ms | 400ms | spring (stiffness: 300, damping: 30) |
+| Expanded detail fade-in | Opacity 0→1 (size, qty, add-to-cart) | 200ms | `[0.22, 1, 0.36, 1]`, 200ms delay |
+| Card collapse | Reverse of expansion | 350ms | `[0.22, 1, 0.36, 1]` |
+| Cart drawer slide-in | translateX(100%) → 0 | 300ms | `[0.22, 1, 0.36, 1]` |
+| Cart backdrop fade | Opacity 0→0.6 | 300ms | `[0.22, 1, 0.36, 1]` |
 | Cart badge pop | Scale 0.5→1.15→1 | 300ms | spring |
-| Cart badge glow | Box-shadow pulse | 300ms | ease-out |
-| Add to cart button | Checkmark morph (text → ✓ → text) | 500ms | ease-in-out |
-| Checkout step transition | Fade + slide left | 300ms | ease-out |
+| Cart badge glow | Box-shadow pulse | 300ms | `[0.22, 1, 0.36, 1]` |
+| Add to cart button | Checkmark morph (text → ✓ → text) | 500ms | `[0.22, 1, 0.36, 1]` |
+| Checkout step transition | Fade + slide left | 300ms | `[0.22, 1, 0.36, 1]` |
 | Confirmation checkmark | Scale 0→1 + opacity | 500ms | spring (bounce) |
-| Hero banner content | FadeInUp | 800ms | cubic-bezier ease |
+| Hero banner content | FadeInUp | 800ms | `[0.22, 1, 0.36, 1]` |
+
+All easing uses the project standard from `theme.animation.easing: [0.22, 1, 0.36, 1]`. Spring physics used only where explicitly noted. Reduced motion: respect `useReducedMotion()` hook — collapse animations to identity transforms (following `BlogPostRow.tsx` pattern).
 
 ---
 
@@ -450,6 +452,54 @@ Add translation keys for:
 - New `shop.json` dictionary: all store copy (hero, category names, checkout labels, confirmation text, error messages)
 
 All user-facing strings go through the translation system. No hardcoded English.
+
+---
+
+## 14. Infrastructure Prerequisites
+
+### 14.1 New Dependencies
+```bash
+# Server-side Stripe SDK
+npm install stripe
+# Client-side Stripe.js
+npm install @stripe/stripe-js @stripe/react-stripe-js
+```
+
+### 14.2 Environment Variables (Vercel)
+Add to the ops-site Vercel project:
+| Variable | Scope | Notes |
+|----------|-------|-------|
+| `NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY` | Client | Same Stripe account as OPS-Web |
+| `STRIPE_SECRET_KEY` | Server | Same Stripe account as OPS-Web |
+| `STRIPE_WEBHOOK_SECRET` | Server | **New** — separate endpoint needs its own signing secret |
+| `SENDGRID_API_KEY` | Server | Same as OPS-Web (if using SendGrid for confirmation emails) |
+
+### 14.3 Image Hosting
+Product images need a CDN domain added to `next.config.ts` `remotePatterns`. Options:
+- Supabase Storage (`ijeekuhbatykdomumfjx.supabase.co/storage/v1/...`)
+- External CDN (e.g., Cloudflare R2, S3 + CloudFront)
+Decision: use Supabase Storage (already provisioned, no extra cost for the project's scale).
+
+### 14.4 Supabase Migrations
+All apps share the same Supabase project (`ijeekuhbatykdomumfjx.supabase.co`). Migrations for the 10 `shop_*` tables should be applied via the Supabase MCP tool (`execute_sql`) since ops-site has no local `supabase/` directory. All tables are prefixed with `shop_` to avoid namespace collisions.
+
+### 14.5 RLS Policies
+API routes use `getSupabaseAdmin()` (service role, bypasses RLS). However, add `SELECT` policies for the `anon` role on read-only tables (`shop_categories`, `shop_products`, `shop_product_options`, `shop_product_option_values`, `shop_variants`, `shop_variant_option_values`, `shop_shipping_methods`) for defense-in-depth and potential future client-side reads.
+
+Write operations (`shop_orders`, `shop_order_items`, `shop_inventory_reservations`) should only allow `INSERT` via authenticated service role (no anon writes).
+
+### 14.6 Existing Patterns to Follow
+| Pattern | Source | Usage |
+|---------|--------|-------|
+| API routes | `src/app/api/contact/route.ts` | `getSupabaseAdmin()`, `NextResponse.json()` |
+| Server data fetching | `src/lib/blog.ts` | Async helpers called from server components |
+| Animation easing | `src/lib/theme.ts` → `theme.animation.easing` | `[0.22, 1, 0.36, 1]` for all transitions |
+| Scroll reveals | `src/components/ui/FadeInUp.tsx` | Wrap section-level elements |
+| Card pattern | `src/components/ui/Card.tsx` | Dark surface, thin border, hover lift |
+| Button variants | `src/components/ui/Button.tsx` | `solid` / `ghost`, Kosugi caps |
+| i18n | `src/i18n/server.ts` → `getTDict('shop')` | Add `shop` to `Namespace` type, create dictionaries |
+| Reduced motion | `useReducedMotion()` hook | Collapse animations to identity transforms |
+| ISR | `export const revalidate = 300` | 5-minute cache for product data |
 
 ---
 
