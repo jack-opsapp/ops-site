@@ -7,6 +7,10 @@ const nextConfig: NextConfig = {
         protocol: 'https',
         hostname: '**.cdn.bubble.io',
       },
+      {
+        protocol: 'https',
+        hostname: 'ijeekuhbatykdomumfjx.supabase.co',
+      },
     ],
   },
 };
