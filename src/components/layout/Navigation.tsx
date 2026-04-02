@@ -14,11 +14,14 @@ import { createClient } from '@/lib/supabase';
 import UserDropdown from './UserDropdown';
 import MobileMenu from './MobileMenu';
 import Button from '@/components/ui/Button';
+import CartIcon from '@/components/shop/CartIcon';
+import CartDrawer from '@/components/shop/CartDrawer';
 import type { Dictionary } from '@/i18n/types';
 
 const navLinkKeys = [
   { key: 'nav.platform', href: '/platform' },
   { key: 'nav.tools', href: '/tools' },
+  { key: 'nav.shop', href: '/shop' },
   { key: 'nav.plans', href: '/plans' },
   { key: 'nav.journal', href: '/journal' },
   { key: 'nav.resources', href: '/resources' },
@@ -34,6 +37,7 @@ export default function Navigation({ commonDict }: NavigationProps) {
   const [user, setUser] = useState<{ name: string } | null>(null);
   const [dropdownOpen, setDropdownOpen] = useState(false);
   const [mobileOpen, setMobileOpen] = useState(false);
+  const [cartOpen, setCartOpen] = useState(false);
   const pathname = usePathname();
 
   const t = (key: string) => {
@@ -123,8 +127,12 @@ export default function Navigation({ commonDict }: NavigationProps) {
             ))}
           </div>
 
-          {/* Right: Auth state — desktop */}
-          <div className="hidden lg:flex items-center">
+          {/* Right: Cart + Auth state — desktop */}
+          <div className="hidden lg:flex items-center gap-4">
+            <CartIcon
+              onClick={() => setCartOpen(true)}
+              isLight={isLightPage && !scrolled}
+            />
             {user ? (
               <div className="relative">
                 <button
@@ -167,6 +175,9 @@ export default function Navigation({ commonDict }: NavigationProps) {
         onClose={() => setMobileOpen(false)}
         commonDict={commonDict}
       />
+
+      {/* Cart drawer */}
+      <CartDrawer isOpen={cartOpen} onClose={() => setCartOpen(false)} />
     </>
   );
 }

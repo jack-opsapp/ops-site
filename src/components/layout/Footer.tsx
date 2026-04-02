@@ -27,6 +27,7 @@ export default function Footer({ commonDict }: FooterProps) {
         { label: t('footer.platform'), href: '/platform' },
         { label: t('footer.tools'), href: '/tools' },
         { label: t('footer.plans'), href: '/plans' },
+        { label: t('footer.shop'), href: '/shop' },
       ],
     },
     {
