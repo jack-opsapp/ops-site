@@ -7,7 +7,7 @@ import type { DeviceType, FlowDirection } from '@/lib/industries';
 interface SolutionItem {
   title: string;
   copy: string;
-  painPointRef: number;
+  painPointRef: number | string;
   deviceType: DeviceType;
   flowDirection: FlowDirection;
 }

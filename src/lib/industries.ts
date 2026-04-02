@@ -25,7 +25,7 @@ export interface IndustryContent {
   solutions: Array<{
     title: string;
     copy: string;
-    painPointRef: number;
+    painPointRef: number | string;
   }>;
   comparison: {
     competitors: [string, string];
@@ -2095,10 +2095,10 @@ export const industries: IndustryData[] = [
       { variant: 'apps' },
     ],
     solutionConfig: [
-      { deviceType: 'phone', flowDirection: 'left' },
-      { deviceType: 'phone', flowDirection: 'right' },
-      { deviceType: 'tablet', flowDirection: 'left' },
-      { deviceType: 'phone', flowDirection: 'right' },
+      { deviceType: 'phone', flowDirection: 'left-to-right' },
+      { deviceType: 'phone', flowDirection: 'right-to-left' },
+      { deviceType: 'tablet', flowDirection: 'left-to-right' },
+      { deviceType: 'phone', flowDirection: 'right-to-left' },
     ],
     content: {
       en: {
@@ -2159,12 +2159,12 @@ export const industries: IndustryData[] = [
           {
             title: 'ONE CALENDAR FOR YOUR BUSIEST 10 WEEKS AND YOUR QUIETEST 6 MONTHS',
             copy: 'Batch-book fall cleanings by neighborhood. Route optimization groups nearby appointments for maximum completions per day during peak season. Automated annual reminders ensure customers book with you every year — not whoever shows up first on Google. Off-season scheduling for repairs, relining, and cap installations keeps revenue flowing year-round. No penalty for adding seasonal crew during the rush.',
-            painPointRef: 'The Fall Rush Breaks Your Schedule Every Year',
+            painPointRef: 0,
           },
           {
             title: 'PROFESSIONAL INSPECTION REPORTS FROM THE CHIMNEY TOP',
             copy: 'Document every inspection with photos, video, and NFPA-compliant findings — then send a professional report to the customer before you have left their driveway. Structured inspection notes follow consistent process across Level I, II, and III inspections. Works offline because chimneys do not always have WiFi. Sync when you are back in the truck. Replaces a separate $99/month inspection-only tool.',
-            painPointRef: 'Inspection Documentation Is Still on Carbon Copy',
+            painPointRef: 1,
           },
           {
             title: 'BUILT FOR SWEEPS, NOT FOR SALES TEAMS',
@@ -2228,10 +2228,10 @@ export const industries: IndustryData[] = [
       { variant: 'apps' },
     ],
     solutionConfig: [
-      { deviceType: 'phone', flowDirection: 'left' },
-      { deviceType: 'phone', flowDirection: 'right' },
-      { deviceType: 'tablet', flowDirection: 'left' },
-      { deviceType: 'phone', flowDirection: 'right' },
+      { deviceType: 'phone', flowDirection: 'left-to-right' },
+      { deviceType: 'phone', flowDirection: 'right-to-left' },
+      { deviceType: 'tablet', flowDirection: 'left-to-right' },
+      { deviceType: 'phone', flowDirection: 'right-to-left' },
     ],
     content: {
       en: {
@@ -2361,10 +2361,10 @@ export const industries: IndustryData[] = [
       { variant: 'apps' },
     ],
     solutionConfig: [
-      { deviceType: 'phone', flowDirection: 'left' },
-      { deviceType: 'phone', flowDirection: 'right' },
-      { deviceType: 'tablet', flowDirection: 'left' },
-      { deviceType: 'phone', flowDirection: 'right' },
+      { deviceType: 'phone', flowDirection: 'left-to-right' },
+      { deviceType: 'phone', flowDirection: 'right-to-left' },
+      { deviceType: 'tablet', flowDirection: 'left-to-right' },
+      { deviceType: 'phone', flowDirection: 'right-to-left' },
     ],
     content: {
       en: {
@@ -2494,10 +2494,10 @@ export const industries: IndustryData[] = [
       { variant: 'apps' },
     ],
     solutionConfig: [
-      { deviceType: 'phone', flowDirection: 'left' },
-      { deviceType: 'phone', flowDirection: 'right' },
-      { deviceType: 'tablet', flowDirection: 'left' },
-      { deviceType: 'phone', flowDirection: 'right' },
+      { deviceType: 'phone', flowDirection: 'left-to-right' },
+      { deviceType: 'phone', flowDirection: 'right-to-left' },
+      { deviceType: 'tablet', flowDirection: 'left-to-right' },
+      { deviceType: 'phone', flowDirection: 'right-to-left' },
     ],
     content: {
       en: {
@@ -2627,10 +2627,10 @@ export const industries: IndustryData[] = [
       { variant: 'apps' },
     ],
     solutionConfig: [
-      { deviceType: 'phone', flowDirection: 'left' },
-      { deviceType: 'phone', flowDirection: 'right' },
-      { deviceType: 'tablet', flowDirection: 'left' },
-      { deviceType: 'phone', flowDirection: 'right' },
+      { deviceType: 'phone', flowDirection: 'left-to-right' },
+      { deviceType: 'phone', flowDirection: 'right-to-left' },
+      { deviceType: 'tablet', flowDirection: 'left-to-right' },
+      { deviceType: 'phone', flowDirection: 'right-to-left' },
     ],
     content: {
       en: {
@@ -2760,10 +2760,10 @@ export const industries: IndustryData[] = [
       { variant: 'apps' },
     ],
     solutionConfig: [
-      { deviceType: 'phone', flowDirection: 'left' },
-      { deviceType: 'phone', flowDirection: 'right' },
-      { deviceType: 'tablet', flowDirection: 'left' },
-      { deviceType: 'phone', flowDirection: 'right' },
+      { deviceType: 'phone', flowDirection: 'left-to-right' },
+      { deviceType: 'phone', flowDirection: 'right-to-left' },
+      { deviceType: 'tablet', flowDirection: 'left-to-right' },
+      { deviceType: 'phone', flowDirection: 'right-to-left' },
     ],
     content: {
       en: {
@@ -2893,10 +2893,10 @@ export const industries: IndustryData[] = [
       { variant: 'apps' },
     ],
     solutionConfig: [
-      { deviceType: 'phone', flowDirection: 'left' },
-      { deviceType: 'phone', flowDirection: 'right' },
-      { deviceType: 'tablet', flowDirection: 'left' },
-      { deviceType: 'phone', flowDirection: 'right' },
+      { deviceType: 'phone', flowDirection: 'left-to-right' },
+      { deviceType: 'phone', flowDirection: 'right-to-left' },
+      { deviceType: 'tablet', flowDirection: 'left-to-right' },
+      { deviceType: 'phone', flowDirection: 'right-to-left' },
     ],
     content: {
       en: {
@@ -3026,10 +3026,10 @@ export const industries: IndustryData[] = [
       { variant: 'apps' },
     ],
     solutionConfig: [
-      { deviceType: 'phone', flowDirection: 'left' },
-      { deviceType: 'phone', flowDirection: 'right' },
-      { deviceType: 'tablet', flowDirection: 'left' },
-      { deviceType: 'phone', flowDirection: 'right' },
+      { deviceType: 'phone', flowDirection: 'left-to-right' },
+      { deviceType: 'phone', flowDirection: 'right-to-left' },
+      { deviceType: 'tablet', flowDirection: 'left-to-right' },
+      { deviceType: 'phone', flowDirection: 'right-to-left' },
     ],
     content: {
       en: {
@@ -3159,10 +3159,10 @@ export const industries: IndustryData[] = [
       { variant: 'apps' },
     ],
     solutionConfig: [
-      { deviceType: 'phone', flowDirection: 'left' },
-      { deviceType: 'phone', flowDirection: 'right' },
-      { deviceType: 'tablet', flowDirection: 'left' },
-      { deviceType: 'phone', flowDirection: 'right' },
+      { deviceType: 'phone', flowDirection: 'left-to-right' },
+      { deviceType: 'phone', flowDirection: 'right-to-left' },
+      { deviceType: 'tablet', flowDirection: 'left-to-right' },
+      { deviceType: 'phone', flowDirection: 'right-to-left' },
     ],
     content: {
       en: {
@@ -3292,10 +3292,10 @@ export const industries: IndustryData[] = [
       { variant: 'apps' },
     ],
     solutionConfig: [
-      { deviceType: 'phone', flowDirection: 'left' },
-      { deviceType: 'phone', flowDirection: 'right' },
-      { deviceType: 'tablet', flowDirection: 'left' },
-      { deviceType: 'phone', flowDirection: 'right' },
+      { deviceType: 'phone', flowDirection: 'left-to-right' },
+      { deviceType: 'phone', flowDirection: 'right-to-left' },
+      { deviceType: 'tablet', flowDirection: 'left-to-right' },
+      { deviceType: 'phone', flowDirection: 'right-to-left' },
     ],
     content: {
       en: {
@@ -3424,10 +3424,10 @@ export const industries: IndustryData[] = [
       { variant: 'apps' },
     ],
     solutionConfig: [
-      { deviceType: 'phone', flowDirection: 'left' },
-      { deviceType: 'tablet', flowDirection: 'right' },
-      { deviceType: 'phone', flowDirection: 'left' },
-      { deviceType: 'tablet', flowDirection: 'right' },
+      { deviceType: 'phone', flowDirection: 'left-to-right' },
+      { deviceType: 'tablet', flowDirection: 'right-to-left' },
+      { deviceType: 'phone', flowDirection: 'left-to-right' },
+      { deviceType: 'tablet', flowDirection: 'right-to-left' },
     ],
     content: {
       en: {
@@ -3594,10 +3594,10 @@ export const industries: IndustryData[] = [
       { variant: 'apps' },
     ],
     solutionConfig: [
-      { deviceType: 'phone', flowDirection: 'left' },
-      { deviceType: 'tablet', flowDirection: 'right' },
-      { deviceType: 'phone', flowDirection: 'left' },
-      { deviceType: 'tablet', flowDirection: 'right' },
+      { deviceType: 'phone', flowDirection: 'left-to-right' },
+      { deviceType: 'tablet', flowDirection: 'right-to-left' },
+      { deviceType: 'phone', flowDirection: 'left-to-right' },
+      { deviceType: 'tablet', flowDirection: 'right-to-left' },
     ],
     content: {
       en: {
@@ -3763,10 +3763,10 @@ export const industries: IndustryData[] = [
       { variant: 'apps' },
     ],
     solutionConfig: [
-      { deviceType: 'phone', flowDirection: 'left' },
-      { deviceType: 'tablet', flowDirection: 'right' },
-      { deviceType: 'phone', flowDirection: 'left' },
-      { deviceType: 'tablet', flowDirection: 'right' },
+      { deviceType: 'phone', flowDirection: 'left-to-right' },
+      { deviceType: 'tablet', flowDirection: 'right-to-left' },
+      { deviceType: 'phone', flowDirection: 'left-to-right' },
+      { deviceType: 'tablet', flowDirection: 'right-to-left' },
     ],
     content: {
       en: {
@@ -3933,10 +3933,10 @@ export const industries: IndustryData[] = [
       { variant: 'apps' },
     ],
     solutionConfig: [
-      { deviceType: 'phone', flowDirection: 'left' },
-      { deviceType: 'tablet', flowDirection: 'right' },
-      { deviceType: 'phone', flowDirection: 'left' },
-      { deviceType: 'tablet', flowDirection: 'right' },
+      { deviceType: 'phone', flowDirection: 'left-to-right' },
+      { deviceType: 'tablet', flowDirection: 'right-to-left' },
+      { deviceType: 'phone', flowDirection: 'left-to-right' },
+      { deviceType: 'tablet', flowDirection: 'right-to-left' },
     ],
     content: {
       en: {
@@ -4102,10 +4102,10 @@ export const industries: IndustryData[] = [
       { variant: 'apps' },
     ],
     solutionConfig: [
-      { deviceType: 'phone', flowDirection: 'left' },
-      { deviceType: 'tablet', flowDirection: 'right' },
-      { deviceType: 'phone', flowDirection: 'left' },
-      { deviceType: 'tablet', flowDirection: 'right' },
+      { deviceType: 'phone', flowDirection: 'left-to-right' },
+      { deviceType: 'tablet', flowDirection: 'right-to-left' },
+      { deviceType: 'phone', flowDirection: 'left-to-right' },
+      { deviceType: 'tablet', flowDirection: 'right-to-left' },
     ],
     content: {
       en: {
@@ -4272,10 +4272,10 @@ export const industries: IndustryData[] = [
       { variant: 'apps' },
     ],
     solutionConfig: [
-      { deviceType: 'phone', flowDirection: 'left' },
-      { deviceType: 'tablet', flowDirection: 'right' },
-      { deviceType: 'phone', flowDirection: 'left' },
-      { deviceType: 'tablet', flowDirection: 'right' },
+      { deviceType: 'phone', flowDirection: 'left-to-right' },
+      { deviceType: 'tablet', flowDirection: 'right-to-left' },
+      { deviceType: 'phone', flowDirection: 'left-to-right' },
+      { deviceType: 'tablet', flowDirection: 'right-to-left' },
     ],
     content: {
       en: {
@@ -4441,10 +4441,10 @@ export const industries: IndustryData[] = [
       { variant: 'apps' },
     ],
     solutionConfig: [
-      { deviceType: 'phone', flowDirection: 'left' },
-      { deviceType: 'tablet', flowDirection: 'right' },
-      { deviceType: 'phone', flowDirection: 'left' },
-      { deviceType: 'tablet', flowDirection: 'right' },
+      { deviceType: 'phone', flowDirection: 'left-to-right' },
+      { deviceType: 'tablet', flowDirection: 'right-to-left' },
+      { deviceType: 'phone', flowDirection: 'left-to-right' },
+      { deviceType: 'tablet', flowDirection: 'right-to-left' },
     ],
     content: {
       en: {
@@ -4611,10 +4611,10 @@ export const industries: IndustryData[] = [
       { variant: 'apps' },
     ],
     solutionConfig: [
-      { deviceType: 'phone', flowDirection: 'left' },
-      { deviceType: 'tablet', flowDirection: 'right' },
-      { deviceType: 'phone', flowDirection: 'left' },
-      { deviceType: 'tablet', flowDirection: 'right' },
+      { deviceType: 'phone', flowDirection: 'left-to-right' },
+      { deviceType: 'tablet', flowDirection: 'right-to-left' },
+      { deviceType: 'phone', flowDirection: 'left-to-right' },
+      { deviceType: 'tablet', flowDirection: 'right-to-left' },
     ],
     content: {
       en: {
@@ -4780,10 +4780,10 @@ export const industries: IndustryData[] = [
       { variant: 'apps' },
     ],
     solutionConfig: [
-      { deviceType: 'phone', flowDirection: 'left' },
-      { deviceType: 'tablet', flowDirection: 'right' },
-      { deviceType: 'phone', flowDirection: 'left' },
-      { deviceType: 'tablet', flowDirection: 'right' },
+      { deviceType: 'phone', flowDirection: 'left-to-right' },
+      { deviceType: 'tablet', flowDirection: 'right-to-left' },
+      { deviceType: 'phone', flowDirection: 'left-to-right' },
+      { deviceType: 'tablet', flowDirection: 'right-to-left' },
     ],
     content: {
       en: {
@@ -4950,10 +4950,10 @@ export const industries: IndustryData[] = [
       { variant: 'apps' },
     ],
     solutionConfig: [
-      { deviceType: 'phone', flowDirection: 'left' },
-      { deviceType: 'tablet', flowDirection: 'right' },
-      { deviceType: 'phone', flowDirection: 'left' },
-      { deviceType: 'tablet', flowDirection: 'right' },
+      { deviceType: 'phone', flowDirection: 'left-to-right' },
+      { deviceType: 'tablet', flowDirection: 'right-to-left' },
+      { deviceType: 'phone', flowDirection: 'left-to-right' },
+      { deviceType: 'tablet', flowDirection: 'right-to-left' },
     ],
     content: {
       en: {
@@ -5119,10 +5119,10 @@ export const industries: IndustryData[] = [
       { variant: 'apps' },
     ],
     solutionConfig: [
-      { deviceType: 'phone', flowDirection: 'left' },
-      { deviceType: 'tablet', flowDirection: 'right' },
-      { deviceType: 'phone', flowDirection: 'left' },
-      { deviceType: 'tablet', flowDirection: 'right' },
+      { deviceType: 'phone', flowDirection: 'left-to-right' },
+      { deviceType: 'tablet', flowDirection: 'right-to-left' },
+      { deviceType: 'phone', flowDirection: 'left-to-right' },
+      { deviceType: 'tablet', flowDirection: 'right-to-left' },
     ],
     content: {
       en: {
@@ -5289,10 +5289,10 @@ export const industries: IndustryData[] = [
       { variant: 'apps' },
     ],
     solutionConfig: [
-      { deviceType: 'phone', flowDirection: 'left' },
-      { deviceType: 'tablet', flowDirection: 'right' },
-      { deviceType: 'phone', flowDirection: 'left' },
-      { deviceType: 'tablet', flowDirection: 'right' },
+      { deviceType: 'phone', flowDirection: 'left-to-right' },
+      { deviceType: 'tablet', flowDirection: 'right-to-left' },
+      { deviceType: 'phone', flowDirection: 'left-to-right' },
+      { deviceType: 'tablet', flowDirection: 'right-to-left' },
     ],
     content: {
       en: {
@@ -5458,10 +5458,10 @@ export const industries: IndustryData[] = [
       { variant: 'apps' },
     ],
     solutionConfig: [
-      { deviceType: 'phone', flowDirection: 'left' },
-      { deviceType: 'tablet', flowDirection: 'right' },
-      { deviceType: 'phone', flowDirection: 'left' },
-      { deviceType: 'tablet', flowDirection: 'right' },
+      { deviceType: 'phone', flowDirection: 'left-to-right' },
+      { deviceType: 'tablet', flowDirection: 'right-to-left' },
+      { deviceType: 'phone', flowDirection: 'left-to-right' },
+      { deviceType: 'tablet', flowDirection: 'right-to-left' },
     ],
     content: {
       en: {
@@ -5628,10 +5628,10 @@ export const industries: IndustryData[] = [
       { variant: 'apps' },
     ],
     solutionConfig: [
-      { deviceType: 'phone', flowDirection: 'left' },
-      { deviceType: 'tablet', flowDirection: 'right' },
-      { deviceType: 'phone', flowDirection: 'left' },
-      { deviceType: 'tablet', flowDirection: 'right' },
+      { deviceType: 'phone', flowDirection: 'left-to-right' },
+      { deviceType: 'tablet', flowDirection: 'right-to-left' },
+      { deviceType: 'phone', flowDirection: 'left-to-right' },
+      { deviceType: 'tablet', flowDirection: 'right-to-left' },
     ],
     content: {
       en: {
@@ -5797,10 +5797,10 @@ export const industries: IndustryData[] = [
       { variant: 'apps' },
     ],
     solutionConfig: [
-      { deviceType: 'phone', flowDirection: 'left' },
-      { deviceType: 'tablet', flowDirection: 'right' },
-      { deviceType: 'phone', flowDirection: 'left' },
-      { deviceType: 'tablet', flowDirection: 'right' },
+      { deviceType: 'phone', flowDirection: 'left-to-right' },
+      { deviceType: 'tablet', flowDirection: 'right-to-left' },
+      { deviceType: 'phone', flowDirection: 'left-to-right' },
+      { deviceType: 'tablet', flowDirection: 'right-to-left' },
     ],
     content: {
       en: {
@@ -5967,10 +5967,10 @@ export const industries: IndustryData[] = [
       { variant: 'apps' },
     ],
     solutionConfig: [
-      { deviceType: 'phone', flowDirection: 'left' },
-      { deviceType: 'tablet', flowDirection: 'right' },
-      { deviceType: 'phone', flowDirection: 'left' },
-      { deviceType: 'tablet', flowDirection: 'right' },
+      { deviceType: 'phone', flowDirection: 'left-to-right' },
+      { deviceType: 'tablet', flowDirection: 'right-to-left' },
+      { deviceType: 'phone', flowDirection: 'left-to-right' },
+      { deviceType: 'tablet', flowDirection: 'right-to-left' },
     ],
     content: {
       en: {
@@ -6136,10 +6136,10 @@ export const industries: IndustryData[] = [
       { variant: 'apps' },
     ],
     solutionConfig: [
-      { deviceType: 'phone', flowDirection: 'left' },
-      { deviceType: 'tablet', flowDirection: 'right' },
-      { deviceType: 'phone', flowDirection: 'left' },
-      { deviceType: 'tablet', flowDirection: 'right' },
+      { deviceType: 'phone', flowDirection: 'left-to-right' },
+      { deviceType: 'tablet', flowDirection: 'right-to-left' },
+      { deviceType: 'phone', flowDirection: 'left-to-right' },
+      { deviceType: 'tablet', flowDirection: 'right-to-left' },
     ],
     content: {
       en: {
@@ -6306,10 +6306,10 @@ export const industries: IndustryData[] = [
       { variant: 'apps' },
     ],
     solutionConfig: [
-      { deviceType: 'phone', flowDirection: 'left' },
-      { deviceType: 'tablet', flowDirection: 'right' },
-      { deviceType: 'phone', flowDirection: 'left' },
-      { deviceType: 'tablet', flowDirection: 'right' },
+      { deviceType: 'phone', flowDirection: 'left-to-right' },
+      { deviceType: 'tablet', flowDirection: 'right-to-left' },
+      { deviceType: 'phone', flowDirection: 'left-to-right' },
+      { deviceType: 'tablet', flowDirection: 'right-to-left' },
     ],
     content: {
       en: {
@@ -6475,10 +6475,10 @@ export const industries: IndustryData[] = [
       { variant: 'apps' },
     ],
     solutionConfig: [
-      { deviceType: 'phone', flowDirection: 'left' },
-      { deviceType: 'tablet', flowDirection: 'right' },
-      { deviceType: 'phone', flowDirection: 'left' },
-      { deviceType: 'tablet', flowDirection: 'right' },
+      { deviceType: 'phone', flowDirection: 'left-to-right' },
+      { deviceType: 'tablet', flowDirection: 'right-to-left' },
+      { deviceType: 'phone', flowDirection: 'left-to-right' },
+      { deviceType: 'tablet', flowDirection: 'right-to-left' },
     ],
     content: {
       en: {
@@ -6645,10 +6645,10 @@ export const industries: IndustryData[] = [
       { variant: 'apps' },
     ],
     solutionConfig: [
-      { deviceType: 'phone', flowDirection: 'left' },
-      { deviceType: 'tablet', flowDirection: 'right' },
-      { deviceType: 'phone', flowDirection: 'left' },
-      { deviceType: 'tablet', flowDirection: 'right' },
+      { deviceType: 'phone', flowDirection: 'left-to-right' },
+      { deviceType: 'tablet', flowDirection: 'right-to-left' },
+      { deviceType: 'phone', flowDirection: 'left-to-right' },
+      { deviceType: 'tablet', flowDirection: 'right-to-left' },
     ],
     content: {
       en: {
@@ -6814,10 +6814,10 @@ export const industries: IndustryData[] = [
       { variant: 'apps' },
     ],
     solutionConfig: [
-      { deviceType: 'phone', flowDirection: 'left' },
-      { deviceType: 'tablet', flowDirection: 'right' },
-      { deviceType: 'phone', flowDirection: 'left' },
-      { deviceType: 'tablet', flowDirection: 'right' },
+      { deviceType: 'phone', flowDirection: 'left-to-right' },
+      { deviceType: 'tablet', flowDirection: 'right-to-left' },
+      { deviceType: 'phone', flowDirection: 'left-to-right' },
+      { deviceType: 'tablet', flowDirection: 'right-to-left' },
     ],
     content: {
       en: {
@@ -6984,10 +6984,10 @@ export const industries: IndustryData[] = [
       { variant: 'apps' },
     ],
     solutionConfig: [
-      { deviceType: 'phone', flowDirection: 'left' },
-      { deviceType: 'tablet', flowDirection: 'right' },
-      { deviceType: 'phone', flowDirection: 'left' },
-      { deviceType: 'tablet', flowDirection: 'right' },
+      { deviceType: 'phone', flowDirection: 'left-to-right' },
+      { deviceType: 'tablet', flowDirection: 'right-to-left' },
+      { deviceType: 'phone', flowDirection: 'left-to-right' },
+      { deviceType: 'tablet', flowDirection: 'right-to-left' },
     ],
     content: {
       en: {
@@ -7153,10 +7153,10 @@ export const industries: IndustryData[] = [
       { variant: 'apps' },
     ],
     solutionConfig: [
-      { deviceType: 'phone', flowDirection: 'left' },
-      { deviceType: 'tablet', flowDirection: 'right' },
-      { deviceType: 'phone', flowDirection: 'left' },
-      { deviceType: 'tablet', flowDirection: 'right' },
+      { deviceType: 'phone', flowDirection: 'left-to-right' },
+      { deviceType: 'tablet', flowDirection: 'right-to-left' },
+      { deviceType: 'phone', flowDirection: 'left-to-right' },
+      { deviceType: 'tablet', flowDirection: 'right-to-left' },
     ],
     content: {
       en: {
@@ -7323,10 +7323,10 @@ export const industries: IndustryData[] = [
       { variant: 'apps' },
     ],
     solutionConfig: [
-      { deviceType: 'phone', flowDirection: 'left' },
-      { deviceType: 'tablet', flowDirection: 'right' },
-      { deviceType: 'phone', flowDirection: 'left' },
-      { deviceType: 'tablet', flowDirection: 'right' },
+      { deviceType: 'phone', flowDirection: 'left-to-right' },
+      { deviceType: 'tablet', flowDirection: 'right-to-left' },
+      { deviceType: 'phone', flowDirection: 'left-to-right' },
+      { deviceType: 'tablet', flowDirection: 'right-to-left' },
     ],
     content: {
       en: {
