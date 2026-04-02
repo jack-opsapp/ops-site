@@ -9,7 +9,7 @@ const nextConfig: NextConfig = {
       },
       {
         protocol: 'https',
-        hostname: 'ijeekuhbatykdomumfjx.supabase.co',
+        hostname: 'ops-app-files-prod.s3.us-west-2.amazonaws.com',
       },
     ],
   },
