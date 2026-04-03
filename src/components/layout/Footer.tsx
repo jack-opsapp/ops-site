@@ -12,9 +12,10 @@ import type { Dictionary } from '@/i18n/types';
 
 interface FooterProps {
   commonDict: Dictionary;
+  shopLive?: boolean;
 }
 
-export default function Footer({ commonDict }: FooterProps) {
+export default function Footer({ commonDict, shopLive = false }: FooterProps) {
   const t = (key: string) => {
     const value = commonDict[key];
     return typeof value === 'string' ? value : key;
@@ -27,7 +28,7 @@ export default function Footer({ commonDict }: FooterProps) {
         { label: t('footer.platform'), href: '/platform' },
         { label: t('footer.tools'), href: '/tools' },
         { label: t('footer.plans'), href: '/plans' },
-        { label: t('footer.shop'), href: '/shop' },
+        ...(shopLive ? [{ label: t('footer.shop'), href: '/shop' }] : []),
       ],
     },
     {

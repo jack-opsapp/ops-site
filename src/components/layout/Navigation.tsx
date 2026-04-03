@@ -18,10 +18,10 @@ import CartIcon from '@/components/shop/CartIcon';
 import CartDrawer from '@/components/shop/CartDrawer';
 import type { Dictionary } from '@/i18n/types';
 
-const navLinkKeys = [
+const baseNavLinks = [
   { key: 'nav.platform', href: '/platform' },
   { key: 'nav.tools', href: '/tools' },
-  { key: 'nav.shop', href: '/shop' },
+  { key: 'nav.shop', href: '/shop', shopOnly: true },
   { key: 'nav.plans', href: '/plans' },
   { key: 'nav.journal', href: '/journal' },
   { key: 'nav.resources', href: '/resources' },
@@ -30,9 +30,10 @@ const navLinkKeys = [
 
 interface NavigationProps {
   commonDict: Dictionary;
+  shopLive?: boolean;
 }
 
-export default function Navigation({ commonDict }: NavigationProps) {
+export default function Navigation({ commonDict, shopLive = false }: NavigationProps) {
   const [scrolled, setScrolled] = useState(false);
   const [user, setUser] = useState<{ name: string } | null>(null);
   const [dropdownOpen, setDropdownOpen] = useState(false);
@@ -72,6 +73,7 @@ export default function Navigation({ commonDict }: NavigationProps) {
     });
   }, []);
 
+  const navLinkKeys = baseNavLinks.filter((link) => !link.shopOnly || shopLive);
   const navLinks = navLinkKeys.map((link) => ({
     label: t(link.key),
     href: link.href,
@@ -129,10 +131,12 @@ export default function Navigation({ commonDict }: NavigationProps) {
 
           {/* Right: Cart + Auth state — desktop */}
           <div className="hidden lg:flex items-center gap-4">
-            <CartIcon
-              onClick={() => setCartOpen(true)}
-              isLight={isLightPage && !scrolled}
-            />
+            {shopLive && (
+              <CartIcon
+                onClick={() => setCartOpen(true)}
+                isLight={isLightPage && !scrolled}
+              />
+            )}
             {user ? (
               <div className="relative">
                 <button
@@ -176,8 +180,8 @@ export default function Navigation({ commonDict }: NavigationProps) {
         commonDict={commonDict}
       />
 
-      {/* Cart drawer */}
-      <CartDrawer isOpen={cartOpen} onClose={() => setCartOpen(false)} />
+      {/* Cart drawer — only when shop is live */}
+      {shopLive && <CartDrawer isOpen={cartOpen} onClose={() => setCartOpen(false)} />}
     </>
   );
 }

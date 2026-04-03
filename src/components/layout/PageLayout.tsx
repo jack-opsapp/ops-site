@@ -10,17 +10,21 @@ import Navigation from './Navigation';
 import Footer from './Footer';
 import LanguageBanner from './LanguageBanner';
 import { getTDict } from '@/i18n/server';
+import { isStoreLive } from '@/lib/shop/queries';
 import type { Dictionary } from '@/i18n/types';
 
 export default async function PageLayout({ children }: { children: React.ReactNode }) {
-  const commonDict = await getTDict('common') as Dictionary;
+  const [commonDict, shopLive] = await Promise.all([
+    getTDict('common') as Promise<Dictionary>,
+    isStoreLive(),
+  ]);
 
   return (
     <div className="relative">
-      <Navigation commonDict={commonDict} />
+      <Navigation commonDict={commonDict} shopLive={shopLive} />
       <LanguageBanner commonDict={commonDict} />
       <main>{children}</main>
-      <Footer commonDict={commonDict} />
+      <Footer commonDict={commonDict} shopLive={shopLive} />
 
       {/* Ambient page-edge glows — spans the full page via the relative parent.
           All orbs positioned with calc(100vh + offset) so they never touch the hero. */}

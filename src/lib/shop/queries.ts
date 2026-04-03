@@ -141,6 +141,19 @@ export async function getShippingMethods(): Promise<ShopShippingMethod[]> {
   return data as ShopShippingMethod[];
 }
 
+/** Check if the store is live (controlled by admin panel toggle) */
+export async function isStoreLive(): Promise<boolean> {
+  const supabase = getSupabaseAdmin();
+  const { data, error } = await supabase
+    .from('shop_settings')
+    .select('store_live')
+    .limit(1)
+    .maybeSingle();
+
+  if (error || !data) return false;
+  return data.store_live;
+}
+
 /** Fetch an order with its items by order ID */
 export async function getOrderWithItems(orderId: string): Promise<ShopOrderWithItems | null> {
   const supabase = getSupabaseAdmin();
