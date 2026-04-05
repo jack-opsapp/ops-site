@@ -3,6 +3,7 @@
 import type { Dictionary } from '@/i18n/types';
 import TailoredHero from './TailoredHero';
 import HowItWorks from './HowItWorks';
+import TailoredPricing, { type PackageData } from './TailoredPricing';
 
 interface TailoredPageContentProps {
   dict: Dictionary;
@@ -33,6 +34,24 @@ export function TailoredPageContent({ dict }: TailoredPageContentProps) {
           { number: t(dict, 'process.step3.number'), title: t(dict, 'process.step3.title'), desc: t(dict, 'process.step3.desc') },
           { number: t(dict, 'process.step4.number'), title: t(dict, 'process.step4.title'), desc: t(dict, 'process.step4.desc') },
         ]}
+      />
+
+      <TailoredPricing
+        sectionLabel={t(dict, 'packages.sectionLabel')}
+        packages={
+          (['setup', 'build', 'enterprise'] as const).map((tier) => ({
+            tier,
+            name: t(dict, `packages.${tier}.name`),
+            tagline: t(dict, `packages.${tier}.tagline`),
+            price: t(dict, `packages.${tier}.price`),
+            deposit: t(dict, `packages.${tier}.deposit`),
+            features: (dict[`packages.${tier}.features`] as string[]) ?? [],
+            examples: (dict[`packages.${tier}.examples`] as unknown as Array<{ trade: string; desc: string }>) ?? [],
+            ongoing: t(dict, `packages.${tier}.ongoing`),
+            ctaText: t(dict, `packages.${tier}.ctaText`),
+            recommended: tier === 'build',
+          })) as PackageData[]
+        }
       />
 
       {/* Remaining sections added in subsequent tasks */}
