@@ -50,7 +50,7 @@ export default function HowItWorks({
 
   return (
     <section id="process" className="py-24 md:py-32 bg-ops-background">
-      <div className="max-w-[1400px] mx-auto px-6 sm:px-10 md:px-16 lg:px-24">
+      <div>
         <motion.div
           initial={{ opacity: 0, y: 16 }}
           whileInView={{ opacity: 1, y: 0 }}
@@ -60,9 +60,8 @@ export default function HowItWorks({
           <SectionLabel label={sectionLabel} className="mb-12" />
         </motion.div>
 
-        <div className="flex gap-16 lg:gap-24">
-          {/* Left: Steps */}
-          <div className="flex-1 max-w-[640px] flex flex-col gap-6">
+        <div>
+          <div className="max-w-[640px] flex flex-col gap-6">
             {steps.map((step, index) => {
               const isActive = index === activeStep;
               return (
@@ -96,10 +95,6 @@ export default function HowItWorks({
             })}
           </div>
 
-          {/* Right: Phone placeholder — Phase B */}
-          <div className="hidden lg:block w-[280px] flex-shrink-0">
-            {/* 3D phone will be sticky here in Phase B */}
-          </div>
         </div>
       </div>
     </section>

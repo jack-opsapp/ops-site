@@ -58,7 +58,7 @@ export default function TailoredPricing({
 
   return (
     <section id="packages" className="py-24 md:py-32 bg-ops-background">
-      <div className="max-w-[1400px] mx-auto px-6 sm:px-10 md:px-16 lg:px-24">
+      <div>
         <motion.div
           initial={{ opacity: 0, y: 16 }}
           whileInView={{ opacity: 1, y: 0 }}
@@ -68,9 +68,8 @@ export default function TailoredPricing({
           <SectionLabel label={sectionLabel} className="mb-12" />
         </motion.div>
 
-        <div className="flex gap-16 lg:gap-24">
-          {/* Left: Pricing cards */}
-          <div className="flex-1 max-w-[720px] flex flex-col gap-3">
+        <div>
+          <div className="max-w-[720px] flex flex-col gap-3">
             {packages.map((pkg, index) => (
               <motion.div
                 key={pkg.tier}
@@ -90,10 +89,6 @@ export default function TailoredPricing({
             ))}
           </div>
 
-          {/* Right: Phone placeholder — Phase B */}
-          <div className="hidden lg:block w-[280px] flex-shrink-0">
-            {/* 3D phone will show selected package here in Phase B */}
-          </div>
         </div>
       </div>
     </section>
