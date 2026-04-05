@@ -1,6 +1,7 @@
 'use client';
 
 import type { Dictionary } from '@/i18n/types';
+import TailoredHero from './TailoredHero';
 
 interface TailoredPageContentProps {
   dict: Dictionary;
@@ -14,13 +15,16 @@ function t(dict: Dictionary, key: string): string {
 
 export function TailoredPageContent({ dict }: TailoredPageContentProps) {
   return (
-    <main className="bg-ops-background min-h-screen">
-      {/* Placeholder — sections added in subsequent tasks */}
-      <section className="min-h-screen flex items-center justify-center">
-        <p className="text-ops-text-secondary font-heading text-lg">
-          {t(dict, 'hero.heading')}
-        </p>
-      </section>
+    <main className="bg-ops-background">
+      <TailoredHero
+        eyebrow={t(dict, 'hero.eyebrow')}
+        heading={t(dict, 'hero.heading')}
+        subtitle={t(dict, 'hero.subtitle')}
+        ctaPackages={t(dict, 'hero.ctaPackages')}
+        ctaHowItWorks={t(dict, 'hero.ctaHowItWorks')}
+      />
+
+      {/* Sections added in subsequent tasks */}
     </main>
   );
 }
