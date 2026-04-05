@@ -2,6 +2,7 @@
 
 import type { Dictionary } from '@/i18n/types';
 import TailoredHero from './TailoredHero';
+import HowItWorks from './HowItWorks';
 
 interface TailoredPageContentProps {
   dict: Dictionary;
@@ -24,7 +25,17 @@ export function TailoredPageContent({ dict }: TailoredPageContentProps) {
         ctaHowItWorks={t(dict, 'hero.ctaHowItWorks')}
       />
 
-      {/* Sections added in subsequent tasks */}
+      <HowItWorks
+        sectionLabel={t(dict, 'process.sectionLabel')}
+        steps={[
+          { number: t(dict, 'process.step1.number'), title: t(dict, 'process.step1.title'), desc: t(dict, 'process.step1.desc') },
+          { number: t(dict, 'process.step2.number'), title: t(dict, 'process.step2.title'), desc: t(dict, 'process.step2.desc') },
+          { number: t(dict, 'process.step3.number'), title: t(dict, 'process.step3.title'), desc: t(dict, 'process.step3.desc') },
+          { number: t(dict, 'process.step4.number'), title: t(dict, 'process.step4.title'), desc: t(dict, 'process.step4.desc') },
+        ]}
+      />
+
+      {/* Remaining sections added in subsequent tasks */}
     </main>
   );
 }
