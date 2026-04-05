@@ -4,6 +4,10 @@ import type { Dictionary } from '@/i18n/types';
 import TailoredHero from './TailoredHero';
 import HowItWorks from './HowItWorks';
 import TailoredPricing, { type PackageData } from './TailoredPricing';
+import WhatsIncluded from './WhatsIncluded';
+import SocialProof from './SocialProof';
+import TailoredFAQ from './TailoredFAQ';
+import TailoredBottomCTA from './TailoredBottomCTA';
 
 interface TailoredPageContentProps {
   dict: Dictionary;
@@ -54,7 +58,32 @@ export function TailoredPageContent({ dict }: TailoredPageContentProps) {
         }
       />
 
-      {/* Remaining sections added in subsequent tasks */}
+      <WhatsIncluded
+        sectionLabel={t(dict, 'included.sectionLabel')}
+        items={(dict['included.every'] as string[]) ?? []}
+        ongoingLabel={t(dict, 'included.ongoingLabel')}
+        ongoingItems={(dict['included.ongoing'] as string[]) ?? []}
+      />
+
+      <SocialProof
+        subtitle={t(dict, 'proof.subtitle')}
+        stats={[
+          { value: t(dict, 'proof.stat1.value'), label: t(dict, 'proof.stat1.label') },
+          { value: t(dict, 'proof.stat2.value'), label: t(dict, 'proof.stat2.label') },
+          { value: t(dict, 'proof.stat3.value'), label: t(dict, 'proof.stat3.label') },
+        ]}
+      />
+
+      <TailoredFAQ
+        sectionLabel={t(dict, 'faq.sectionLabel')}
+        items={(dict['faq.items'] as unknown as Array<{ question: string; answer: string }>) ?? []}
+      />
+
+      <TailoredBottomCTA
+        heading={t(dict, 'bottomCta.heading')}
+        subtitle={t(dict, 'bottomCta.subtitle')}
+        ctaText={t(dict, 'bottomCta.ctaText')}
+      />
     </main>
   );
 }
