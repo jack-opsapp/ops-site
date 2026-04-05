@@ -23,6 +23,7 @@ const baseNavLinks = [
   { key: 'nav.tools', href: '/tools' },
   { key: 'nav.shop', href: '/shop', shopOnly: true },
   { key: 'nav.plans', href: '/plans' },
+  { key: 'nav.tailored', href: '/tailored' },
   { key: 'nav.journal', href: '/journal' },
   { key: 'nav.resources', href: '/resources' },
   { key: 'nav.company', href: '/company' },
