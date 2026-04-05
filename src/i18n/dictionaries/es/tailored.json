@@ -1,0 +1,154 @@
+{
+  "hero.eyebrow": "OPS A MEDIDA",
+  "hero.heading": "TU FLUJO DE TRABAJO. TUS MODULOS. TU OPS.",
+  "hero.subtitle": "Trabajamos contigo para construir modulos personalizados que se ajusten a como realmente manejas tu negocio. No una plantilla. No un parche. Software moldeado alrededor de tu operacion, construido sobre la base de OPS.",
+  "hero.ctaPackages": "Ver Paquetes",
+  "hero.ctaHowItWorks": "Como Funciona",
+
+  "process.sectionLabel": "COMO FUNCIONA",
+  "process.step1.number": "01",
+  "process.step1.title": "Elige tu paquete, asegura tu lugar",
+  "process.step1.desc": "Elige Setup, Build o Enterprise. Paga el 50% de deposito para reservar tu lugar. Aceptamos un numero limitado de clientes Tailored para garantizar calidad.",
+  "process.step2.number": "02",
+  "process.step2.title": "Cuentanos como trabajas",
+  "process.step2.desc": "Completa una entrevista detallada sobre tus flujos de trabajo, puntos de dolor y como opera tu equipo dia a dia. Estudiamos los resultados antes de reunirnos.",
+  "process.step3.number": "03",
+  "process.step3.title": "Nos reunimos. Construimos.",
+  "process.step3.desc": "Sesion de descubrimiento con tu analisis ya hecho. Luego construimos tus modulos personalizados directamente en OPS. Ves el progreso en tiempo real.",
+  "process.step4.number": "04",
+  "process.step4.title": "En vivo. Seguimos evolucionando.",
+  "process.step4.desc": "Lanza tu OPS personalizado con un periodo de soporte incluido. Despues, un retenedor opcional mantiene tus modulos actualizados y evolucionando con tu negocio.",
+
+  "packages.sectionLabel": "PAQUETES",
+  "packages.setup.name": "SETUP",
+  "packages.setup.tagline": "Configuramos OPS alrededor de tu flujo de trabajo",
+  "packages.setup.price": "$3,000",
+  "packages.setup.deposit": "$1,500 deposito",
+  "packages.setup.features": [
+    "2 sesiones de descubrimiento",
+    "Analisis de flujo de trabajo",
+    "Hasta 3 configuraciones personalizadas",
+    "Etapas de pipeline personalizadas",
+    "Campos personalizados en proyectos y clientes",
+    "30 dias de soporte"
+  ],
+  "packages.setup.examples": [
+    { "trade": "TECHADOR", "desc": "Etapas de pipeline personalizadas (Lead a Inspeccion a Cotizacion a Firmado a Completo), campos de tipo de techo, etiquetas de seguimiento de materiales" },
+    { "trade": "PLOMERO", "desc": "Pipeline dividido entre llamadas de servicio y renovaciones, ordenamiento por urgencia, campos de numero de permiso y fecha de inspeccion" },
+    { "trade": "JARDINERO", "desc": "Categorias de clientes estacionales vs mantenimiento, plantillas de trabajo recurrente, campos de asignacion de equipo por zona" }
+  ],
+  "packages.setup.ongoing": "Suscripcion $90-190/mes. Retenedor de mantenimiento $250/mes despues del periodo de soporte.",
+  "packages.setup.ctaText": "Pagar $1,500 Deposito",
+
+  "packages.build.name": "BUILD",
+  "packages.build.tagline": "Un modulo personalizado construido para tu oficio",
+  "packages.build.price": "$8,500",
+  "packages.build.deposit": "$4,250 deposito",
+  "packages.build.features": [
+    "Todo lo del Setup",
+    "1 modulo personalizado — nuevas funciones, vistas y logica",
+    "Soporte iOS y web",
+    "Funciones con IA incluidas",
+    "Activado por empresa",
+    "60 dias de soporte"
+  ],
+  "packages.build.examples": [
+    { "trade": "CONSTRUCTOR DE DECKS", "desc": "Herramienta de medicion de decks — dibuja formas, calcula pies de tabla y materiales, genera listas vinculadas a estimaciones" },
+    { "trade": "HVAC", "desc": "Rastreador de ciclo de vida de equipos — registra unidades por numero de serie, rastrea garantias, programa mantenimiento automatico" },
+    { "trade": "ELECTRICISTA", "desc": "Modulo de permisos e inspecciones — rastrea permisos por trabajo, recordatorios automaticos, documentacion fotografica con firma de inspector" }
+  ],
+  "packages.build.ongoing": "Suscripcion $115-215/mes. Retenedor de mantenimiento $450/mes despues del periodo de soporte.",
+  "packages.build.ctaText": "Pagar $4,250 Deposito",
+
+  "packages.enterprise.name": "ENTERPRISE",
+  "packages.enterprise.tagline": "Toda tu operacion, construida a medida sobre OPS",
+  "packages.enterprise.price": "$18,000",
+  "packages.enterprise.deposit": "$9,000 deposito",
+  "packages.enterprise.features": [
+    "Todo lo del Build",
+    "Multiples modulos personalizados",
+    "Integraciones profundas con tus herramientas existentes",
+    "Migracion de datos desde tus sistemas actuales",
+    "Cambios estructurales a la plataforma",
+    "90 dias de soporte"
+  ],
+  "packages.enterprise.examples": [
+    { "trade": "CONTRATISTA GENERAL", "desc": "Gestion de subcontratistas, programacion multi-oficio, herramienta de comparacion de ofertas, integracion QuickBooks, migracion completa desde Buildertrend" },
+    { "trade": "GESTION DE PROPIEDADES", "desc": "Portal de inquilinos, enrutamiento de ordenes de trabajo, despacho de proveedores, historial de mantenimiento por unidad, integracion de arrendamiento" },
+    { "trade": "EMPRESA MULTI-OFICIO", "desc": "Modulos especificos por division, recursos compartidos entre divisiones, vista unificada de clientes, reportes de P&L por division" }
+  ],
+  "packages.enterprise.ongoing": "Suscripcion $165-340/mes. Retenedor de mantenimiento $750/mes despues del periodo de soporte.",
+  "packages.enterprise.ctaText": "Pagar $9,000 Deposito",
+
+  "included.sectionLabel": "QUE INCLUYE CADA PAQUETE",
+  "included.every": [
+    "Sesiones de descubrimiento para entender tu flujo de trabajo",
+    "Entrevista de admision y analisis de flujo de trabajo",
+    "Modulos personalizados en tu plataforma OPS activa",
+    "Soporte iOS y web",
+    "Periodo de soporte (30, 60 o 90 dias segun el paquete)",
+    "Todas las actualizaciones de la plataforma OPS"
+  ],
+  "included.ongoingLabel": "COSTOS CONTINUOS — SIN SORPRESAS",
+  "included.ongoing": [
+    "Suscripcion OPS: $90-190/mes (puede aumentar si los modulos personalizados agregan costo de infraestructura)",
+    "Retenedor de mantenimiento: $250-750/mes (comienza despues del periodo de soporte)",
+    "Solicitudes adicionales de funciones: cotizadas como nuevos proyectos",
+    "Horas excedentes del retenedor: $200-225/hr"
+  ],
+
+  "proof.subtitle": "Construido sobre la plataforma OPS — confiado por negocios de oficios en toda Norteamerica.",
+  "proof.stat1.value": "500+",
+  "proof.stat1.label": "Negocios activos",
+  "proof.stat2.value": "12,000+",
+  "proof.stat2.label": "Proyectos gestionados",
+  "proof.stat3.value": "85,000+",
+  "proof.stat3.label": "Tareas completadas",
+
+  "faq.sectionLabel": "PREGUNTAS",
+  "faq.items": [
+    {
+      "question": "Que pasa despues de pagar el deposito?",
+      "answer": "Recibiras la entrevista de admision dentro de 24 horas. Completala a tu ritmo — cubre tus flujos de trabajo, puntos de dolor y como opera tu equipo. Revisamos los resultados y programamos tu sesion de descubrimiento."
+    },
+    {
+      "question": "Cuanto tarda una construccion personalizada?",
+      "answer": "Paquetes Setup: 1-2 semanas. Paquetes Build: 2-3 semanas. Enterprise: 4-6 semanas. Construimos rapido porque el fundador hace el trabajo directamente, con desarrollo asistido por IA."
+    },
+    {
+      "question": "Que es la entrevista de admision?",
+      "answer": "Una entrevista guiada sobre tu negocio — tus flujos de trabajo, estructura de equipo, puntos de dolor, como fluyen los trabajos desde el lead hasta completar. Toma unos 30-45 minutos."
+    },
+    {
+      "question": "Que pasa si necesito cambios despues del periodo de soporte?",
+      "answer": "El retenedor de mantenimiento cubre correcciones de errores, actualizaciones menores y mantener tus modulos compatibles con las actualizaciones de OPS. Solicitudes mas grandes se cotizan como nuevos proyectos."
+    },
+    {
+      "question": "Necesito una suscripcion OPS separada?",
+      "answer": "Si. Tailored es un servicio de construccion — tu suscripcion OPS es tu acceso continuo a la plataforma. Puede ser mas alta que la estandar si tus modulos personalizados requieren infraestructura adicional."
+    },
+    {
+      "question": "Puedo mejorar mi paquete despues?",
+      "answer": "Si. Empieza con Setup para configurar OPS para tu flujo de trabajo. Si quieres un modulo personalizado despues, aplica la tarifa de Build (menos lo que ya pagaste por Setup). Igual para Enterprise."
+    },
+    {
+      "question": "Que pasa si no estoy seguro de que paquete necesito?",
+      "answer": "Empieza con Setup. Es el menor compromiso y te diremos honestamente durante el descubrimiento si tus necesidades requieren Build o Enterprise. Sin presion, sin trucos de venta."
+    },
+    {
+      "question": "Hay politica de reembolso del deposito?",
+      "answer": "Si no hemos comenzado el trabajo, el deposito es completamente reembolsable. Una vez que comienzan las sesiones de descubrimiento, el deposito cubre el trabajo ya completado. El 50% restante se paga al entregar."
+    }
+  ],
+
+  "bottomCta.heading": "LISTO PARA CONSTRUIR ALGO QUE SE AJUSTE?",
+  "bottomCta.subtitle": "Elige tu paquete. Paga el deposito. Nosotros nos encargamos del resto.",
+  "bottomCta.ctaText": "Ver Paquetes",
+
+  "confirmation.heading": "ESTAS DENTRO.",
+  "confirmation.subtitle": "Deposito recibido. Esto es lo que sigue.",
+  "confirmation.nextSteps": "Revisa tu correo para el enlace de la entrevista de admision. Completala a tu ritmo — mientras mas detalles nos des, mejor sera tu construccion personalizada.",
+  "confirmation.timeline.setup": "Las construcciones Setup se entregan en 1-2 semanas.",
+  "confirmation.timeline.build": "Los paquetes Build se entregan en 2-3 semanas.",
+  "confirmation.timeline.enterprise": "Las construcciones Enterprise se entregan en 4-6 semanas."
+}

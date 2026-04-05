@@ -9,6 +9,7 @@ export type Namespace =
   | 'resources'
   | 'tools'
   | 'legal'
-  | 'shop';
+  | 'shop'
+  | 'tailored';
 
 export type Dictionary = Record<string, string | string[] | Record<string, unknown>>;

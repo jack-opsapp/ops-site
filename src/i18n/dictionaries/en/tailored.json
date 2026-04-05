@@ -1,0 +1,154 @@
+{
+  "hero.eyebrow": "OPS TAILORED",
+  "hero.heading": "YOUR WORKFLOW. YOUR MODULES. YOUR OPS.",
+  "hero.subtitle": "We work with you to build custom modules that fit the way you actually run your business. Not a template. Not a workaround. Software shaped around your operation, built on the OPS foundation.",
+  "hero.ctaPackages": "View Packages",
+  "hero.ctaHowItWorks": "How It Works",
+
+  "process.sectionLabel": "HOW IT WORKS",
+  "process.step1.number": "01",
+  "process.step1.title": "Pick your package, lock your spot",
+  "process.step1.desc": "Choose Setup, Build, or Enterprise. Pay 50% deposit to reserve your build slot. We take on a limited number of Tailored clients to guarantee quality.",
+  "process.step2.number": "02",
+  "process.step2.title": "Tell us how you work",
+  "process.step2.desc": "Complete a detailed intake interview covering your workflows, pain points, and the way your crew actually operates day-to-day. We study the results before we ever meet.",
+  "process.step3.number": "03",
+  "process.step3.title": "We meet. We build.",
+  "process.step3.desc": "Discovery session with your analysis already done. Then we build your custom modules directly into OPS. You see progress in real time.",
+  "process.step4.number": "04",
+  "process.step4.title": "Go live. Keep evolving.",
+  "process.step4.desc": "Launch your custom OPS with a support window included. After that, an optional retainer keeps your modules updated and evolving as your business grows.",
+
+  "packages.sectionLabel": "PACKAGES",
+  "packages.setup.name": "SETUP",
+  "packages.setup.tagline": "We configure OPS around your workflow",
+  "packages.setup.price": "$3,000",
+  "packages.setup.deposit": "$1,500 deposit",
+  "packages.setup.features": [
+    "2 discovery sessions",
+    "Workflow analysis",
+    "Up to 3 custom configurations",
+    "Custom pipeline stages",
+    "Custom fields on projects & clients",
+    "30-day support window"
+  ],
+  "packages.setup.examples": [
+    { "trade": "ROOFER", "desc": "Custom pipeline stages (Lead to Inspection to Quote to Signed to Complete), roof-type fields on projects, material tracking tags" },
+    { "trade": "PLUMBER", "desc": "Service call vs renovation pipeline split, urgency-based task sorting, permit number and inspection date fields" },
+    { "trade": "LANDSCAPER", "desc": "Seasonal vs maintenance client categories, recurring job templates, zone-based crew assignment fields" }
+  ],
+  "packages.setup.ongoing": "$90-190/mo subscription. $250/mo maintenance retainer after support window.",
+  "packages.setup.ctaText": "Pay $1,500 Deposit",
+
+  "packages.build.name": "BUILD",
+  "packages.build.tagline": "A custom module built for your trade",
+  "packages.build.price": "$8,500",
+  "packages.build.deposit": "$4,250 deposit",
+  "packages.build.features": [
+    "Everything in Setup",
+    "1 custom module — new features, new views, new logic",
+    "iOS and web support",
+    "AI-powered features included",
+    "Feature-flagged per company",
+    "60-day support window"
+  ],
+  "packages.build.examples": [
+    { "trade": "DECK BUILDER", "desc": "Deck measurement tool — draw deck shapes, calculate board feet and materials, generate material lists linked to project estimates" },
+    { "trade": "HVAC", "desc": "Equipment lifecycle tracker — log units by serial number, track warranty dates, auto-schedule maintenance, link service history to client records" },
+    { "trade": "ELECTRICIAN", "desc": "Permit and inspection module — track permits per job, auto-reminders for inspection dates, photo documentation with inspector sign-off" }
+  ],
+  "packages.build.ongoing": "$115-215/mo subscription. $450/mo maintenance retainer after support window.",
+  "packages.build.ctaText": "Pay $4,250 Deposit",
+
+  "packages.enterprise.name": "ENTERPRISE",
+  "packages.enterprise.tagline": "Your entire operation, custom-built on OPS",
+  "packages.enterprise.price": "$18,000",
+  "packages.enterprise.deposit": "$9,000 deposit",
+  "packages.enterprise.features": [
+    "Everything in Build",
+    "Multiple custom modules",
+    "Deep integrations with your existing tools",
+    "Data migration from your current systems",
+    "Structural changes to core platform",
+    "90-day support window"
+  ],
+  "packages.enterprise.examples": [
+    { "trade": "GENERAL CONTRACTOR", "desc": "Sub-contractor management, multi-trade scheduling, bid comparison tool, QuickBooks integration, full migration from Buildertrend" },
+    { "trade": "PROPERTY MGMT", "desc": "Tenant portal, work order routing, vendor dispatch, unit-level maintenance history, lease integration, migration from AppFolio" },
+    { "trade": "MULTI-TRADE CO", "desc": "Trade-specific modules for each division, cross-division resource sharing, unified client view, division-level P&L reporting" }
+  ],
+  "packages.enterprise.ongoing": "$165-340/mo subscription. $750/mo maintenance retainer after support window.",
+  "packages.enterprise.ctaText": "Pay $9,000 Deposit",
+
+  "included.sectionLabel": "WHAT EVERY PACKAGE INCLUDES",
+  "included.every": [
+    "Discovery sessions to understand your workflow",
+    "Intake interview and workflow analysis",
+    "Custom modules on your live OPS platform",
+    "iOS and web support",
+    "Support window (30, 60, or 90 days by tier)",
+    "All ongoing OPS platform updates"
+  ],
+  "included.ongoingLabel": "ONGOING COSTS — NO SURPRISES",
+  "included.ongoing": [
+    "OPS subscription: $90-190/mo (may increase if custom modules add infrastructure cost)",
+    "Maintenance retainer: $250-750/mo (starts after support window)",
+    "Additional feature requests: quoted as new projects",
+    "Overage hours beyond retainer: $200-225/hr"
+  ],
+
+  "proof.subtitle": "Built on the OPS platform — trusted by trades businesses across North America.",
+  "proof.stat1.value": "500+",
+  "proof.stat1.label": "Active businesses",
+  "proof.stat2.value": "12,000+",
+  "proof.stat2.label": "Projects managed",
+  "proof.stat3.value": "85,000+",
+  "proof.stat3.label": "Tasks completed",
+
+  "faq.sectionLabel": "QUESTIONS",
+  "faq.items": [
+    {
+      "question": "What happens after I pay the deposit?",
+      "answer": "You get access to the intake interview within 24 hours. Complete it at your pace — it covers your workflows, pain points, and how your crew operates. We review the results and schedule your discovery session."
+    },
+    {
+      "question": "How long does a custom build take?",
+      "answer": "Setup packages: 1-2 weeks. Build packages: 2-3 weeks. Enterprise: 4-6 weeks. We build fast because the founder does the work directly, with AI-assisted development."
+    },
+    {
+      "question": "What is the intake interview?",
+      "answer": "A guided interview about your business — your workflows, your team structure, your pain points, how jobs flow from lead to completion. Takes about 30-45 minutes. We use the results to show up to your discovery session already knowing your operation."
+    },
+    {
+      "question": "What if I need changes after the support window?",
+      "answer": "The maintenance retainer covers bug fixes, minor updates, and keeping your custom modules compatible with OPS platform updates. Bigger feature requests are quoted as new projects."
+    },
+    {
+      "question": "Do I need a separate OPS subscription?",
+      "answer": "Yes. Tailored is a build service — your OPS subscription is your ongoing access to the platform. It may be higher than standard if your custom modules require additional infrastructure."
+    },
+    {
+      "question": "Can I upgrade my package later?",
+      "answer": "Yes. Start with Setup to configure OPS for your workflow. If you want a custom module built later, the Build package fee applies (minus what you already paid for Setup). Same for Enterprise."
+    },
+    {
+      "question": "What if I am not sure which package I need?",
+      "answer": "Start with Setup. It is the lowest commitment and we will tell you honestly during discovery if your needs require Build or Enterprise. No pressure, no upsell games."
+    },
+    {
+      "question": "Is there a refund policy on the deposit?",
+      "answer": "If we have not started work, the deposit is fully refundable. Once discovery sessions begin, the deposit covers work already completed. The remaining 50% is due at delivery."
+    }
+  ],
+
+  "bottomCta.heading": "READY TO BUILD SOMETHING THAT FITS?",
+  "bottomCta.subtitle": "Pick your package. Pay the deposit. We handle the rest.",
+  "bottomCta.ctaText": "View Packages",
+
+  "confirmation.heading": "YOU ARE IN.",
+  "confirmation.subtitle": "Deposit received. Here is what happens next.",
+  "confirmation.nextSteps": "Check your email for the intake interview link. Complete it at your pace — the more detail you give us, the better your custom build will be.",
+  "confirmation.timeline.setup": "Setup builds ship in 1-2 weeks.",
+  "confirmation.timeline.build": "Build packages ship in 2-3 weeks.",
+  "confirmation.timeline.enterprise": "Enterprise builds ship in 4-6 weeks."
+}
