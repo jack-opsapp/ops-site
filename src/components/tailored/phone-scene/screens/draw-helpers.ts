@@ -6,6 +6,111 @@
 
 import { COLORS, LAYOUT, TIMING, TAILORED_COLORS } from '../constants';
 
+// --- Font constants for canvas text ---
+const MOHAVE = 'Mohave, sans-serif';
+const KOSUGI = 'Kosugi, sans-serif';
+
+export const FONTS = {
+  labelXs: `400 18px ${MOHAVE}`,
+  labelSm: `500 22px ${MOHAVE}`,
+  caption: `500 26px ${MOHAVE}`,
+  body: `300 30px ${MOHAVE}`,
+  bodyMed: `500 30px ${MOHAVE}`,
+  title: `600 36px ${MOHAVE}`,
+  titleLg: `600 44px ${MOHAVE}`,
+  heading: `700 52px ${KOSUGI}`,
+  price: `700 42px ${MOHAVE}`,
+} as const;
+
+/** Draw canvas text */
+export function drawText(
+  ctx: CanvasRenderingContext2D,
+  text: string,
+  x: number,
+  y: number,
+  font: string,
+  color: string,
+  progress = 1,
+  align: CanvasTextAlign = 'left',
+) {
+  if (progress <= 0) return;
+  ctx.save();
+  ctx.globalAlpha = progress;
+  ctx.font = font;
+  ctx.fillStyle = color;
+  ctx.textAlign = align;
+  ctx.textBaseline = 'middle';
+  ctx.fillText(text, x, y);
+  ctx.restore();
+}
+
+/** Draw text that wraps within maxWidth. Returns the y position after the last line. */
+export function drawWrappedText(
+  ctx: CanvasRenderingContext2D,
+  text: string,
+  x: number,
+  y: number,
+  maxWidth: number,
+  lineHeight: number,
+  font: string,
+  color: string,
+  progress = 1,
+): number {
+  if (progress <= 0) return y;
+  ctx.save();
+  ctx.globalAlpha = progress;
+  ctx.font = font;
+  ctx.fillStyle = color;
+  ctx.textAlign = 'left';
+  ctx.textBaseline = 'middle';
+
+  const words = text.split(' ');
+  let line = '';
+  let cy = y;
+
+  for (const word of words) {
+    const test = line ? `${line} ${word}` : word;
+    if (ctx.measureText(test).width > maxWidth && line) {
+      ctx.fillText(line, x, cy);
+      line = word;
+      cy += lineHeight;
+    } else {
+      line = test;
+    }
+  }
+  if (line) {
+    ctx.fillText(line, x, cy);
+    cy += lineHeight;
+  }
+
+  ctx.restore();
+  return cy;
+}
+
+/** Draw a small checkmark icon */
+export function drawCheck(
+  ctx: CanvasRenderingContext2D,
+  x: number,
+  y: number,
+  size: number,
+  color: string,
+  progress = 1,
+) {
+  if (progress <= 0) return;
+  ctx.save();
+  ctx.globalAlpha = progress;
+  ctx.strokeStyle = color;
+  ctx.lineWidth = 2.5;
+  ctx.lineCap = 'round';
+  ctx.lineJoin = 'round';
+  ctx.beginPath();
+  ctx.moveTo(x, y);
+  ctx.lineTo(x + size * 0.35, y + size * 0.35);
+  ctx.lineTo(x + size, y - size * 0.25);
+  ctx.stroke();
+  ctx.restore();
+}
+
 /** Phase-based progress: returns 0-1 within a sub-range of total progress */
 export function phase(progress: number, start: number, end: number): number {
   if (progress <= start) return 0;

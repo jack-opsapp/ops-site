@@ -1,138 +1,132 @@
 /**
- * Tailored Analysis Screen — Workflow diagram wireframe.
- * Represents the "we're analyzing your process" phase.
+ * Tailored Analysis Screen — Workflow diagram with labeled steps.
  */
 
-import { COLORS, LAYOUT, TAILORED_COLORS } from '../constants';
-import { phase, roundedRect, contentLine, statusBar, bottomNav } from './draw-helpers';
+import { COLORS, LAYOUT, TAILORED_COLORS, TEXT, CONTENT_PADDING, CARD_PADDING, TOP_INSET } from '../constants';
+import {
+  phase, roundedRect, drawText,
+  statusBar, bottomNav, FONTS,
+} from './draw-helpers';
 import type { TailoredScreenDrawParams } from './types';
 
-export function drawTailoredAnalysis({ ctx, width, height, progress }: TailoredScreenDrawParams) {
-  const p = LAYOUT.padding;
-  const cw = width - p * 2;
+const P = CONTENT_PADDING;
+const CP = CARD_PADDING;
 
-  const structP = phase(progress, 0, 0.5);
-  const contentP = phase(progress, 0.33, 0.83);
-  const accentP = phase(progress, 0.67, 1.0);
+export function drawTailoredAnalysis({ ctx, width, height, progress }: TailoredScreenDrawParams) {
+  const cw = width - P * 2;
+
+  const structP = phase(progress, 0, 0.4);
+  const contentP = phase(progress, 0.25, 0.7);
+  const accentP = phase(progress, 0.55, 1.0);
 
   statusBar(ctx, width, structP);
 
   // Header
-  contentLine(ctx, p, 60, 160, 6, TAILORED_COLORS.accentText, structP);
-  contentLine(ctx, p, 78, 220, 9, COLORS.titleLine, structP);
+  drawText(ctx, 'ANALYZING', P, TOP_INSET, FONTS.caption, TAILORED_COLORS.accentText, structP);
+  drawText(ctx, 'Mapping Your Workflow', P, TOP_INSET + 38, FONTS.title, TEXT.primary, structP);
 
-  // Workflow diagram — boxes connected by lines
-  const boxW = 140;
-  const boxH = 56;
+  // Workflow steps
+  const steps = [
+    { label: 'Lead Capture', desc: 'Inbound inquiries' },
+    { label: 'Site Visit', desc: 'On-site assessment' },
+    { label: 'Design & Measure', desc: 'Custom tool opportunity', custom: true },
+    { label: 'Quote & Proposal', desc: 'Estimate generation' },
+    { label: 'Build & Install', desc: 'Project execution' },
+    { label: 'Invoice & Close', desc: 'Payment collection' },
+  ];
+
   const cx = width / 2;
+  const boxW = cw - 24;
+  const boxH = 86;
+  let stepY = TOP_INSET + 80;
 
-  // Row 1: Lead
-  const r1y = 130;
-  roundedRect(ctx, cx - boxW / 2, r1y, boxW, boxH, LAYOUT.cardRadius, COLORS.cardFill, COLORS.border, structP);
-  contentLine(ctx, cx - 40, r1y + 16, 80, 6, COLORS.titleLine, contentP);
-  contentLine(ctx, cx - 30, r1y + 32, 60, 4, COLORS.captionLine, contentP);
+  steps.forEach((step, i) => {
+    const stagger = i * 0.08;
+    const sP = phase(contentP, stagger, stagger + 0.5);
+    const isCustom = 'custom' in step && step.custom;
+    const boxX = cx - boxW / 2;
+    const blx = boxX + CP;
 
-  // Connector line
-  if (structP > 0) {
-    ctx.save();
-    ctx.globalAlpha = structP;
-    ctx.strokeStyle = COLORS.separator;
-    ctx.lineWidth = 2;
-    ctx.setLineDash([4, 4]);
-    ctx.beginPath();
-    ctx.moveTo(cx, r1y + boxH);
-    ctx.lineTo(cx, r1y + boxH + 30);
-    ctx.stroke();
-    ctx.setLineDash([]);
-    ctx.restore();
-  }
+    // Connector
+    if (i > 0 && structP > 0) {
+      ctx.save();
+      ctx.globalAlpha = structP * 0.5;
+      ctx.strokeStyle = isCustom ? TAILORED_COLORS.accentBorder : COLORS.separator;
+      ctx.lineWidth = 2;
+      ctx.setLineDash([5, 5]);
+      ctx.beginPath();
+      ctx.moveTo(cx, stepY - 10);
+      ctx.lineTo(cx, stepY);
+      ctx.stroke();
+      ctx.setLineDash([]);
+      ctx.fillStyle = isCustom ? TAILORED_COLORS.accentBorder : COLORS.separator;
+      ctx.beginPath();
+      ctx.moveTo(cx - 5, stepY - 4);
+      ctx.lineTo(cx + 5, stepY - 4);
+      ctx.lineTo(cx, stepY + 3);
+      ctx.closePath();
+      ctx.fill();
+      ctx.restore();
+    }
 
-  // Row 2: Two boxes (split path)
-  const r2y = r1y + boxH + 30;
-  const halfBox = (cw - 20) / 2;
+    if (isCustom) {
+      const cP = phase(accentP, 0, 0.6);
+      roundedRect(ctx, boxX, stepY, boxW, boxH, LAYOUT.cardRadius,
+        TAILORED_COLORS.accentGlow, TAILORED_COLORS.accentBorder, cP);
 
-  roundedRect(ctx, p, r2y, halfBox, boxH, LAYOUT.cardRadius, COLORS.cardFill, COLORS.border, structP);
-  contentLine(ctx, p + 14, r2y + 16, halfBox * 0.6, 6, COLORS.titleLine, contentP);
-  contentLine(ctx, p + 14, r2y + 32, halfBox * 0.4, 4, COLORS.captionLine, contentP);
+      if (cP > 0) {
+        const dx = blx + 2;
+        const dy = stepY + boxH / 2;
+        ctx.save();
+        ctx.globalAlpha = cP;
+        ctx.fillStyle = TAILORED_COLORS.accentOverlayStrong;
+        ctx.beginPath();
+        ctx.moveTo(dx, dy - 7);
+        ctx.lineTo(dx + 7, dy);
+        ctx.lineTo(dx, dy + 7);
+        ctx.lineTo(dx - 7, dy);
+        ctx.closePath();
+        ctx.fill();
+        ctx.restore();
+      }
 
-  roundedRect(ctx, p + halfBox + 20, r2y, halfBox, boxH, LAYOUT.cardRadius, COLORS.cardFill, COLORS.border, structP);
-  contentLine(ctx, p + halfBox + 34, r2y + 16, halfBox * 0.6, 6, COLORS.titleLine, contentP);
-  contentLine(ctx, p + halfBox + 34, r2y + 32, halfBox * 0.4, 4, COLORS.captionLine, contentP);
+      drawText(ctx, step.label, blx + 24, stepY + 30, FONTS.bodyMed, TAILORED_COLORS.accentText, cP);
+      drawText(ctx, step.desc, blx + 24, stepY + 62, FONTS.labelSm, TEXT.secondary, cP);
+    } else {
+      roundedRect(ctx, boxX, stepY, boxW, boxH, LAYOUT.cardRadius, COLORS.cardFill, COLORS.border, structP);
 
-  // Connector lines from top to both boxes
-  if (structP > 0) {
-    ctx.save();
-    ctx.globalAlpha = structP;
-    ctx.strokeStyle = COLORS.separator;
-    ctx.lineWidth = 2;
-    ctx.setLineDash([4, 4]);
+      if (sP > 0) {
+        ctx.save();
+        ctx.globalAlpha = sP;
+        ctx.fillStyle = 'rgba(255,255,255,0.06)';
+        ctx.beginPath();
+        ctx.arc(blx + 2, stepY + boxH / 2, 14, 0, Math.PI * 2);
+        ctx.fill();
+        ctx.restore();
+        drawText(ctx, String(i + 1), blx + 2, stepY + boxH / 2 + 1, FONTS.labelSm,
+          TEXT.tertiary, sP, 'center');
+      }
 
-    // Left branch
-    ctx.beginPath();
-    ctx.moveTo(cx, r2y);
-    ctx.lineTo(p + halfBox / 2, r2y);
-    ctx.stroke();
+      drawText(ctx, step.label, blx + 28, stepY + 30, FONTS.bodyMed, TEXT.primary, sP);
+      drawText(ctx, step.desc, blx + 28, stepY + 62, FONTS.labelSm, TEXT.tertiary, sP);
+    }
 
-    // Right branch
-    ctx.beginPath();
-    ctx.moveTo(cx, r2y);
-    ctx.lineTo(p + halfBox + 20 + halfBox / 2, r2y);
-    ctx.stroke();
+    stepY += boxH + 22;
+  });
 
-    // Down connectors
-    ctx.beginPath();
-    ctx.moveTo(p + halfBox / 2, r2y + boxH);
-    ctx.lineTo(p + halfBox / 2, r2y + boxH + 30);
-    ctx.stroke();
-    ctx.beginPath();
-    ctx.moveTo(p + halfBox + 20 + halfBox / 2, r2y + boxH);
-    ctx.lineTo(p + halfBox + 20 + halfBox / 2, r2y + boxH + 30);
-    ctx.stroke();
-
-    ctx.setLineDash([]);
-    ctx.restore();
-  }
-
-  // Row 3: Merge back to one
-  const r3y = r2y + boxH + 30;
-  roundedRect(ctx, cx - boxW / 2, r3y, boxW, boxH, LAYOUT.cardRadius, COLORS.cardFill, COLORS.border, structP);
-  contentLine(ctx, cx - 40, r3y + 16, 80, 6, COLORS.titleLine, contentP);
-  contentLine(ctx, cx - 30, r3y + 32, 60, 4, COLORS.captionLine, contentP);
-
-  // Row 4: Final
-  if (structP > 0) {
-    ctx.save();
-    ctx.globalAlpha = structP;
-    ctx.strokeStyle = COLORS.separator;
-    ctx.lineWidth = 2;
-    ctx.setLineDash([4, 4]);
-    ctx.beginPath();
-    ctx.moveTo(cx, r3y + boxH);
-    ctx.lineTo(cx, r3y + boxH + 30);
-    ctx.stroke();
-    ctx.setLineDash([]);
-    ctx.restore();
-  }
-
-  const r4y = r3y + boxH + 30;
-  // This one uses accent to show "custom module opportunity"
-  roundedRect(ctx, cx - boxW / 2, r4y, boxW, boxH, LAYOUT.cardRadius, TAILORED_COLORS.accentGlow, TAILORED_COLORS.accentBorder, accentP);
-  contentLine(ctx, cx - 40, r4y + 16, 80, 6, TAILORED_COLORS.accentText, accentP);
-  contentLine(ctx, cx - 30, r4y + 32, 60, 4, COLORS.bodyLine, accentP);
-
-  // Bottom: analysis progress indicator
-  const barY = r4y + boxH + 50;
-  roundedRect(ctx, p, barY, cw, 12, 6, COLORS.cardFill, COLORS.border, contentP);
+  // Progress bar
+  const barY = stepY + 16;
+  roundedRect(ctx, P, barY, cw, 14, 7, COLORS.cardFill, COLORS.border, contentP);
   if (accentP > 0) {
     ctx.save();
     ctx.globalAlpha = accentP;
     ctx.fillStyle = TAILORED_COLORS.accentOverlayStrong;
     ctx.beginPath();
-    ctx.roundRect(p + 1, barY + 1, (cw - 2) * 0.72, 10, 5);
+    ctx.roundRect(P + 2, barY + 2, (cw - 4) * 0.72, 10, 5);
     ctx.fill();
     ctx.restore();
   }
-  contentLine(ctx, p, barY + 22, 120, 5, COLORS.captionLine, contentP);
+  drawText(ctx, 'Workflow analysis: 72%', P, barY + 32, FONTS.labelSm, TEXT.tertiary, contentP);
 
   bottomNav(ctx, width, height, structP);
 }

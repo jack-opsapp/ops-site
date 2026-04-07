@@ -24,9 +24,19 @@ export default function HowItWorks({
   steps,
   onActiveStepChange,
 }: HowItWorksProps) {
-  const [activeStep, setActiveStep] = useState(0);
+  const [scrollActiveStep, setScrollActiveStep] = useState(0);
+  const [hoveredStep, setHoveredStep] = useState<number | null>(null);
   const stepRefs = useRef<(HTMLDivElement | null)[]>([]);
 
+  // Displayed step: hover takes priority over scroll
+  const activeStep = hoveredStep ?? scrollActiveStep;
+
+  // Notify parent whenever displayed step changes
+  useEffect(() => {
+    onActiveStepChange?.(activeStep);
+  }, [activeStep, onActiveStepChange]);
+
+  // Scroll-driven step detection
   useEffect(() => {
     const observers: IntersectionObserver[] = [];
 
@@ -35,8 +45,7 @@ export default function HowItWorks({
       const observer = new IntersectionObserver(
         ([entry]) => {
           if (entry.isIntersecting) {
-            setActiveStep(index);
-            onActiveStepChange?.(index);
+            setScrollActiveStep(index);
           }
         },
         { threshold: 0.6, rootMargin: '-10% 0px -40% 0px' }
@@ -46,7 +55,7 @@ export default function HowItWorks({
     });
 
     return () => observers.forEach((o) => o.disconnect());
-  }, [onActiveStepChange]);
+  }, []);
 
   return (
     <section id="process" className="py-24 md:py-32 bg-ops-background">
@@ -72,12 +81,14 @@ export default function HowItWorks({
                   whileInView={{ opacity: 1, y: 0 }}
                   transition={{ duration: 0.5, delay: index * 0.08, ease }}
                   viewport={{ once: true, amount: 0.3 }}
+                  onMouseEnter={() => setHoveredStep(index)}
+                  onMouseLeave={() => setHoveredStep(null)}
                   className={`
-                    p-6 rounded-[3px] transition-all duration-300
+                    p-6 rounded-[3px] transition-all duration-300 cursor-pointer
                     border-l-2
                     ${isActive
                       ? 'border-l-ops-accent bg-ops-surface-elevated/50 opacity-100'
-                      : 'border-l-transparent opacity-50'
+                      : 'border-l-transparent opacity-50 hover:opacity-70'
                     }
                   `}
                 >

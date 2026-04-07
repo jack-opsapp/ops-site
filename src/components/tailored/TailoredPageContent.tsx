@@ -1,6 +1,6 @@
 'use client';
 
-import { useState, useCallback } from 'react';
+import { useState, useCallback, useRef, useEffect } from 'react';
 import type { Dictionary } from '@/i18n/types';
 import TailoredHero from './TailoredHero';
 import HowItWorks from './HowItWorks';
@@ -28,6 +28,41 @@ const STEP_PHASES: TailoredPhase[] = ['packages', 'analysis', 'building', 'custo
 export function TailoredPageContent({ dict }: TailoredPageContentProps) {
   const [phonePhase, setPhonePhase] = useState<TailoredPhase>('home');
   const [phoneTier, setPhoneTier] = useState<string | null>(null);
+  const [isInHero, setIsInHero] = useState(true);
+
+  const heroRef = useRef<HTMLDivElement>(null);
+  const phoneScopeRef = useRef<HTMLDivElement>(null);
+  const phoneContainerRef = useRef<HTMLDivElement>(null);
+
+  // Track hero visibility — phone constrains rotation when hero scrolls out
+  useEffect(() => {
+    const el = heroRef.current;
+    if (!el) return;
+    const observer = new IntersectionObserver(
+      ([entry]) => setIsInHero(entry.isIntersecting),
+      { threshold: 0.3 }
+    );
+    observer.observe(el);
+    return () => observer.disconnect();
+  }, []);
+
+  // Phone scrolls up and out of view when user passes pricing
+  useEffect(() => {
+    const handleScroll = () => {
+      const scope = phoneScopeRef.current;
+      const phone = phoneContainerRef.current;
+      if (!scope || !phone) return;
+
+      const rect = scope.getBoundingClientRect();
+      if (rect.bottom < window.innerHeight) {
+        phone.style.transform = `translateY(${rect.bottom - window.innerHeight}px)`;
+      } else {
+        phone.style.transform = '';
+      }
+    };
+    window.addEventListener('scroll', handleScroll, { passive: true });
+    return () => window.removeEventListener('scroll', handleScroll);
+  }, []);
 
   const handleStepChange = useCallback((step: number) => {
     setPhonePhase(STEP_PHASES[step] ?? 'home');
@@ -55,19 +90,29 @@ export function TailoredPageContent({ dict }: TailoredPageContentProps) {
 
   return (
     <main className="bg-ops-background">
-      <TailoredHero
-        eyebrow={t(dict, 'hero.eyebrow')}
-        heading={t(dict, 'hero.heading')}
-        subtitle={t(dict, 'hero.subtitle')}
-        ctaPackages={t(dict, 'hero.ctaPackages')}
-        ctaHowItWorks={t(dict, 'hero.ctaHowItWorks')}
-      />
+      {/* Fixed phone — separate layer, immune to content layout shifts */}
+      <div
+        ref={phoneContainerRef}
+        className="hidden lg:block fixed z-20 top-0 right-0 w-[55%] h-screen will-change-transform"
+        aria-hidden="true"
+      >
+        <TailoredPhoneWrapper phase={phonePhase} tier={phoneTier} isInHero={isInHero} />
+      </div>
 
-      {/* Sticky phone container — spans How It Works + Pricing */}
-      <div className="max-w-[1400px] mx-auto px-6 sm:px-10 md:px-16 lg:px-24">
-        <div className="flex gap-16 lg:gap-24">
-          {/* Left: scrollable content */}
-          <div className="flex-1 min-w-0">
+      {/* Content scope — tracked for phone visibility */}
+      <div ref={phoneScopeRef}>
+        <div className="relative z-10 lg:w-[55%]">
+          <div ref={heroRef}>
+            <TailoredHero
+              eyebrow={t(dict, 'hero.eyebrow')}
+              heading={t(dict, 'hero.heading')}
+              subtitle={t(dict, 'hero.subtitle')}
+              ctaPackages={t(dict, 'hero.ctaPackages')}
+              ctaHowItWorks={t(dict, 'hero.ctaHowItWorks')}
+            />
+          </div>
+
+          <div className="max-w-[720px] px-6 sm:px-10 md:px-16 lg:px-24">
             <HowItWorks
               sectionLabel={t(dict, 'process.sectionLabel')}
               steps={[
@@ -85,11 +130,6 @@ export function TailoredPageContent({ dict }: TailoredPageContentProps) {
               onTierSelect={handleTierSelect}
             />
           </div>
-
-          {/* Right: sticky phone (desktop only) */}
-          <div className="hidden lg:block pt-24">
-            <TailoredPhoneWrapper phase={phonePhase} tier={phoneTier} />
-          </div>
         </div>
       </div>
 
@@ -106,6 +146,7 @@ export function TailoredPageContent({ dict }: TailoredPageContentProps) {
           { value: t(dict, 'proof.stat1.value'), label: t(dict, 'proof.stat1.label') },
           { value: t(dict, 'proof.stat2.value'), label: t(dict, 'proof.stat2.label') },
           { value: t(dict, 'proof.stat3.value'), label: t(dict, 'proof.stat3.label') },
+          { value: t(dict, 'proof.stat4.value'), label: t(dict, 'proof.stat4.label') },
         ]}
       />
 

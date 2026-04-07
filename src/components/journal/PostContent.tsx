@@ -10,14 +10,29 @@
  * 2. The post content is sanitised with DOMPurify before rendering.
  */
 
-import DOMPurify from 'isomorphic-dompurify';
+import sanitizeHtml from 'sanitize-html';
 
 interface PostContentProps {
   content: string;
 }
 
 export default function PostContent({ content }: PostContentProps) {
-  const clean = DOMPurify.sanitize(content);
+  const clean = sanitizeHtml(content, {
+    allowedTags: sanitizeHtml.defaults.allowedTags.concat([
+      'img', 'h1', 'h2', 'h3', 'h4', 'h5', 'h6', 'figure', 'figcaption',
+      'iframe', 'video', 'source', 'picture',
+    ]),
+    allowedAttributes: {
+      ...sanitizeHtml.defaults.allowedAttributes,
+      img: ['src', 'alt', 'title', 'width', 'height', 'loading', 'class'],
+      a: ['href', 'target', 'rel', 'class'],
+      iframe: ['src', 'width', 'height', 'frameborder', 'allowfullscreen', 'allow'],
+      video: ['src', 'controls', 'width', 'height', 'poster'],
+      source: ['src', 'type'],
+      '*': ['class', 'id', 'style'],
+    },
+    allowedSchemes: ['http', 'https', 'mailto'],
+  });
 
   return (
     <section className="bg-ops-background-light">

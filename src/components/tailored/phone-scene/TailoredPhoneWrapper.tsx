@@ -26,9 +26,10 @@ const TailoredPhoneScene = dynamic(() => import('./TailoredPhoneScene'), {
 interface TailoredPhoneWrapperProps {
   phase: TailoredPhase;
   tier: string | null;
+  isInHero: boolean;
 }
 
-export default function TailoredPhoneWrapper({ phase, tier }: TailoredPhoneWrapperProps) {
+export default function TailoredPhoneWrapper({ phase, tier, isInHero }: TailoredPhoneWrapperProps) {
   const containerRef = useRef<HTMLDivElement>(null);
   const [isVisible, setIsVisible] = useState(true);
   const [isMobile, setIsMobile] = useState(false);
@@ -58,9 +59,9 @@ export default function TailoredPhoneWrapper({ phase, tier }: TailoredPhoneWrapp
   return (
     <div
       ref={containerRef}
-      className="sticky top-[calc(50vh-200px)] w-[280px] h-[400px] flex-shrink-0"
+      className="w-full h-full"
     >
-      <TailoredPhoneScene isVisible={isVisible} phase={phase} tier={tier} />
+      <TailoredPhoneScene isVisible={isVisible} phase={phase} tier={tier} isInHero={isInHero} />
     </div>
   );
 }

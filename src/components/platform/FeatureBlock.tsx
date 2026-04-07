@@ -1,14 +1,21 @@
+'use client';
+
 /**
  * FeatureBlock — Reusable alternating-layout feature section
  *
- * Server component. Two-column grid with text + visual placeholder,
+ * Two-column grid with text + visual placeholder,
  * wrapped in FadeInUp for scroll-triggered reveal.
  * direction='left' = text left, visual right
  * direction='right' = visual left, text right (on desktop)
  * Mobile always: text first, visual second.
+ *
+ * For in-development features, shows a "REQUEST EARLY ACCESS" button
+ * that opens a modal to collect user details.
  */
 
+import { useState } from 'react';
 import { SectionLabel, Button, FadeInUp } from '@/components/ui';
+import EarlyAccessModal from './EarlyAccessModal';
 
 interface FeatureBlockProps {
   label: string;
@@ -31,8 +38,12 @@ export default function FeatureBlock({
   direction,
   inDevelopment = false,
 }: FeatureBlockProps) {
+  const [showModal, setShowModal] = useState(false);
   const textOrder = direction === 'right' ? 'md:order-last' : '';
   const visualOrder = direction === 'right' ? 'md:order-first' : '';
+
+  // Extract feature name from label (e.g. "[ PIPELINE ]" → "Pipeline")
+  const featureName = label.replace(/[\[\]]/g, '').trim();
 
   return (
     <div className="py-20 md:py-28">
@@ -55,13 +66,22 @@ export default function FeatureBlock({
               <p className="mt-5 font-heading font-light text-base md:text-lg text-ops-text-secondary max-w-lg leading-relaxed">
                 {body}
               </p>
-              {ctaText && ctaHref && (
+              {inDevelopment ? (
+                <div className="mt-8">
+                  <button
+                    onClick={() => setShowModal(true)}
+                    className="inline-flex items-center justify-center font-caption uppercase tracking-[0.15em] text-xs px-6 py-3 rounded-[3px] transition-all duration-200 cursor-pointer bg-transparent text-ops-text-primary border border-ops-border hover:border-ops-border-hover active:border-white/40"
+                  >
+                    REQUEST EARLY ACCESS
+                  </button>
+                </div>
+              ) : ctaText && ctaHref ? (
                 <div className="mt-8">
                   <Button variant="ghost" href={ctaHref}>
                     {ctaText}
                   </Button>
                 </div>
-              )}
+              ) : null}
             </div>
 
             {/* Visual side */}
@@ -73,6 +93,13 @@ export default function FeatureBlock({
           </div>
         </FadeInUp>
       </div>
+
+      {showModal && (
+        <EarlyAccessModal
+          feature={featureName}
+          onClose={() => setShowModal(false)}
+        />
+      )}
     </div>
   );
 }
