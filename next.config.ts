@@ -11,6 +11,10 @@ const nextConfig: NextConfig = {
         protocol: 'https',
         hostname: 'ops-app-files-prod.s3.us-west-2.amazonaws.com',
       },
+      {
+        protocol: 'https',
+        hostname: 'ijeekuhbatykdomumfjx.supabase.co',
+      },
     ],
   },
 };
