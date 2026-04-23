@@ -47,7 +47,7 @@ interface GalaxyStar {
 /* ------------------------------------------------------------------ */
 
 const PARTICLE_COUNT = 60;
-const ACCENT = { r: 89, g: 119, b: 148 };
+const ACCENT = { r: 111, g: 148, b: 176 };
 const GREY = { r: 160, g: 160, b: 160 };
 const WHITE = { r: 220, g: 220, b: 220 };
 
@@ -194,8 +194,8 @@ export default function CoverTransition({ onComplete }: CoverTransitionProps) {
         const flashT = (elapsed - CONVERGE_END) / (FLASH_END - CONVERGE_END);
         const flashAlpha = Math.sin(flashT * Math.PI) * 0.12;
         const grad = ctx.createRadialGradient(focalPx, focalPy, 0, focalPx, focalPy, 120);
-        grad.addColorStop(0, `rgba(89, 119, 148, ${flashAlpha})`);
-        grad.addColorStop(1, 'rgba(89, 119, 148, 0)');
+        grad.addColorStop(0, `rgba(111, 148, 176, ${flashAlpha})`);
+        grad.addColorStop(1, 'rgba(111, 148, 176, 0)');
         ctx.fillStyle = grad;
         ctx.fillRect(focalPx - 120, focalPy - 120, 240, 240);
       }

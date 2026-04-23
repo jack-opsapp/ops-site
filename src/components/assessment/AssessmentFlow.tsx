@@ -808,7 +808,7 @@ export default function AssessmentFlow({ version, resumeData, upgradeFromToken }
                 className="w-8 h-8 border border-ops-border rounded-full mx-auto mb-4"
                 animate={{ rotate: 360 }}
                 transition={{ duration: 2, repeat: Infinity, ease: 'linear' }}
-                style={{ borderTopColor: '#597794' }}
+                style={{ borderTopColor: '#6F94B0' }}
               />
               <p className="font-caption text-xs uppercase tracking-[0.2em] text-ops-text-secondary">
                 Preparing assessment...
@@ -850,7 +850,7 @@ export default function AssessmentFlow({ version, resumeData, upgradeFromToken }
               <motion.div
                 variants={coverItemVariants}
                 className="w-16 h-px mb-8"
-                style={{ backgroundColor: 'rgba(89, 119, 148, 0.2)' }}
+                style={{ backgroundColor: 'rgba(111, 148, 176, 0.2)' }}
               />
 
               {/* Meta stats — inline */}
@@ -895,7 +895,7 @@ export default function AssessmentFlow({ version, resumeData, upgradeFromToken }
                   className="absolute bottom-0 left-0 h-[2px] transition-all duration-500 ease-out"
                   style={{
                     width: beginHovered ? '100%' : '0%',
-                    backgroundColor: 'rgba(89, 119, 148, 0.5)',
+                    backgroundColor: 'rgba(111, 148, 176, 0.5)',
                   }}
                 />
                 {isUpgrade ? 'Continue Assessment' : 'Begin Assessment'}

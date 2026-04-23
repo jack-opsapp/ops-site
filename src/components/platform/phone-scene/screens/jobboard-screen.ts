@@ -46,7 +46,7 @@ const STATUS_COLORS = {
 
 // --- Font constants ---
 const MOHAVE = 'Mohave, sans-serif';
-const KOSUGI = 'Kosugi, sans-serif';
+const MONO = 'JetBrains Mono, monospace';
 
 // --- Column data (from ref-jobboard-1.png: Accepted expanded) ---
 interface KanbanColumn {
@@ -189,7 +189,7 @@ function drawStatusBar(
     ctx.save();
     ctx.globalAlpha = contentP;
     ctx.fillStyle = color;
-    ctx.font = `27px ${KOSUGI}`;
+    ctx.font = `27px ${MONO}`;
     ctx.textAlign = 'left';
     ctx.textBaseline = 'middle';
     ctx.fillText(col.label, x + 28, y + h / 2 + 1);
@@ -259,7 +259,7 @@ function drawCompactCard(
   const row2Y = y + 44;
 
   ctx.fillStyle = COLORS.bodyLine;
-  ctx.font = `20px ${KOSUGI}`;
+  ctx.font = `20px ${MONO}`;
   const clientText = card.clientName;
   const clientW = ctx.measureText(clientText).width;
   ctx.fillText(clientText, x + px, row2Y);
@@ -297,7 +297,7 @@ function drawCompactCard(
   ctx.save();
   ctx.globalAlpha = contentP;
   ctx.fillStyle = COLORS.captionLine;
-  ctx.font = `18px ${KOSUGI}`;
+  ctx.font = `18px ${MONO}`;
   ctx.textAlign = 'left';
   ctx.textBaseline = 'top';
   ctx.fillText(card.dateRange, calX + calS + 8, row3Y);
@@ -312,7 +312,7 @@ function drawCompactCard(
     const countStr = `${card.tasksCompleted}/${card.tasksTotal}`;
 
     ctx.save();
-    ctx.font = `18px ${KOSUGI}`;
+    ctx.font = `18px ${MONO}`;
     const countW = ctx.measureText(countStr).width;
     ctx.restore();
 
@@ -331,7 +331,7 @@ function drawCompactCard(
     }
 
     ctx.fillStyle = COLORS.captionLine;
-    ctx.font = `18px ${KOSUGI}`;
+    ctx.font = `18px ${MONO}`;
     ctx.textAlign = 'left';
     ctx.textBaseline = 'top';
     ctx.fillText(countStr, countX, row3Y);
@@ -500,7 +500,7 @@ function drawToolbarIcon(
     ctx.fill();
 
     ctx.fillStyle = '#FFFFFF';
-    ctx.font = `bold 13px ${KOSUGI}`;
+    ctx.font = `bold 13px ${MONO}`;
     ctx.textAlign = 'center';
     ctx.textBaseline = 'middle';
     ctx.fillText(String(badgeCount), bx, by + 1);
@@ -575,7 +575,7 @@ export function drawJobBoardScreen({ ctx, width, height, progress }: ScreenDrawP
   if (contentP > 0) {
     ctx.save();
     ctx.globalAlpha = contentP;
-    ctx.font = `22px ${KOSUGI}`;
+    ctx.font = `22px ${MONO}`;
     ctx.textBaseline = 'middle';
     const segCY = segY + segH / 2;
 

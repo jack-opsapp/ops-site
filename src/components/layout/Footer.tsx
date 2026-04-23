@@ -162,7 +162,7 @@ export default function Footer({ commonDict, shopLive = false }: FooterProps) {
         <div
           className="absolute inset-0"
           style={{
-            background: 'radial-gradient(ellipse 100% 150% at 50% 100%, rgba(89, 119, 148, 0.10) 0%, rgba(89, 119, 148, 0.04) 25%, transparent 60%)',
+            background: 'radial-gradient(ellipse 100% 150% at 50% 100%, rgba(111, 148, 176, 0.10) 0%, rgba(111, 148, 176, 0.04) 25%, transparent 60%)',
           }}
         />
         {/* Warm orange mid-layer */}
@@ -176,7 +176,7 @@ export default function Footer({ commonDict, shopLive = false }: FooterProps) {
         <div
           className="absolute inset-0"
           style={{
-            background: 'radial-gradient(ellipse 50% 80% at 50% 100%, rgba(89, 119, 148, 0.12) 0%, rgba(212, 98, 43, 0.05) 40%, transparent 70%)',
+            background: 'radial-gradient(ellipse 50% 80% at 50% 100%, rgba(111, 148, 176, 0.12) 0%, rgba(212, 98, 43, 0.05) 40%, transparent 70%)',
           }}
         />
       </div>

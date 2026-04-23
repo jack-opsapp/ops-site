@@ -207,7 +207,7 @@ export default function CheckoutClient({ shippingMethods }: CheckoutClientProps)
                     appearance: {
                       theme: 'night',
                       variables: {
-                        colorPrimary: '#597794',
+                        colorPrimary: '#6F94B0',
                         colorBackground: '#141414',
                         colorText: '#FFFFFF',
                         borderRadius: '2px',

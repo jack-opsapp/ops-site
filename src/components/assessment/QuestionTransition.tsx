@@ -22,7 +22,7 @@ import { useRef, useEffect, useCallback } from 'react';
 /* ------------------------------------------------------------------ */
 
 const PARTICLE_COUNT = 50;
-const ACCENT = { r: 89, g: 119, b: 148 };
+const ACCENT = { r: 111, g: 148, b: 176 };
 const GREY = { r: 180, g: 180, b: 180 };
 const ORANGE = { r: 210, g: 140, b: 60 };
 

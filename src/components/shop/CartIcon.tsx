@@ -97,7 +97,7 @@ export default function CartIcon({ onClick, isLight = false }: CartIconProps) {
               height: 16,
               fontSize: 9,
               fontWeight: 700,
-              fontFamily: 'var(--font-kosugi)',
+              fontFamily: 'var(--font-jetbrains-mono)',
               boxShadow: justAdded && !shouldReduceMotion ? '0 0 8px rgba(255, 255, 255, 0.3)' : 'none',
             }}
           >

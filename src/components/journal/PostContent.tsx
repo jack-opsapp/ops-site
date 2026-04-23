@@ -53,7 +53,7 @@ export default function PostContent({ content }: PostContentProps) {
             }
 
             .post-content a {
-              color: #597794;
+              color: #6F94B0;
               text-decoration: underline;
               text-underline-offset: 2px;
             }
@@ -63,7 +63,7 @@ export default function PostContent({ content }: PostContentProps) {
             }
 
             .post-content blockquote {
-              border-left: 2px solid #597794;
+              border-left: 2px solid #6F94B0;
               padding-left: 1.5rem;
               font-family: var(--font-caption);
               text-transform: uppercase;

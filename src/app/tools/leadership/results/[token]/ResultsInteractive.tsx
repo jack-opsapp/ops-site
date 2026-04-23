@@ -374,13 +374,13 @@ export default function ResultsInteractive({
                   <>
                     <span
                       className="font-caption uppercase tracking-[0.15em] text-[10px]"
-                      style={{ color: 'rgb(89, 119, 148)' }}
+                      style={{ color: 'rgb(111, 148, 176)' }}
                     >
                       {DIMENSION_LABELS[focusDimension]}
                     </span>
                     <span
                       className="font-heading font-semibold text-lg"
-                      style={{ color: 'rgb(89, 119, 148)' }}
+                      style={{ color: 'rgb(111, 148, 176)' }}
                     >
                       {focusedScore}
                     </span>
@@ -440,7 +440,7 @@ export default function ResultsInteractive({
                                 className="absolute top-0 h-full rounded-full transition-all duration-500"
                                 style={{
                                   width: `${userScore}%`,
-                                  backgroundColor: `rgba(89, 119, 148, ${0.4 + (userScore / 100) * 0.4})`,
+                                  backgroundColor: `rgba(111, 148, 176, ${0.4 + (userScore / 100) * 0.4})`,
                                 }}
                               />
                               {/* Average tick mark */}
@@ -455,7 +455,7 @@ export default function ResultsInteractive({
                     </div>
                     <div className="flex items-center gap-4 mt-4">
                       <div className="flex items-center gap-1.5">
-                        <span className="inline-block w-3 h-1 rounded-full" style={{ backgroundColor: 'rgba(89, 119, 148, 0.6)' }} />
+                        <span className="inline-block w-3 h-1 rounded-full" style={{ backgroundColor: 'rgba(111, 148, 176, 0.6)' }} />
                         <span className="font-body text-[9px] text-ops-text-secondary/40">You</span>
                       </div>
                       <div className="flex items-center gap-1.5">

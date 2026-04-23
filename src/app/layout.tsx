@@ -1,7 +1,7 @@
 import type { Metadata } from 'next';
 import { Analytics } from '@vercel/analytics/next';
 import { SpeedInsights } from '@vercel/speed-insights/next';
-import { mohave, kosugi } from '@/lib/fonts';
+import { mohave, jetbrainsMono, cakemono } from '@/lib/fonts';
 import PageLayout from '@/components/layout/PageLayout';
 import GoogleAnalytics from '@/components/layout/GoogleAnalytics';
 import { getLocale } from '@/i18n/server';
@@ -49,7 +49,7 @@ export default async function RootLayout({
   const locale = await getLocale();
 
   return (
-    <html lang={locale} className={`${mohave.variable} ${kosugi.variable}`}>
+    <html lang={locale} className={`${mohave.variable} ${jetbrainsMono.variable} ${cakemono.variable}`}>
       <body className="font-body antialiased">
         <LanguageProvider locale={locale}>
           <PageLayout>{children}</PageLayout>

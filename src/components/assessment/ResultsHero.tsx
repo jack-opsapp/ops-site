@@ -67,7 +67,7 @@ export default function ResultsHero({ archetypeName, tagline, firstName, childre
         <motion.div
           variants={itemVariants}
           className="w-16 h-px mt-8 mb-8"
-          style={{ backgroundColor: 'rgba(89, 119, 148, 0.2)' }}
+          style={{ backgroundColor: 'rgba(111, 148, 176, 0.2)' }}
         />
 
         {/* Tagline */}

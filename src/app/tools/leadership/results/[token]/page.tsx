@@ -125,7 +125,7 @@ export default async function ResultsPage({ params }: PageProps) {
             <FadeInUp>
               <div
                 className="w-12 h-px mb-6"
-                style={{ backgroundColor: 'rgba(89, 119, 148, 0.2)' }}
+                style={{ backgroundColor: 'rgba(111, 148, 176, 0.2)' }}
               />
             </FadeInUp>
 

@@ -25,7 +25,7 @@ import type { ScreenDrawParams } from './types';
 
 // --- Fonts (loaded by next/font/google on the page) ---
 const MOHAVE = 'Mohave, sans-serif';
-const KOSUGI = 'Kosugi, sans-serif';
+const MONO = 'JetBrains Mono, monospace';
 
 // --- Pete's avatar — loaded once at module level ---
 let avatarImg: HTMLImageElement | null = null;
@@ -259,17 +259,17 @@ export function drawHomeScreen({ ctx, width, height, progress }: ScreenDrawParam
 
   // Greeting — Kosugi-Regular 22pt → 44px at 2x
   // iOS: Font.subtitle = Kosugi-Regular 22pt, primaryText color, UPPERCASED
-  drawText(ctx, 'GOOD AFTERNOON, PETE', p, headerY + 14, `44px ${KOSUGI}`, COLORS.titleLine, structP);
+  drawText(ctx, 'GOOD AFTERNOON, PETE', p, headerY + 14, `44px ${MONO}`, COLORS.titleLine, structP);
 
   // Company info row — Kosugi-Regular 14pt → 28px at 2x
   // iOS: Font.caption = Kosugi-Regular 14pt, secondaryText color, UPPERCASED
   const companyY = headerY + 68;
-  drawText(ctx, 'MAVERICK PROJECTS LTD', p, companyY, `28px ${KOSUGI}`, COLORS.captionLine, structP);
+  drawText(ctx, 'MAVERICK PROJECTS LTD', p, companyY, `28px ${MONO}`, COLORS.captionLine, structP);
   if (structP > 0) {
     ctx.save();
     ctx.globalAlpha = structP;
     // Measure company text to position dot dynamically
-    ctx.font = `28px ${KOSUGI}`;
+    ctx.font = `28px ${MONO}`;
     const companyW = ctx.measureText('MAVERICK PROJECTS LTD').width;
     const dotX = p + companyW + 16;
     // Trial status dot — iOS: 6×6pt circle in primaryAccent color
@@ -279,7 +279,7 @@ export function drawHomeScreen({ ctx, width, height, progress }: ScreenDrawParam
     ctx.fill();
     // Trial text — Kosugi-Regular 12pt → 24px at 2x
     // iOS: Font.smallCaption = Kosugi-Regular 12pt
-    ctx.font = `24px ${KOSUGI}`;
+    ctx.font = `24px ${MONO}`;
     ctx.fillStyle = COLORS.accent;
     ctx.textBaseline = 'middle';
     ctx.textAlign = 'left';
@@ -365,10 +365,10 @@ export function drawHomeScreen({ ctx, width, height, progress }: ScreenDrawParam
   const badgeY = cardY + cardH - 56;
   // Badge fill + border stroke
   drawRoundedRect(ctx, badgeX, badgeY, badgeW, badgeH, LAYOUT.smallRadius,
-    'rgba(89, 119, 148, 0.30)', 'rgba(89, 119, 148, 0.10)', contentP);
+    'rgba(111, 148, 176, 0.30)', 'rgba(111, 148, 176, 0.10)', contentP);
   // Badge text
   drawText(ctx, 'DIAGNOSTIC', badgeX + badgeW / 2, badgeY + badgeH / 2,
-    `24px ${KOSUGI}`, COLORS.accent, contentP, 'center');
+    `24px ${MONO}`, COLORS.accent, contentP, 'center');
 
   // Carousel page dots — top-right inside card
   // iOS: 13×13pt circles, active = primaryAccent, inactive = inputFieldBorder (white 10%)
@@ -401,7 +401,7 @@ export function drawHomeScreen({ ctx, width, height, progress }: ScreenDrawParam
 
     // Measure text to size chip dynamically (like iOS auto-layout)
     ctx.save();
-    ctx.font = `24px ${KOSUGI}`;
+    ctx.font = `24px ${MONO}`;
     const textW = ctx.measureText(chips[i]).width;
     ctx.restore();
     const chipW = textW + 48; // 24px padding each side
@@ -433,7 +433,7 @@ export function drawHomeScreen({ ctx, width, height, progress }: ScreenDrawParam
     }
 
     drawText(ctx, chips[i], chipX + chipW / 2, chipY + chipH / 2,
-      `24px ${KOSUGI}`, textColor, contentP, 'center');
+      `24px ${MONO}`, textColor, contentP, 'center');
     chipX += chipW + 16; // 8pt gap → 16px at 2x
   }
 
@@ -454,7 +454,7 @@ export function drawHomeScreen({ ctx, width, height, progress }: ScreenDrawParam
   // Helper: draw pin label with soft radial gradient backdrop + drop shadow
   const drawPinLabel = (text: string, x: number, y: number, prog: number) => {
     if (prog <= 0) return;
-    const font = `22px ${KOSUGI}`;
+    const font = `22px ${MONO}`;
 
     // Measure text width for gradient sizing
     ctx.save();

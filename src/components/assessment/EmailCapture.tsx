@@ -75,7 +75,7 @@ export default function EmailCapture({ isSubmitting, onSubmit, totalQuestions }:
         {/* Accent line */}
         <div
           className="w-8 h-px mb-5"
-          style={{ backgroundColor: 'rgba(89, 119, 148, 0.2)' }}
+          style={{ backgroundColor: 'rgba(111, 148, 176, 0.2)' }}
         />
 
         <p className="font-caption text-ops-text-secondary uppercase tracking-[0.2em] text-xs mb-2">

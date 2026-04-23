@@ -1,33 +1,72 @@
 @import "tailwindcss";
 
 /*
- * OPS Design Tokens — Tailwind v4 @theme
+ * OPS Design Tokens — Tailwind v4 @theme (spec v2, 2026-04-17)
  * Source of truth: src/lib/theme.ts
- * Keep these in sync.
+ * Keep these in sync with theme.ts.
  */
 @theme inline {
-  /* Colors */
-  --color-ops-background: #0A0A0A;
-  --color-ops-surface: #0D0D0D;
+  /* Canvas */
+  --color-ops-background: #000000;
+  --color-ops-surface: #0A0A0A;
   --color-ops-surface-elevated: #141414;
-  --color-ops-text-primary: #FFFFFF;
-  --color-ops-text-secondary: #999999;
-  --color-ops-accent: #597794;
+
+  /* Text ladder */
+  --color-ops-text-primary: #EDEDED;   /* was #FFFFFF — never pure white */
+  --color-ops-text-secondary: #B5B5B5; /* was #999999 */
+  --color-ops-text-tertiary: #8A8A8A;
+  --color-ops-text-mute: #6A6A6A;      /* decorative ONLY — // slashes, separators */
+
+  /* Accent — primary CTA + focus ring ONLY */
+  --color-ops-accent: #6F94B0;         /* was #597794 */
+
+  /* Earth-tone semantic */
+  --color-ops-olive: #9DB582;
+  --color-ops-tan: #C4A868;
+  --color-ops-rose: #B58289;
+  --color-ops-brick: #93321A;
+
+  /* Financial */
+  --color-ops-fin-revenue: #C4A868;
+  --color-ops-fin-profit: #9DB582;
+  --color-ops-fin-cost: #B58289;
+  --color-ops-fin-receivables: #D4A574;
+  --color-ops-fin-overdue: #93321A;
+
+  /* Borders & hairlines */
   --color-ops-border: rgba(255, 255, 255, 0.10);
   --color-ops-border-hover: rgba(255, 255, 255, 0.25);
-  --color-ops-text-dark: #1A1A1A;
+  --color-ops-glass-border: rgba(255, 255, 255, 0.09);
+
+  /* Surface tints */
+  --color-ops-surface-input: rgba(255, 255, 255, 0.04);
+  --color-ops-surface-hover-tint: rgba(255, 255, 255, 0.05);
+  --color-ops-surface-active: rgba(255, 255, 255, 0.08);
+
+  /* Glass panels (for marketing moments with blur) */
+  --color-ops-glass: rgba(18, 18, 20, 0.58);
+  --color-ops-glass-dense: rgba(18, 18, 20, 0.78);
+
+  /* Light-mode inversions */
+  --color-ops-text-dark: #000000;
   --color-ops-background-light: #FFFFFF;
 
   /* Fonts */
   --font-heading: var(--font-mohave), sans-serif;
   --font-body: var(--font-mohave), sans-serif;
-  --font-caption: var(--font-kosugi), sans-serif;
-  --font-label: var(--font-kosugi), sans-serif;
+  --font-caption: var(--font-jetbrains-mono), ui-monospace, monospace;
+  --font-label: var(--font-jetbrains-mono), ui-monospace, monospace;
+  --font-mono: var(--font-jetbrains-mono), ui-monospace, monospace;
+  --font-cakemono: var(--font-cakemono), var(--font-mohave), sans-serif;
 
-  /* Radius — barely rounded, reads as sharp */
-  --radius-ops-sm: 2px;
-  --radius-ops-md: 3px;
-  --radius-ops-lg: 4px;
+  /* Radii — sharp, tactical */
+  --radius-ops-sm: 2px;       /* progress tracks */
+  --radius-ops-md: 3px;       /* small chips */
+  --radius-ops-lg: 4px;       /* tags, badges */
+  --radius-ops-btn: 5px;      /* buttons, inputs */
+  --radius-ops-panel: 10px;   /* cards, panels */
+  --radius-ops-modal: 12px;   /* modals, popovers, toasts */
+  --radius-ops-sidebar: 6px;  /* sidebar hover bg */
 
   /* 8pt grid spacing */
   --spacing-ops-xs: 8px;
@@ -42,8 +81,8 @@
 
 /* Base styles */
 body {
-  background: #0A0A0A;
-  color: #FFFFFF;
+  background: #000000;
+  color: #EDEDED;
   font-family: var(--font-body);
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
@@ -55,7 +94,7 @@ body {
 }
 
 ::-webkit-scrollbar-track {
-  background: #0A0A0A;
+  background: #000000;
 }
 
 ::-webkit-scrollbar-thumb {
@@ -65,6 +104,41 @@ body {
 
 ::-webkit-scrollbar-thumb:hover {
   background: rgba(255, 255, 255, 0.25);
+}
+
+/* Tactical glass surface (for marketing panels that want the lit-from-above cue) */
+.glass-surface {
+  background: rgba(18, 18, 20, 0.58);
+  backdrop-filter: blur(28px) saturate(1.3);
+  -webkit-backdrop-filter: blur(28px) saturate(1.3);
+  border: 1px solid rgba(255, 255, 255, 0.09);
+  border-radius: 10px;
+  position: relative;
+}
+.glass-surface::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  border-radius: inherit;
+  background: linear-gradient(180deg, rgba(255, 255, 255, 0.04), transparent 40%);
+  pointer-events: none;
+}
+
+.glass-dense {
+  background: rgba(18, 18, 20, 0.78);
+  backdrop-filter: blur(28px) saturate(1.3);
+  -webkit-backdrop-filter: blur(28px) saturate(1.3);
+  border: 1px solid rgba(255, 255, 255, 0.09);
+  border-radius: 12px;
+  position: relative;
+}
+.glass-dense::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  border-radius: inherit;
+  background: linear-gradient(180deg, rgba(255, 255, 255, 0.03), transparent 35%);
+  pointer-events: none;
 }
 
 /* Reduced motion — disable all animations */
@@ -88,8 +162,8 @@ body {
   display: none;
 }
 
-/* Selection */
+/* Selection — accent tint */
 ::selection {
-  background: rgba(89, 119, 148, 0.4);
-  color: #FFFFFF;
+  background: rgba(111, 148, 176, 0.4);
+  color: #EDEDED;
 }

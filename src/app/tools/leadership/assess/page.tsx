@@ -168,7 +168,7 @@ function AssessmentContent() {
           {/* Accent divider */}
           <div
             className="w-16 h-px mb-8"
-            style={{ backgroundColor: 'rgba(89, 119, 148, 0.2)' }}
+            style={{ backgroundColor: 'rgba(111, 148, 176, 0.2)' }}
           />
 
           {/* Progress indicator */}

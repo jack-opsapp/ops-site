@@ -49,7 +49,7 @@ const ROTATION_PERIOD_S = 120;
 const TILT_ANGLE = 0.25; // ~14 degrees fixed X-axis tilt
 const FOCAL_LENGTH = 2000;
 
-const ACCENT = { r: 89, g: 119, b: 148 };  // #597794
+const ACCENT = { r: 111, g: 148, b: 176 };  // #6F94B0
 const GREY = { r: 80, g: 80, b: 80 };      // #505050
 
 /* ------------------------------------------------------------------ */

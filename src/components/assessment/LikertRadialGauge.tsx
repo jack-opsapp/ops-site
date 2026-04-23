@@ -557,7 +557,7 @@ export default function LikertRadialGauge({
 
       /* ---- 9. Draw labels ---- */
 
-      ctx.font = '400 12px "Kosugi", sans-serif';
+      ctx.font = '400 12px "JetBrains Mono", monospace';
       ctx.textAlign = 'center';
       ctx.textBaseline = 'top';
 

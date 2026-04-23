@@ -58,7 +58,7 @@ export default function StepDots({
               }
               style={
                 isCurrent
-                  ? { boxShadow: '0 0 6px rgba(89, 119, 148, 0.4)' }
+                  ? { boxShadow: '0 0 6px rgba(111, 148, 176, 0.4)' }
                   : isCompleted
                     ? { backgroundColor: 'rgba(255, 255, 255, 0.5)', boxShadow: '0 0 4px rgba(255, 255, 255, 0.15)' }
                     : undefined

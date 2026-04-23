@@ -30,7 +30,7 @@ interface SituationalGridProps {
 /*  Constants                                                          */
 /* ------------------------------------------------------------------ */
 
-const ACCENT = { r: 89, g: 119, b: 148 };
+const ACCENT = { r: 111, g: 148, b: 176 };
 const GREY = { r: 100, g: 100, b: 100 };
 
 const HIT_RADIUS = 60;
@@ -389,7 +389,7 @@ export default function SituationalGrid({
           const tint = tints[i];
 
           const textAlpha = isSelected ? 0.90 : isHoveredWhileSelected ? 0.55 : (isHovered && !hasSelection) ? 0.70 : hasSelection ? 0.25 : 0.60;
-          ctx.font = '400 12px "Kosugi", sans-serif';
+          ctx.font = '400 12px "JetBrains Mono", monospace';
           const labelR = 200 + (ACCENT.r - 200) * tint;
           const labelG = 200 + (ACCENT.g - 200) * tint;
           const labelB = 200 + (ACCENT.b - 200) * tint;
@@ -559,7 +559,7 @@ export default function SituationalGrid({
           const tint = tints[i];
 
           const textAlpha = isSelected ? 0.90 : isHoveredWhileSelected ? 0.55 : (isHovered && !hasSelection) ? 0.70 : hasSelection ? 0.25 : 0.60;
-          ctx.font = '400 12px "Kosugi", sans-serif';
+          ctx.font = '400 12px "JetBrains Mono", monospace';
           const labelR = 200 + (ACCENT.r - 200) * tint;
           const labelG = 200 + (ACCENT.g - 200) * tint;
           const labelB = 200 + (ACCENT.b - 200) * tint;

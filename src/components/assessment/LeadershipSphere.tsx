@@ -27,7 +27,7 @@ import { DIMENSIONS } from '@/lib/assessment/types';
 /*  Constants                                                          */
 /* ------------------------------------------------------------------ */
 
-const ACCENT = { r: 89, g: 119, b: 148 };   // #597794
+const ACCENT = { r: 111, g: 148, b: 176 };   // #6F94B0
 const GREY = { r: 100, g: 100, b: 100 };     // #646464
 const FOCAL_LENGTH = 2000;
 const ROTATION_PERIOD_S = 120;
@@ -1122,14 +1122,14 @@ export default function LeadershipSphere({
           // Sub-node label — always visible for quick mode, focus mode for deep
           if (quickMode) {
             const labelAlpha = isSubHovered ? 0.9 : subAlpha * 0.8;
-            ctx.font = isSubHovered ? '600 11px "Kosugi", sans-serif' : '400 10px "Kosugi", sans-serif';
+            ctx.font = isSubHovered ? '600 11px "JetBrains Mono", monospace' : '400 10px "JetBrains Mono", monospace';
             ctx.textAlign = 'center';
             ctx.textBaseline = 'top';
             ctx.fillStyle = `rgba(${snColor.r}, ${snColor.g}, ${snColor.b}, ${labelAlpha})`;
             ctx.fillText(sn.label.toUpperCase(), sn.sx, sn.sy + subSize / 2 + 5);
           } else if (isFocused && focusTransition > 0.3) {
             const labelAlpha = (focusTransition - 0.3) / 0.7 * (isSubSelected ? Math.min(subAlpha + 0.2, 1) : isSubHovered ? 0.9 : subAlpha);
-            ctx.font = (isSubSelected || isSubHovered) ? '600 11px "Kosugi", sans-serif' : '400 10px "Kosugi", sans-serif';
+            ctx.font = (isSubSelected || isSubHovered) ? '600 11px "JetBrains Mono", monospace' : '400 10px "JetBrains Mono", monospace';
             ctx.textAlign = 'center';
             ctx.textBaseline = 'top';
             ctx.fillStyle = `rgba(${snColor.r}, ${snColor.g}, ${snColor.b}, ${labelAlpha})`;
@@ -1141,7 +1141,7 @@ export default function LeadershipSphere({
             ctx.textAlign = 'center';
             ctx.textBaseline = 'bottom';
             if (quickMode) {
-              ctx.font = '400 9px "Kosugi", sans-serif';
+              ctx.font = '400 9px "JetBrains Mono", monospace';
               ctx.fillStyle = `rgba(${snColor.r}, ${snColor.g}, ${snColor.b}, 0.6)`;
               ctx.fillText('information not available', sn.sx, sn.sy - subSize / 2 - 7);
             } else {
@@ -1184,7 +1184,7 @@ export default function LeadershipSphere({
           ? 0.90
           : lerp(0.10, 0.55, dc.depthNorm)) * focusDimAlpha;
 
-        ctx.font = isBright ? '600 13px "Kosugi", sans-serif' : '400 12px "Kosugi", sans-serif';
+        ctx.font = isBright ? '600 13px "JetBrains Mono", monospace' : '400 12px "JetBrains Mono", monospace';
         ctx.textBaseline = dir.dy < 0 ? 'bottom' : 'top';
         if (dir.dx < -0.1) {
           ctx.textAlign = 'right';

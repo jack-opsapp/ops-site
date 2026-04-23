@@ -143,7 +143,7 @@ function InteractivePreview() {
               padding: '6px 16px',
               borderRadius: 6,
               border: '1px solid rgba(255,255,255,0.15)',
-              background: activeTab === t.id ? '#597794' : 'rgba(255,255,255,0.05)',
+              background: activeTab === t.id ? '#6F94B0' : 'rgba(255,255,255,0.05)',
               color: activeTab === t.id ? '#fff' : 'rgba(255,255,255,0.6)',
               cursor: 'pointer',
               fontSize: 13,

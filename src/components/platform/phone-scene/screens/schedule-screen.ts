@@ -24,7 +24,7 @@ import type { ScreenDrawParams } from './types';
 
 // --- Fonts ---
 const MOHAVE = 'Mohave, sans-serif';
-const KOSUGI = 'Kosugi, sans-serif';
+const MONO = 'JetBrains Mono, monospace';
 
 // --- Scale: iPhone ~393pt → canvas 750px ---
 const S = 750 / 393;
@@ -230,9 +230,9 @@ export function drawScheduleScreen({ ctx, width, height, progress }: ScreenDrawP
   const captionSize = Math.round(14 * S);
 
   drawText(ctx, 'SCHEDULE', p, headerY, `600 ${titleSize}px ${MOHAVE}`, COLORS.titleLine, structP);
-  drawText(ctx, 'TODAY', p, headerY + 38, `bold ${captionSize}px ${KOSUGI}`, COLORS.bodyLine, structP);
-  drawText(ctx, '|', p + 90, headerY + 38, `${captionSize}px ${KOSUGI}`, COLORS.bodyLine, structP);
-  drawText(ctx, week.headerDate, p + 110, headerY + 38, `${captionSize}px ${KOSUGI}`, COLORS.bodyLine, structP);
+  drawText(ctx, 'TODAY', p, headerY + 38, `bold ${captionSize}px ${MONO}`, COLORS.bodyLine, structP);
+  drawText(ctx, '|', p + 90, headerY + 38, `${captionSize}px ${MONO}`, COLORS.bodyLine, structP);
+  drawText(ctx, week.headerDate, p + 110, headerY + 38, `${captionSize}px ${MONO}`, COLORS.bodyLine, structP);
 
   const iconSize = LAYOUT.iconCircleSize;
   const iconGap = 10;
@@ -272,7 +272,7 @@ export function drawScheduleScreen({ ctx, width, height, progress }: ScreenDrawP
     }
 
     const abbrColor = isToday ? COLORS.titleLine : COLORS.bodyLine;
-    drawText(ctx, week.days[i].abbr, cellInnerX + cellInnerW / 2, cellTop + cellH * 0.22, `${abbrSize}px ${KOSUGI}`, abbrColor, structP, 'center');
+    drawText(ctx, week.days[i].abbr, cellInnerX + cellInnerW / 2, cellTop + cellH * 0.22, `${abbrSize}px ${MONO}`, abbrColor, structP, 'center');
     drawText(ctx, week.days[i].num, cellInnerX + cellInnerW / 2, cellTop + cellH * 0.48, `600 ${numSize}px ${MOHAVE}`, COLORS.titleLine, structP, 'center');
   }
 
@@ -304,7 +304,7 @@ export function drawScheduleScreen({ ctx, width, height, progress }: ScreenDrawP
   const smallCaptionSize = Math.round(12 * S);
 
   drawText(ctx, week.dayName, p, dayHeaderY, `bold ${headingSize}px ${MOHAVE}`, COLORS.titleLine, contentP);
-  drawText(ctx, week.fullDate, p, dayHeaderY + headingSize + 6, `${smallCaptionSize}px ${KOSUGI}`, COLORS.bodyLine, contentP);
+  drawText(ctx, week.fullDate, p, dayHeaderY + headingSize + 6, `${smallCaptionSize}px ${MONO}`, COLORS.bodyLine, contentP);
 
   // Event count badge — dynamic count from today's tasks
   const evCount = schedule.todayTasks.length;
@@ -313,7 +313,7 @@ export function drawScheduleScreen({ ctx, width, height, progress }: ScreenDrawP
   const evBadgeH = Math.round(smallCaptionSize + 16);
   const evBadgeX = width - p - evBadgeW;
   drawRoundedRect(ctx, evBadgeX, dayHeaderY - 8, evBadgeW, evBadgeH, 2, 'rgba(255,255,255,0.10)', COLORS.cardFill, contentP);
-  drawText(ctx, evText, evBadgeX + evBadgeW / 2, dayHeaderY + evBadgeH / 2 - 8, `bold ${smallCaptionSize}px ${KOSUGI}`, COLORS.titleLine, contentP, 'center');
+  drawText(ctx, evText, evBadgeX + evBadgeW / 2, dayHeaderY + evBadgeH / 2 - 8, `bold ${smallCaptionSize}px ${MONO}`, COLORS.titleLine, contentP, 'center');
 
   // ===== TASK LIST (derived from schedule.todayTasks) =====
   const taskStartY = dayHeaderY + headingSize + smallCaptionSize + 30;
@@ -352,12 +352,12 @@ export function drawScheduleScreen({ ctx, width, height, progress }: ScreenDrawP
     const textX = p + stripeW + Math.round(14 * S);
 
     drawText(ctx, task.name, textX, cardY + canvasCardH * 0.26, `600 ${titleFontSize}px ${MOHAVE}`, COLORS.titleLine, contentP * rowAlpha);
-    drawText(ctx, task.client, textX, cardY + canvasCardH * 0.50, `${clientFontSize}px ${KOSUGI}`, COLORS.bodyLine, contentP * rowAlpha);
-    drawText(ctx, task.address, textX, cardY + canvasCardH * 0.72, `${addressFontSize}px ${KOSUGI}`, 'rgba(255,255,255,0.36)', contentP * rowAlpha);
+    drawText(ctx, task.client, textX, cardY + canvasCardH * 0.50, `${clientFontSize}px ${MONO}`, COLORS.bodyLine, contentP * rowAlpha);
+    drawText(ctx, task.address, textX, cardY + canvasCardH * 0.72, `${addressFontSize}px ${MONO}`, 'rgba(255,255,255,0.36)', contentP * rowAlpha);
 
     // Task type badge
     if (contentP > 0) {
-      ctx.save(); ctx.font = `bold ${badgeFontSize}px ${KOSUGI}`;
+      ctx.save(); ctx.font = `bold ${badgeFontSize}px ${MONO}`;
       const btw = ctx.measureText(task.badge).width; ctx.restore();
 
       const bph = Math.round(7 * S);
@@ -372,12 +372,12 @@ export function drawScheduleScreen({ ctx, width, height, progress }: ScreenDrawP
       ctx.save(); ctx.globalAlpha = contentP * rowAlpha * 0.35; ctx.strokeStyle = task.color; ctx.lineWidth = 1;
       ctx.beginPath(); ctx.roundRect(bx, by, bw, bh, 4); ctx.stroke(); ctx.restore();
 
-      drawText(ctx, task.badge, bx + bw / 2, by + bh / 2, `bold ${badgeFontSize}px ${KOSUGI}`, task.color, contentP * rowAlpha, 'center');
+      drawText(ctx, task.badge, bx + bw / 2, by + bh / 2, `bold ${badgeFontSize}px ${MONO}`, task.color, contentP * rowAlpha, 'center');
 
       // COMPLETED badge
       if (isCompleted) {
         const ct = 'COMPLETED';
-        ctx.save(); ctx.font = `bold ${compFontSize}px ${KOSUGI}`;
+        ctx.save(); ctx.font = `bold ${compFontSize}px ${MONO}`;
         const ctw = ctx.measureText(ct).width; ctx.restore();
 
         const cw = ctw + Math.round(16 * S);
@@ -389,7 +389,7 @@ export function drawScheduleScreen({ ctx, width, height, progress }: ScreenDrawP
           ctx.save(); ctx.globalAlpha = accentP * 0.8; ctx.fillStyle = COLORS.stageCompleted;
           ctx.beginPath(); ctx.roundRect(cx2, cy2, cw, ch, 4); ctx.fill(); ctx.restore();
         }
-        drawText(ctx, ct, cx2 + cw / 2, cy2 + ch / 2, `bold ${compFontSize}px ${KOSUGI}`, COLORS.titleLine, accentP * 0.8, 'center');
+        drawText(ctx, ct, cx2 + cw / 2, cy2 + ch / 2, `bold ${compFontSize}px ${MONO}`, COLORS.titleLine, accentP * 0.8, 'center');
       }
     }
   }

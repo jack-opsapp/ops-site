@@ -24,7 +24,7 @@ interface CardParticleFlowProps {
 }
 
 /* ─── Colors ─── */
-const BLUE = '#597794';
+const BLUE = '#6F94B0';
 const ORANGE = '#B8764A';
 const WHITE = '#F5F5F5';
 

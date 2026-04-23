@@ -19,9 +19,9 @@ import { motion, useInView, Reorder } from 'framer-motion';
  * SHARED UTILITIES
  * ───────────────────────────────────────────────────────── */
 
-const ACCENT = '#597794';
-const ACCENT_STROKE = 'rgba(89,119,148,0.6)';
-const ACCENT_FILL = 'rgba(89,119,148,0.12)';
+const ACCENT = '#6F94B0';
+const ACCENT_STROKE = 'rgba(111,148,176,0.6)';
+const ACCENT_FILL = 'rgba(111,148,176,0.12)';
 
 /** Decisive entry — arrives and stops. No settling, no bounce. */
 const spring = { duration: 0.3, ease: [0.16, 1, 0.3, 1] as const };
@@ -251,7 +251,7 @@ export function ProjectManagementIllustration() {
               {/* Task label */}
               <motion.text
                 x="70" y={ty + 9}
-                fontSize="8" fontFamily="var(--font-kosugi)"
+                fontSize="8" fontFamily="var(--font-jetbrains-mono)"
                 fill={task.done ? 'rgba(255,255,255,0.25)' : 'rgba(255,255,255,0.35)'}
                 textDecoration={task.done ? 'line-through' : 'none'}
                 animate={{ opacity: p >= 4 ? 1 : 0, x: p >= 4 ? 0 : 15 }}
@@ -262,7 +262,7 @@ export function ProjectManagementIllustration() {
               {/* Tag */}
               <motion.text
                 x="340" y={ty + 9}
-                textAnchor="end" fontSize="6" fontFamily="var(--font-kosugi)"
+                textAnchor="end" fontSize="6" fontFamily="var(--font-jetbrains-mono)"
                 fill="rgba(255,255,255,0.12)"
                 animate={{ opacity: p >= 4 ? 1 : 0 }}
                 transition={{ duration: 0.2, delay: i * 0.08 + 0.1 }}
@@ -302,7 +302,7 @@ export function ProjectManagementIllustration() {
         {/* Progress label */}
         <motion.text
           x="355" y="278"
-          textAnchor="end" fontSize="7" fontFamily="var(--font-kosugi)"
+          textAnchor="end" fontSize="7" fontFamily="var(--font-jetbrains-mono)"
           fill="rgba(255,255,255,0.2)"
           animate={{ opacity: p >= 6 ? 1 : 0 }}
           transition={{ duration: 0.3, delay: 0.4 }}
@@ -346,7 +346,7 @@ export function ProjectManagementIllustration() {
               {/* Task label */}
               <text
                 x="70" y={ty + 9}
-                fontSize="8" fontFamily="var(--font-kosugi)"
+                fontSize="8" fontFamily="var(--font-jetbrains-mono)"
                 fill={task.done ? 'rgba(255,255,255,0.25)' : 'rgba(255,255,255,0.35)'}
                 textDecoration={task.done ? 'line-through' : 'none'}
               >
@@ -355,7 +355,7 @@ export function ProjectManagementIllustration() {
               {/* Tag */}
               <text
                 x="310" y={ty + 9}
-                textAnchor="end" fontSize="6" fontFamily="var(--font-kosugi)"
+                textAnchor="end" fontSize="6" fontFamily="var(--font-jetbrains-mono)"
                 fill="rgba(255,255,255,0.12)"
               >
                 {task.tag}
@@ -399,7 +399,7 @@ export function ProjectManagementIllustration() {
               whileDrag={{
                 scale: 1.02,
                 zIndex: 50,
-                backgroundColor: 'rgba(89,119,148,0.08)',
+                backgroundColor: 'rgba(111,148,176,0.08)',
                 borderRadius: '2px',
               }}
               transition={{ duration: 0.2, ease: [0.16, 1, 0.3, 1] }}
@@ -497,7 +497,7 @@ export function SchedulingIllustration() {
           <motion.text
             key={`day-${day.num}`}
             x={gx + day.col * colW + 8} y={gy + day.row * rowH + 14}
-            fontSize="9" fontFamily="var(--font-kosugi)"
+            fontSize="9" fontFamily="var(--font-jetbrains-mono)"
             fill={day.col === 0 || day.col === 6 ? 'rgba(255,255,255,0.15)' : 'rgba(255,255,255,0.3)'}
             animate={{ opacity: p >= 2 ? 1 : 0 }}
             transition={{ duration: 0.15, delay: i * 0.012 }}
@@ -563,7 +563,7 @@ export function SchedulingIllustration() {
             key={`row-hit-${rowIdx}`}
             x={gx} y={gy + rowIdx * rowH}
             width={7 * colW} height={rowH}
-            fill={selectedBar !== null ? 'rgba(89,119,148,0.04)' : 'transparent'}
+            fill={selectedBar !== null ? 'rgba(111,148,176,0.04)' : 'transparent'}
             style={{ pointerEvents: 'all', cursor: selectedBar !== null ? 'pointer' : 'default' }}
             onClick={() => {
               if (selectedBar !== null) {
@@ -887,8 +887,8 @@ export function ClientManagementIllustration() {
             transition={{ duration: 0.3, ease: [0.22, 1, 0.36, 1] }}
             style={{ transformOrigin: 'center' }}
           >
-            <div className="w-[55%] h-[78%] rounded-sm border border-[#597794]/30 bg-gradient-to-br from-[#597794]/[0.08] to-[#0A0A0A] p-5 flex flex-col justify-center">
-              <div className="text-[9px] font-body uppercase tracking-wider text-[#597794]/60 mb-3">Project History</div>
+            <div className="w-[55%] h-[78%] rounded-sm border border-[#6F94B0]/30 bg-gradient-to-br from-[#6F94B0]/[0.08] to-[#0A0A0A] p-5 flex flex-col justify-center">
+              <div className="text-[9px] font-body uppercase tracking-wider text-[#6F94B0]/60 mb-3">Project History</div>
               {['Kitchen Remodel — $24K', 'Deck Build — $18K', 'Bathroom — $12K'].map((proj, i) => (
                 <div key={i} className="flex items-center gap-2 py-1.5 border-b border-white/5 last:border-0">
                   <div className="w-1.5 h-1.5 rounded-full bg-green-500/40" />
@@ -1110,7 +1110,7 @@ export function JobBoardIllustration() {
               <motion.g animate={{ opacity: p >= 3 ? 1 : 0 }} transition={{ duration: 0.2 }}>
                 <rect x={colX[0] + 8} y="205" width={colW - 16} height="38" rx="3" stroke={ACCENT_STROKE} strokeWidth="1.5" fill={ACCENT_FILL} filter={p >= 4 ? 'url(#accentGlow)' : undefined} />
                 <path d={`M${colX[0] + 16} 218 L${colX[0] + colW - 24} 218`} stroke={ACCENT_STROKE} strokeWidth="1" />
-                <path d={`M${colX[0] + 16} 228 L${colX[0] + 50} 228`} stroke="rgba(89,119,148,0.3)" strokeWidth="1" />
+                <path d={`M${colX[0] + 16} 228 L${colX[0] + 50} 228`} stroke="rgba(111,148,176,0.3)" strokeWidth="1" />
               </motion.g>
             </motion.g>
 
@@ -1164,7 +1164,7 @@ export function JobBoardIllustration() {
                 filter={isAccent ? 'url(#accentGlow)' : undefined}
               />
               <path d={`M8 13 L${colW - 24} 13`} stroke={isAccent ? ACCENT_STROKE : 'rgba(255,255,255,0.15)'} strokeWidth="1" />
-              <path d="M8 23 L42 23" stroke={isAccent ? 'rgba(89,119,148,0.3)' : 'rgba(255,255,255,0.08)'} strokeWidth="1" />
+              <path d="M8 23 L42 23" stroke={isAccent ? 'rgba(111,148,176,0.3)' : 'rgba(255,255,255,0.08)'} strokeWidth="1" />
             </motion.g>
           );
         })}
@@ -1187,8 +1187,8 @@ export function PipelineIllustration() {
 
   const stages = [
     { label: 'LEADS', width: 180, count: '24', value: '$480K', numValue: 480, lost: '', color: 'rgba(255,255,255,0.2)', stroke: 'rgba(255,255,255,0.15)' },
-    { label: 'QUALIFIED', width: 145, count: '18', value: '$360K', numValue: 360, lost: '-$120K', color: 'rgba(89,119,148,0.35)', stroke: ACCENT_STROKE },
-    { label: 'PROPOSAL', width: 110, count: '12', value: '$240K', numValue: 240, lost: '-$120K', color: 'rgba(89,119,148,0.55)', stroke: ACCENT },
+    { label: 'QUALIFIED', width: 145, count: '18', value: '$360K', numValue: 360, lost: '-$120K', color: 'rgba(111,148,176,0.35)', stroke: ACCENT_STROKE },
+    { label: 'PROPOSAL', width: 110, count: '12', value: '$240K', numValue: 240, lost: '-$120K', color: 'rgba(111,148,176,0.55)', stroke: ACCENT },
     { label: 'NEGOTIATE', width: 75, count: '6', value: '$120K', numValue: 120, lost: '-$120K', color: 'rgba(229,160,46,0.35)', stroke: 'rgba(229,160,46,0.6)' },
     { label: 'WON', width: 55, count: '4', value: '$96K', numValue: 96, lost: '-$24K', color: 'rgba(46,160,67,0.35)', stroke: 'rgba(46,160,67,0.6)' },
   ];
@@ -1261,7 +1261,7 @@ export function PipelineIllustration() {
           <text
             x={barX + maxWidth / 2} y={16}
             textAnchor="middle" fontSize="8" fontFamily="var(--font-mohave)" fontWeight="bold"
-            fill="rgba(89,119,148,0.7)" letterSpacing="0.5"
+            fill="rgba(111,148,176,0.7)" letterSpacing="0.5"
           >
             WHAT IF 100% CONVERTED?
           </text>
@@ -1360,7 +1360,7 @@ export function PipelineIllustration() {
               </motion.text>
               <motion.text
                 x={barX + displayWidth + 10} y={startY + i * rowH + 20}
-                fontSize="8" fontFamily="var(--font-kosugi)"
+                fontSize="8" fontFamily="var(--font-jetbrains-mono)"
                 fill="rgba(255,255,255,0.2)"
                 animate={{ x: barX + displayWidth + 10 }}
                 transition={widthTransition}
@@ -1370,7 +1370,7 @@ export function PipelineIllustration() {
               {stage.lost && (
                 <motion.text
                   x={barX + displayWidth + 46} y={startY + i * rowH + 20}
-                  fontSize="7" fontFamily="var(--font-kosugi)"
+                  fontSize="7" fontFamily="var(--font-jetbrains-mono)"
                   fill="rgba(229,77,46,0.5)"
                   animate={{
                     opacity: isHovering ? 0 : 1,
@@ -1393,7 +1393,7 @@ export function PipelineIllustration() {
           <path d={`M${barX} ${startY + 5 * rowH + 5} L${barX + maxWidth} ${startY + 5 * rowH + 5}`} stroke="rgba(255,255,255,0.06)" strokeWidth="1" />
           <text
             x={barX} y={startY + 5 * rowH + 22}
-            fontSize="9" fontFamily="var(--font-kosugi)"
+            fontSize="9" fontFamily="var(--font-jetbrains-mono)"
             fill="rgba(255,255,255,0.25)"
           >
             WON
@@ -1412,7 +1412,7 @@ export function PipelineIllustration() {
           </motion.text>
           <text
             x={barX + 80} y={startY + 5 * rowH + 22}
-            fontSize="9" fontFamily="var(--font-kosugi)"
+            fontSize="9" fontFamily="var(--font-jetbrains-mono)"
             fill="rgba(255,255,255,0.25)"
           >
             LEFT ON TABLE
@@ -1534,7 +1534,7 @@ export function InventoryIllustration() {
               animate={{
                 width: p >= 4 ? (cellW - 20) * lvl : 0,
                 opacity: p >= 4 ? 1 : 0,
-                fill: isLow ? 'rgba(229,77,46,0.4)' : 'rgba(89,119,148,0.2)',
+                fill: isLow ? 'rgba(229,77,46,0.4)' : 'rgba(111,148,176,0.2)',
                 stroke: isLow ? 'rgba(229,77,46,0.5)' : ACCENT_STROKE,
               }}
               strokeWidth="1"
@@ -1931,7 +1931,7 @@ export function PhotoMarkupIllustration() {
             x={iso((DX + W) / 2, 0, -25)[0]}
             y={iso((DX + W) / 2, 0, -25)[1] + 12}
             textAnchor="middle" fontSize="9"
-            fontFamily="var(--font-kosugi)" fill={mk}
+            fontFamily="var(--font-jetbrains-mono)" fill={mk}
             animate={{ opacity: p >= 5 ? 0.8 : 0 }}
             transition={{ duration: 0.3, delay: 0.3 }}
           >

@@ -656,13 +656,13 @@ function drawLabels(
     ctx.textAlign = 'center';
 
     // Title (Kosugi) — large with manual tracking
-    ctx.font = '400 18px "Kosugi", sans-serif';
+    ctx.font = '400 18px "JetBrains Mono", monospace';
     ctx.fillStyle = `rgba(255, 255, 255, ${labelAlpha})`;
     const titleY = nodeY + 22;
     drawTrackedText(ctx, label.title, nodeX, titleY, 3);
 
     // Time (Kosugi, tracked)
-    ctx.font = '400 11px "Kosugi", sans-serif';
+    ctx.font = '400 11px "JetBrains Mono", monospace';
     const nodeColor = i === 0 ? BLUE : ORANGE;
     const timeAlpha = isSelected ? 0.9 : isHovered ? 0.7 : hasSelection ? 0.15 : 0.4;
     ctx.fillStyle = `rgba(${nodeColor.r}, ${nodeColor.g}, ${nodeColor.b}, ${timeAlpha})`;

@@ -38,7 +38,7 @@ export default async function PageLayout({ children }: { children: React.ReactNo
             width: '700px',
             height: '700px',
             borderRadius: '50%',
-            background: 'radial-gradient(circle, rgba(89, 119, 148, 0.04) 0%, transparent 70%)',
+            background: 'radial-gradient(circle, rgba(111, 148, 176, 0.04) 0%, transparent 70%)',
           }}
         />
 
@@ -77,7 +77,7 @@ export default async function PageLayout({ children }: { children: React.ReactNo
             width: '650px',
             height: '650px',
             borderRadius: '50%',
-            background: 'radial-gradient(circle, rgba(89, 119, 148, 0.035) 0%, transparent 70%)',
+            background: 'radial-gradient(circle, rgba(111, 148, 176, 0.035) 0%, transparent 70%)',
           }}
         />
 
@@ -90,7 +90,7 @@ export default async function PageLayout({ children }: { children: React.ReactNo
             width: '600px',
             height: '600px',
             borderRadius: '50%',
-            background: 'radial-gradient(circle, rgba(89, 119, 148, 0.03) 0%, transparent 70%)',
+            background: 'radial-gradient(circle, rgba(111, 148, 176, 0.03) 0%, transparent 70%)',
           }}
         />
 
@@ -129,7 +129,7 @@ export default async function PageLayout({ children }: { children: React.ReactNo
             width: '700px',
             height: '700px',
             borderRadius: '50%',
-            background: 'radial-gradient(circle, rgba(89, 119, 148, 0.035) 0%, transparent 70%)',
+            background: 'radial-gradient(circle, rgba(111, 148, 176, 0.035) 0%, transparent 70%)',
           }}
         />
       </div>

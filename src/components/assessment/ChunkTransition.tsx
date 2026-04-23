@@ -25,7 +25,7 @@ import { motion, AnimatePresence } from 'framer-motion';
 /*  Constants                                                          */
 /* ------------------------------------------------------------------ */
 
-const ACCENT = { r: 89, g: 119, b: 148 };
+const ACCENT = { r: 111, g: 148, b: 176 };
 const GREY_STAR = { r: 180, g: 180, b: 180 };
 const ORANGE = { r: 210, g: 140, b: 60 };
 const QUOTE_BLUE = { r: 100, g: 160, b: 220 };

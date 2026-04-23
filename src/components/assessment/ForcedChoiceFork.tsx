@@ -582,7 +582,7 @@ export default function ForcedChoiceFork({
           labelAlpha = 0.65;
         }
 
-        ctx.font = '400 12px "Kosugi", sans-serif';
+        ctx.font = '400 12px "JetBrains Mono", monospace';
         ctx.textAlign = 'center';
         ctx.fillStyle = `rgba(255, 255, 255, ${labelAlpha})`;
 

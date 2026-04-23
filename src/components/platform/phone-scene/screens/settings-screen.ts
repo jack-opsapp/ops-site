@@ -34,7 +34,7 @@ import type { ScreenDrawParams } from './types';
 
 // --- Fonts (loaded by next/font/google on the page) ---
 const MOHAVE = 'Mohave, sans-serif';
-const KOSUGI = 'Kosugi, sans-serif';
+const MONO = 'JetBrains Mono, monospace';
 
 // --- Scale factor: iOS 393pt screen → 750px canvas ---
 const S = 750 / 393; // ≈ 1.908
@@ -445,7 +445,7 @@ export function drawSettingsScreen({ ctx, width, height, progress }: ScreenDrawP
     `500 ${BODY_BOLD_SIZE}px ${MOHAVE}`, COLORS.titleLine, contentP);
 
   drawText(ctx, 'Owner · peter.jmitchell1988@gm\u2026', nameX, profileY + PROFILE_H * 0.64,
-    `${CAPTION_SIZE}px ${KOSUGI}`, COLORS.bodyLine, contentP);
+    `${CAPTION_SIZE}px ${MONO}`, COLORS.bodyLine, contentP);
 
   // Chevron
   drawChevronRight(ctx, width - p - 28, profileY + PROFILE_H / 2, 20, contentP);
@@ -477,7 +477,7 @@ export function drawSettingsScreen({ ctx, width, height, progress }: ScreenDrawP
 
     // Section header label (captionBold: Kosugi 14pt, secondaryText)
     drawText(ctx, section.label, p, cursorY,
-      `bold ${CAPTION_SIZE}px ${KOSUGI}`, COLORS.bodyLine, contentP);
+      `bold ${CAPTION_SIZE}px ${MONO}`, COLORS.bodyLine, contentP);
 
     // Card container
     const cardTop = cursorY + 30;
@@ -536,7 +536,7 @@ export function drawSettingsScreen({ ctx, width, height, progress }: ScreenDrawP
   if (cursorY < LAYOUT.tabBarY - 60) {
     // Section label
     drawText(ctx, 'DATA', p, cursorY,
-      `bold ${CAPTION_SIZE}px ${KOSUGI}`, COLORS.bodyLine, accentP);
+      `bold ${CAPTION_SIZE}px ${MONO}`, COLORS.bodyLine, accentP);
 
     const dataCardTop = cursorY + 30;
     const maxVisible = LAYOUT.tabBarY - dataCardTop - 20;

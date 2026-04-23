@@ -80,7 +80,7 @@ export default function ProgressBar({
         {/* Accent fill — current progress */}
         <motion.div
           className="absolute inset-y-0 left-0"
-          style={{ backgroundColor: '#597794' }}
+          style={{ backgroundColor: '#6F94B0' }}
           initial={{ width: '0%' }}
           animate={{ width: `${pct}%` }}
           transition={{ duration: 0.6, ease: EASE }}
@@ -99,7 +99,7 @@ export default function ProgressBar({
         <motion.div
           className="absolute inset-y-0 w-[40px]"
           style={{
-            background: 'linear-gradient(90deg, transparent, rgba(89, 119, 148, 0.4), transparent)',
+            background: 'linear-gradient(90deg, transparent, rgba(111, 148, 176, 0.4), transparent)',
             filter: 'blur(4px)',
           }}
           initial={{ left: '0%' }}
