@@ -1,23 +1,43 @@
 /**
  * PostContent — Renders sanitised blog-post HTML with styled prose
  *
- * Server component. Uses isomorphic-dompurify to sanitise the raw HTML
- * from Supabase, then renders it with child-selector styles for headings,
- * paragraphs, links, lists, images, and blockquotes.
+ * Server component. Uses sanitize-html (pure JS, no jsdom) to scrub
+ * raw HTML from Supabase, then renders it with child-selector styles
+ * for headings, paragraphs, links, lists, images, and blockquotes.
  *
  * NOTE: dangerouslySetInnerHTML is used intentionally here:
  * 1. The style tag contains only our own static CSS — no user input.
- * 2. The post content is sanitised with DOMPurify before rendering.
+ * 2. The post content is sanitised with sanitize-html before rendering.
  */
 
-import DOMPurify from 'isomorphic-dompurify';
+import sanitizeHtml from 'sanitize-html';
 
 interface PostContentProps {
   content: string;
 }
 
+const SANITIZE_OPTIONS: sanitizeHtml.IOptions = {
+  allowedTags: [
+    'h1', 'h2', 'h3', 'h4', 'h5', 'h6',
+    'p', 'a', 'ul', 'ol', 'li',
+    'blockquote', 'strong', 'em', 'b', 'i', 'u',
+    'img', 'figure', 'figcaption',
+    'hr', 'br', 'span', 'div',
+    'code', 'pre',
+  ],
+  allowedAttributes: {
+    a: ['href', 'name', 'target', 'rel'],
+    img: ['src', 'alt', 'title', 'width', 'height'],
+    '*': ['class', 'id'],
+  },
+  allowedSchemes: ['http', 'https', 'mailto'],
+  transformTags: {
+    a: sanitizeHtml.simpleTransform('a', { rel: 'noopener noreferrer' }),
+  },
+};
+
 export default function PostContent({ content }: PostContentProps) {
-  const clean = DOMPurify.sanitize(content);
+  const clean = sanitizeHtml(content, SANITIZE_OPTIONS);
 
   return (
     <section className="bg-ops-background-light">
