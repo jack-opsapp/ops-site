@@ -96,7 +96,8 @@ export default function Navigation({ commonDict, shopLive = false }: NavigationP
       >
         <div className="max-w-[1400px] mx-auto px-6 md:px-10 flex items-center justify-between h-16">
           {/* Left: Lockup at rest, collapses to mark on scroll.
-               Inline SVG uses currentColor, so text color controls logo color. */}
+               Inline SVG uses currentColor, so text color controls logo color.
+               h-9 (36px) sits at ~56% of the 64px nav — proportional without crowding. */}
           <Link
             href="/"
             className={`flex-shrink-0 transition-colors duration-300 ${
@@ -104,17 +105,21 @@ export default function Navigation({ commonDict, shopLive = false }: NavigationP
             }`}
             aria-label="OPS — home"
           >
-            <div className="relative h-5 w-[100px]">
-              {/* Lockup (mark + wordmark) — shown at top of page */}
+            {/* Fixed height, natural width per logo aspect.
+                 h-12 (48px) reads clearly in the 64px nav. */}
+            <div className="relative h-12">
+              {/* Lockup (mark + wordmark) — aspect 1.59:1 → ~76px wide at h-12 */}
               <OpsLockup
-                className={`absolute inset-0 h-full w-full transition-opacity duration-200 ${
+                className={`h-full w-auto transition-opacity duration-200 ${
                   scrolled ? 'opacity-0 pointer-events-none' : 'opacity-100'
                 }`}
                 title=""
               />
-              {/* Mark only — shown while scrolling, aligned left */}
+              {/* Mark only — aspect 0.59:1 → ~28px wide at h-12. Absolutely positioned
+                   so the scrolled state can render a different (narrower) mark
+                   without the lockup's width determining layout. */}
               <OpsMark
-                className={`absolute inset-y-0 left-0 h-full transition-opacity duration-200 ${
+                className={`absolute inset-y-0 left-0 h-full w-auto transition-opacity duration-200 ${
                   scrolled ? 'opacity-100' : 'opacity-0 pointer-events-none'
                 }`}
                 title="OPS — home"

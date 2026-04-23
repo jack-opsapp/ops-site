@@ -118,7 +118,7 @@ export default function Footer({ commonDict, shopLive = false }: FooterProps) {
         {/* Bottom bar */}
         <div className="mt-10 pt-6 border-t border-ops-border flex flex-col md:flex-row items-start md:items-center justify-between gap-4">
           <div className="flex items-center gap-4 text-ops-text-secondary">
-            <OpsMark className="h-[15px] w-auto opacity-50" title="" />
+            <OpsMark className="h-6 w-auto opacity-50" title="" />
             <span className="font-body text-xs">
               &copy; {new Date().getFullYear()} {t('footer.copyright')}
             </span>

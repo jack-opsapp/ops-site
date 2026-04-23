@@ -88,7 +88,7 @@ export default function AssessmentOverlay({
             className="flex-shrink-0 text-ops-text-primary"
             aria-label="OPS — leadership tools"
           >
-            <OpsMark className="h-5 w-auto" title="" />
+            <OpsMark className="h-10 w-auto" title="" />
           </Link>
 
           {/* Phase label — center */}
