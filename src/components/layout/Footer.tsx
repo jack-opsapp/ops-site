@@ -5,9 +5,9 @@
  */
 
 import Link from 'next/link';
-import Image from 'next/image';
 import NewsletterSignup from '@/components/shared/NewsletterSignup';
 import LanguageToggle from './LanguageToggle';
+import { OpsMark } from '@/components/brand/OpsMark';
 import type { Dictionary } from '@/i18n/types';
 
 interface FooterProps {
@@ -117,15 +117,9 @@ export default function Footer({ commonDict, shopLive = false }: FooterProps) {
 
         {/* Bottom bar */}
         <div className="mt-10 pt-6 border-t border-ops-border flex flex-col md:flex-row items-start md:items-center justify-between gap-4">
-          <div className="flex items-center gap-4">
-            <Image
-              src="/brand/ops-mark.svg"
-              alt="OPS"
-              width={36}
-              height={15}
-              className="object-contain opacity-50"
-            />
-            <span className="font-body text-ops-text-secondary text-xs">
+          <div className="flex items-center gap-4 text-ops-text-secondary">
+            <OpsMark className="h-[15px] w-auto opacity-50" title="" />
+            <span className="font-body text-xs">
               &copy; {new Date().getFullYear()} {t('footer.copyright')}
             </span>
           </div>

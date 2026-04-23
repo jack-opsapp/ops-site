@@ -16,7 +16,7 @@
 'use client';
 
 import { motion, AnimatePresence } from 'framer-motion';
-import Image from 'next/image';
+import { OpsMark } from '@/components/brand/OpsMark';
 import Link from 'next/link';
 import ProgressBar from './ProgressBar';
 import AssessmentStarfield from './AssessmentStarfield';
@@ -82,16 +82,13 @@ export default function AssessmentOverlay({
       {/* Header */}
       <header className="flex-shrink-0 relative z-10">
         <div className="flex items-center justify-between px-6 md:px-10 h-20">
-          {/* Logo */}
-          <Link href="/tools/leadership" className="flex-shrink-0">
-            <Image
-              src="/brand/ops-mark.svg"
-              alt="OPS"
-              width={48}
-              height={20}
-              className="object-contain"
-              priority
-            />
+          {/* Logo — inherits text-ops-text-primary from enclosing header */}
+          <Link
+            href="/tools/leadership"
+            className="flex-shrink-0 text-ops-text-primary"
+            aria-label="OPS — leadership tools"
+          >
+            <OpsMark className="h-5 w-auto" title="" />
           </Link>
 
           {/* Phase label — center */}

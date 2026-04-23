@@ -8,7 +8,6 @@
 
 import { useState, useEffect } from 'react';
 import Link from 'next/link';
-import Image from 'next/image';
 import { usePathname } from 'next/navigation';
 import { createClient } from '@/lib/supabase';
 import UserDropdown from './UserDropdown';
@@ -16,6 +15,8 @@ import MobileMenu from './MobileMenu';
 import Button from '@/components/ui/Button';
 import CartIcon from '@/components/shop/CartIcon';
 import CartDrawer from '@/components/shop/CartDrawer';
+import { OpsMark } from '@/components/brand/OpsMark';
+import { OpsLockup } from '@/components/brand/OpsLockup';
 import type { Dictionary } from '@/i18n/types';
 
 const baseNavLinks = [
@@ -94,18 +95,31 @@ export default function Navigation({ commonDict, shopLive = false }: NavigationP
         } : undefined}
       >
         <div className="max-w-[1400px] mx-auto px-6 md:px-10 flex items-center justify-between h-16">
-          {/* Left: Logo */}
-          <Link href="/" className="flex-shrink-0">
-            <Image
-              src="/brand/ops-mark.svg"
-              alt="OPS"
-              width={48}
-              height={20}
-              className={`object-contain transition-all duration-300 ${
-                isLightPage && !scrolled ? 'invert' : ''
-              }`}
-              priority
-            />
+          {/* Left: Lockup at rest, collapses to mark on scroll.
+               Inline SVG uses currentColor, so text color controls logo color. */}
+          <Link
+            href="/"
+            className={`flex-shrink-0 transition-colors duration-300 ${
+              isLightPage && !scrolled ? 'text-ops-text-dark' : 'text-ops-text-primary'
+            }`}
+            aria-label="OPS — home"
+          >
+            <div className="relative h-5 w-[100px]">
+              {/* Lockup (mark + wordmark) — shown at top of page */}
+              <OpsLockup
+                className={`absolute inset-0 h-full w-full transition-opacity duration-200 ${
+                  scrolled ? 'opacity-0 pointer-events-none' : 'opacity-100'
+                }`}
+                title=""
+              />
+              {/* Mark only — shown while scrolling, aligned left */}
+              <OpsMark
+                className={`absolute inset-y-0 left-0 h-full transition-opacity duration-200 ${
+                  scrolled ? 'opacity-100' : 'opacity-0 pointer-events-none'
+                }`}
+                title="OPS — home"
+              />
+            </div>
           </Link>
 
           {/* Center: Nav links — desktop only */}
