@@ -64,7 +64,7 @@ export default async function RootLayout({
                 "@type": "Organization",
                 "name": "OPS",
                 "url": "https://opsapp.co",
-                "logo": "https://opsapp.co/images/ops-logo-white.png",
+                "logo": "https://opsapp.co/brand/ops-lockup-email.png",
                 "description": "Field-first job management app built by trades for service-based businesses and field crews. Project tracking, crew scheduling, photo documentation, and invoicing — no training required.",
                 "founder": {
                   "@type": "Person",

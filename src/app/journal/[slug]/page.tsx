@@ -96,7 +96,7 @@ export default async function JournalPostPage({
       url: 'https://opsapp.co',
       logo: {
         '@type': 'ImageObject',
-        url: 'https://opsapp.co/images/ops-logo-white.png',
+        url: 'https://opsapp.co/brand/ops-lockup-email.png',
       },
     },
     image: post.thumbnail_url,

@@ -97,7 +97,7 @@ export default function Navigation({ commonDict, shopLive = false }: NavigationP
           {/* Left: Logo */}
           <Link href="/" className="flex-shrink-0">
             <Image
-              src="/images/ops-logo-white.png"
+              src="/brand/ops-mark.svg"
               alt="OPS"
               width={48}
               height={20}

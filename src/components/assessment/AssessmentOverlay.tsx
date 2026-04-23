@@ -85,7 +85,7 @@ export default function AssessmentOverlay({
           {/* Logo */}
           <Link href="/tools/leadership" className="flex-shrink-0">
             <Image
-              src="/images/ops-logo-white.png"
+              src="/brand/ops-mark.svg"
               alt="OPS"
               width={48}
               height={20}

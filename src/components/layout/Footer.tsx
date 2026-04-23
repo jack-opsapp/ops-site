@@ -119,7 +119,7 @@ export default function Footer({ commonDict, shopLive = false }: FooterProps) {
         <div className="mt-10 pt-6 border-t border-ops-border flex flex-col md:flex-row items-start md:items-center justify-between gap-4">
           <div className="flex items-center gap-4">
             <Image
-              src="/images/ops-logo-white.png"
+              src="/brand/ops-mark.svg"
               alt="OPS"
               width={36}
               height={15}
