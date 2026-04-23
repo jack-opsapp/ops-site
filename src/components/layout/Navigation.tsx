@@ -94,17 +94,18 @@ export default function Navigation({ commonDict, shopLive = false }: NavigationP
         } : undefined}
       >
         <div className="max-w-[1400px] mx-auto px-6 md:px-10 flex items-center justify-between h-16">
-          {/* Left: single OpsLogo that morphs between full lockup (at rest) and
-               mark-only (scrolled). Mark stays anchored at the left; wordmark
-               wipes in/out from the right via container width animation.
-               300ms `cubic-bezier(0.22, 1, 0.36, 1)` per spec v2 panel tier.
-               Inline SVG inherits currentColor from the Link's text-* class. */}
+          {/* Left: OpsLogo inside a fixed-width slot. The slot reserves the
+               lockup-width (76px at size 48 = 48 × 1.591) so the flex layout
+               never recalculates when the logo collapses — nav items to the
+               right stay put. The logo itself still morphs within the slot:
+               mark anchored at left, wordmark dissolves to the right. */}
           <Link
             href="/"
-            className={`flex-shrink-0 transition-colors duration-300 ${
+            className={`flex-shrink-0 flex items-center transition-colors duration-300 ${
               isLightPage && !scrolled ? 'text-ops-text-dark' : 'text-ops-text-primary'
             }`}
             aria-label="OPS — home"
+            style={{ width: '76px' }}
           >
             <OpsLogo size={48} collapsed={scrolled} title="OPS — home" />
           </Link>
