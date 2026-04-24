@@ -38,6 +38,14 @@ export async function generateMetadata(): Promise<Metadata> {
         es: 'https://opsapp.co?lang=es',
       },
     },
+    // Color-scheme-aware SVG favicons. app/apple-icon.png + app/favicon.ico
+    // auto-convention files remain as raster fallbacks.
+    icons: {
+      icon: [
+        { url: '/brand/icon-light.svg', media: '(prefers-color-scheme: light)', type: 'image/svg+xml' },
+        { url: '/brand/icon-dark.svg', media: '(prefers-color-scheme: dark)', type: 'image/svg+xml' },
+      ],
+    },
   };
 }
 
