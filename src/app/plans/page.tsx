@@ -17,8 +17,11 @@ export async function generateMetadata(): Promise<Metadata> {
   return {
     title: locale === 'es' ? 'Precios — Planes de OPS' : 'Pricing — OPS Plans',
     description: locale === 'es'
-      ? 'Empieza gratis. Sube de plan cuando estés listo. Desde $0/mes hasta $190/mes según el tamaño de tu equipo. Todas las funciones incluidas en cada plan. Sin tarjeta de crédito.'
-      : 'OPS pricing starts free. Plans from $0 to $190/month based on crew size. Every feature included at every tier — project management, scheduling, photo docs, invoicing. No credit card required.',
+      ? 'Empieza gratis. Planes desde $0 hasta $190/mes según el tamaño de tu equipo. Todas las funciones incluidas. Sin tarjeta de crédito.'
+      : 'Start free. Plans from $0 to $190/month based on crew size. Every feature included at every tier. No credit card. No contract.',
+    openGraph: {
+      url: 'https://opsapp.co/plans',
+    },
     alternates: {
       canonical: 'https://opsapp.co/plans',
     },
@@ -115,7 +118,6 @@ export default async function PlansPage() {
 
   return (
     <>
-      {/* FAQ structured data for rich results */}
       <script
         type="application/ld+json"
         dangerouslySetInnerHTML={{
@@ -130,6 +132,69 @@ export default async function PlansPage() {
                 text: item.answer,
               },
             })),
+          }),
+        }}
+      />
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{
+          __html: JSON.stringify({
+            '@context': 'https://schema.org',
+            '@type': 'SoftwareApplication',
+            name: 'OPS',
+            applicationCategory: 'BusinessApplication',
+            operatingSystem: 'iOS, Web',
+            url: 'https://opsapp.co',
+            offers: [
+              {
+                '@type': 'Offer',
+                name: 'Free Trial',
+                price: '0',
+                priceCurrency: 'USD',
+                description: 'Full access, up to 10 users. No credit card required.',
+                availability: 'https://schema.org/InStock',
+              },
+              {
+                '@type': 'Offer',
+                name: 'Starter',
+                price: '90',
+                priceCurrency: 'USD',
+                description: 'For crews of 11-25 users. All features included.',
+                availability: 'https://schema.org/InStock',
+                priceValidUntil: '2026-12-31',
+              },
+              {
+                '@type': 'Offer',
+                name: 'Team',
+                price: '140',
+                priceCurrency: 'USD',
+                description: 'For crews of 26-50 users. All features included.',
+                availability: 'https://schema.org/InStock',
+                priceValidUntil: '2026-12-31',
+              },
+              {
+                '@type': 'Offer',
+                name: 'Business',
+                price: '190',
+                priceCurrency: 'USD',
+                description: 'For crews of 51-100 users. All features included.',
+                availability: 'https://schema.org/InStock',
+                priceValidUntil: '2026-12-31',
+              },
+            ],
+          }),
+        }}
+      />
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{
+          __html: JSON.stringify({
+            '@context': 'https://schema.org',
+            '@type': 'BreadcrumbList',
+            itemListElement: [
+              { '@type': 'ListItem', position: 1, name: 'Home', item: 'https://opsapp.co' },
+              { '@type': 'ListItem', position: 2, name: 'Pricing', item: 'https://opsapp.co/plans' },
+            ],
           }),
         }}
       />

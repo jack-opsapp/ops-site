@@ -9,6 +9,9 @@ export const metadata: Metadata = {
   title: 'Industries We Serve | OPS',
   description:
     'OPS is built for trade crews — landscaping, concrete, flooring, drywall, pool service, tree service, appliance repair, and more. Find your trade.',
+  openGraph: {
+    url: 'https://opsapp.co/industries',
+  },
   alternates: {
     canonical: 'https://opsapp.co/industries',
   },

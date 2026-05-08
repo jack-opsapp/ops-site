@@ -13,6 +13,9 @@ export async function generateMetadata(): Promise<Metadata> {
     description: locale === 'es'
       ? 'Obtén ayuda con OPS. Descarga la app, lee las preguntas frecuentes, o habla directamente con el fundador. Sin tickets de soporte, sin chatbots.'
       : 'Get help with OPS. Download the app, read the FAQ, or talk directly to the founder. No support tickets. No chatbots. Real answers from the person who built it.',
+    openGraph: {
+      url: 'https://opsapp.co/resources',
+    },
     alternates: {
       canonical: 'https://opsapp.co/resources',
     },

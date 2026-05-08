@@ -9,6 +9,9 @@ export const metadata: Metadata = {
   title: 'Compare OPS to Competitors | OPS',
   description:
     'See how OPS stacks up against ServiceTitan, Jobber, Housecall Pro, BuildOps, FieldPulse, Simpro, FieldEdge, and Zuper. Feature comparisons, pricing breakdowns, and honest assessments.',
+  openGraph: {
+    url: 'https://opsapp.co/compare',
+  },
   alternates: {
     canonical: 'https://opsapp.co/compare',
   },

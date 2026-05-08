@@ -14,8 +14,9 @@ export const revalidate = 300;
 
 export const metadata: Metadata = {
   title: 'OPS Gear — Shop',
-  description: 'Rep the brand that runs your business. Apparel, accessories, and drinkware from OPS.',
+  description: 'Rep the brand that runs your business. Hats, tees, hoodies, and drinkware built for the job site. Free shipping on orders over $75.',
   openGraph: {
+    url: 'https://opsapp.co/shop',
     title: 'OPS Gear — Shop',
     description: 'Rep the brand that runs your business.',
   },

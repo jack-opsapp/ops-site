@@ -21,6 +21,9 @@ export async function generateMetadata(): Promise<Metadata> {
     description: locale === 'es'
       ? 'La app de gestión de trabajo que tu equipo realmente usará. Programación de equipos, seguimiento de proyectos, documentación fotográfica. Construida por un profesional del oficio. Gratis para empezar.'
       : 'The job management app your crew will actually use. Crew scheduling, project tracking, photo documentation. Built by trades who scaled to $1.6M. Free to start.',
+    openGraph: {
+      url: 'https://opsapp.co',
+    },
     alternates: {
       canonical: 'https://opsapp.co',
     },

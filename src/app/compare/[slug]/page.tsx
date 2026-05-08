@@ -3,7 +3,7 @@
 import type { Metadata } from 'next';
 import Script from 'next/script';
 import { notFound } from 'next/navigation';
-import { getComparisonBySlug, getAllComparisonSlugs } from '@/lib/comparisons';
+import { getComparisonBySlug, getAllComparisonSlugs, getAllComparisons } from '@/lib/comparisons';
 import type { ComparisonContent } from '@/lib/comparisons';
 import IndustryHero from '@/components/industries/IndustryHero';
 import IndustryPainPoints from '@/components/industries/IndustryPainPoints';
@@ -12,6 +12,8 @@ import IndustryComparison from '@/components/industries/IndustryComparison';
 import IndustryFAQ from '@/components/industries/IndustryFAQ';
 import IndustryCTA from '@/components/industries/IndustryCTA';
 import CompareVerdict from '@/components/compare/CompareVerdict';
+import RelatedComparisons from '@/components/compare/RelatedComparisons';
+import Breadcrumbs from '@/components/shared/Breadcrumbs';
 import { universalFAQ } from '@/lib/industries';
 
 interface PageProps {
@@ -76,6 +78,9 @@ export async function generateMetadata({ params }: PageProps): Promise<Metadata>
   return {
     title: content.meta.title,
     description: content.meta.description,
+    openGraph: {
+      url: `https://opsapp.co/compare/${slug}`,
+    },
     alternates: {
       canonical: `https://opsapp.co/compare/${slug}`,
     },
@@ -132,6 +137,11 @@ export default async function ComparePage({ params }: PageProps) {
         {JSON.stringify(breadcrumbJsonLd)}
       </Script>
 
+      <Breadcrumbs items={[
+        { label: 'Home', href: '/' },
+        { label: 'Compare', href: '/compare' },
+        { label: `OPS vs ${comparison.competitorName}` },
+      ]} />
       <IndustryHero
         sectionLabel={content.hero.sectionLabel}
         headline={content.hero.headline}
@@ -163,6 +173,13 @@ export default async function ComparePage({ params }: PageProps) {
       />
       <IndustryFAQ universalFaq={uFaq} industryFaq={content.faq} />
       <IndustryCTA headline={content.cta.headline} subtext={content.cta.subtext} />
+      <RelatedComparisons
+        currentSlug={slug}
+        comparisons={getAllComparisons().map((c) => ({
+          slug: c.slug,
+          name: c.competitorName,
+        }))}
+      />
     </>
   );
 }

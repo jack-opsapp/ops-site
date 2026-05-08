@@ -35,6 +35,8 @@ export default function Footer({ commonDict, shopLive = false }: FooterProps) {
       title: t('footer.resources'),
       links: [
         { label: t('footer.journal'), href: '/journal' },
+        { label: t('footer.industries'), href: '/industries' },
+        { label: t('footer.compare'), href: '/compare' },
         { label: t('footer.help'), href: '/resources' },
         { label: t('footer.contact'), href: '/resources#contact' },
       ],

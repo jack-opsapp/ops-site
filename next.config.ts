@@ -1,4 +1,5 @@
 import type { NextConfig } from "next";
+import { seoRedirects } from "./src/lib/seo-redirects";
 
 const nextConfig: NextConfig = {
   images: {
@@ -16,6 +17,9 @@ const nextConfig: NextConfig = {
         hostname: 'ijeekuhbatykdomumfjx.supabase.co',
       },
     ],
+  },
+  async redirects() {
+    return seoRedirects;
   },
 };
 

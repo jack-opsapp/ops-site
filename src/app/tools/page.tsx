@@ -22,6 +22,9 @@ export async function generateMetadata(): Promise<Metadata> {
     description: locale === 'es'
       ? 'Herramientas gratuitas para profesionales de los oficios. Evaluación de liderazgo con IA, cursos para negocios de construcción y calculadoras de estimación.'
       : 'Free tools built for trades professionals. AI-powered leadership assessment, construction business courses, and estimating calculators. No signup required.',
+    openGraph: {
+      url: 'https://opsapp.co/tools',
+    },
     alternates: {
       canonical: 'https://opsapp.co/tools',
     },

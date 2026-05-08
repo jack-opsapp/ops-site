@@ -18,6 +18,7 @@ import { getPostBySlug, getAllLiveSlugs } from '@/lib/blog';
 import PostHeader from '@/components/journal/PostHeader';
 import PostContent from '@/components/journal/PostContent';
 import PostFAQ from '@/components/journal/PostFAQ';
+import Breadcrumbs from '@/components/shared/Breadcrumbs';
 
 export const revalidate = 300;
 
@@ -50,6 +51,7 @@ export async function generateMetadata({
     title: post.meta_title || post.title,
     description: post.summary || post.teaser || undefined,
     openGraph: {
+      url: `https://opsapp.co/journal/${post.slug}`,
       title: post.meta_title || post.title,
       description: post.summary || post.teaser || undefined,
       images: post.thumbnail_url
@@ -136,25 +138,29 @@ export default async function JournalPostPage({
 
   return (
     <div className="bg-ops-background-light min-h-screen">
-      {/* Article structured data */}
       <script
         type="application/ld+json"
         dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
       />
-
-      {/* Breadcrumb structured data — values from trusted DB fields only */}
       <script
         type="application/ld+json"
         dangerouslySetInnerHTML={{ __html: JSON.stringify(breadcrumbLd) }}
       />
-
-      {/* FAQ structured data (separate schema) */}
       {faqSchema && (
         <script
           type="application/ld+json"
           dangerouslySetInnerHTML={{ __html: JSON.stringify(faqSchema) }}
         />
       )}
+
+      <Breadcrumbs
+        variant="light"
+        items={[
+          { label: 'Home', href: '/' },
+          { label: 'Journal', href: '/journal' },
+          { label: post.title },
+        ]}
+      />
 
       <PostHeader post={post} />
 

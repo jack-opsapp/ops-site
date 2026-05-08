@@ -15,6 +15,9 @@ import { getAllLivePosts, getBlogCategories } from '@/lib/blog';
 export const metadata: Metadata = {
   title: 'Journal — OPS Blog',
   description: 'Straight talk on running a trades business. Job costing, crew management, selling your company, and lessons from the field. Written by contractors, not consultants.',
+  openGraph: {
+    url: 'https://opsapp.co/journal',
+  },
   alternates: {
     canonical: 'https://opsapp.co/journal',
   },

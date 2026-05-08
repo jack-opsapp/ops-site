@@ -32,8 +32,11 @@ export async function generateMetadata(): Promise<Metadata> {
   return {
     title: locale === 'es' ? 'Plataforma — Funciones de OPS' : 'Platform — OPS Features',
     description: locale === 'es'
-      ? 'Gestión de proyectos, programación de equipos, marcado de fotos, facturación, pipeline e inventario. Cada herramienta que un contratista necesita en una sola app. Sin entrenamiento.'
-      : 'Project management, crew scheduling, photo markup, invoicing, pipeline, and inventory. Every tool a trades business needs in one app. No training required. See how OPS compares to Jobber and ServiceTitan.',
+      ? 'Gestión de proyectos, programación, fotos, facturación, pipeline e inventario. Todo lo que tu equipo necesita en una app. Sin entrenamiento.'
+      : 'Project tracking, crew scheduling, photo markup, invoicing, pipeline, and inventory. One app your crew actually opens. No training required.',
+    openGraph: {
+      url: 'https://opsapp.co/platform',
+    },
     alternates: {
       canonical: 'https://opsapp.co/platform',
     },

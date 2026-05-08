@@ -6,8 +6,8 @@ export default function robots(): MetadataRoute.Robots {
       {
         userAgent: '*',
         allow: '/',
+        disallow: ['/api/', '/_next/', '/shop/checkout', '/shop/confirmation', '/tools/leadership/results/', '/platform/screens-dev'],
       },
-      // Explicitly allow AI search bots for AEO visibility
       {
         userAgent: 'GPTBot',
         allow: '/',
@@ -30,6 +30,26 @@ export default function robots(): MetadataRoute.Robots {
       },
       {
         userAgent: 'Applebot-Extended',
+        allow: '/',
+      },
+      {
+        userAgent: 'Bytespider',
+        allow: '/',
+      },
+      {
+        userAgent: 'CCBot',
+        allow: '/',
+      },
+      {
+        userAgent: 'Amazonbot',
+        allow: '/',
+      },
+      {
+        userAgent: 'YouBot',
+        allow: '/',
+      },
+      {
+        userAgent: 'cohere-ai',
         allow: '/',
       },
     ],

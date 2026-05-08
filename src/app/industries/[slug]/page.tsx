@@ -4,7 +4,7 @@ import type { Metadata } from 'next';
 import Script from 'next/script';
 import { notFound } from 'next/navigation';
 import { getLocale } from '@/i18n/server';
-import { getIndustryBySlug, getAllIndustrySlugs, universalFAQ } from '@/lib/industries';
+import { getIndustryBySlug, getAllIndustrySlugs, getAllIndustries, universalFAQ } from '@/lib/industries';
 import type { IndustryContent } from '@/lib/industries';
 import IndustryHero from '@/components/industries/IndustryHero';
 import IndustryPainPoints from '@/components/industries/IndustryPainPoints';
@@ -12,6 +12,8 @@ import IndustrySolutions from '@/components/industries/IndustrySolutions';
 import IndustryComparison from '@/components/industries/IndustryComparison';
 import IndustryFAQ from '@/components/industries/IndustryFAQ';
 import IndustryCTA from '@/components/industries/IndustryCTA';
+import RelatedIndustries from '@/components/industries/RelatedIndustries';
+import Breadcrumbs from '@/components/shared/Breadcrumbs';
 
 interface PageProps {
   params: Promise<{ slug: string }>;
@@ -36,6 +38,18 @@ function buildFaqJsonLd(allFaq: Array<{ question: string; answer: string }>) {
   };
 }
 
+function buildBreadcrumbJsonLd(industryName: string, slug: string) {
+  return {
+    '@context': 'https://schema.org',
+    '@type': 'BreadcrumbList',
+    itemListElement: [
+      { '@type': 'ListItem', position: 1, name: 'Home', item: 'https://opsapp.co' },
+      { '@type': 'ListItem', position: 2, name: 'Industries', item: 'https://opsapp.co/industries' },
+      { '@type': 'ListItem', position: 3, name: industryName, item: `https://opsapp.co/industries/${slug}` },
+    ],
+  };
+}
+
 export async function generateMetadata({ params }: PageProps): Promise<Metadata> {
   const { slug } = await params;
   const industry = getIndustryBySlug(slug);
@@ -47,6 +61,9 @@ export async function generateMetadata({ params }: PageProps): Promise<Metadata>
   return {
     title: content.meta.title,
     description: content.meta.description,
+    openGraph: {
+      url: `https://opsapp.co/industries/${slug}`,
+    },
     alternates: {
       canonical: `https://opsapp.co/industries/${slug}`,
     },
@@ -64,6 +81,7 @@ export default async function IndustryPage({ params }: PageProps) {
 
   const allFaq = [...uFaq, ...content.faq];
   const faqJsonLd = buildFaqJsonLd(allFaq);
+  const breadcrumbJsonLd = buildBreadcrumbJsonLd(content.hero.sectionLabel, slug);
 
   return (
     <>
@@ -74,6 +92,18 @@ export default async function IndustryPage({ params }: PageProps) {
       >
         {JSON.stringify(faqJsonLd)}
       </Script>
+      <Script
+        id={`breadcrumb-jsonld-${slug}`}
+        type="application/ld+json"
+        strategy="beforeInteractive"
+      >
+        {JSON.stringify(breadcrumbJsonLd)}
+      </Script>
+      <Breadcrumbs items={[
+        { label: 'Home', href: '/' },
+        { label: 'Industries', href: '/industries' },
+        { label: content.hero.sectionLabel },
+      ]} />
       <IndustryHero
         sectionLabel={content.hero.sectionLabel}
         headline={content.hero.headline}
@@ -98,6 +128,13 @@ export default async function IndustryPage({ params }: PageProps) {
       />
       <IndustryFAQ universalFaq={uFaq} industryFaq={content.faq} />
       <IndustryCTA headline={content.cta.headline} subtext={content.cta.subtext} />
+      <RelatedIndustries
+        currentSlug={slug}
+        industries={getAllIndustries().map((ind) => ({
+          slug: ind.slug,
+          label: (ind.content[locale] ?? ind.content.en).hero.sectionLabel,
+        }))}
+      />
     </>
   );
 }
