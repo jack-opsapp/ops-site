@@ -8,7 +8,7 @@ import WhatIsOps from '@/components/home/WhatIsOps';
 import TradesList from '@/components/home/TradesList';
 import JournalPreview from '@/components/home/JournalPreview';
 import FinalCTA from '@/components/home/FinalCTA';
-import { getLocale } from '@/i18n/server';
+import { getLocale, buildLocaleAlternates, buildLocaleUrl } from '@/i18n/server';
 
 export const revalidate = 300; // ISR: 5 min for blog data
 
@@ -22,11 +22,9 @@ export async function generateMetadata(): Promise<Metadata> {
       ? 'La app de gestión de trabajo que tu equipo realmente usará. Programación de equipos, seguimiento de proyectos, documentación fotográfica. Construida por un profesional del oficio. Gratis para empezar.'
       : 'The job management app your crew will actually use. Crew scheduling, project tracking, photo documentation. Built by trades who scaled to $1.6M. Free to start.',
     openGraph: {
-      url: 'https://opsapp.co',
+      url: buildLocaleUrl('/', locale),
     },
-    alternates: {
-      canonical: 'https://opsapp.co',
-    },
+    alternates: buildLocaleAlternates('/', locale),
   };
 }
 

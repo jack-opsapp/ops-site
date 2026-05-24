@@ -4,18 +4,21 @@ import type { Metadata } from 'next';
 import Link from 'next/link';
 import { getAllIndustries } from '@/lib/industries';
 import { SectionLabel, FadeInUp } from '@/components/ui';
+import { getLocale, buildLocaleAlternates, buildLocaleUrl } from '@/i18n/server';
 
-export const metadata: Metadata = {
-  title: 'Industries We Serve | OPS',
-  description:
-    'OPS is built for trade crews — landscaping, concrete, flooring, drywall, pool service, tree service, appliance repair, and more. Find your trade.',
-  openGraph: {
-    url: 'https://opsapp.co/industries',
-  },
-  alternates: {
-    canonical: 'https://opsapp.co/industries',
-  },
-};
+export async function generateMetadata(): Promise<Metadata> {
+  const locale = await getLocale();
+  return {
+    title: locale === 'es' ? 'Oficios que Servimos | OPS' : 'Industries We Serve | OPS',
+    description: locale === 'es'
+      ? 'OPS está construido para equipos de oficio — jardinería, concreto, pisos, drywall, servicio de piscinas, servicio de árboles, reparación de electrodomésticos, y más. Encuentra tu oficio.'
+      : 'OPS is built for trade crews — landscaping, concrete, flooring, drywall, pool service, tree service, appliance repair, and more. Find your trade.',
+    openGraph: {
+      url: buildLocaleUrl('/industries', locale),
+    },
+    alternates: buildLocaleAlternates('/industries', locale),
+  };
+}
 
 export default function IndustriesPage() {
   const industries = getAllIndustries();

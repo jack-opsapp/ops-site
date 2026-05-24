@@ -11,17 +11,21 @@ import JournalHero from '@/components/journal/JournalHero';
 import PostList from '@/components/journal/PostList';
 import NewsletterSignup from '@/components/shared/NewsletterSignup';
 import { getAllLivePosts, getBlogCategories } from '@/lib/blog';
+import { getLocale, buildLocaleAlternates, buildLocaleUrl } from '@/i18n/server';
 
-export const metadata: Metadata = {
-  title: 'Journal — OPS Blog',
-  description: 'Straight talk on running a trades business. Job costing, crew management, selling your company, and lessons from the field. Written by contractors, not consultants.',
-  openGraph: {
-    url: 'https://opsapp.co/journal',
-  },
-  alternates: {
-    canonical: 'https://opsapp.co/journal',
-  },
-};
+export async function generateMetadata(): Promise<Metadata> {
+  const locale = await getLocale();
+  return {
+    title: locale === 'es' ? 'Journal — Blog de OPS' : 'Journal — OPS Blog',
+    description: locale === 'es'
+      ? 'Conversación directa sobre cómo manejar un negocio de oficios. Costos de trabajo, manejo de equipos, vender tu empresa, y lecciones del campo. Escrito por contratistas, no consultores.'
+      : 'Straight talk on running a trades business. Job costing, crew management, selling your company, and lessons from the field. Written by contractors, not consultants.',
+    openGraph: {
+      url: buildLocaleUrl('/journal', locale),
+    },
+    alternates: buildLocaleAlternates('/journal', locale),
+  };
+}
 
 export const revalidate = 300;
 

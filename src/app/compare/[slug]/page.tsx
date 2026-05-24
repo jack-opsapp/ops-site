@@ -15,6 +15,7 @@ import CompareVerdict from '@/components/compare/CompareVerdict';
 import RelatedComparisons from '@/components/compare/RelatedComparisons';
 import Breadcrumbs from '@/components/shared/Breadcrumbs';
 import { universalFAQ } from '@/lib/industries';
+import { getLocale, buildLocaleAlternates, buildLocaleUrl } from '@/i18n/server';
 
 interface PageProps {
   params: Promise<{ slug: string }>;
@@ -74,16 +75,16 @@ export async function generateMetadata({ params }: PageProps): Promise<Metadata>
   if (!comparison) return {};
 
   const content = comparison.content.en;
+  const locale = await getLocale();
+  const path = `/compare/${slug}`;
 
   return {
     title: content.meta.title,
     description: content.meta.description,
     openGraph: {
-      url: `https://opsapp.co/compare/${slug}`,
+      url: buildLocaleUrl(path, locale),
     },
-    alternates: {
-      canonical: `https://opsapp.co/compare/${slug}`,
-    },
+    alternates: buildLocaleAlternates(path, locale),
   };
 }
 

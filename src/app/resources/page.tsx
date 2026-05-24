@@ -4,7 +4,7 @@ import QuickLinks from '@/components/resources/QuickLinks';
 import ContactBlock from '@/components/resources/ContactBlock';
 import FAQ from '@/components/shared/FAQ';
 import BottomCTA from '@/components/shared/BottomCTA';
-import { getLocale, getTDict } from '@/i18n/server';
+import { getLocale, getTDict, buildLocaleAlternates, buildLocaleUrl } from '@/i18n/server';
 
 export async function generateMetadata(): Promise<Metadata> {
   const locale = await getLocale();
@@ -14,11 +14,9 @@ export async function generateMetadata(): Promise<Metadata> {
       ? 'Obtén ayuda con OPS. Descarga la app, lee las preguntas frecuentes, o habla directamente con el fundador. Sin tickets de soporte, sin chatbots.'
       : 'Get help with OPS. Download the app, read the FAQ, or talk directly to the founder. No support tickets. No chatbots. Real answers from the person who built it.',
     openGraph: {
-      url: 'https://opsapp.co/resources',
+      url: buildLocaleUrl('/resources', locale),
     },
-    alternates: {
-      canonical: 'https://opsapp.co/resources',
-    },
+    alternates: buildLocaleAlternates('/resources', locale),
   };
 }
 

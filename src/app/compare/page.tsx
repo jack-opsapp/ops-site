@@ -4,18 +4,21 @@ import type { Metadata } from 'next';
 import Link from 'next/link';
 import { getAllComparisons } from '@/lib/comparisons';
 import { SectionLabel, FadeInUp } from '@/components/ui';
+import { getLocale, buildLocaleAlternates, buildLocaleUrl } from '@/i18n/server';
 
-export const metadata: Metadata = {
-  title: 'Compare OPS to Competitors | OPS',
-  description:
-    'See how OPS stacks up against ServiceTitan, Jobber, Housecall Pro, BuildOps, FieldPulse, Simpro, FieldEdge, and Zuper. Feature comparisons, pricing breakdowns, and honest assessments.',
-  openGraph: {
-    url: 'https://opsapp.co/compare',
-  },
-  alternates: {
-    canonical: 'https://opsapp.co/compare',
-  },
-};
+export async function generateMetadata(): Promise<Metadata> {
+  const locale = await getLocale();
+  return {
+    title: locale === 'es' ? 'Compara OPS con la Competencia | OPS' : 'Compare OPS to Competitors | OPS',
+    description: locale === 'es'
+      ? 'Mira cómo OPS se compara con ServiceTitan, Jobber, Housecall Pro, BuildOps, FieldPulse, Simpro, FieldEdge y Zuper. Comparaciones de funciones, precios desglosados, evaluaciones honestas.'
+      : 'See how OPS stacks up against ServiceTitan, Jobber, Housecall Pro, BuildOps, FieldPulse, Simpro, FieldEdge, and Zuper. Feature comparisons, pricing breakdowns, and honest assessments.',
+    openGraph: {
+      url: buildLocaleUrl('/compare', locale),
+    },
+    alternates: buildLocaleAlternates('/compare', locale),
+  };
+}
 
 export default function ComparePage() {
   const comparisons = getAllComparisons();

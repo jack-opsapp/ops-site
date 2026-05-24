@@ -1,17 +1,91 @@
-import { cookies } from 'next/headers';
+import { cookies, headers } from 'next/headers';
 import type { Locale, Namespace, Dictionary } from './types';
 import { defaultLocale, supportedLocales, COOKIE_NAME } from './config';
 
 /**
- * Read the current locale from the ops-lang cookie (Server Components only).
+ * Read the current locale from request context.
+ *
+ *   1. `x-locale` header (set by middleware on every matched request)
+ *   2. `ops-lang` cookie (fallback for any context the middleware misses)
+ *   3. Default locale
+ *
+ * Calling this in a Server Component / generateMetadata opts the route
+ * into dynamic rendering — that's intentional, since locale varies by
+ * URL prefix. English pages stay statically optimized because the
+ * default branch returns immediately.
  */
 export async function getLocale(): Promise<Locale> {
-  const cookieStore = await cookies();
-  const raw = cookieStore.get(COOKIE_NAME)?.value;
-  if (raw && supportedLocales.includes(raw as Locale)) {
-    return raw as Locale;
+  try {
+    const h = await headers();
+    const headerLocale = h.get('x-locale');
+    if (headerLocale && supportedLocales.includes(headerLocale as Locale)) {
+      return headerLocale as Locale;
+    }
+  } catch {
+    // headers() may throw in non-request contexts (e.g. build-time prerender) —
+    // fall through to the cookie / default path.
   }
+
+  try {
+    const cookieStore = await cookies();
+    const raw = cookieStore.get(COOKIE_NAME)?.value;
+    if (raw && supportedLocales.includes(raw as Locale)) {
+      return raw as Locale;
+    }
+  } catch {
+    // ignore
+  }
+
   return defaultLocale;
+}
+
+/**
+ * Read the original request pathname (set by middleware). Useful for
+ * generating locale alternates without each page passing its own path in.
+ */
+export async function getPathname(): Promise<string> {
+  try {
+    const h = await headers();
+    return h.get('x-pathname') ?? '/';
+  } catch {
+    return '/';
+  }
+}
+
+/**
+ * Build canonical + hreflang alternates for a given page path and locale.
+ *
+ * - `path`            — the canonical English path (e.g. '/platform').
+ * - `currentLocale`   — drives which URL becomes the canonical for this
+ *                       specific render. Each locale's page has its own
+ *                       canonical pointing back at itself.
+ *
+ * Output shape matches Next.js's `alternates` metadata field.
+ */
+export function buildLocaleAlternates(path: string, currentLocale: Locale) {
+  const base = 'https://opsapp.co';
+  const cleanPath = path === '/' ? '' : path;
+  const enUrl = `${base}${cleanPath}` || base;
+  const esUrl = `${base}/es${cleanPath}`;
+  return {
+    canonical: currentLocale === 'es' ? esUrl : enUrl,
+    languages: {
+      en: enUrl,
+      es: esUrl,
+      'x-default': enUrl,
+    },
+  };
+}
+
+/**
+ * Build a fully-qualified URL for a given path in a given locale.
+ * Helper for openGraph.url, structured data, etc.
+ */
+export function buildLocaleUrl(path: string, locale: Locale): string {
+  const base = 'https://opsapp.co';
+  const cleanPath = path === '/' ? '' : path;
+  if (locale === 'es') return `${base}/es${cleanPath}`;
+  return `${base}${cleanPath}` || base;
 }
 
 /**
@@ -19,13 +93,11 @@ export async function getLocale(): Promise<Locale> {
  */
 async function loadDictionary(locale: Locale, namespace: Namespace): Promise<Dictionary> {
   const mod = await import(`./dictionaries/${locale}/${namespace}.json`);
-  // Handle both bundler styles: { default: {...} } or direct object
   return (mod.default ?? mod) as Dictionary;
 }
 
 /**
  * Get the full dictionary object for a namespace (Server Components).
- * Use this when you need to pass multiple keys as props.
  */
 export async function getTDict(namespace: Namespace): Promise<Dictionary> {
   const locale = await getLocale();
@@ -34,7 +106,6 @@ export async function getTDict(namespace: Namespace): Promise<Dictionary> {
 
 /**
  * Get a translation function for a namespace (Server Components).
- * Returns a function t(key) that looks up a key in the dictionary.
  */
 export async function getT(namespace: Namespace): Promise<(key: string) => string> {
   const dict = await getTDict(namespace);

@@ -4,12 +4,21 @@ import { SpeedInsights } from '@vercel/speed-insights/next';
 import { mohave, jetbrainsMono, cakemono } from '@/lib/fonts';
 import PageLayout from '@/components/layout/PageLayout';
 import GoogleAnalytics from '@/components/layout/GoogleAnalytics';
-import { getLocale } from '@/i18n/server';
+import { getLocale, getPathname, buildLocaleAlternates, buildLocaleUrl } from '@/i18n/server';
 import { LanguageProvider } from '@/i18n/client';
 import './globals.css';
 
 export async function generateMetadata(): Promise<Metadata> {
   const locale = await getLocale();
+  const pathname = await getPathname();
+  // The middleware-original pathname includes the /es prefix; strip it
+  // for canonical/alternate computation since alternates are derived
+  // from the canonical English path.
+  const enPath = pathname.startsWith('/es/')
+    ? pathname.slice(3)
+    : pathname === '/es'
+      ? '/'
+      : pathname;
   return {
     metadataBase: new URL('https://opsapp.co'),
     title: {
@@ -24,7 +33,7 @@ export async function generateMetadata(): Promise<Metadata> {
     openGraph: {
       type: 'website',
       locale: locale === 'es' ? 'es_MX' : 'en_US',
-      url: 'https://opsapp.co',
+      url: buildLocaleUrl(enPath, locale),
       siteName: 'OPS',
       images: [{ url: 'https://opsapp.co/images/og-image.png', width: 1200, height: 630, alt: 'OPS — Job management built for trades crews' }],
     },
@@ -32,12 +41,7 @@ export async function generateMetadata(): Promise<Metadata> {
       card: 'summary_large_image',
       images: ['https://opsapp.co/images/og-image.png'],
     },
-    alternates: {
-      languages: {
-        en: 'https://opsapp.co',
-        es: 'https://opsapp.co?lang=es',
-      },
-    },
+    alternates: buildLocaleAlternates(enPath, locale),
     // Color-scheme-aware SVG favicons. app/apple-icon.png + app/favicon.ico
     // auto-convention files remain as raster fallbacks.
     icons: {

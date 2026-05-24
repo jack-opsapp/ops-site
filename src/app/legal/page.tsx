@@ -12,7 +12,7 @@ import { SectionLabel } from '@/components/ui';
 import LegalTabs from '@/components/legal/LegalTabs';
 import LegalContent from '@/components/legal/LegalContent';
 import { legalDocuments } from '@/lib/legal-content';
-import { getLocale, getTDict } from '@/i18n/server';
+import { getLocale, getTDict, buildLocaleUrl } from '@/i18n/server';
 
 export async function generateMetadata(): Promise<Metadata> {
   const locale = await getLocale();
@@ -22,8 +22,10 @@ export async function generateMetadata(): Promise<Metadata> {
       ? 'Términos de Servicio, Política de Privacidad, EULA y Acuerdo de Procesamiento de Datos de OPS.'
       : 'OPS Terms of Service, Privacy Policy, End User License Agreement, and Data Processing Agreement.',
     openGraph: {
-      url: 'https://opsapp.co/legal',
+      url: buildLocaleUrl('/legal', locale),
     },
+    // Legal docs are English-only; both locales canonicalize to the
+    // English URL (no Spanish translation exists).
     alternates: {
       canonical: 'https://opsapp.co/legal',
     },

@@ -3,7 +3,7 @@ import CompanyHero from '@/components/company/CompanyHero';
 import OriginStory from '@/components/company/OriginStory';
 import Values from '@/components/company/Values';
 import BottomCTA from '@/components/shared/BottomCTA';
-import { getLocale, getTDict } from '@/i18n/server';
+import { getLocale, getTDict, buildLocaleAlternates, buildLocaleUrl } from '@/i18n/server';
 
 export async function generateMetadata(): Promise<Metadata> {
   const locale = await getLocale();
@@ -13,11 +13,9 @@ export async function generateMetadata(): Promise<Metadata> {
       ? 'OPS fue creado por un contratista que escaló de $0 a $1.6M en 4 años. Probó Jobber, ServiceTitan, Housecall Pro. Construyó el suyo.'
       : 'Built by a contractor who scaled from $0 to $1.6M in 4 years. Tried Jobber, ServiceTitan, Housecall Pro. Crew refused to use them. So he built OPS.',
     openGraph: {
-      url: 'https://opsapp.co/company',
+      url: buildLocaleUrl('/company', locale),
     },
-    alternates: {
-      canonical: 'https://opsapp.co/company',
-    },
+    alternates: buildLocaleAlternates('/company', locale),
   };
 }
 

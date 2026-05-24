@@ -3,7 +3,7 @@
 import type { Metadata } from 'next';
 import Script from 'next/script';
 import { notFound } from 'next/navigation';
-import { getLocale } from '@/i18n/server';
+import { getLocale, buildLocaleAlternates, buildLocaleUrl } from '@/i18n/server';
 import { getIndustryBySlug, getAllIndustrySlugs, getAllIndustries, universalFAQ } from '@/lib/industries';
 import type { IndustryContent } from '@/lib/industries';
 import IndustryHero from '@/components/industries/IndustryHero';
@@ -58,15 +58,14 @@ export async function generateMetadata({ params }: PageProps): Promise<Metadata>
   const locale = await getLocale();
   const content: IndustryContent = industry.content[locale] ?? industry.content.en;
 
+  const path = `/industries/${slug}`;
   return {
     title: content.meta.title,
     description: content.meta.description,
     openGraph: {
-      url: `https://opsapp.co/industries/${slug}`,
+      url: buildLocaleUrl(path, locale),
     },
-    alternates: {
-      canonical: `https://opsapp.co/industries/${slug}`,
-    },
+    alternates: buildLocaleAlternates(path, locale),
   };
 }
 

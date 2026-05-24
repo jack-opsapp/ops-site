@@ -13,7 +13,7 @@ import {
   CalculatorIllustration,
 } from '@/components/tools/ToolIllustrations';
 import BottomCTA from '@/components/shared/BottomCTA';
-import { getLocale, getTDict } from '@/i18n/server';
+import { getLocale, getTDict, buildLocaleAlternates, buildLocaleUrl } from '@/i18n/server';
 
 export async function generateMetadata(): Promise<Metadata> {
   const locale = await getLocale();
@@ -23,11 +23,9 @@ export async function generateMetadata(): Promise<Metadata> {
       ? 'Herramientas gratuitas para profesionales de los oficios. Evaluación de liderazgo con IA, cursos para negocios de construcción y calculadoras de estimación.'
       : 'Free tools built for trades professionals. AI-powered leadership assessment, construction business courses, and estimating calculators. No signup required.',
     openGraph: {
-      url: 'https://opsapp.co/tools',
+      url: buildLocaleUrl('/tools', locale),
     },
-    alternates: {
-      canonical: 'https://opsapp.co/tools',
-    },
+    alternates: buildLocaleAlternates('/tools', locale),
   };
 }
 

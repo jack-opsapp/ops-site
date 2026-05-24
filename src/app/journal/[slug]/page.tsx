@@ -19,6 +19,7 @@ import PostHeader from '@/components/journal/PostHeader';
 import PostContent from '@/components/journal/PostContent';
 import PostFAQ from '@/components/journal/PostFAQ';
 import Breadcrumbs from '@/components/shared/Breadcrumbs';
+import { getLocale, buildLocaleAlternates, buildLocaleUrl } from '@/i18n/server';
 
 export const revalidate = 300;
 
@@ -47,11 +48,14 @@ export async function generateMetadata({
     return { title: 'Post Not Found' };
   }
 
+  const locale = await getLocale();
+  const path = `/journal/${post.slug}`;
+
   return {
     title: post.meta_title || post.title,
     description: post.summary || post.teaser || undefined,
     openGraph: {
-      url: `https://opsapp.co/journal/${post.slug}`,
+      url: buildLocaleUrl(path, locale),
       title: post.meta_title || post.title,
       description: post.summary || post.teaser || undefined,
       images: post.thumbnail_url
@@ -61,9 +65,7 @@ export async function generateMetadata({
       publishedTime: post.published_at || undefined,
       authors: [post.author || 'OPS Team'],
     },
-    alternates: {
-      canonical: `https://opsapp.co/journal/${post.slug}`,
-    },
+    alternates: buildLocaleAlternates(path, locale),
   };
 }
 

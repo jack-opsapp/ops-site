@@ -9,7 +9,7 @@ import FeatureBlock from '@/components/platform/FeatureBlock';
 import ComparisonSection from '@/components/platform/ComparisonSection';
 import BottomCTA from '@/components/shared/BottomCTA';
 import { Divider } from '@/components/ui';
-import { getLocale, getTDict } from '@/i18n/server';
+import { getLocale, getTDict, buildLocaleAlternates, buildLocaleUrl } from '@/i18n/server';
 import {
   ProjectManagementIllustration,
   SchedulingIllustration,
@@ -35,11 +35,9 @@ export async function generateMetadata(): Promise<Metadata> {
       ? 'Gestión de proyectos, programación, fotos, facturación, pipeline e inventario. Todo lo que tu equipo necesita en una app. Sin entrenamiento.'
       : 'Project tracking, crew scheduling, photo markup, invoicing, pipeline, and inventory. One app your crew actually opens. No training required.',
     openGraph: {
-      url: 'https://opsapp.co/platform',
+      url: buildLocaleUrl('/platform', locale),
     },
-    alternates: {
-      canonical: 'https://opsapp.co/platform',
-    },
+    alternates: buildLocaleAlternates('/platform', locale),
   };
 }
 

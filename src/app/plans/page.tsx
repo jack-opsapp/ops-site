@@ -8,7 +8,7 @@ import PlansHero from '@/components/plans/PlansHero';
 import PricingCard from '@/components/plans/PricingCard';
 import FAQ from '@/components/shared/FAQ';
 import BottomCTA from '@/components/shared/BottomCTA';
-import { getLocale, getTDict } from '@/i18n/server';
+import { getLocale, getTDict, buildLocaleAlternates, buildLocaleUrl } from '@/i18n/server';
 
 const APP_STORE_URL = 'https://apps.apple.com/us/app/ops-job-crew-management/id6746662078';
 
@@ -20,11 +20,9 @@ export async function generateMetadata(): Promise<Metadata> {
       ? 'Empieza gratis. Planes desde $0 hasta $190/mes según el tamaño de tu equipo. Todas las funciones incluidas. Sin tarjeta de crédito.'
       : 'Start free. Plans from $0 to $190/month based on crew size. Every feature included at every tier. No credit card. No contract.',
     openGraph: {
-      url: 'https://opsapp.co/plans',
+      url: buildLocaleUrl('/plans', locale),
     },
-    alternates: {
-      canonical: 'https://opsapp.co/plans',
-    },
+    alternates: buildLocaleAlternates('/plans', locale),
   };
 }
 

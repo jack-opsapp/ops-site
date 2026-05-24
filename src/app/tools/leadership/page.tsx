@@ -14,14 +14,23 @@ import { Metadata } from 'next';
 import { FadeInUp, SectionLabel, Divider } from '@/components/ui';
 import AmbientBurst from '@/components/assessment/AmbientBurst';
 import PathSelector from '@/components/assessment/PathSelector';
+import { getLocale, buildLocaleAlternates, buildLocaleUrl } from '@/i18n/server';
 
-export const metadata: Metadata = {
-  title: 'Leadership Assessment for Contractors',
-  description: 'Discover your leadership archetype. AI-powered assessment built for trades business owners and crew leads. Understand your strengths, blind spots, and growth path. Free — takes 10 minutes.',
-  alternates: {
-    canonical: 'https://opsapp.co/tools/leadership',
-  },
-};
+export async function generateMetadata(): Promise<Metadata> {
+  const locale = await getLocale();
+  return {
+    title: locale === 'es'
+      ? 'Evaluación de Liderazgo para Contratistas'
+      : 'Leadership Assessment for Contractors',
+    description: locale === 'es'
+      ? 'Descubre tu arquetipo de liderazgo. Evaluación con IA construida para dueños de negocios de oficio y líderes de equipo. Entiende tus fortalezas, puntos ciegos y camino de crecimiento. Gratis — toma 10 minutos.'
+      : 'Discover your leadership archetype. AI-powered assessment built for trades business owners and crew leads. Understand your strengths, blind spots, and growth path. Free — takes 10 minutes.',
+    openGraph: {
+      url: buildLocaleUrl('/tools/leadership', locale),
+    },
+    alternates: buildLocaleAlternates('/tools/leadership', locale),
+  };
+}
 
 /* ------------------------------------------------------------------ */
 /*  Steps data                                                         */
