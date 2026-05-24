@@ -20,6 +20,9 @@ export const metadata: Metadata = {
     title: 'OPS Gear — Shop',
     description: 'Rep the brand that runs your business.',
   },
+  alternates: {
+    canonical: 'https://opsapp.co/shop',
+  },
 };
 
 export default async function ShopPage() {

@@ -6,7 +6,8 @@ import { getAllComparisonSlugs } from '@/lib/comparisons';
 export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
   const baseUrl = 'https://opsapp.co';
 
-  const lastUpdated = new Date('2026-05-07');
+  // Reflect the build/revalidate time so crawlers see fresh lastmod values.
+  const lastUpdated = new Date();
   const staticPages: MetadataRoute.Sitemap = [
     { url: baseUrl, lastModified: lastUpdated, changeFrequency: 'weekly', priority: 1 },
     { url: `${baseUrl}/platform`, lastModified: lastUpdated, changeFrequency: 'monthly', priority: 0.9 },
