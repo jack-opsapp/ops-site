@@ -66,8 +66,41 @@ export default async function ToolsPage() {
     },
   ];
 
+  /* JSON-LD structured data — ItemList of the four tools, plus a
+     breadcrumb trail. Only the leadership tool is currently linkable. */
+  const itemListLd = {
+    '@context': 'https://schema.org',
+    '@type': 'ItemList',
+    name: 'OPS Free Tools',
+    itemListElement: tools.map((tool, i) => ({
+      '@type': 'ListItem',
+      position: i + 1,
+      name: tool.name,
+      description: tool.description,
+      ...('href' in tool && tool.href ? { url: `https://opsapp.co${tool.href}` } : {}),
+    })),
+  };
+
+  const breadcrumbLd = {
+    '@context': 'https://schema.org',
+    '@type': 'BreadcrumbList',
+    itemListElement: [
+      { '@type': 'ListItem', position: 1, name: 'Home', item: 'https://opsapp.co' },
+      { '@type': 'ListItem', position: 2, name: 'Tools', item: 'https://opsapp.co/tools' },
+    ],
+  };
+
   return (
     <>
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(itemListLd) }}
+      />
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(breadcrumbLd) }}
+      />
+
       <ToolsHero />
 
       <section className="py-16 bg-ops-background">

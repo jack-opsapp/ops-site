@@ -38,8 +38,38 @@ export default async function ResourcesPage() {
     { question: t('faq.q6.question'), answer: t('faq.q6.answer') },
   ];
 
+  /* JSON-LD structured data — FAQPage from the on-page FAQ block,
+     plus a breadcrumb trail. */
+  const faqLd = {
+    '@context': 'https://schema.org',
+    '@type': 'FAQPage',
+    mainEntity: faqItems.map((item) => ({
+      '@type': 'Question',
+      name: item.question,
+      acceptedAnswer: { '@type': 'Answer', text: item.answer },
+    })),
+  };
+
+  const breadcrumbLd = {
+    '@context': 'https://schema.org',
+    '@type': 'BreadcrumbList',
+    itemListElement: [
+      { '@type': 'ListItem', position: 1, name: 'Home', item: 'https://opsapp.co' },
+      { '@type': 'ListItem', position: 2, name: 'Help & Support', item: 'https://opsapp.co/resources' },
+    ],
+  };
+
   return (
     <>
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(faqLd) }}
+      />
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(breadcrumbLd) }}
+      />
+
       <ResourcesHero />
 
       <div className="max-w-[1400px] mx-auto px-6 md:px-10 py-12">

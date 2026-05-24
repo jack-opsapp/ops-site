@@ -28,8 +28,42 @@ export default async function CompanyPage() {
     return typeof value === 'string' ? value : key;
   };
 
+  /* JSON-LD structured data — AboutPage describes this page; the
+     full Organization schema lives in the root layout. Plus a
+     breadcrumb trail. */
+  const aboutPageLd = {
+    '@context': 'https://schema.org',
+    '@type': 'AboutPage',
+    url: 'https://opsapp.co/company',
+    name: 'About OPS',
+    description: 'Built by a contractor who scaled from $0 to $1.6M in 4 years. Tried Jobber, ServiceTitan, Housecall Pro. Crew refused to use them. So he built OPS.',
+    mainEntity: {
+      '@type': 'Organization',
+      name: 'OPS',
+      url: 'https://opsapp.co',
+    },
+  };
+
+  const breadcrumbLd = {
+    '@context': 'https://schema.org',
+    '@type': 'BreadcrumbList',
+    itemListElement: [
+      { '@type': 'ListItem', position: 1, name: 'Home', item: 'https://opsapp.co' },
+      { '@type': 'ListItem', position: 2, name: 'Company', item: 'https://opsapp.co/company' },
+    ],
+  };
+
   return (
     <>
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(aboutPageLd) }}
+      />
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(breadcrumbLd) }}
+      />
+
       <CompanyHero />
       <OriginStory />
       <Values />

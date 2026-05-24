@@ -38,6 +38,25 @@ export async function generateMetadata({ params }: PageProps): Promise<Metadata>
       index: false,
       follow: true,
     },
+    openGraph: {
+      title: `${result.archetype.name} | OPS Leadership Assessment`,
+      description: result.archetype.tagline,
+      url: `https://opsapp.co/tools/leadership/results/${token}`,
+      images: [
+        {
+          url: '/images/og-image.png',
+          width: 1200,
+          height: 630,
+          alt: 'OPS — Leadership Assessment',
+        },
+      ],
+    },
+    twitter: {
+      card: 'summary_large_image',
+      title: `${result.archetype.name} | OPS Leadership Assessment`,
+      description: result.archetype.tagline,
+      images: ['/images/og-image.png'],
+    },
   };
 }
 

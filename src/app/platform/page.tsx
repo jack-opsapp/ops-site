@@ -62,8 +62,45 @@ export default async function PlatformPage() {
     { key: 'photoMarkup', direction: 'left' as const, visual: <PhotoMarkupIllustration /> },
   ];
 
+  /* JSON-LD structured data — SoftwareApplication describing the platform's
+     feature set, plus a breadcrumb trail for hierarchical context. */
+  const softwareApplicationLd = {
+    '@context': 'https://schema.org',
+    '@type': 'SoftwareApplication',
+    name: 'OPS',
+    applicationCategory: 'BusinessApplication',
+    operatingSystem: 'iOS, Web',
+    url: 'https://opsapp.co/platform',
+    description: 'Project tracking, crew scheduling, photo markup, invoicing, pipeline, and inventory — one app your crew actually opens.',
+    featureList: featureBlocks.map((block) => t(`feature.${block.key}.label`)),
+    offers: {
+      '@type': 'Offer',
+      price: '0',
+      priceCurrency: 'USD',
+      description: 'Free to start. No credit card required.',
+    },
+  };
+
+  const breadcrumbLd = {
+    '@context': 'https://schema.org',
+    '@type': 'BreadcrumbList',
+    itemListElement: [
+      { '@type': 'ListItem', position: 1, name: 'Home', item: 'https://opsapp.co' },
+      { '@type': 'ListItem', position: 2, name: 'Platform', item: 'https://opsapp.co/platform' },
+    ],
+  };
+
   return (
     <>
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(softwareApplicationLd) }}
+      />
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(breadcrumbLd) }}
+      />
+
       <PlatformHero />
 
       {featureBlocks.map((block, i) => (

@@ -162,11 +162,13 @@ export default async function JournalPostPage({
         ]}
       />
 
-      <PostHeader post={post} />
+      <article>
+        <PostHeader post={post} />
 
-      <PostContent content={post.content} />
+        <PostContent content={post.content} />
 
-      {post.faqs?.length > 0 && <PostFAQ faqs={post.faqs} />}
+        {post.faqs?.length > 0 && <PostFAQ faqs={post.faqs} />}
+      </article>
 
       {/* Back link */}
       <div className="bg-ops-background-light">
