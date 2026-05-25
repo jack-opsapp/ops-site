@@ -13,6 +13,7 @@ import IndustryComparison from '@/components/industries/IndustryComparison';
 import IndustryFAQ from '@/components/industries/IndustryFAQ';
 import IndustryCTA from '@/components/industries/IndustryCTA';
 import RelatedIndustries from '@/components/industries/RelatedIndustries';
+import RelatedJournalPosts from '@/components/shared/RelatedJournalPosts';
 import Breadcrumbs from '@/components/shared/Breadcrumbs';
 
 interface PageProps {
@@ -126,6 +127,7 @@ export default async function IndustryPage({ params }: PageProps) {
         rows={content.comparison.rows}
       />
       <IndustryFAQ universalFaq={uFaq} industryFaq={content.faq} />
+      <RelatedJournalPosts slugs={industry.relatedPostSlugs ?? []} />
       <IndustryCTA headline={content.cta.headline} subtext={content.cta.subtext} />
       <RelatedIndustries
         currentSlug={slug}
