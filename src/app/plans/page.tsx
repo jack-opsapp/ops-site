@@ -3,7 +3,8 @@
  */
 
 import type { Metadata } from 'next';
-import { FadeInUp } from '@/components/ui';
+import Link from 'next/link';
+import { FadeInUp, SectionLabel, Card } from '@/components/ui';
 import PlansHero from '@/components/plans/PlansHero';
 import PricingCard from '@/components/plans/PricingCard';
 import FAQ from '@/components/shared/FAQ';
@@ -227,6 +228,79 @@ export default async function PlansPage() {
               {t('callout')}
             </p>
           </FadeInUp>
+        </div>
+      </section>
+
+      {/* Context links — addresses the audit-flagged dead-end problem on /plans */}
+      <section className="py-20 md:py-24 bg-ops-background border-t border-ops-border">
+        <div className="max-w-[1400px] mx-auto px-6 md:px-10">
+          <FadeInUp>
+            <SectionLabel label="BEFORE YOU PICK A TIER" />
+          </FadeInUp>
+          <FadeInUp delay={0.05}>
+            <h2 className="mt-4 font-heading font-bold uppercase text-ops-text-primary text-2xl md:text-3xl tracking-tight leading-[0.95] max-w-[600px]">
+              SEE WHAT YOU&apos;RE GETTING.
+            </h2>
+          </FadeInUp>
+
+          <div className="mt-10 md:mt-12 grid grid-cols-1 md:grid-cols-3 gap-6">
+            <FadeInUp delay={0.1}>
+              <Link href="/compare" className="block h-full">
+                <Card hoverable className="p-8 h-full flex flex-col">
+                  <p className="font-caption uppercase tracking-[0.15em] text-[10px] text-ops-text-secondary">
+                    Compare
+                  </p>
+                  <h3 className="mt-1 font-heading font-bold text-base text-ops-text-primary uppercase tracking-tight">
+                    OPS vs the rest
+                  </h3>
+                  <p className="mt-4 font-heading font-light text-sm text-ops-text-secondary leading-relaxed flex-1">
+                    Side-by-side numbers against ServiceTitan, Jobber, Housecall Pro, and five more.
+                  </p>
+                  <span className="mt-5 inline-block font-caption uppercase tracking-[0.15em] text-[11px] text-ops-accent">
+                    Run the numbers -&gt;
+                  </span>
+                </Card>
+              </Link>
+            </FadeInUp>
+
+            <FadeInUp delay={0.16}>
+              <Link href="/platform" className="block h-full">
+                <Card hoverable className="p-8 h-full flex flex-col">
+                  <p className="font-caption uppercase tracking-[0.15em] text-[10px] text-ops-text-secondary">
+                    Platform
+                  </p>
+                  <h3 className="mt-1 font-heading font-bold text-base text-ops-text-primary uppercase tracking-tight">
+                    What you actually get
+                  </h3>
+                  <p className="mt-4 font-heading font-light text-sm text-ops-text-secondary leading-relaxed flex-1">
+                    Every feature included at every tier. Scheduling, photo docs, offline mode, the lot.
+                  </p>
+                  <span className="mt-5 inline-block font-caption uppercase tracking-[0.15em] text-[11px] text-ops-accent">
+                    Tour the platform -&gt;
+                  </span>
+                </Card>
+              </Link>
+            </FadeInUp>
+
+            <FadeInUp delay={0.22}>
+              <Link href="/industries" className="block h-full">
+                <Card hoverable className="p-8 h-full flex flex-col">
+                  <p className="font-caption uppercase tracking-[0.15em] text-[10px] text-ops-text-secondary">
+                    Industries
+                  </p>
+                  <h3 className="mt-1 font-heading font-bold text-base text-ops-text-primary uppercase tracking-tight">
+                    Built for your trade
+                  </h3>
+                  <p className="mt-4 font-heading font-light text-sm text-ops-text-secondary leading-relaxed flex-1">
+                    49 trades, one app. See how crews like yours run their work without rewiring it.
+                  </p>
+                  <span className="mt-5 inline-block font-caption uppercase tracking-[0.15em] text-[11px] text-ops-accent">
+                    Find your trade -&gt;
+                  </span>
+                </Card>
+              </Link>
+            </FadeInUp>
+          </div>
         </div>
       </section>
 
