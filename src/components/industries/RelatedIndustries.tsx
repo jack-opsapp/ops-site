@@ -6,10 +6,46 @@ interface RelatedIndustriesProps {
   industries: Array<{ slug: string; label: string }>;
 }
 
+/** Deterministic 32-bit hash of a string (FNV-1a variant). */
+function hashSlug(slug: string): number {
+  let hash = 2166136261;
+  for (let i = 0; i < slug.length; i++) {
+    hash ^= slug.charCodeAt(i);
+    hash = Math.imul(hash, 16777619);
+  }
+  return hash >>> 0;
+}
+
+/** Mulberry32 PRNG — deterministic, fast, good distribution for shuffling. */
+function mulberry32(seed: number): () => number {
+  let state = seed;
+  return () => {
+    state = (state + 0x6D2B79F5) >>> 0;
+    let t = state;
+    t = Math.imul(t ^ (t >>> 15), t | 1);
+    t ^= t + Math.imul(t ^ (t >>> 7), t | 61);
+    return ((t ^ (t >>> 14)) >>> 0) / 4294967296;
+  };
+}
+
+/**
+ * Seeded Fisher-Yates shuffle. Same slug → same order every render;
+ * different slugs → different orders. Distributes the 41+ industries
+ * that previously never appeared in any sibling's "related" block.
+ */
+function seededShuffle<T>(items: T[], seed: number): T[] {
+  const out = items.slice();
+  const rand = mulberry32(seed);
+  for (let i = out.length - 1; i > 0; i--) {
+    const j = Math.floor(rand() * (i + 1));
+    [out[i], out[j]] = [out[j], out[i]];
+  }
+  return out;
+}
+
 export default function RelatedIndustries({ currentSlug, industries }: RelatedIndustriesProps) {
-  const related = industries
-    .filter((ind) => ind.slug !== currentSlug)
-    .slice(0, 8);
+  const candidates = industries.filter((ind) => ind.slug !== currentSlug);
+  const related = seededShuffle(candidates, hashSlug(currentSlug)).slice(0, 8);
 
   if (related.length === 0) return null;
 
