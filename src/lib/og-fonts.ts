@@ -1,23 +1,27 @@
 /**
  * Font loading helpers for next/og ImageResponse routes.
  *
- * Loads Mohave from Google Fonts at OG-image generation time so the
- * generated previews match the OPS marketing display type. Next.js
- * caches the fetch result automatically.
+ * satori (the renderer behind next/og) accepts TTF and OTF, NOT WOFF2.
+ *
+ * Google Fonts has two CSS endpoints:
+ *   - /css2?family=...   → returns WOFF2 (modern UAs)
+ *   - /css?family=...    → returns TTF
+ *
+ * We use the CSS1 endpoint so the resolved font URL is a .ttf we can
+ * pass straight to satori. Next.js caches the fetch automatically,
+ * so each font loads once per build.
  */
 
-const GOOGLE_FONTS_UA =
-  'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36';
-
 async function fetchGoogleFont(family: string, weight: number): Promise<ArrayBuffer> {
-  const cssUrl = `https://fonts.googleapis.com/css2?family=${encodeURIComponent(family)}:wght@${weight}&display=swap`;
-  const css = await fetch(cssUrl, {
-    headers: { 'User-Agent': GOOGLE_FONTS_UA },
-  }).then((r) => r.text());
+  const cssUrl = `https://fonts.googleapis.com/css?family=${encodeURIComponent(family)}:${weight}&display=swap`;
 
-  const match = css.match(/src:\s*url\((https:\/\/fonts\.gstatic\.com\/[^)]+\.(?:ttf|otf))\)/);
+  const css = await fetch(cssUrl).then((r) => r.text());
+
+  const match = css.match(
+    /src:\s*url\((https:\/\/fonts\.gstatic\.com\/[^)]+\.ttf)\)\s*format\('truetype'\)/,
+  );
   if (!match) {
-    throw new Error(`Could not resolve ${family} ${weight} from Google Fonts CSS`);
+    throw new Error(`Could not resolve ${family} ${weight} TTF from Google Fonts CSS`);
   }
 
   const fontRes = await fetch(match[1]);
