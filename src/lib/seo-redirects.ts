@@ -51,6 +51,24 @@ export const seoRedirects: Redirect[] = [
   { source: '/ops_pricing', destination: '/plans', statusCode: 301 },
   { source: '/join_ops', destination: '/plans', statusCode: 301 },
   { source: '/blog_post', destination: '/journal', statusCode: 301 },
+
+  // Bubble blog posts whose content was NOT migrated to a live journal post.
+  // Without these explicit overrides the catch-all below would 301 each to
+  // /journal/<slug> — a non-existent route — producing 301-to-404 chains
+  // visible in Search Console (verified May 2026 GSC pull). Each redirect
+  // here targets the closest surviving article by topic.
+  //
+  // If future GSC data shows another /blog_post/<slug> hitting a 404, the
+  // pattern is: that slug still exists as a draft in Supabase (is_live=false)
+  // but no live equivalent. Add a new explicit redirect here above the
+  // catch-all. There are ~10 other draft slugs that could plausibly leak
+  // this way (e.g. essential-guide-for-blue-collar-truck-buyers,
+  // the-real-cost-of-inefficiency, top-challenges-for-contractors-in-western-canada).
+  { source: '/blog_post/client-management', destination: '/journal/craft-a-6-star-experience', statusCode: 301 },
+  { source: '/blog_post/team-coordination--role-management', destination: '/journal/building-self-sufficient-crews', statusCode: 301 },
+  { source: '/blog_post/make-smart-decisions-on-the-job-site', destination: '/journal/use-inversion-to-avoid-job-site-failures', statusCode: 301 },
+  { source: '/blog_post/dashboard--reporting', destination: '/journal/track-job-costs-like-a-pro', statusCode: 301 },
+
   { source: '/blog_post/:slug', destination: '/journal/:slug', statusCode: 301 },
   { source: '/10_minute_test', destination: '/tools/leadership', statusCode: 301 },
   { source: '/leadershipanalysis', destination: '/tools/leadership', statusCode: 301 },
