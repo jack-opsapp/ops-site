@@ -61,6 +61,12 @@ export interface ComparisonContent {
 export interface ComparisonData {
   slug: string;
   competitorName: string;
+  /**
+   * Curated list of live journal post slugs for buyers evaluating this
+   * competitor. RelatedJournalPosts block uses these on the compare
+   * page. Component skips rendering when omitted or empty.
+   */
+  relatedPostSlugs?: string[];
   painPointConfig: Array<{
     variant: WireframeVariant;
   }>;
@@ -80,6 +86,7 @@ export const comparisons: ComparisonData[] = [
   {
     slug: 'servicetitan',
     competitorName: 'ServiceTitan',
+    relatedPostSlugs: ['understanding-the-2025--construction-tech-landscape', 'track-job-costs-like-a-pro', 'the-hidden-communication-gap-between-office-and-field-teams', 'profit-first-for-trades'],
     painPointConfig: [
       { variant: 'messages' },
       { variant: 'dashboard' },
@@ -234,6 +241,7 @@ export const comparisons: ComparisonData[] = [
   {
     slug: 'jobber',
     competitorName: 'Jobber',
+    relatedPostSlugs: ['track-job-costs-like-a-pro', 'the-hidden-communication-gap-between-office-and-field-teams', 'profit-first-for-trades', 'understanding-the-2025--construction-tech-landscape'],
     painPointConfig: [
       { variant: 'dashboard' },
       { variant: 'apps' },
@@ -388,6 +396,7 @@ export const comparisons: ComparisonData[] = [
   {
     slug: 'housecall-pro',
     competitorName: 'Housecall Pro',
+    relatedPostSlugs: ['the-hidden-communication-gap-between-office-and-field-teams', 'track-job-costs-like-a-pro', 'understanding-the-2025--construction-tech-landscape', 'profit-first-for-trades'],
     painPointConfig: [
       { variant: 'apps' },
       { variant: 'messages' },
@@ -542,6 +551,7 @@ export const comparisons: ComparisonData[] = [
   {
     slug: 'buildops',
     competitorName: 'BuildOps',
+    relatedPostSlugs: ['understanding-the-2025--construction-tech-landscape', 'chase-the-data-center-money', 'track-job-costs-like-a-pro', 'subs-or-w-2s-know-the-new-rules'],
     painPointConfig: [
       { variant: 'messages' },
       { variant: 'apps' },
@@ -696,6 +706,7 @@ export const comparisons: ComparisonData[] = [
   {
     slug: 'fieldpulse',
     competitorName: 'FieldPulse',
+    relatedPostSlugs: ['understanding-the-2025--construction-tech-landscape', 'track-job-costs-like-a-pro', 'profit-first-for-trades', 'the-hidden-communication-gap-between-office-and-field-teams'],
     painPointConfig: [
       { variant: 'messages' },
       { variant: 'dashboard' },
@@ -850,6 +861,7 @@ export const comparisons: ComparisonData[] = [
   {
     slug: 'simpro',
     competitorName: 'Simpro',
+    relatedPostSlugs: ['understanding-the-2025--construction-tech-landscape', 'track-job-costs-like-a-pro', 'chase-the-data-center-money', 'the-hidden-communication-gap-between-office-and-field-teams'],
     painPointConfig: [
       { variant: 'dashboard' },
       { variant: 'apps' },
@@ -1005,6 +1017,7 @@ export const comparisons: ComparisonData[] = [
   {
     slug: 'fieldedge',
     competitorName: 'FieldEdge',
+    relatedPostSlugs: ['track-job-costs-like-a-pro', 'dont-burn-out-your-best-crew', 'the-hidden-communication-gap-between-office-and-field-teams', 'understanding-the-2025--construction-tech-landscape'],
     painPointConfig: [
       { variant: 'apps' },
       { variant: 'dashboard' },
@@ -1159,6 +1172,7 @@ export const comparisons: ComparisonData[] = [
   {
     slug: 'zuper',
     competitorName: 'Zuper',
+    relatedPostSlugs: ['understanding-the-2025--construction-tech-landscape', 'the-hidden-communication-gap-between-office-and-field-teams', 'track-job-costs-like-a-pro', 'profit-first-for-trades'],
     painPointConfig: [
       { variant: 'messages' },
       { variant: 'apps' },
