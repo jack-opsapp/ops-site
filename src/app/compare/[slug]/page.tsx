@@ -13,6 +13,7 @@ import IndustryFAQ from '@/components/industries/IndustryFAQ';
 import IndustryCTA from '@/components/industries/IndustryCTA';
 import CompareVerdict from '@/components/compare/CompareVerdict';
 import RelatedComparisons from '@/components/compare/RelatedComparisons';
+import RelatedJournalPosts from '@/components/shared/RelatedJournalPosts';
 import Breadcrumbs from '@/components/shared/Breadcrumbs';
 import { universalFAQ } from '@/lib/industries';
 import { getLocale, buildLocaleAlternates, buildLocaleUrl } from '@/i18n/server';
@@ -173,6 +174,7 @@ export default async function ComparePage({ params }: PageProps) {
         rows={comparisonRows}
       />
       <IndustryFAQ universalFaq={uFaq} industryFaq={content.faq} />
+      <RelatedJournalPosts slugs={comparison.relatedPostSlugs ?? []} />
       <IndustryCTA headline={content.cta.headline} subtext={content.cta.subtext} />
       <RelatedComparisons
         currentSlug={slug}
