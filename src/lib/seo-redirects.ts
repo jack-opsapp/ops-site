@@ -37,6 +37,10 @@ export const seoRedirects: Redirect[] = [
   { source: '/agent/:path*', destination: 'https://app.opsapp.co/agent/:path*', statusCode: 301 },
   { source: '/app', destination: 'https://app.opsapp.co/dashboard', statusCode: 301 },
 
+  // ── Renamed product: Tailored → SPEC ────────────────────────────────
+  { source: '/tailored', destination: '/spec', statusCode: 301 },
+  { source: '/tailored/:path*', destination: '/spec/:path*', statusCode: 301 },
+
   // ── Legal ───────────────────────────────────────────────────────────
   { source: '/privacy', destination: '/legal?page=privacy', statusCode: 301 },
   { source: '/terms', destination: '/legal?page=terms', statusCode: 301 },
