@@ -3,6 +3,9 @@
  *
  * Creates a Stripe Checkout Session for a SPEC package deposit.
  * Returns the Stripe hosted checkout URL for client redirect.
+ *
+ * The completed event lands on /api/shop/webhook (the consolidated
+ * Stripe handler) and is dispatched on metadata.type === 'spec_deposit'.
  */
 
 import { NextResponse } from 'next/server';

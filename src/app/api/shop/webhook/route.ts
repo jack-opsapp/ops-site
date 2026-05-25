@@ -1,12 +1,23 @@
 /**
  * POST /api/shop/webhook
  *
- * Stripe webhook handler. Safety net for payment events.
- * Handles payment_intent.succeeded (confirms order if pending)
- * and payment_intent.payment_failed (releases reservations, cancels order).
+ * Single Stripe webhook for the marketing site. Handles two unrelated
+ * product flows on one endpoint so Stripe Dashboard stays simple (one
+ * URL, one signing secret, one event subscription).
+ *
+ *   1. Shop checkout
+ *      payment_intent.succeeded     → confirm pending order, decrement
+ *                                     stock, release reservations.
+ *      payment_intent.payment_failed → cancel order, release reservations.
+ *
+ *   2. SPEC deposit (custom-build packages on /spec)
+ *      checkout.session.completed   → only when metadata.type is
+ *                                     'spec_deposit' (legacy
+ *                                     'tailored_deposit' also accepted
+ *                                     during cutover).
  *
  * Uses raw request body for Stripe signature verification.
- * Requires STRIPE_WEBHOOK_SECRET env var (separate from OPS-Web's webhook secret).
+ * Requires STRIPE_WEBHOOK_SECRET env var (separate from OPS-Web's webhook).
  */
 
 import { NextResponse } from 'next/server';
@@ -41,6 +52,31 @@ export async function POST(request: Request) {
   const supabase = getSupabaseAdmin();
 
   switch (event.type) {
+    case 'checkout.session.completed': {
+      // SPEC deposit flow only — shop checkouts use PaymentIntents, not
+      // Checkout Sessions, so any session that reaches here came from
+      // /api/spec/create-checkout-session.
+      const session = event.data.object as Stripe.Checkout.Session;
+      const metadata = session.metadata ?? {};
+
+      if (metadata.type !== 'spec_deposit' && metadata.type !== 'tailored_deposit') {
+        break;
+      }
+
+      console.log('[SPEC Webhook] Deposit received:', {
+        package: metadata.package,
+        deposit: metadata.deposit_amount,
+        fullPrice: metadata.full_price,
+        email: session.customer_details?.email,
+        sessionId: session.id,
+      });
+
+      // Future: write to Supabase spec_deposits table
+      // Future: trigger intake interview link generation
+      // Future: send confirmation email
+      break;
+    }
+
     case 'payment_intent.succeeded': {
       const pi = event.data.object as Stripe.PaymentIntent;
       console.log(`[SHOP WEBHOOK] payment_intent.succeeded: ${pi.id}`);
