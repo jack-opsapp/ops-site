@@ -4,6 +4,7 @@ import { SpeedInsights } from '@vercel/speed-insights/next';
 import { mohave, jetbrainsMono, cakemono } from '@/lib/fonts';
 import PageLayout from '@/components/layout/PageLayout';
 import GoogleAnalytics from '@/components/layout/GoogleAnalytics';
+import BugReportShortcut from '@/components/shared/BugReportShortcut';
 import { getLocale, getPathname, buildLocaleAlternates, buildLocaleUrl } from '@/i18n/server';
 import { LanguageProvider } from '@/i18n/client';
 import './globals.css';
@@ -111,6 +112,7 @@ export default async function RootLayout({
         <Analytics />
         <SpeedInsights />
         <GoogleAnalytics />
+        <BugReportShortcut />
       </body>
     </html>
   );
