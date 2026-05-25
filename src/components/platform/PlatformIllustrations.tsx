@@ -30,12 +30,19 @@ const springBouncy = { duration: 0.25, ease: [0.16, 1, 0.3, 1] as const };
 const drawEase = [0.22, 1, 0.36, 1] as const;
 
 /**
- * Phase-based animation sequencer — plays once, replayable.
- * Returns current phase (-1 = dormant) and a play() function.
+ * Phase-based animation sequencer — plays once, replayable cleanly.
+ * Returns current phase (-1 = dormant), a playId that increments on each
+ * replay (use as React `key` to force-remount keyed groups for a clean reset
+ * — avoids the prior fade-out → blank → fade-in flash), and the play()
+ * function.
+ *
+ * Default interval tightened to 260ms (was 380ms). At 6-8 phases this brings
+ * the total intro sequence to ~1.6-2.1s instead of 2.5-3.4s — snappier feel.
  */
-function useSequence(phaseCount: number, intervalMs = 380) {
+function useSequence(phaseCount: number, intervalMs = 260) {
   const [phase, setPhase] = useState(-1);
   const [interactive, setInteractive] = useState(false);
+  const [playId, setPlayId] = useState(0);
   const timersRef = useRef<ReturnType<typeof setTimeout>[]>([]);
   const isPlayingRef = useRef(false);
 
@@ -46,7 +53,10 @@ function useSequence(phaseCount: number, intervalMs = 380) {
     timersRef.current.forEach(clearTimeout);
     timersRef.current = [];
     setPhase(-1);
+    setPlayId((id) => id + 1);
 
+    /* Tiny gap so React commits the -1 + playId-bump (remounts keyed groups
+     * at their `initial` states) before phase 0 fires. 32ms ≈ 2 frames. */
     timersRef.current.push(
       setTimeout(() => {
         for (let i = 0; i < phaseCount; i++) {
@@ -54,15 +64,17 @@ function useSequence(phaseCount: number, intervalMs = 380) {
             setTimeout(() => {
               setPhase(i);
               if (i === phaseCount - 1) {
+                /* Hand-off to interactive — shorter than before (280 vs 500)
+                 * so users can interact sooner. */
                 setTimeout(() => {
                   isPlayingRef.current = false;
                   setInteractive(true);
-                }, 500);
+                }, 280);
               }
             }, i * intervalMs),
           );
         }
-      }, 120),
+      }, 32),
     );
   }, [phaseCount, intervalMs]);
 
@@ -70,14 +82,14 @@ function useSequence(phaseCount: number, intervalMs = 380) {
     return () => timersRef.current.forEach(clearTimeout);
   }, []);
 
-  return { phase, play, interactive };
+  return { phase, play, interactive, playId };
 }
 
 /** Hook to play on first viewport entry + replay on hover */
-function useIllustration(phaseCount: number, intervalMs = 380) {
+function useIllustration(phaseCount: number, intervalMs = 260) {
   const ref = useRef<HTMLDivElement>(null);
   const inView = useInView(ref, { once: true, amount: 0.3 });
-  const { phase, play, interactive } = useSequence(phaseCount, intervalMs);
+  const { phase, play, interactive, playId } = useSequence(phaseCount, intervalMs);
   const hasPlayed = useRef(false);
 
   useEffect(() => {
@@ -87,7 +99,7 @@ function useIllustration(phaseCount: number, intervalMs = 380) {
     }
   }, [inView, play]);
 
-  return { ref, phase, replay: play, interactive };
+  return { ref, phase, replay: play, interactive, playId };
 }
 
 /** Shared container */
@@ -173,7 +185,7 @@ const PM_TASKS = [
 ];
 
 export function ProjectManagementIllustration() {
-  const { ref, phase: p, replay, interactive } = useIllustration(8, 380);
+  const { ref, phase: p, replay, interactive, playId } = useIllustration(8, 250);
   const [taskOrder, setTaskOrder] = useState([0, 1, 2, 3]);
 
   return (
@@ -319,33 +331,40 @@ export function ProjectManagementIllustration() {
           filter={p >= 7 ? 'url(#accentGlow)' : undefined}
         />
 
-        {/* Interactive: SVG task rows for reordering */}
+        {/* Interactive: SVG task rows for reordering.
+         * Position via motion.g `y` (translateY transform) so reorder animates
+         * smoothly. Children sit at row-relative coordinates and translate
+         * with the group — previously each child had absolute y baked in,
+         * causing rows to snap to new positions instantly when dragged. */}
         {interactive && taskOrder.map((idx, pos) => {
           const ty = 182 + pos * 22;
           const task = PM_TASKS[idx];
           return (
             <motion.g
               key={`i-task-${idx}`}
-              initial={{ opacity: 0 }}
-              animate={{ opacity: 1 }}
-              transition={{ duration: 0.3, delay: pos * 0.05 }}
+              initial={{ y: ty, opacity: 0 }}
+              animate={{ y: ty, opacity: 1 }}
+              transition={{
+                opacity: { duration: 0.3, delay: pos * 0.05 },
+                y: { duration: 0.28, ease: [0.16, 1, 0.3, 1] },
+              }}
             >
               {/* Checkbox */}
               <rect
-                x="50" y={ty} width="12" height="12" rx="2"
+                x="50" y={0} width="12" height="12" rx="2"
                 stroke={task.done ? ACCENT_STROKE : 'rgba(255,255,255,0.15)'} strokeWidth="1"
                 fill={task.done ? ACCENT_FILL : 'none'}
               />
               {task.done && (
                 <path
-                  d={`M53 ${ty + 4} L55.5 ${ty + 7.5} L59 ${ty + 3}`}
+                  d="M53 4 L55.5 7.5 L59 3"
                   stroke={ACCENT} strokeWidth="1.2" strokeLinecap="round" strokeLinejoin="round" fill="none"
                   filter="url(#accentGlow)"
                 />
               )}
               {/* Task label */}
               <text
-                x="70" y={ty + 9}
+                x="70" y={9}
                 fontSize="8" fontFamily="var(--font-jetbrains-mono)"
                 fill={task.done ? 'rgba(255,255,255,0.25)' : 'rgba(255,255,255,0.35)'}
                 textDecoration={task.done ? 'line-through' : 'none'}
@@ -354,7 +373,7 @@ export function ProjectManagementIllustration() {
               </text>
               {/* Tag */}
               <text
-                x="310" y={ty + 9}
+                x="310" y={9}
                 textAnchor="end" fontSize="6" fontFamily="var(--font-jetbrains-mono)"
                 fill="rgba(255,255,255,0.12)"
               >
@@ -362,14 +381,14 @@ export function ProjectManagementIllustration() {
               </text>
               {/* Drag handle dots */}
               <g fill="rgba(255,255,255,0.15)">
-                <circle cx="330" cy={ty + 4} r="1" />
-                <circle cx="334" cy={ty + 4} r="1" />
-                <circle cx="330" cy={ty + 8} r="1" />
-                <circle cx="334" cy={ty + 8} r="1" />
+                <circle cx="330" cy={4} r="1" />
+                <circle cx="334" cy={4} r="1" />
+                <circle cx="330" cy={8} r="1" />
+                <circle cx="334" cy={8} r="1" />
               </g>
               {/* Divider */}
               {pos < 3 && (
-                <path d={`M50 ${ty + 18} L350 ${ty + 18}`} stroke="rgba(255,255,255,0.04)" strokeWidth="0.5" />
+                <path d="M50 18 L350 18" stroke="rgba(255,255,255,0.04)" strokeWidth="0.5" />
               )}
             </motion.g>
           );
@@ -409,7 +428,7 @@ export function ProjectManagementIllustration() {
           ))}
         </Reorder.Group>
       )}
-      <InteractionHint type="drag" visible={interactive} />
+      <InteractionHint key={playId} type="drag" visible={interactive} />
     </Container>
   );
 }
@@ -422,7 +441,7 @@ export function ProjectManagementIllustration() {
  * ───────────────────────────────────────────────────────── */
 
 export function SchedulingIllustration() {
-  const { ref, phase: p, replay, interactive } = useIllustration(8, 400);
+  const { ref, phase: p, replay, interactive, playId } = useIllustration(8, 260);
   const [selectedBar, setSelectedBar] = useState<number | null>(null);
   const [barRows, setBarRows] = useState([1, 2, 3, 4, 4]);
 
@@ -621,7 +640,7 @@ export function SchedulingIllustration() {
           </svg>
         </div>
       )}
-      <InteractionHint type="click" visible={interactive} />
+      <InteractionHint key={playId} type="click" visible={interactive} />
     </Container>
   );
 }
@@ -631,7 +650,7 @@ export function SchedulingIllustration() {
  * ───────────────────────────────────────────────────────── */
 
 export function TeamManagementIllustration() {
-  const { ref, phase: p, replay, interactive } = useIllustration(7, 400);
+  const { ref, phase: p, replay, interactive, playId } = useIllustration(7, 260);
 
   const rows = [50, 110, 170, 230];
   const [assignments, setAssignments] = useState([ACCENT, ACCENT, '#E5A02E', 'rgba(255,255,255,0.2)']);
@@ -768,7 +787,7 @@ export function TeamManagementIllustration() {
           </svg>
         </div>
       )}
-      <InteractionHint type="click" visible={interactive && selectedCrew === null} />
+      <InteractionHint key={playId} type="click" visible={interactive && selectedCrew === null} />
     </Container>
   );
 }
@@ -778,14 +797,19 @@ export function TeamManagementIllustration() {
  * ───────────────────────────────────────────────────────── */
 
 export function ClientManagementIllustration() {
-  const { ref, phase: p, replay, interactive } = useIllustration(8, 370);
+  const { ref, phase: p, replay, interactive, playId } = useIllustration(8, 250);
   const [flipped, setFlipped] = useState(false);
 
+  /* Card flip: sequenced scaleX so the front fully collapses (1→0 over 0.16s)
+   * BEFORE the back unfolds (0→1 over 0.16s). The prior implementation animated
+   * both simultaneously — at t=0.15s both halves were at scaleX 0.5,
+   * producing a horizontal squish, not a flip. */
+  const flipShown = interactive && flipped;
   return (
     <Container innerRef={ref} onHover={interactive ? undefined : replay}>
       <motion.svg viewBox="0 0 400 300" className="w-[85%] h-[85%]" fill="none"
-        animate={{ scaleX: interactive && flipped ? 0 : 1 }}
-        transition={{ duration: 0.3, ease: [0.22, 1, 0.36, 1] }}
+        animate={{ scaleX: flipShown ? 0 : 1 }}
+        transition={{ duration: 0.16, ease: [0.4, 0, 0.2, 1], delay: flipShown ? 0 : 0.16 }}
         style={{ transformOrigin: 'center' }}
       >
         <GlowDefs />
@@ -884,7 +908,10 @@ export function ClientManagementIllustration() {
               scaleX: flipped ? 1 : 0,
               opacity: flipped ? 1 : 0,
             }}
-            transition={{ duration: 0.3, ease: [0.22, 1, 0.36, 1] }}
+            transition={{
+              scaleX: { duration: 0.16, ease: [0.4, 0, 0.2, 1], delay: flipped ? 0.16 : 0 },
+              opacity: { duration: 0.08, ease: 'linear', delay: flipped ? 0.16 : 0 },
+            }}
             style={{ transformOrigin: 'center' }}
           >
             <div className="w-[55%] h-[78%] rounded-sm border border-[#6F94B0]/30 bg-gradient-to-br from-[#6F94B0]/[0.08] to-[#0A0A0A] p-5 flex flex-col justify-center">
@@ -901,7 +928,7 @@ export function ClientManagementIllustration() {
           </motion.div>
         </>
       )}
-      <InteractionHint type="click" visible={interactive && !flipped} />
+      <InteractionHint key={playId} type="click" visible={interactive && !flipped} />
     </Container>
   );
 }
@@ -911,7 +938,7 @@ export function ClientManagementIllustration() {
  * ───────────────────────────────────────────────────────── */
 
 export function InvoicingIllustration() {
-  const { ref, phase: p, replay, interactive } = useIllustration(8, 400);
+  const { ref, phase: p, replay, interactive, playId } = useIllustration(8, 260);
   const [isEstimate, setIsEstimate] = useState(false);
 
   return (
@@ -1001,15 +1028,25 @@ export function InvoicingIllustration() {
             transition={{ duration: 0.4 }}
             filter={interactive && isEstimate ? undefined : 'url(#accentGlow)'}
           />
+          {/* Stamp label crossfade — two stacked text nodes, one always faded
+           * to nothing. Without this, the text content swapped instantly while
+           * the fill animated, producing a visible snap. */}
           <motion.text x="160" y="182" textAnchor="middle" fontSize="24"
             fontFamily="var(--font-mohave)" fontWeight="bold"
-            animate={{
-              fill: interactive && isEstimate ? 'rgba(255,255,255,0.3)' : ACCENT,
-            }}
-            transition={{ duration: 0.4 }}
-            filter={interactive && isEstimate ? undefined : 'url(#accentGlow)'}
+            fill={ACCENT}
+            animate={{ opacity: interactive && isEstimate ? 0 : 1 }}
+            transition={{ duration: 0.2, ease: [0.4, 0, 0.2, 1] }}
+            filter="url(#accentGlow)"
           >
-            {interactive && isEstimate ? 'DRAFT' : 'PAID'}
+            PAID
+          </motion.text>
+          <motion.text x="160" y="182" textAnchor="middle" fontSize="24"
+            fontFamily="var(--font-mohave)" fontWeight="bold"
+            fill="rgba(255,255,255,0.3)"
+            animate={{ opacity: interactive && isEstimate ? 1 : 0 }}
+            transition={{ duration: 0.2, ease: [0.4, 0, 0.2, 1] }}
+          >
+            DRAFT
           </motion.text>
         </motion.g>
       </svg>
@@ -1020,7 +1057,7 @@ export function InvoicingIllustration() {
           onClick={() => setIsEstimate(e => !e)}
         />
       )}
-      <InteractionHint type="click" visible={interactive} />
+      <InteractionHint key={playId} type="click" visible={interactive} />
     </Container>
   );
 }
@@ -1030,7 +1067,7 @@ export function InvoicingIllustration() {
  * ───────────────────────────────────────────────────────── */
 
 export function JobBoardIllustration() {
-  const { ref, phase: p, replay, interactive } = useIllustration(8, 420);
+  const { ref, phase: p, replay, interactive, playId } = useIllustration(8, 270);
   const [cardCols, setCardCols] = useState([0, 0, 0, 1, 2]); // 5 cards across 3 cols
 
   const colX = [20, 148, 276];
@@ -1169,7 +1206,7 @@ export function JobBoardIllustration() {
           );
         })}
       </svg>
-      <InteractionHint type="click" visible={interactive} />
+      <InteractionHint key={playId} type="click" visible={interactive} />
     </Container>
   );
 }
@@ -1182,7 +1219,7 @@ export function JobBoardIllustration() {
  * ───────────────────────────────────────────────────────── */
 
 export function PipelineIllustration() {
-  const { ref, phase: p, replay, interactive } = useIllustration(8, 400);
+  const { ref, phase: p, replay, interactive, playId } = useIllustration(8, 260);
   const [hoveredIdx, setHoveredIdx] = useState<number | null>(null);
 
   const stages = [
@@ -1249,7 +1286,11 @@ export function PipelineIllustration() {
   })();
 
   return (
-    <Container innerRef={ref} onHover={replay}>
+    /* Pipeline's interaction is hover-over-stages, not re-trigger. Gate the
+     * replay so the intro plays once when entering the dormant period; after
+     * that, hovering scrubs the "what if" preview rather than re-running the
+     * 2-second intro every time the cursor returns to the container. */
+    <Container innerRef={ref} onHover={interactive ? undefined : replay}>
       <svg viewBox="0 0 400 300" className="w-[85%] h-[85%]" fill="none">
         <GlowDefs />
 
@@ -1429,7 +1470,7 @@ export function PipelineIllustration() {
           </motion.text>
         </motion.g>
       </svg>
-      <InteractionHint type="hover" visible={interactive} />
+      <InteractionHint key={playId} type="hover" visible={interactive} />
     </Container>
   );
 }
@@ -1439,7 +1480,7 @@ export function PipelineIllustration() {
  * ───────────────────────────────────────────────────────── */
 
 export function InventoryIllustration() {
-  const { ref, phase: p, replay, interactive } = useIllustration(8, 380);
+  const { ref, phase: p, replay, interactive, playId } = useIllustration(8, 250);
 
   const initialLevels = [0.85, 0.6, 0.15, 0.7, 0.45, 0.9];
   const [levels, setLevels] = useState(initialLevels);
@@ -1634,7 +1675,7 @@ export function InventoryIllustration() {
         })()}
       </svg>
 
-      <InteractionHint type="click" visible={interactive && !hasAdjusted} />
+      <InteractionHint key={playId} type="click" visible={interactive && !hasAdjusted} />
     </Container>
   );
 }
@@ -1651,7 +1692,7 @@ export function InventoryIllustration() {
  * ───────────────────────────────────────────────────────── */
 
 export function PhotoMarkupIllustration() {
-  const { ref, phase: p, replay, interactive } = useIllustration(6, 420);
+  const { ref, phase: p, replay, interactive } = useIllustration(6, 280);
   const mk = '#E54D2E';
 
   /* ── Canvas drawing state ── */
