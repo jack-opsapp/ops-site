@@ -22,12 +22,20 @@ export default function LanguageBanner({ commonDict }: LanguageBannerProps) {
 
   useEffect(() => {
     // Only show on first visit (no cookie set yet means locale came from default)
-    // Check if the user's browser prefers Spanish
+    // Check if the user's browser prefers Spanish.
+    //
+    // We legitimately need an effect here: `document.cookie` and
+    // `navigator.language` are browser-only externals, and the initial
+    // mount is the only correct moment to read them. The
+    // react-hooks/set-state-in-effect rule is over-eager for this
+    // pattern; the official alternative (useSyncExternalStore) is
+    // overkill for a one-shot read.
     const cookieExists = document.cookie.includes(`${COOKIE_NAME}=`);
     if (cookieExists) return;
 
     const browserLang = navigator.language || '';
     if (browserLang.startsWith('es')) {
+      // eslint-disable-next-line react-hooks/set-state-in-effect
       setShow(true);
     }
   }, []);
