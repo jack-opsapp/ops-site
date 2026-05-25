@@ -5,6 +5,7 @@ import PlatformShowcase from '@/components/home/PlatformShowcase';
 import Starburst from '@/components/home/Starburst';
 import SocialProof from '@/components/home/SocialProof';
 import WhatIsOps from '@/components/home/WhatIsOps';
+import CompareTeaser from '@/components/home/CompareTeaser';
 import TradesList from '@/components/home/TradesList';
 import JournalPreview from '@/components/home/JournalPreview';
 import FinalCTA from '@/components/home/FinalCTA';
@@ -64,6 +65,7 @@ export default function HomePage() {
       <Starburst />
       <SocialProof />
       <WhatIsOps />
+      <CompareTeaser />
       <TradesList />
       <JournalPreview />
       <FinalCTA />
