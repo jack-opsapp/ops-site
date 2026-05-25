@@ -10,12 +10,12 @@ import Link from 'next/link';
 import { SectionLabel, FadeInUp, Card } from '@/components/ui';
 import { getTDict } from '@/i18n/server';
 
-const TRADE_SLUGS: Record<string, string | null> = {
+const TRADE_SLUGS: Record<string, string> = {
   trade1: 'electrical',
   trade2: 'plumbing',
   trade3: 'hvac',
-  trade4: null, // landscaping — no industry page yet
-  trade5: null, // painting — no industry page yet
+  trade4: 'landscaping',
+  trade5: 'painting',
   trade6: 'cleaning',
 };
 
@@ -70,14 +70,12 @@ export default async function TradesList() {
                   <p className="mt-3 font-heading font-light text-sm text-ops-text-secondary leading-relaxed flex-1">
                     {trade.copy}
                   </p>
-                  {slug && (
-                    <Link
-                      href={`/industries/${slug}`}
-                      className="mt-4 inline-block font-caption uppercase tracking-[0.15em] text-[11px] text-ops-accent hover:text-ops-text-primary transition-colors"
-                    >
-                      Learn more →
-                    </Link>
-                  )}
+                  <Link
+                    href={`/industries/${slug}`}
+                    className="mt-4 inline-block font-caption uppercase tracking-[0.15em] text-[11px] text-ops-accent hover:text-ops-text-primary transition-colors"
+                  >
+                    Learn more →
+                  </Link>
                 </Card>
               </FadeInUp>
             );
