@@ -45,6 +45,7 @@ const TRANSLATED_PATHS = new Set<string>([
   '/',
   '/platform',
   '/plans',
+  '/spec',
   '/company',
   '/resources',
   '/tools',

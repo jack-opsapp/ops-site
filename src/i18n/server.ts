@@ -74,6 +74,7 @@ export const TRANSLATED_PATHS: ReadonlySet<string> = new Set([
   '/',
   '/platform',
   '/plans',
+  '/spec',
   '/company',
   '/resources',
   '/tools',

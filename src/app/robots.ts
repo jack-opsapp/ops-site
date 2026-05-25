@@ -19,6 +19,8 @@ const DISALLOW = [
   '/tools/leadership/demo',
   '/tools/leadership/assess',
   '/platform/screens-dev',
+  '/spec/screens-dev',
+  '/spec/confirmation',
 ];
 
 /**
