@@ -16,6 +16,21 @@ import type {
   ShopOrderWithItems,
 } from './types';
 
+/**
+ * Returns the Supabase admin client, or null if env vars aren't set.
+ * Mirrors the fallback pattern in src/lib/blog.ts so callers that run on
+ * every request (e.g. PageLayout via isStoreLive) don't 500 in local dev
+ * when SUPABASE_SERVICE_ROLE_KEY is absent.
+ */
+function tryGetClient() {
+  try {
+    return getSupabaseAdmin();
+  } catch {
+    console.warn('[shop] Supabase not configured — returning safe defaults.');
+    return null;
+  }
+}
+
 /** Fetch all active categories, sorted */
 export async function getCategories(): Promise<ShopCategory[]> {
   const supabase = getSupabaseAdmin();
@@ -141,9 +156,13 @@ export async function getShippingMethods(): Promise<ShopShippingMethod[]> {
   return data as ShopShippingMethod[];
 }
 
-/** Check if the store is live (controlled by admin panel toggle) */
+/** Check if the store is live (controlled by admin panel toggle).
+ *  Returns false when Supabase isn't configured (local dev without env vars),
+ *  so PageLayout — which calls this on every request — never 500s. */
 export async function isStoreLive(): Promise<boolean> {
-  const supabase = getSupabaseAdmin();
+  const supabase = tryGetClient();
+  if (!supabase) return false;
+
   const { data, error } = await supabase
     .from('shop_settings')
     .select('store_live')
