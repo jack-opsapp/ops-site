@@ -192,6 +192,71 @@ export async function getBlogCategories(): Promise<BlogCategory[]> {
 }
 
 /**
+ * Fetch related live posts for a given post.
+ *
+ * Returns up to `limit` live posts in the same category (excluding the
+ * current slug), ordered by published_at desc. If the category yields
+ * fewer than `limit` results — or `currentCategoryId` is null — the
+ * shortfall is back-filled with the most recently published live posts
+ * (excluding the current slug and any already returned).
+ */
+export async function getRelatedLivePosts(
+  currentSlug: string,
+  currentCategoryId: string | null,
+  limit: number
+): Promise<BlogPostWithCategory[]> {
+  const client = tryGetClient();
+  if (!client) return [];
+
+  const collected: BlogPostWithCategory[] = [];
+  const seenSlugs = new Set<string>([currentSlug]);
+
+  if (currentCategoryId) {
+    const { data, error } = await client
+      .from('blog_posts')
+      .select('*, blog_categories!category_id(name, slug)')
+      .eq('is_live', true)
+      .eq('category_id', currentCategoryId)
+      .neq('slug', currentSlug)
+      .order('published_at', { ascending: false })
+      .limit(limit);
+
+    if (error) {
+      console.error('[blog] getRelatedLivePosts (category) error:', error.message);
+    } else if (data) {
+      for (const post of data as BlogPostWithCategory[]) {
+        collected.push(post);
+        seenSlugs.add(post.slug);
+      }
+    }
+  }
+
+  if (collected.length < limit) {
+    const remaining = limit - collected.length;
+    const { data, error } = await client
+      .from('blog_posts')
+      .select('*, blog_categories!category_id(name, slug)')
+      .eq('is_live', true)
+      .neq('slug', currentSlug)
+      .order('published_at', { ascending: false })
+      .limit(remaining + collected.length);
+
+    if (error) {
+      console.error('[blog] getRelatedLivePosts (fallback) error:', error.message);
+    } else if (data) {
+      for (const post of data as BlogPostWithCategory[]) {
+        if (collected.length >= limit) break;
+        if (seenSlugs.has(post.slug)) continue;
+        collected.push(post);
+        seenSlugs.add(post.slug);
+      }
+    }
+  }
+
+  return collected;
+}
+
+/**
  * Returns an array of { slug } for all live posts.
  * Intended for use with Next.js generateStaticParams.
  */
