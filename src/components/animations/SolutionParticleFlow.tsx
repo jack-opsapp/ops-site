@@ -30,14 +30,18 @@ const ORANGE = '#B8764A';
 const WHITE = '#F5F5F5';
 
 /* ─── Constants ─── */
-const LANE_COUNT = 10;
-const PARTICLES_PER_LANE = 5;
-const BASE_SPEED = 0.004;
-const FADE_EDGE = 0.06;
+/* Density and motion calibrated against the home-page DataFunnel (which the
+ * user perceives as "right"): 12×6=72 particles, 0.005 base speed, 0.04 fade
+ * edge. Refraction is dialed back from 90/1.5 to 55/0.9 so exit-half
+ * particles fan out without looking chaotic. */
+const LANE_COUNT = 12;
+const PARTICLES_PER_LANE = 6;
+const BASE_SPEED = 0.005;
+const FADE_EDGE = 0.04;
 const SCREEN_START = 0.375;
 const SCREEN_END = 0.625;
-const REFRACT_STRENGTH = 90;
-const SPREAD_FACTOR = 1.5;
+const REFRACT_STRENGTH = 55;
+const SPREAD_FACTOR = 0.9;
 
 /* ─── Seeded PRNG ─── */
 function seededRandom(seed: number) {
@@ -117,7 +121,7 @@ function generateLanes(direction: FlowDirection, cw: number, ch: number): Lane[]
 
     for (let i = 0; i < LANE_COUNT; i++) {
       const blue = isBlue(i);
-      const radius = 1.4 + rand() * 0.8;
+      const radius = 1.55 + rand() * 0.85;
 
       let entryHex: string;
       let exitHex: string;
@@ -159,7 +163,7 @@ function generateLanes(direction: FlowDirection, cw: number, ch: number): Lane[]
 
     for (let i = 0; i < LANE_COUNT; i++) {
       const blue = isBlue(i);
-      const radius = 1.4 + rand() * 0.8;
+      const radius = 1.55 + rand() * 0.85;
 
       const entryRgb = hexToRgb(WHITE);
       const exitRgb = hexToRgb(blue ? BLUE : ORANGE);
@@ -375,12 +379,24 @@ export default function SolutionParticleFlow({ flowDirection, isActive, tilt, ma
         }
 
         const fade = edgeFade(p.progress);
-        const alpha = fade * 0.6;
+        const alpha = fade * 0.7;
         if (alpha < 0.005) continue;
 
         const color = getColor(lane, p.progress);
         const r = lane.radius * p.radiusMul;
 
+        // Soft halo — additive blending paints a low-alpha disc roughly 2.4×
+        // the core radius. Gives particles "presence" against the now-brighter
+        // screen content without using shadowBlur (which is slow on Canvas 2D).
+        ctx.globalCompositeOperation = 'lighter';
+        ctx.beginPath();
+        ctx.arc(drawX, drawY, r * 2.4, 0, Math.PI * 2);
+        ctx.fillStyle = color;
+        ctx.globalAlpha = alpha * 0.18;
+        ctx.fill();
+
+        // Core
+        ctx.globalCompositeOperation = 'source-over';
         ctx.beginPath();
         ctx.arc(drawX, drawY, r, 0, Math.PI * 2);
         ctx.fillStyle = color;

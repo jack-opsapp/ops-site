@@ -12,109 +12,116 @@ interface IndustrySolutionDeviceProps {
 const MAX_TILT = 18;
 
 /* ─── Static wireframe screen content ─── */
+/* Each element is a SOLID FILL at white alpha calibrated to read on pure black
+ * (canvas #000). The screen background carries a 4% wash so the "screen" reads
+ * as illuminated glass behind the wireframe. Fills sit between 0.10 and 0.30
+ * alpha — well above the prior border-only design which rendered ~0.03–0.13. */
 function ScreenContent({ deviceType }: { deviceType: DeviceType }) {
   return (
-    <div className="absolute inset-0 p-3 flex flex-col gap-2 opacity-[0.65] pointer-events-none">
-      {/* Top bar */}
-      <div className="flex items-center gap-2">
-        <div className="w-4 h-4 rounded-[3px] border border-white/20" />
-        <div className="flex-1 h-2 border border-white/10 rounded-full" />
-        <div className="w-6 h-2 border border-white/10 rounded-full" />
-      </div>
+    <div className="absolute inset-0 bg-white/[0.04] pointer-events-none">
+      <div className="absolute inset-0 p-3 flex flex-col gap-2">
+        {/* Top bar */}
+        <div className="flex items-center gap-2">
+          <div className="w-4 h-4 rounded-[3px] bg-white/30" />
+          <div className="flex-1 h-2 rounded-full bg-white/15" />
+          <div className="w-6 h-2 rounded-full bg-white/20" />
+        </div>
 
-      {deviceType === 'phone' && (
-        <>
-          <div className="h-px bg-white/5 my-1" />
-          <div className="flex-1 flex flex-col gap-2.5">
-            {[0, 1, 2, 3].map((j) => (
-              <div key={j} className="flex items-center gap-2">
-                <div className="w-8 h-8 rounded-[3px] border border-white/10 shrink-0" />
-                <div className="flex-1 flex flex-col gap-1">
-                  <div className="h-1.5 border border-white/8 rounded-full" style={{ width: `${60 + j * 10}%` }} />
-                  <div className="h-1 border border-white/5 rounded-full w-3/4" />
+        {deviceType === 'phone' && (
+          <>
+            <div className="h-px bg-white/15 my-1" />
+            <div className="flex-1 flex flex-col gap-2.5">
+              {[0, 1, 2, 3].map((j) => (
+                <div key={j} className="flex items-center gap-2">
+                  <div className="w-8 h-8 rounded-[3px] bg-white/20 shrink-0" />
+                  <div className="flex-1 flex flex-col gap-1">
+                    <div className="h-1.5 rounded-full bg-white/25" style={{ width: `${60 + j * 10}%` }} />
+                    <div className="h-1 rounded-full bg-white/14 w-3/4" />
+                  </div>
                 </div>
-              </div>
-            ))}
-          </div>
-          <div className="flex gap-2 mt-auto">
-            {[0, 1, 2, 3].map((j) => (
-              <div key={j} className="flex-1 h-6 flex flex-col items-center justify-center gap-0.5">
-                <div className="w-3 h-3 rounded-[2px] border border-white/10" />
-              </div>
-            ))}
-          </div>
-        </>
-      )}
-
-      {deviceType === 'laptop' && (
-        <>
-          <div className="h-px bg-white/5 my-0.5" />
-          <div className="flex-1 flex gap-2">
-            <div className="w-1/4 flex flex-col gap-2">
-              {[0, 1, 2, 3, 4].map((j) => (
-                <div key={j} className="h-1.5 border border-white/8 rounded-full" style={{ width: `${70 + j * 5}%` }} />
               ))}
             </div>
-            <div className="flex-1 flex flex-col gap-2">
-              <div className="flex gap-2">
-                {[0, 1, 2].map((j) => (
-                  <div key={j} className="flex-1 aspect-[4/3] rounded-[2px] border border-white/8" />
+            <div className="flex gap-2 mt-auto pt-2 border-t border-white/15">
+              {[0, 1, 2, 3].map((j) => (
+                <div key={j} className="flex-1 flex flex-col items-center justify-center gap-1">
+                  <div className="w-3 h-3 rounded-[2px] bg-white/22" />
+                  <div className="w-4 h-0.5 rounded-full bg-white/10" />
+                </div>
+              ))}
+            </div>
+          </>
+        )}
+
+        {deviceType === 'laptop' && (
+          <>
+            <div className="h-px bg-white/15 my-0.5" />
+            <div className="flex-1 flex gap-2">
+              <div className="w-1/4 flex flex-col gap-2">
+                {[0, 1, 2, 3, 4].map((j) => (
+                  <div key={j} className="h-1.5 rounded-full bg-white/22" style={{ width: `${70 + j * 5}%` }} />
                 ))}
               </div>
-              <div className="flex-1 rounded-[2px] border border-white/6" />
-            </div>
-          </div>
-        </>
-      )}
-
-      {deviceType === 'tablet' && (
-        <>
-          <div className="h-px bg-white/5 my-1" />
-          <div className="flex-1 flex flex-col gap-2">
-            <div className="flex gap-2">
-              {[0, 1].map((j) => (
-                <div key={j} className="flex-1 aspect-[3/2] rounded-[2px] border border-white/8" />
-              ))}
-            </div>
-            {[0, 1, 2].map((j) => (
-              <div key={j} className="flex items-center gap-2">
-                <div className="w-6 h-6 rounded-[3px] border border-white/10 shrink-0" />
-                <div className="flex-1 flex flex-col gap-0.5">
-                  <div className="h-1.5 border border-white/8 rounded-full" style={{ width: `${55 + j * 15}%` }} />
-                  <div className="h-1 border border-white/5 rounded-full w-2/3" />
-                </div>
-              </div>
-            ))}
-          </div>
-        </>
-      )}
-
-      {deviceType === 'desktop' && (
-        <>
-          <div className="h-px bg-white/5 my-0.5" />
-          <div className="flex-1 flex gap-3">
-            <div className="w-[18%] flex flex-col gap-1.5">
-              {[0, 1, 2, 3, 4, 5].map((j) => (
-                <div key={j} className="h-1 border border-white/8 rounded-full" style={{ width: `${65 + j * 5}%` }} />
-              ))}
-            </div>
-            <div className="flex-1 flex flex-col gap-2">
-              <div className="flex gap-2">
-                {[0, 1, 2, 3].map((j) => (
-                  <div key={j} className="flex-1 aspect-square rounded-[2px] border border-white/8" />
-                ))}
-              </div>
-              <div className="flex-1 rounded-[2px] border border-white/6 flex items-end p-1.5">
-                <div className="flex gap-1 items-end w-full">
-                  {[40, 65, 30, 80, 55, 70, 45].map((h, j) => (
-                    <div key={j} className="flex-1 border border-white/6 rounded-t-[1px]" style={{ height: `${h}%` }} />
+              <div className="flex-1 flex flex-col gap-2">
+                <div className="flex gap-2">
+                  {[0, 1, 2].map((j) => (
+                    <div key={j} className="flex-1 aspect-[4/3] rounded-[2px] bg-white/14" />
                   ))}
                 </div>
+                <div className="flex-1 rounded-[2px] bg-white/10" />
               </div>
             </div>
-          </div>
-        </>
-      )}
+          </>
+        )}
+
+        {deviceType === 'tablet' && (
+          <>
+            <div className="h-px bg-white/15 my-1" />
+            <div className="flex-1 flex flex-col gap-2">
+              <div className="flex gap-2">
+                {[0, 1].map((j) => (
+                  <div key={j} className="flex-1 aspect-[3/2] rounded-[2px] bg-white/14" />
+                ))}
+              </div>
+              {[0, 1, 2].map((j) => (
+                <div key={j} className="flex items-center gap-2">
+                  <div className="w-6 h-6 rounded-[3px] bg-white/22 shrink-0" />
+                  <div className="flex-1 flex flex-col gap-0.5">
+                    <div className="h-1.5 rounded-full bg-white/22" style={{ width: `${55 + j * 15}%` }} />
+                    <div className="h-1 rounded-full bg-white/12 w-2/3" />
+                  </div>
+                </div>
+              ))}
+            </div>
+          </>
+        )}
+
+        {deviceType === 'desktop' && (
+          <>
+            <div className="h-px bg-white/15 my-0.5" />
+            <div className="flex-1 flex gap-3">
+              <div className="w-[18%] flex flex-col gap-1.5">
+                {[0, 1, 2, 3, 4, 5].map((j) => (
+                  <div key={j} className="h-1 rounded-full bg-white/20" style={{ width: `${65 + j * 5}%` }} />
+                ))}
+              </div>
+              <div className="flex-1 flex flex-col gap-2">
+                <div className="flex gap-2">
+                  {[0, 1, 2, 3].map((j) => (
+                    <div key={j} className="flex-1 aspect-square rounded-[2px] bg-white/14" />
+                  ))}
+                </div>
+                <div className="flex-1 rounded-[2px] bg-white/[0.06] flex items-end p-1.5">
+                  <div className="flex gap-1 items-end w-full">
+                    {[40, 65, 30, 80, 55, 70, 45].map((h, j) => (
+                      <div key={j} className="flex-1 bg-white/22 rounded-t-[1px]" style={{ height: `${h}%` }} />
+                    ))}
+                  </div>
+                </div>
+              </div>
+            </div>
+          </>
+        )}
+      </div>
     </div>
   );
 }
