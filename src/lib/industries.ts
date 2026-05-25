@@ -49,6 +49,12 @@ export interface IndustryContent {
 export interface IndustryData {
   slug: string;
   name: string;
+  /**
+   * Curated list of live journal post slugs to render in the
+   * RelatedJournalPosts block on the industry page. Component skips
+   * rendering when omitted or empty.
+   */
+  relatedPostSlugs?: string[];
   painPointConfig: Array<{
     variant: WireframeVariant;
   }>;
@@ -102,6 +108,7 @@ export const industries: IndustryData[] = [
   {
     slug: 'landscaping',
     name: 'Landscaping',
+    relatedPostSlugs: ['dont-burn-out-your-best-crew', 'track-job-costs-like-a-pro', 'crush-post-vacation-slumps-like-a-pro', 'profit-first-for-trades', 'the-fastest-way-to-true-business-growth'],
     painPointConfig: [
       { variant: 'messages' },
       { variant: 'dashboard' },
@@ -235,6 +242,7 @@ export const industries: IndustryData[] = [
   {
     slug: 'auto-detailing',
     name: 'Auto Detailing',
+    relatedPostSlugs: ['craft-a-6-star-experience', 'the-fastest-way-to-true-business-growth', 'snag-more-clients-with-emails-that-work', 'win-clients-understand-hiring-fears'],
     painPointConfig: [
       { variant: 'dashboard' },
       { variant: 'messages' },
@@ -368,6 +376,7 @@ export const industries: IndustryData[] = [
   {
     slug: 'railings',
     name: 'Railings',
+    relatedPostSlugs: ['track-job-costs-like-a-pro', '5-steps-for-smoother-job-transitions', 'tariff-proof-your-next-bid', 'profit-first-for-trades'],
     painPointConfig: [
       { variant: 'apps' },
       { variant: 'messages' },
@@ -500,6 +509,7 @@ export const industries: IndustryData[] = [
   {
     slug: 'pool-service',
     name: 'Pool Service',
+    relatedPostSlugs: ['keep-your-best-the-retention-playbook', 'the-fastest-way-to-true-business-growth', 'boost-your-business-cash-flow', 'craft-a-6-star-experience'],
     painPointConfig: [
       { variant: 'messages' },
       { variant: 'dashboard' },
@@ -632,6 +642,7 @@ export const industries: IndustryData[] = [
   {
     slug: 'garage-door',
     name: 'Garage Door',
+    relatedPostSlugs: ['dont-burn-out-your-best-crew', 'track-job-costs-like-a-pro', 'the-hidden-communication-gap-between-office-and-field-teams', 'craft-a-6-star-experience'],
     painPointConfig: [
       { variant: 'dashboard' },
       { variant: 'messages' },
@@ -764,6 +775,7 @@ export const industries: IndustryData[] = [
   {
     slug: 'fencing',
     name: 'Fencing',
+    relatedPostSlugs: ['tariff-proof-your-next-bid', '5-steps-for-smoother-job-transitions', 'track-job-costs-like-a-pro', 'win-clients-understand-hiring-fears'],
     painPointConfig: [
       { variant: 'apps' },
       { variant: 'messages' },
@@ -896,6 +908,7 @@ export const industries: IndustryData[] = [
   {
     slug: 'tree-service',
     name: 'Tree Service',
+    relatedPostSlugs: ['dont-burn-out-your-best-crew', 'use-inversion-to-avoid-job-site-failures', 'tactical-redundancy-no-single-point-of-failure', 'track-job-costs-like-a-pro'],
     painPointConfig: [
       { variant: 'messages' },
       { variant: 'apps' },
@@ -1028,6 +1041,7 @@ export const industries: IndustryData[] = [
   {
     slug: 'concrete',
     name: 'Concrete',
+    relatedPostSlugs: ['tariff-proof-your-next-bid', 'subs-or-w-2s-know-the-new-rules', 'track-job-costs-like-a-pro', 'profit-first-for-trades'],
     painPointConfig: [
       { variant: 'dashboard' },
       { variant: 'messages' },
@@ -1160,6 +1174,7 @@ export const industries: IndustryData[] = [
   {
     slug: 'flooring',
     name: 'Flooring',
+    relatedPostSlugs: ['tariff-proof-your-next-bid', 'track-job-costs-like-a-pro', '5-steps-for-smoother-job-transitions', 'profit-first-for-trades'],
     painPointConfig: [
       { variant: 'apps' },
       { variant: 'dashboard' },
@@ -1292,6 +1307,7 @@ export const industries: IndustryData[] = [
   {
     slug: 'drywall',
     name: 'Drywall',
+    relatedPostSlugs: ['subs-or-w-2s-know-the-new-rules', 'track-job-costs-like-a-pro', 'tariff-proof-your-next-bid', 'the-hidden-communication-gap-between-office-and-field-teams'],
     painPointConfig: [
       { variant: 'messages' },
       { variant: 'apps' },
@@ -1424,6 +1440,7 @@ export const industries: IndustryData[] = [
   {
     slug: 'appliance-repair',
     name: 'Appliance Repair',
+    relatedPostSlugs: ['craft-a-6-star-experience', 'track-job-costs-like-a-pro', 'the-fastest-way-to-true-business-growth', 'dont-burn-out-your-best-crew'],
     painPointConfig: [
       { variant: 'dashboard' },
       { variant: 'apps' },
@@ -1557,6 +1574,7 @@ export const industries: IndustryData[] = [
   {
     slug: 'handyman',
     name: 'Handyman',
+    relatedPostSlugs: ['profit-first-for-trades', 'track-job-costs-like-a-pro', 'the-fastest-way-to-true-business-growth', 'craft-a-6-star-experience'],
     painPointConfig: [
       { variant: 'messages' },
       { variant: 'dashboard' },
@@ -1690,6 +1708,7 @@ export const industries: IndustryData[] = [
   {
     slug: 'pressure-washing',
     name: 'Pressure Washing',
+    relatedPostSlugs: ['boost-your-business-cash-flow', 'the-fastest-way-to-true-business-growth', 'profit-first-for-trades', 'crush-post-vacation-slumps-like-a-pro'],
     painPointConfig: [
       { variant: 'dashboard' },
       { variant: 'messages' },
@@ -1823,6 +1842,7 @@ export const industries: IndustryData[] = [
   {
     slug: 'snow-removal',
     name: 'Snow Removal',
+    relatedPostSlugs: ['dont-burn-out-your-best-crew', 'tactical-redundancy-no-single-point-of-failure', 'track-job-costs-like-a-pro', 'returning-to-work-after-the-holidays'],
     painPointConfig: [
       { variant: 'apps' },
       { variant: 'dashboard' },
@@ -1956,6 +1976,7 @@ export const industries: IndustryData[] = [
   {
     slug: 'window-cleaning',
     name: 'Window Cleaning',
+    relatedPostSlugs: ['boost-your-business-cash-flow', 'keep-your-best-the-retention-playbook', 'craft-a-6-star-experience', 'the-fastest-way-to-true-business-growth'],
     painPointConfig: [
       { variant: 'messages' },
       { variant: 'apps' },
@@ -2089,6 +2110,7 @@ export const industries: IndustryData[] = [
   {
     slug: 'chimney-sweep',
     name: 'Chimney Sweep',
+    relatedPostSlugs: ['craft-a-6-star-experience', 'track-job-costs-like-a-pro', 'the-fastest-way-to-true-business-growth', 'dont-burn-out-your-best-crew'],
     painPointConfig: [
       { variant: 'messages' },
       { variant: 'dashboard' },
@@ -2222,6 +2244,7 @@ export const industries: IndustryData[] = [
   {
     slug: 'locksmith',
     name: 'Locksmith',
+    relatedPostSlugs: ['dont-burn-out-your-best-crew', 'the-fastest-way-to-true-business-growth', 'craft-a-6-star-experience', 'track-job-costs-like-a-pro'],
     painPointConfig: [
       { variant: 'messages' },
       { variant: 'dashboard' },
@@ -2355,6 +2378,7 @@ export const industries: IndustryData[] = [
   {
     slug: 'hvac',
     name: 'HVAC',
+    relatedPostSlugs: ['track-job-costs-like-a-pro', 'dont-burn-out-your-best-crew', 'tariff-proof-your-next-bid', 'keep-your-best-the-retention-playbook', 'craft-a-6-star-experience'],
     painPointConfig: [
       { variant: 'messages' },
       { variant: 'dashboard' },
@@ -2488,6 +2512,7 @@ export const industries: IndustryData[] = [
   {
     slug: 'plumbing',
     name: 'Plumbing',
+    relatedPostSlugs: ['track-job-costs-like-a-pro', 'dont-burn-out-your-best-crew', 'the-hidden-communication-gap-between-office-and-field-teams', 'craft-a-6-star-experience', 'keep-your-best-the-retention-playbook'],
     painPointConfig: [
       { variant: 'messages' },
       { variant: 'dashboard' },
@@ -2621,6 +2646,7 @@ export const industries: IndustryData[] = [
   {
     slug: 'electrical',
     name: 'Electrical',
+    relatedPostSlugs: ['chase-the-data-center-money', 'track-job-costs-like-a-pro', 'dont-burn-out-your-best-crew', 'keep-your-best-the-retention-playbook'],
     painPointConfig: [
       { variant: 'messages' },
       { variant: 'dashboard' },
@@ -2754,6 +2780,7 @@ export const industries: IndustryData[] = [
   {
     slug: 'roofing',
     name: 'Roofing',
+    relatedPostSlugs: ['tariff-proof-your-next-bid', 'dont-burn-out-your-best-crew', 'use-inversion-to-avoid-job-site-failures', 'track-job-costs-like-a-pro'],
     painPointConfig: [
       { variant: 'messages' },
       { variant: 'dashboard' },
@@ -2887,6 +2914,7 @@ export const industries: IndustryData[] = [
   {
     slug: 'pest-control',
     name: 'Pest Control',
+    relatedPostSlugs: ['boost-your-business-cash-flow', 'keep-your-best-the-retention-playbook', 'the-fastest-way-to-true-business-growth', 'craft-a-6-star-experience'],
     painPointConfig: [
       { variant: 'messages' },
       { variant: 'dashboard' },
@@ -3020,6 +3048,7 @@ export const industries: IndustryData[] = [
   {
     slug: 'painting',
     name: 'Painting',
+    relatedPostSlugs: ['win-clients-understand-hiring-fears', 'track-job-costs-like-a-pro', 'profit-first-for-trades', '5-steps-for-smoother-job-transitions'],
     painPointConfig: [
       { variant: 'messages' },
       { variant: 'dashboard' },
@@ -3153,6 +3182,7 @@ export const industries: IndustryData[] = [
   {
     slug: 'general-contracting',
     name: 'General Contracting',
+    relatedPostSlugs: ['the-hidden-communication-gap-between-office-and-field-teams', '5-steps-for-smoother-job-transitions', 'subs-or-w-2s-know-the-new-rules', 'track-job-costs-like-a-pro', 'tariff-proof-your-next-bid'],
     painPointConfig: [
       { variant: 'messages' },
       { variant: 'dashboard' },
@@ -3286,6 +3316,7 @@ export const industries: IndustryData[] = [
   {
     slug: 'cleaning',
     name: 'Cleaning & Janitorial',
+    relatedPostSlugs: ['keep-your-best-the-retention-playbook', 'boost-your-business-cash-flow', 'craft-a-6-star-experience', 'dont-burn-out-your-best-crew'],
     painPointConfig: [
       { variant: 'messages' },
       { variant: 'dashboard' },
@@ -3418,6 +3449,7 @@ export const industries: IndustryData[] = [
   {
     slug: 'property-maintenance',
     name: 'Property Maintenance',
+    relatedPostSlugs: ['boost-your-business-cash-flow', 'tactical-redundancy-no-single-point-of-failure', 'track-job-costs-like-a-pro', 'the-hidden-communication-gap-between-office-and-field-teams'],
     painPointConfig: [
       { variant: 'messages' },
       { variant: 'dashboard' },
@@ -3588,6 +3620,7 @@ export const industries: IndustryData[] = [
   {
     slug: 'glass',
     name: 'Glass & Windows',
+    relatedPostSlugs: ['track-job-costs-like-a-pro', 'tariff-proof-your-next-bid', '5-steps-for-smoother-job-transitions', 'craft-a-6-star-experience'],
     painPointConfig: [
       { variant: 'messages' },
       { variant: 'dashboard' },
@@ -3757,6 +3790,7 @@ export const industries: IndustryData[] = [
   {
     slug: 'septic',
     name: 'Septic & Sewer',
+    relatedPostSlugs: ['track-job-costs-like-a-pro', 'dont-burn-out-your-best-crew', 'craft-a-6-star-experience', 'the-fastest-way-to-true-business-growth'],
     painPointConfig: [
       { variant: 'messages' },
       { variant: 'dashboard' },
@@ -3927,6 +3961,7 @@ export const industries: IndustryData[] = [
   {
     slug: 'irrigation',
     name: 'Irrigation & Sprinkler',
+    relatedPostSlugs: ['boost-your-business-cash-flow', 'crush-post-vacation-slumps-like-a-pro', 'track-job-costs-like-a-pro', 'keep-your-best-the-retention-playbook'],
     painPointConfig: [
       { variant: 'messages' },
       { variant: 'dashboard' },
@@ -4096,6 +4131,7 @@ export const industries: IndustryData[] = [
   {
     slug: 'water-treatment',
     name: 'Water Treatment',
+    relatedPostSlugs: ['track-job-costs-like-a-pro', 'boost-your-business-cash-flow', 'craft-a-6-star-experience', 'the-fastest-way-to-true-business-growth'],
     painPointConfig: [
       { variant: 'messages' },
       { variant: 'dashboard' },
@@ -4266,6 +4302,7 @@ export const industries: IndustryData[] = [
   {
     slug: 'insulation',
     name: 'Insulation',
+    relatedPostSlugs: ['tariff-proof-your-next-bid', 'track-job-costs-like-a-pro', 'profit-first-for-trades', '5-steps-for-smoother-job-transitions'],
     painPointConfig: [
       { variant: 'messages' },
       { variant: 'dashboard' },
@@ -4435,6 +4472,7 @@ export const industries: IndustryData[] = [
   {
     slug: 'fire-protection',
     name: 'Fire Protection & Sprinkler Systems',
+    relatedPostSlugs: ['chase-the-data-center-money', 'track-job-costs-like-a-pro', 'subs-or-w-2s-know-the-new-rules', 'tactical-redundancy-no-single-point-of-failure'],
     painPointConfig: [
       { variant: 'messages' },
       { variant: 'dashboard' },
@@ -4605,6 +4643,7 @@ export const industries: IndustryData[] = [
   {
     slug: 'demolition',
     name: 'Demolition',
+    relatedPostSlugs: ['use-inversion-to-avoid-job-site-failures', 'track-job-costs-like-a-pro', 'tariff-proof-your-next-bid', 'dont-burn-out-your-best-crew'],
     painPointConfig: [
       { variant: 'messages' },
       { variant: 'dashboard' },
@@ -4774,6 +4813,7 @@ export const industries: IndustryData[] = [
   {
     slug: 'restoration',
     name: 'Restoration & Water Damage',
+    relatedPostSlugs: ['tactical-redundancy-no-single-point-of-failure', 'track-job-costs-like-a-pro', 'the-hidden-communication-gap-between-office-and-field-teams', 'craft-a-6-star-experience'],
     painPointConfig: [
       { variant: 'messages' },
       { variant: 'dashboard' },
@@ -4944,6 +4984,7 @@ export const industries: IndustryData[] = [
   {
     slug: 'mold-remediation',
     name: 'Mold Remediation',
+    relatedPostSlugs: ['track-job-costs-like-a-pro', 'tactical-redundancy-no-single-point-of-failure', 'craft-a-6-star-experience', 'the-fastest-way-to-true-business-growth'],
     painPointConfig: [
       { variant: 'messages' },
       { variant: 'dashboard' },
@@ -5113,6 +5154,7 @@ export const industries: IndustryData[] = [
   {
     slug: 'waterproofing',
     name: 'Waterproofing & Foundation Repair',
+    relatedPostSlugs: ['track-job-costs-like-a-pro', 'tariff-proof-your-next-bid', '5-steps-for-smoother-job-transitions', 'win-clients-understand-hiring-fears'],
     painPointConfig: [
       { variant: 'messages' },
       { variant: 'dashboard' },
@@ -5283,6 +5325,7 @@ export const industries: IndustryData[] = [
   {
     slug: 'siding',
     name: 'Siding & Exterior',
+    relatedPostSlugs: ['tariff-proof-your-next-bid', 'track-job-costs-like-a-pro', 'profit-first-for-trades', '5-steps-for-smoother-job-transitions'],
     painPointConfig: [
       { variant: 'messages' },
       { variant: 'dashboard' },
@@ -5452,6 +5495,7 @@ export const industries: IndustryData[] = [
   {
     slug: 'gutters',
     name: 'Gutter Installation & Cleaning',
+    relatedPostSlugs: ['track-job-costs-like-a-pro', 'tariff-proof-your-next-bid', 'the-fastest-way-to-true-business-growth', 'craft-a-6-star-experience'],
     painPointConfig: [
       { variant: 'messages' },
       { variant: 'dashboard' },
@@ -5622,6 +5666,7 @@ export const industries: IndustryData[] = [
   {
     slug: 'paving',
     name: 'Paving & Seal Coating',
+    relatedPostSlugs: ['tariff-proof-your-next-bid', 'dont-burn-out-your-best-crew', 'track-job-costs-like-a-pro', 'subs-or-w-2s-know-the-new-rules'],
     painPointConfig: [
       { variant: 'messages' },
       { variant: 'dashboard' },
@@ -5791,6 +5836,7 @@ export const industries: IndustryData[] = [
   {
     slug: 'welding',
     name: 'Welding & Metal Fabrication',
+    relatedPostSlugs: ['chase-the-data-center-money', 'dont-burn-out-your-best-crew', 'track-job-costs-like-a-pro', 'keep-your-best-the-retention-playbook'],
     painPointConfig: [
       { variant: 'messages' },
       { variant: 'dashboard' },
@@ -5961,6 +6007,7 @@ export const industries: IndustryData[] = [
   {
     slug: 'excavation',
     name: 'Excavation & Earthwork',
+    relatedPostSlugs: ['track-job-costs-like-a-pro', 'tariff-proof-your-next-bid', 'dont-burn-out-your-best-crew', 'subs-or-w-2s-know-the-new-rules'],
     painPointConfig: [
       { variant: 'messages' },
       { variant: 'dashboard' },
@@ -6130,6 +6177,7 @@ export const industries: IndustryData[] = [
   {
     slug: 'tile',
     name: 'Tile Installation',
+    relatedPostSlugs: ['track-job-costs-like-a-pro', 'tariff-proof-your-next-bid', '5-steps-for-smoother-job-transitions', 'subs-or-w-2s-know-the-new-rules'],
     painPointConfig: [
       { variant: 'messages' },
       { variant: 'dashboard' },
@@ -6300,6 +6348,7 @@ export const industries: IndustryData[] = [
   {
     slug: 'stucco',
     name: 'Stucco & Plastering',
+    relatedPostSlugs: ['tariff-proof-your-next-bid', 'track-job-costs-like-a-pro', '5-steps-for-smoother-job-transitions', 'profit-first-for-trades'],
     painPointConfig: [
       { variant: 'messages' },
       { variant: 'dashboard' },
@@ -6469,6 +6518,7 @@ export const industries: IndustryData[] = [
   {
     slug: 'carpentry',
     name: 'Carpentry & Finish Work',
+    relatedPostSlugs: ['track-job-costs-like-a-pro', 'tariff-proof-your-next-bid', 'subs-or-w-2s-know-the-new-rules', 'profit-first-for-trades'],
     painPointConfig: [
       { variant: 'messages' },
       { variant: 'dashboard' },
@@ -6639,6 +6689,7 @@ export const industries: IndustryData[] = [
   {
     slug: 'cabinets',
     name: 'Cabinet & Countertop Installation',
+    relatedPostSlugs: ['track-job-costs-like-a-pro', 'tariff-proof-your-next-bid', '5-steps-for-smoother-job-transitions', 'win-clients-understand-hiring-fears'],
     painPointConfig: [
       { variant: 'messages' },
       { variant: 'dashboard' },
@@ -6808,6 +6859,7 @@ export const industries: IndustryData[] = [
   {
     slug: 'commercial-door',
     name: 'Overhead & Commercial Door',
+    relatedPostSlugs: ['chase-the-data-center-money', 'track-job-costs-like-a-pro', 'tariff-proof-your-next-bid', 'the-hidden-communication-gap-between-office-and-field-teams'],
     painPointConfig: [
       { variant: 'messages' },
       { variant: 'dashboard' },
@@ -6978,6 +7030,7 @@ export const industries: IndustryData[] = [
   {
     slug: 'elevator',
     name: 'Elevator & Escalator Service',
+    relatedPostSlugs: ['chase-the-data-center-money', 'subs-or-w-2s-know-the-new-rules', 'track-job-costs-like-a-pro', 'tactical-redundancy-no-single-point-of-failure'],
     painPointConfig: [
       { variant: 'messages' },
       { variant: 'dashboard' },
@@ -7147,6 +7200,7 @@ export const industries: IndustryData[] = [
   {
     slug: 'audio-visual',
     name: 'Audio Visual & Home Theater',
+    relatedPostSlugs: ['chase-the-data-center-money', 'ai-isnt-coming-its-here', 'track-job-costs-like-a-pro', 'tariff-proof-your-next-bid'],
     painPointConfig: [
       { variant: 'messages' },
       { variant: 'dashboard' },
@@ -7317,6 +7371,7 @@ export const industries: IndustryData[] = [
   {
     slug: 'scaffolding',
     name: 'Scaffolding',
+    relatedPostSlugs: ['use-inversion-to-avoid-job-site-failures', 'chase-the-data-center-money', 'dont-burn-out-your-best-crew', 'tactical-redundancy-no-single-point-of-failure'],
     painPointConfig: [
       { variant: 'messages' },
       { variant: 'dashboard' },
