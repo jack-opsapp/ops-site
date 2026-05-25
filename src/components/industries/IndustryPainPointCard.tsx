@@ -3,6 +3,7 @@
 import { useRef, useState, useCallback } from 'react';
 import { Card } from '@/components/ui';
 import WireframeIllustration from '@/components/animations/WireframeIllustration';
+import CompetitorLinkedText from '@/components/shared/CompetitorLinkedText';
 import type { WireframeVariant } from '@/lib/industries';
 
 interface IndustryPainPointCardProps {
@@ -56,7 +57,7 @@ export default function IndustryPainPointCard({
             <p className="font-heading font-bold text-ops-text-primary uppercase text-lg tracking-tight">{title}</p>
             <ul className="mt-3 space-y-1">
               {bullets.map((bullet, i) => (
-                <li key={i} className="font-heading font-light text-ops-text-secondary text-sm leading-relaxed">&bull; {bullet}</li>
+                <li key={i} className="font-heading font-light text-ops-text-secondary text-sm leading-relaxed">&bull; <CompetitorLinkedText text={bullet} /></li>
               ))}
             </ul>
             <p className="mt-4 font-caption text-[11px] text-ops-text-secondary italic">{forLine}</p>

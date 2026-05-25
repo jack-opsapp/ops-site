@@ -10,6 +10,7 @@
 import { useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { Divider } from '@/components/ui';
+import CompetitorLinkedText from '@/components/shared/CompetitorLinkedText';
 
 interface FAQItemProps {
   question: string;
@@ -64,7 +65,7 @@ export default function FAQItem({ question, answer }: FAQItemProps) {
             className="overflow-hidden"
           >
             <p className="font-body font-light text-ops-text-secondary pt-4 pb-2">
-              {answer}
+              <CompetitorLinkedText text={answer} />
             </p>
           </motion.div>
         )}

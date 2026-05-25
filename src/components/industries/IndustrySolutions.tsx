@@ -2,6 +2,7 @@
 
 import { SectionLabel, FadeInUp } from '@/components/ui';
 import IndustrySolutionDevice from './IndustrySolutionDevice';
+import CompetitorLinkedText from '@/components/shared/CompetitorLinkedText';
 import type { DeviceType, FlowDirection } from '@/lib/industries';
 
 interface SolutionItem {
@@ -46,7 +47,7 @@ export default function IndustrySolutions({ solutions }: IndustrySolutionsProps)
                       {solution.title}
                     </h3>
                     <p className="mt-4 font-heading font-light text-base md:text-lg text-ops-text-secondary max-w-lg leading-relaxed">
-                      {solution.copy}
+                      <CompetitorLinkedText text={solution.copy} />
                     </p>
                   </div>
                   <div className={direction === 'right' ? 'md:order-first' : ''}>
