@@ -18,6 +18,7 @@ import { getPostBySlug, getAllLiveSlugs } from '@/lib/blog';
 import PostHeader from '@/components/journal/PostHeader';
 import PostContent from '@/components/journal/PostContent';
 import PostFAQ from '@/components/journal/PostFAQ';
+import RelatedPosts from '@/components/journal/RelatedPosts';
 import Breadcrumbs from '@/components/shared/Breadcrumbs';
 import { getLocale, buildLocaleAlternates, buildLocaleUrl } from '@/i18n/server';
 
@@ -170,6 +171,11 @@ export default async function JournalPostPage({
         <PostContent content={post.content} />
 
         {post.faqs?.length > 0 && <PostFAQ faqs={post.faqs} />}
+
+        <RelatedPosts
+          currentSlug={post.slug}
+          currentCategoryId={post.category_id}
+        />
       </article>
 
       {/* Back link */}
