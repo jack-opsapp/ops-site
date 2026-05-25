@@ -3,28 +3,57 @@
  *
  * URL structure:
  *   - English (default): /foo
- *   - Spanish:           /es/foo
+ *   - Spanish:           /es/foo   — only for routes with fully-translated
+ *                                    Spanish content (see TRANSLATED_PATHS
+ *                                    in src/i18n/server.ts)
  *
  * Flow:
- *   1. Request hits /es/<path>           → rewrite internally to /<path>
- *                                          + set x-locale=es header
- *                                          + sync ops-lang cookie to 'es'
- *   2. Request hits /<path> with cookie=es
- *                                        → 308 redirect to /es/<path>
- *                                          (keeps URL in sync with locale
- *                                           so internal English-relative
- *                                           links don't strand a Spanish
- *                                           user on English content)
- *   3. Otherwise (English)               → pass through
- *                                          + set x-locale=en header
+ *   1. /es/<translated path>
+ *        → rewrite internally to /<path>
+ *        → set x-locale=es header
+ *        → sync ops-lang cookie to 'es'
  *
- * Server components read `x-locale` via headers() in getLocale().
- * Pages that call getLocale() opt into dynamic rendering; Spanish pages
- * are cached via ISR on first hit. The English variants remain SSG.
+ *   2. /es/<UNtranslated path>
+ *        → 308 redirect to /<path>
+ *        (No Spanish version exists, so don't pretend the URL serves one.)
+ *
+ *   3. /<translated path> with cookie=es
+ *        → 308 redirect to /es/<path>
+ *        (Keeps URL in sync with locale so internal English-relative
+ *         <Link>s don't strand Spanish users.)
+ *
+ *   4. /<UNtranslated path> with cookie=es
+ *        → pass through as English. Don't loop into /es/ for content that
+ *          doesn't exist there.
+ *
+ *   5. Everything else
+ *        → pass through with x-locale=en
+ *
+ * Server components read `x-locale` via headers() in getLocale(). Pages
+ * that read getLocale() opt into dynamic rendering; translated Spanish
+ * pages cache via ISR after first hit.
  */
 
 import { NextRequest, NextResponse } from 'next/server';
 import { COOKIE_NAME, COOKIE_MAX_AGE } from '@/i18n/config';
+
+// Mirror of TRANSLATED_PATHS in src/i18n/server.ts — kept here as a
+// constant rather than imported because middleware runs in the Edge
+// runtime and importing from server.ts could pull in headers()/cookies()
+// transitively, which middleware can't use.
+const TRANSLATED_PATHS = new Set<string>([
+  '/',
+  '/platform',
+  '/plans',
+  '/company',
+  '/resources',
+  '/tools',
+  '/shop',
+]);
+
+function isTranslated(pathname: string): boolean {
+  return TRANSLATED_PATHS.has(pathname);
+}
 
 export function middleware(request: NextRequest) {
   const { pathname } = request.nextUrl;
@@ -33,6 +62,15 @@ export function middleware(request: NextRequest) {
   if (pathname === '/es' || pathname.startsWith('/es/')) {
     const internalPath = pathname === '/es' ? '/' : pathname.slice(3);
 
+    // Untranslated route: /es/<path> doesn't really serve Spanish — redirect
+    // to the English URL rather than rendering English content under a /es URL.
+    if (!isTranslated(internalPath)) {
+      const url = request.nextUrl.clone();
+      url.pathname = internalPath;
+      return NextResponse.redirect(url, 308);
+    }
+
+    // Translated route: rewrite internally with the locale header + cookie sync.
     const url = request.nextUrl.clone();
     url.pathname = internalPath;
 
@@ -51,9 +89,10 @@ export function middleware(request: NextRequest) {
     return response;
   }
 
-  // --- Unprefixed URL, but the visitor's saved preference is Spanish ---
+  // --- Unprefixed URL with cookie=es ---
+  // Only redirect to /es when the route actually has a Spanish version.
   const cookieLocale = request.cookies.get(COOKIE_NAME)?.value;
-  if (cookieLocale === 'es') {
+  if (cookieLocale === 'es' && isTranslated(pathname)) {
     const url = request.nextUrl.clone();
     url.pathname = pathname === '/' ? '/es' : `/es${pathname}`;
     return NextResponse.redirect(url, 308);

@@ -53,20 +53,62 @@ export async function getPathname(): Promise<string> {
 }
 
 /**
+ * Routes that have fully-translated Spanish content (page chrome AND body).
+ *
+ * Routes NOT in this set serve English even when reached via /es/<path>:
+ *  - /journal/*  blog posts live in Supabase with a single `content` field
+ *  - /industries/*  data file has optional `content.es?` that nobody populated
+ *  - /compare/*    same — `content.es?` exists but is unused
+ *  - /tools/leadership   page body hardcodes English copy (only metadata is bilingual)
+ *  - /legal       documents are intentionally English-only
+ *
+ * For untranslated routes:
+ *  - sitemap.ts does not emit a /es/<path> entry
+ *  - buildLocaleAlternates() drops the languages map so hreflang doesn't
+ *    advertise a Spanish version that isn't really Spanish
+ *  - middleware.ts redirects /es/<path> → /<path> so the URL doesn't pretend
+ *
+ * Add a route here only when its page body renders in Spanish end-to-end.
+ */
+export const TRANSLATED_PATHS: ReadonlySet<string> = new Set([
+  '/',
+  '/platform',
+  '/plans',
+  '/company',
+  '/resources',
+  '/tools',
+  '/shop',
+]);
+
+export function hasSpanishContent(path: string): boolean {
+  return TRANSLATED_PATHS.has(path);
+}
+
+/**
  * Build canonical + hreflang alternates for a given page path and locale.
  *
  * - `path`            — the canonical English path (e.g. '/platform').
  * - `currentLocale`   — drives which URL becomes the canonical for this
- *                       specific render. Each locale's page has its own
- *                       canonical pointing back at itself.
+ *                       specific render. Each translated locale's page
+ *                       has its own canonical pointing back at itself;
+ *                       untranslated routes always canonicalize to English.
  *
- * Output shape matches Next.js's `alternates` metadata field.
+ * Output shape matches Next.js's `alternates` metadata field. For
+ * untranslated routes we deliberately omit `languages` so Google never
+ * sees an hreflang declaring a Spanish version that doesn't exist.
  */
 export function buildLocaleAlternates(path: string, currentLocale: Locale) {
   const base = 'https://opsapp.co';
   const cleanPath = path === '/' ? '' : path;
   const enUrl = `${base}${cleanPath}` || base;
   const esUrl = `${base}/es${cleanPath}`;
+
+  if (!hasSpanishContent(path)) {
+    return {
+      canonical: enUrl,
+    };
+  }
+
   return {
     canonical: currentLocale === 'es' ? esUrl : enUrl,
     languages: {

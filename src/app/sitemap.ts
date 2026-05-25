@@ -2,13 +2,18 @@ import type { MetadataRoute } from 'next';
 import { getAllLiveSlugs } from '@/lib/blog';
 import { getAllIndustrySlugs } from '@/lib/industries';
 import { getAllComparisonSlugs } from '@/lib/comparisons';
+import { hasSpanishContent } from '@/i18n/server';
 
 const BASE_URL = 'https://opsapp.co';
 
 /**
- * Build one English + one Spanish sitemap entry for a given path.
- * Each entry includes `alternates.languages` so Google's hreflang
- * graph is fully connected from the sitemap itself.
+ * Build a sitemap entry for the English URL plus, ONLY if the route has
+ * fully-translated Spanish content, a paired /es/<path> entry. Both
+ * entries cross-link via alternates.languages.
+ *
+ * Untranslated routes emit only the English URL — no /es/<path>, no
+ * Spanish hreflang — so Google never tries to index a Spanish URL whose
+ * body is actually English.
  */
 function buildLocaleEntries(
   path: string,
@@ -20,6 +25,18 @@ function buildLocaleEntries(
 ): MetadataRoute.Sitemap {
   const cleanPath = path === '/' ? '' : path;
   const enUrl = `${BASE_URL}${cleanPath}` || BASE_URL;
+
+  if (!hasSpanishContent(path)) {
+    return [
+      {
+        url: enUrl,
+        lastModified: options.lastModified,
+        changeFrequency: options.changeFrequency,
+        priority: options.priority,
+      },
+    ];
+  }
+
   const esUrl = `${BASE_URL}/es${cleanPath}`;
   const languages = {
     en: enUrl,
