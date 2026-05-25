@@ -20,6 +20,8 @@ import type { Dictionary } from '@/i18n/types';
 
 const baseNavLinks = [
   { key: 'nav.platform', href: '/platform' },
+  { key: 'nav.industries', href: '/industries' },
+  { key: 'nav.compare', href: '/compare' },
   { key: 'nav.tools', href: '/tools' },
   { key: 'nav.shop', href: '/shop', shopOnly: true },
   { key: 'nav.plans', href: '/plans' },

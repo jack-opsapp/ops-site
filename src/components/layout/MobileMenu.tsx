@@ -18,7 +18,10 @@ interface MobileMenuProps {
 
 const navLinkKeys = [
   { key: 'nav.platform', href: '/platform' },
+  { key: 'nav.industries', href: '/industries' },
+  { key: 'nav.compare', href: '/compare' },
   { key: 'nav.tools', href: '/tools' },
+  { key: 'nav.shop', href: '/shop' },
   { key: 'nav.plans', href: '/plans' },
   { key: 'nav.journal', href: '/journal' },
   { key: 'nav.resources', href: '/resources' },
