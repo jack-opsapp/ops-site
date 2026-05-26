@@ -36,7 +36,7 @@ export async function generateMetadata(): Promise<Metadata> {
   };
 }
 
-const VALID_TABS = ['terms', 'privacy', 'eula', 'dpa'] as const;
+const VALID_TABS = ['terms', 'spec-terms', 'privacy', 'eula', 'dpa'] as const;
 
 export default async function LegalPage({
   searchParams,
