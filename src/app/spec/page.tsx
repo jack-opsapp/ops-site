@@ -30,46 +30,79 @@ export async function generateMetadata(): Promise<Metadata> {
 }
 
 export default async function SpecPage() {
-  const dict = await getTDict('spec');
+  const rawDict = await getTDict('spec');
+  // Phase 0 safety — until SPEC_LIVE_DEPOSITS_ENABLED flips to 'true',
+  // Pay Deposit buttons render as "Talk to the founder" links pointing
+  // at the contact form. The Stripe route returns 503 on the API side.
+  const depositsEnabled = process.env.SPEC_LIVE_DEPOSITS_ENABLED === 'true';
 
-  /* JSON-LD — Product with three Offers (deposit prices), plus a
-     breadcrumb trail. Lets search and AI agents understand SPEC as
-     a discrete service offering with starting price points. */
-  const productLd = {
-    '@context': 'https://schema.org',
-    '@type': 'Product',
-    name: 'OPS SPEC',
-    description:
-      'Custom modules built on the OPS platform — Setup, Build, and Enterprise packages. Built by a contractor, for contractors.',
-    brand: { '@type': 'Brand', name: 'OPS' },
-    url: 'https://opsapp.co/spec',
-    offers: [
-      {
-        '@type': 'Offer',
-        name: 'SPEC — Setup',
-        price: '1500',
-        priceCurrency: 'CAD',
-        description: '$1,500 deposit on a $3,000 Setup package.',
-        availability: 'https://schema.org/InStock',
-      },
-      {
-        '@type': 'Offer',
-        name: 'SPEC — Build',
-        price: '4250',
-        priceCurrency: 'CAD',
-        description: '$4,250 deposit on a $8,500 Build package.',
-        availability: 'https://schema.org/InStock',
-      },
-      {
-        '@type': 'Offer',
-        name: 'SPEC — Enterprise',
-        price: '9000',
-        priceCurrency: 'CAD',
-        description: '$9,000 deposit on a $18,000 Enterprise package.',
-        availability: 'https://schema.org/InStock',
-      },
-    ],
-  };
+  // Strip deposit-claim copy from the dict before it lands in the RSC
+  // hydration payload. Otherwise crawlers + AI agents see "Pay $1,500
+  // Deposit" in the page source even though the visible UI renders the
+  // "Talk to the founder" link.
+  const dict = depositsEnabled
+    ? rawDict
+    : Object.fromEntries(
+        Object.entries(rawDict).filter(
+          ([key]) =>
+            !key.endsWith('.ctaText') &&
+            !key.endsWith('.deposit') &&
+            !key.startsWith('confirmation.'),
+        ),
+      );
+
+  /* JSON-LD — Service (no Offers while deposits are paused per Phase 0).
+     When SPEC_LIVE_DEPOSITS_ENABLED flips on, Offers with deposit prices
+     are emitted again and availability flips back to InStock. Until then,
+     the markup describes the service without advertising prices the page
+     isn't actually selling — keeps search and AI agents consistent with
+     the visible UI's "Talk to the founder" posture. */
+  const productLd = depositsEnabled
+    ? {
+        '@context': 'https://schema.org',
+        '@type': 'Product',
+        name: 'OPS SPEC',
+        description:
+          'Custom modules built on the OPS platform — Setup, Build, and Enterprise packages. Built by a contractor, for contractors.',
+        brand: { '@type': 'Brand', name: 'OPS' },
+        url: 'https://opsapp.co/spec',
+        offers: [
+          {
+            '@type': 'Offer',
+            name: 'SPEC — Setup',
+            price: '1500',
+            priceCurrency: 'CAD',
+            description: '$1,500 deposit on a $3,000 Setup package.',
+            availability: 'https://schema.org/InStock',
+          },
+          {
+            '@type': 'Offer',
+            name: 'SPEC — Build',
+            price: '4250',
+            priceCurrency: 'CAD',
+            description: '$4,250 deposit on a $8,500 Build package.',
+            availability: 'https://schema.org/InStock',
+          },
+          {
+            '@type': 'Offer',
+            name: 'SPEC — Enterprise',
+            price: '9000',
+            priceCurrency: 'CAD',
+            description: '$9,000 deposit on a $18,000 Enterprise package.',
+            availability: 'https://schema.org/InStock',
+          },
+        ],
+      }
+    : {
+        '@context': 'https://schema.org',
+        '@type': 'Service',
+        name: 'OPS SPEC',
+        description:
+          'Custom modules built on the OPS platform — Setup, Build, and Enterprise packages. Built by a contractor, for contractors. Contact the founder to scope an engagement.',
+        provider: { '@type': 'Organization', name: 'OPS', url: 'https://opsapp.co' },
+        url: 'https://opsapp.co/spec',
+        areaServed: { '@type': 'Country', name: 'Canada' },
+      };
 
   const breadcrumbLd = {
     '@context': 'https://schema.org',
@@ -90,7 +123,7 @@ export default async function SpecPage() {
         type="application/ld+json"
         dangerouslySetInnerHTML={{ __html: JSON.stringify(breadcrumbLd) }}
       />
-      <SpecPageContent dict={dict} />
+      <SpecPageContent dict={dict} depositsEnabled={depositsEnabled} />
     </>
   );
 }

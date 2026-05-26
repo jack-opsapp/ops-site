@@ -6,10 +6,21 @@
  *
  * The completed event lands on /api/shop/webhook (the consolidated
  * Stripe handler) and is dispatched on metadata.type === 'spec_deposit'.
+ *
+ * Phase 0 safety: gated by `SPEC_LIVE_DEPOSITS_ENABLED`. While false
+ * (default), the route returns 503 and the page renders "Talk to the
+ * founder" CTAs instead of "Pay Deposit" so we don't run automated live
+ * deposits against an endpoint missing Phase 1 gates (auth, company,
+ * billing-address / Quebec attestation, Stripe Tax, ToS consent, full
+ * metadata, project row pre-creation). See SPEC/07_ROLLOUT.md § Phase 0.
  */
 
 import { NextResponse } from 'next/server';
 import { getStripe } from '@/lib/shop/stripe';
+
+function depositsLive(): boolean {
+  return process.env.SPEC_LIVE_DEPOSITS_ENABLED === 'true';
+}
 
 const PACKAGES = {
   setup: {
@@ -36,6 +47,17 @@ interface RequestBody {
 }
 
 export async function POST(request: Request) {
+  // Phase 0 safety gate — automated deposits are paused until Phase 1 lands.
+  if (!depositsLive()) {
+    return NextResponse.json(
+      {
+        error: 'Deposits are paused. Please use the contact form to talk to the founder.',
+        contactUrl: '/resources#contact',
+      },
+      { status: 503 },
+    );
+  }
+
   try {
     const body = (await request.json()) as RequestBody;
     const pkgKey = body.package as PackageKey;

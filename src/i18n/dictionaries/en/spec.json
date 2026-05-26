@@ -80,6 +80,8 @@
   "packages.enterprise.ongoing": "$165-340/mo subscription. $750/mo maintenance retainer after support window.",
   "packages.enterprise.ctaText": "Pay $9,000 Deposit",
 
+  "packages.contactCta": "Talk to the founder",
+
   "included.sectionLabel": "WHAT EVERY PACKAGE INCLUDES",
   "included.every": [
     "Discovery sessions to understand your workflow",
@@ -96,16 +98,6 @@
     "Additional feature requests: quoted as new projects",
     "Overage hours beyond retainer: $200-225/hr"
   ],
-
-  "proof.subtitle": "Built on the OPS platform — trusted by trades businesses across North America.",
-  "proof.stat1.value": "500+",
-  "proof.stat1.label": "Active businesses",
-  "proof.stat2.value": "12,000+",
-  "proof.stat2.label": "Projects managed",
-  "proof.stat3.value": "85,000+",
-  "proof.stat3.label": "Tasks completed",
-  "proof.stat4.value": "$14M+",
-  "proof.stat4.label": "Revenue generated with OPS",
 
   "faq.sectionLabel": "QUESTIONS",
   "faq.items": [

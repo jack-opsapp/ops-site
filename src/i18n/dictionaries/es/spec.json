@@ -80,6 +80,8 @@
   "packages.enterprise.ongoing": "Suscripcion $165-340/mes. Retenedor de mantenimiento $750/mes despues del periodo de soporte.",
   "packages.enterprise.ctaText": "Pagar $9,000 Deposito",
 
+  "packages.contactCta": "Habla con el fundador",
+
   "included.sectionLabel": "QUE INCLUYE CADA PAQUETE",
   "included.every": [
     "Sesiones de descubrimiento para entender tu flujo de trabajo",
@@ -96,16 +98,6 @@
     "Solicitudes adicionales de funciones: cotizadas como nuevos proyectos",
     "Horas excedentes del retenedor: $200-225/hr"
   ],
-
-  "proof.subtitle": "Construido sobre la plataforma OPS — confiado por negocios de oficios en toda Norteamerica.",
-  "proof.stat1.value": "500+",
-  "proof.stat1.label": "Negocios activos",
-  "proof.stat2.value": "12,000+",
-  "proof.stat2.label": "Proyectos gestionados",
-  "proof.stat3.value": "85,000+",
-  "proof.stat3.label": "Tareas completadas",
-  "proof.stat4.value": "$14M+",
-  "proof.stat4.label": "Ingresos generados con OPS",
 
   "faq.sectionLabel": "PREGUNTAS",
   "faq.items": [

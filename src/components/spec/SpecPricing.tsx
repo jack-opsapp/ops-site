@@ -25,12 +25,20 @@ interface SpecPricingProps {
   sectionLabel: string;
   packages: PackageData[];
   onTierSelect?: (tier: string | null) => void;
+  /** Phase 0 safety — when false, CTAs become contact links, not Stripe triggers. */
+  depositsEnabled: boolean;
+  /** Copy + href used when depositsEnabled is false. */
+  contactCtaText: string;
+  contactCtaHref: string;
 }
 
 export default function SpecPricing({
   sectionLabel,
   packages,
   onTierSelect,
+  depositsEnabled,
+  contactCtaText,
+  contactCtaHref,
 }: SpecPricingProps) {
   const [expandedTier, setExpandedTier] = useState<string | null>(null);
 
@@ -84,6 +92,9 @@ export default function SpecPricing({
                   isOtherExpanded={expandedTier !== null && expandedTier !== pkg.tier}
                   onToggle={() => handleToggle(pkg.tier)}
                   onDeposit={handleDeposit}
+                  depositsEnabled={depositsEnabled}
+                  contactCtaText={contactCtaText}
+                  contactCtaHref={contactCtaHref}
                 />
               </motion.div>
             ))}

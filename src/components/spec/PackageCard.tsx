@@ -25,6 +25,10 @@ export interface PackageCardProps {
   isOtherExpanded: boolean;
   onToggle: () => void;
   onDeposit: (tier: string) => void;
+  /** Phase 0 safety — when false, render contact link instead of Stripe button. */
+  depositsEnabled: boolean;
+  contactCtaText: string;
+  contactCtaHref: string;
 }
 
 export default function PackageCard({
@@ -42,6 +46,9 @@ export default function PackageCard({
   isOtherExpanded,
   onToggle,
   onDeposit,
+  depositsEnabled,
+  contactCtaText,
+  contactCtaHref,
 }: PackageCardProps) {
   const isCompressed = !isExpanded && isOtherExpanded;
 
@@ -89,7 +96,7 @@ export default function PackageCard({
           `}>
             {price}
           </span>
-          {!isCompressed && (
+          {!isCompressed && depositsEnabled && (
             <p className="font-caption text-[10px] text-ops-text-secondary mt-0.5">
               {deposit}
             </p>
@@ -150,22 +157,39 @@ export default function PackageCard({
                 <p className="font-heading font-light text-xs text-white/30">
                   {ongoing}
                 </p>
-                <button
-                  onClick={(e) => {
-                    e.stopPropagation();
-                    onDeposit(tier);
-                  }}
-                  className={`
-                    flex-shrink-0 font-caption uppercase tracking-[0.15em] text-xs px-6 py-3 rounded-[3px]
-                    transition-all duration-200 cursor-pointer whitespace-nowrap
-                    ${recommended
-                      ? 'bg-ops-accent text-white hover:bg-ops-accent/90'
-                      : 'bg-transparent text-ops-text-primary border border-ops-border hover:border-ops-border-hover'
-                    }
-                  `}
-                >
-                  {ctaText}
-                </button>
+                {depositsEnabled ? (
+                  <button
+                    onClick={(e) => {
+                      e.stopPropagation();
+                      onDeposit(tier);
+                    }}
+                    className={`
+                      flex-shrink-0 font-caption uppercase tracking-[0.15em] text-xs px-6 py-3 rounded-[3px]
+                      transition-all duration-200 cursor-pointer whitespace-nowrap
+                      ${recommended
+                        ? 'bg-ops-accent text-white hover:bg-ops-accent/90'
+                        : 'bg-transparent text-ops-text-primary border border-ops-border hover:border-ops-border-hover'
+                      }
+                    `}
+                  >
+                    {ctaText}
+                  </button>
+                ) : (
+                  <a
+                    href={contactCtaHref}
+                    onClick={(e) => e.stopPropagation()}
+                    className={`
+                      flex-shrink-0 font-caption uppercase tracking-[0.15em] text-xs px-6 py-3 rounded-[3px]
+                      transition-all duration-200 cursor-pointer whitespace-nowrap inline-flex items-center justify-center
+                      ${recommended
+                        ? 'bg-ops-accent text-white hover:bg-ops-accent/90'
+                        : 'bg-transparent text-ops-text-primary border border-ops-border hover:border-ops-border-hover'
+                      }
+                    `}
+                  >
+                    {contactCtaText}
+                  </a>
+                )}
               </div>
             </div>
           </motion.div>

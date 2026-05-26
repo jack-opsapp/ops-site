@@ -6,7 +6,6 @@ import SpecHero from './SpecHero';
 import HowItWorks from './HowItWorks';
 import SpecPricing, { type PackageData } from './SpecPricing';
 import WhatsIncluded from './WhatsIncluded';
-import SocialProof from './SocialProof';
 import SpecFAQ from './SpecFAQ';
 import SpecBottomCTA from './SpecBottomCTA';
 import SpecPhoneWrapper from './phone-scene/SpecPhoneWrapper';
@@ -14,6 +13,12 @@ import type { SpecPhase } from './phone-scene/constants';
 
 interface SpecPageContentProps {
   dict: Dictionary;
+  /**
+   * Phase 0 safety flag. When false, package CTAs become "Talk to the
+   * founder" links pointing at the contact form, the Stripe API returns
+   * 503, and no automated deposits can fire.
+   */
+  depositsEnabled: boolean;
 }
 
 function t(dict: Dictionary, key: string): string {
@@ -23,7 +28,7 @@ function t(dict: Dictionary, key: string): string {
 
 const STEP_PHASES: SpecPhase[] = ['packages', 'analysis', 'building', 'custom'];
 
-export function SpecPageContent({ dict }: SpecPageContentProps) {
+export function SpecPageContent({ dict, depositsEnabled }: SpecPageContentProps) {
   const [phonePhase, setPhonePhase] = useState<SpecPhase>('home');
   const [phoneTier, setPhoneTier] = useState<string | null>(null);
   const [isInHero, setIsInHero] = useState(true);
@@ -77,11 +82,14 @@ export function SpecPageContent({ dict }: SpecPageContentProps) {
     name: t(dict, `packages.${tier}.name`),
     tagline: t(dict, `packages.${tier}.tagline`),
     price: t(dict, `packages.${tier}.price`),
-    deposit: t(dict, `packages.${tier}.deposit`),
+    // When deposits are paused, blank out deposit-related copy so the
+    // rendered HTML doesn't leak "$1,500 deposit" / "Pay $1,500 Deposit"
+    // claims to crawlers and AI discovery agents.
+    deposit: depositsEnabled ? t(dict, `packages.${tier}.deposit`) : '',
     features: (dict[`packages.${tier}.features`] as string[]) ?? [],
     examples: (dict[`packages.${tier}.examples`] as unknown as Array<{ trade: string; desc: string }>) ?? [],
     ongoing: t(dict, `packages.${tier}.ongoing`),
-    ctaText: t(dict, `packages.${tier}.ctaText`),
+    ctaText: depositsEnabled ? t(dict, `packages.${tier}.ctaText`) : '',
     recommended: tier === 'build',
   }));
 
@@ -125,6 +133,9 @@ export function SpecPageContent({ dict }: SpecPageContentProps) {
               sectionLabel={t(dict, 'packages.sectionLabel')}
               packages={packages}
               onTierSelect={handleTierSelect}
+              depositsEnabled={depositsEnabled}
+              contactCtaText={t(dict, 'packages.contactCta')}
+              contactCtaHref="/resources#contact"
             />
           </div>
         </div>
@@ -137,15 +148,12 @@ export function SpecPageContent({ dict }: SpecPageContentProps) {
         ongoingItems={(dict['included.ongoing'] as string[]) ?? []}
       />
 
-      <SocialProof
-        subtitle={t(dict, 'proof.subtitle')}
-        stats={[
-          { value: t(dict, 'proof.stat1.value'), label: t(dict, 'proof.stat1.label') },
-          { value: t(dict, 'proof.stat2.value'), label: t(dict, 'proof.stat2.label') },
-          { value: t(dict, 'proof.stat3.value'), label: t(dict, 'proof.stat3.label') },
-          { value: t(dict, 'proof.stat4.value'), label: t(dict, 'proof.stat4.label') },
-        ]}
-      />
+      {/*
+        SocialProof intentionally removed per SPEC/07_ROLLOUT.md § Phase 1 § 3:
+        the 500+ / 12,000+ / 85,000+ / $14M+ stats are unverified and must
+        come out of both the en/es dictionaries and the page until real
+        verifiable numbers exist.
+      */}
 
       <SpecFAQ
         sectionLabel={t(dict, 'faq.sectionLabel')}
