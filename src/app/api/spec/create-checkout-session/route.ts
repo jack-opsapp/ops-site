@@ -35,8 +35,6 @@
  */
 
 import { NextRequest, NextResponse } from 'next/server';
-import type Stripe from 'stripe';
-import { getStripe } from '@/lib/shop/stripe';
 import { getSupabaseAdmin } from '@/lib/supabase-admin';
 import { getCurrentUserFromRequest } from '@/lib/auth/get-current-user';
 import { resolveSpecCompanyForProject } from '@/lib/spec/resolve-company';
@@ -53,13 +51,13 @@ import {
 } from '@/lib/spec/pricing';
 import { SPEC_TERMS_VERSION_HASH } from '@/lib/spec/tos-version';
 import {
-  attributionToStripeMetadata,
   readAttributionFromRequest,
   type OpsAttribution,
 } from '@/lib/spec/attribution';
 import { sendConversionEvent } from '@/lib/spec/conversion-events';
 import { generateApprovalToken, hashApprovalToken } from '@/lib/spec/token-hash';
 import { queueSpecEmail } from '@/lib/spec/email-outbox';
+import { createSpecStripeCheckoutSession } from '@/lib/spec/stripe-session';
 
 interface RequestBody {
   tier?: string;
@@ -297,8 +295,6 @@ export async function POST(req: NextRequest): Promise<NextResponse> {
   if (resolved.isBuyerAccountHolder) {
     return handlePathA({
       req,
-      db,
-      stripe: getStripe(),
       tier,
       buyerEmail,
       buyerUserId: currentUser.id,
@@ -329,8 +325,6 @@ export async function POST(req: NextRequest): Promise<NextResponse> {
 
 interface PathAArgs {
   req: NextRequest;
-  db: ReturnType<typeof getSupabaseAdmin>;
-  stripe: Stripe;
   tier: SpecTier;
   buyerEmail: string;
   buyerUserId: string;
@@ -345,8 +339,6 @@ interface PathAArgs {
 async function handlePathA(args: PathAArgs): Promise<NextResponse> {
   const {
     req,
-    db,
-    stripe,
     tier,
     buyerEmail,
     buyerUserId,
@@ -358,96 +350,27 @@ async function handlePathA(args: PathAArgs): Promise<NextResponse> {
     attribution,
   } = args;
   const origin = getOrigin(req);
-  const depositCents = tierDepositCents(tier);
 
-  // Get or create a Stripe Customer with the pre-collected billing address.
-  let stripeCustomerId = knownStripeCustomerId;
-  if (!stripeCustomerId) {
-    try {
-      const customer = await stripe.customers.create({
-        email: buyerEmail || undefined,
-        name: companyName,
-        address: {
-          line1: billing.line1,
-          line2: billing.line2 ?? undefined,
-          city: billing.city,
-          state: billing.province,
-          postal_code: billing.postal_code,
-          country: 'CA',
-        },
-        metadata: {
-          ops_company_id: companyId,
-          ops_user_id: buyerUserId,
-          spec_project_id: specProjectId,
-        },
-      });
-      stripeCustomerId = customer.id;
-      await db
-        .from('companies')
-        .update({ stripe_customer_id: stripeCustomerId })
-        .eq('id', companyId);
-    } catch (err) {
-      console.error('[spec/create-checkout-session] Stripe customer create failed', err);
-      return NextResponse.json(
-        { error: 'Stripe error. Please try again in a moment.' },
-        { status: 502 },
-      );
-    }
-  }
-
-  const metadata: Record<string, string> = {
-    type: 'spec_deposit',
-    spec_project_id: specProjectId,
-    user_id: buyerUserId,
-    company_id: companyId,
-    tier,
-    tos_version_hash: SPEC_TERMS_VERSION_HASH,
-    ...attributionToStripeMetadata(attribution),
-  };
-
-  let session: Stripe.Checkout.Session;
+  let session: Awaited<ReturnType<typeof createSpecStripeCheckoutSession>>;
   try {
-    session = await stripe.checkout.sessions.create({
-      mode: 'payment',
-      customer: stripeCustomerId,
-      // Stripe rejects `customer_email` when `customer` is set, so we omit it
-      // — the email lives on the Customer object already.
-      automatic_tax: { enabled: true },
-      billing_address_collection: 'required',
-      consent_collection: { terms_of_service: 'required' },
-      phone_number_collection: { enabled: true },
-      custom_fields: [
-        {
-          key: 'gst_hst_number',
-          label: { type: 'custom', custom: 'GST/HST number (optional)' },
-          type: 'text',
-          optional: true,
-        },
-      ],
-      customer_update: {
-        address: 'auto',
-        name: 'auto',
-        shipping: 'auto',
+    session = await createSpecStripeCheckoutSession({
+      tier,
+      buyerEmail,
+      buyerUserId,
+      companyId,
+      companyName,
+      specProjectId,
+      existingStripeCustomerId: knownStripeCustomerId,
+      billing: {
+        line1: billing.line1,
+        line2: billing.line2 ?? null,
+        city: billing.city,
+        province: billing.province,
+        postal_code: billing.postal_code,
+        country: 'CA',
       },
-      line_items: [
-        {
-          price_data: {
-            currency: 'cad',
-            product_data: {
-              name: `${SPEC_TIER_DISPLAY_NAMES[tier]} — 25% Deposit (P1 of 4)`,
-              description:
-                'P1 deposit funds discovery + scope work. P2 fires at scope sign-off, P3 at midpoint demo, P4 at delivery walkthrough.',
-            },
-            unit_amount: depositCents,
-            tax_behavior: 'exclusive',
-          },
-          quantity: 1,
-        },
-      ],
-      metadata,
-      payment_intent_data: { metadata },
-      success_url: `${origin}/spec/confirmation?session_id={CHECKOUT_SESSION_ID}`,
-      cancel_url: `${origin}/spec`,
+      attribution,
+      origin,
     });
   } catch (err) {
     console.error('[spec/create-checkout-session] Stripe Checkout create failed', err);
@@ -457,21 +380,12 @@ async function handlePathA(args: PathAArgs): Promise<NextResponse> {
     );
   }
 
-  // Persist Stripe identifiers on the project row so the webhook can correlate.
-  await db
-    .from('spec_projects')
-    .update({
-      stripe_customer_id: stripeCustomerId,
-      stripe_session_id: session.id,
-    })
-    .eq('id', specProjectId);
-
   await sendConversionEvent('stripe_checkout_opened', {
     user_id: buyerUserId,
     company_id: companyId,
     tier,
     spec_project_id: specProjectId,
-    value_cents: depositCents,
+    value_cents: session.depositCents,
     currency: 'CAD',
     email: buyerEmail || undefined,
     ...attribution,
