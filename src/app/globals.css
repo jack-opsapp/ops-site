@@ -153,6 +153,21 @@ body {
   }
 }
 
+/*
+ * SPEC OPS BOARD — ambient LIVE indicator pulse.
+ * 2s soft opacity cycle. The ONLY ambient motion on /spec per
+ * 04_CUSTOMER_UX.md § 3. Disabled by the global reduce-motion rule
+ * above; the SpecOpsBoard component also strips the class when the
+ * useReducedMotion() hook returns true.
+ */
+@keyframes spec-pulse {
+  0%, 100% { opacity: 1; }
+  50% { opacity: 0.35; }
+}
+.animate-spec-pulse {
+  animation: spec-pulse 2s cubic-bezier(0.22, 1, 0.36, 1) infinite;
+}
+
 /* Hide scrollbar for horizontal carousels */
 .scrollbar-hide {
   -ms-overflow-style: none;

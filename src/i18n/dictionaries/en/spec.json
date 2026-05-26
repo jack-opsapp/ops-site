@@ -1,35 +1,97 @@
 {
   "hero.eyebrow": "OPS SPEC",
   "hero.heading": "YOUR WORKFLOW. YOUR MODULES. YOUR OPS.",
-  "hero.subtitle": "We work with you to build custom modules that fit the way you actually run your business. Not a template. Not a workaround. Software shaped around your operation, built on the OPS foundation.",
+  "hero.subtitle": "We build custom modules that fit how you actually run your business. Not a template. Not a workaround. Software shaped around your operation, built on the OPS foundation.",
   "hero.ctaPackages": "View Packages",
   "hero.ctaHowItWorks": "How It Works",
+  "hero.founderEyebrow": "// FOUNDER :: JACKSON",
+  "hero.founderLine": "Built by the contractor who runs OPS at his own company. SPEC is the same hands-on build, applied to your operation.",
 
   "process.sectionLabel": "HOW IT WORKS",
   "process.step1.number": "01",
-  "process.step1.title": "Pick your package, lock your spot",
-  "process.step1.desc": "Choose Setup, Build, or Enterprise. Pay 50% deposit to reserve your build slot. We take on a limited number of SPEC clients to guarantee quality.",
+  "process.step1.title": "Pick your package, sign in, lock your spot",
+  "process.step1.desc": "Choose Setup, Build, or Enterprise. Sign in to OPS. Pay the deposit to lock your slot — we take a limited number of SPEC clients each quarter.",
   "process.step2.number": "02",
   "process.step2.title": "Tell us how you work",
-  "process.step2.desc": "Complete a detailed intake interview covering your workflows, pain points, and the way your crew actually operates day-to-day. We study the results before we ever meet.",
+  "process.step2.desc": "30 to 45 min custom intake covering your workflows, your crew, your tools, your pain points. We study it before we ever meet.",
   "process.step3.number": "03",
-  "process.step3.title": "We meet. We build.",
-  "process.step3.desc": "Discovery session with your analysis already done. Then we build your custom modules directly into OPS. You see progress in real time.",
+  "process.step3.title": "We meet. We build. You pay at four checkpoints.",
+  "process.step3.desc": "Discovery with your analysis already done. Scope sign-off. Midpoint demo. Delivery walkthrough. Each milestone bills 25 percent of the total when the work clears review.",
   "process.step4.number": "04",
-  "process.step4.title": "Go live. Keep evolving.",
-  "process.step4.desc": "Launch your custom OPS with a support window included. After that, an optional retainer keeps your modules updated and evolving as your business grows.",
+  "process.step4.title": "Go live with a 30-day Guarantee Refund",
+  "process.step4.desc": "Live walkthrough on delivery. 30 days to request a refund by written notice — no defect proof, no cure period. Exclusions apply. Optional retainer keeps modules evolving.",
+
+  "board.sectionLabel": "// OPS BOARD",
+  "board.subEyebrow": "CURRENT INTAKE",
+  "board.liveLabel": "LIVE",
+  "board.staleLabel": "OFFLINE",
+  "board.updatedPrefix": "UPDATED",
+  "board.updatedJustNow": "JUST NOW",
+  "board.updatedMinAgo": "MIN AGO",
+  "board.updatedHrAgo": "HR AGO",
+  "board.updatedDaysAgo": "DAYS AGO",
+  "board.unavailableNote": "Live capacity unavailable. Defaults shown.",
+  "board.headers.tier": "TIER",
+  "board.headers.availability": "AVAILABILITY",
+  "board.headers.waitlist": "WAITLIST",
+  "board.headers.nextIntake": "NEXT INTAKE",
+  "board.headers.yourDelivery": "YOUR DELIVERY",
+  "board.timeline.today": "TODAY",
+  "board.timeline.discovery": "DISCOVERY",
+  "board.timeline.build": "BUILD",
+  "board.timeline.delivery": "DELIVERY",
+  "board.status.open": "OPEN",
+  "board.status.limited": "LIMITED",
+  "board.status.waitlist": "WAITLIST",
+  "board.status.closed": "CLOSED",
+  "board.waitlist.zero": "0",
+  "board.waitlist.range": "1-2",
+  "board.waitlist.many": "3+",
+  "board.closedPrefix": "CLOSED — RESUMES",
+  "board.nextStartPrefix": "WEEK OF",
+  "board.deliveryPrefix": "EST.",
+  "board.deliveryUnknown": "—",
+  "board.openCta": "Get started",
+  "board.waitlistCta": "Join waitlist",
+  "board.closedCta": "Notify me",
+  "board.fallback.setup.nextIntake": "ROLLING",
+  "board.fallback.build.nextIntake": "ROLLING",
+  "board.fallback.enterprise.nextIntake": "BY REQUEST",
+  "board.fallback.setup.delivery": "10-19 DAYS POST-INTAKE",
+  "board.fallback.build.delivery": "19-28 DAYS POST-INTAKE",
+  "board.fallback.enterprise.delivery": "35-56 DAYS POST-INTAKE",
 
   "packages.sectionLabel": "PACKAGES",
+  "packages.milestones.label": "4 MILESTONES",
+  "packages.milestones.p1": "Deposit",
+  "packages.milestones.p2": "Scope",
+  "packages.milestones.p3": "Demo",
+  "packages.milestones.p4": "Delivery",
+  "packages.milestonesNote": "Each milestone bills when the work clears review.",
+  "packages.subscriptionLabel": "ESTIMATED SUBSCRIPTION",
+  "packages.subscriptionNote": "Locked at scope sign-off",
+  "packages.retainerLabel": "RETAINER (optional)",
+  "packages.retainerNote": "After support window",
+  "packages.guaranteeBadge": "30-DAY GUARANTEE REFUND",
+  "packages.totalPrefix": "TOTAL",
+  "packages.examplesLabel": "EXAMPLES — WHAT THIS LOOKS LIKE",
+  "packages.contactCta": "Talk to the founder",
+
   "packages.setup.name": "SETUP",
   "packages.setup.tagline": "We configure OPS around your workflow",
   "packages.setup.price": "$3,000",
-  "packages.setup.deposit": "$1,500 deposit",
+  "packages.setup.startFrom": "Get started for $750",
+  "packages.setup.headlineSub": "$3,000 total · 4 milestones",
+  "packages.setup.milestoneAmount": "$750",
+  "packages.setup.subscriptionEstimate": "+15% on base OPS sub",
+  "packages.setup.retainerAmount": "$250/mo",
+  "packages.setup.deposit": "$750 deposit",
   "packages.setup.features": [
     "2 discovery sessions",
     "Workflow analysis",
     "Up to 3 custom configurations",
     "Custom pipeline stages",
-    "Custom fields on projects & clients",
+    "Custom fields on projects and clients",
     "30-day support window"
   ],
   "packages.setup.examples": [
@@ -38,12 +100,17 @@
     { "trade": "LANDSCAPER", "desc": "Seasonal vs maintenance client categories, recurring job templates, zone-based crew assignment fields" }
   ],
   "packages.setup.ongoing": "$90-190/mo subscription. $250/mo maintenance retainer after support window.",
-  "packages.setup.ctaText": "Pay $1,500 Deposit",
+  "packages.setup.ctaText": "Pay $750 Deposit",
 
   "packages.build.name": "BUILD",
   "packages.build.tagline": "A custom module built for your trade",
   "packages.build.price": "$8,500",
-  "packages.build.deposit": "$4,250 deposit",
+  "packages.build.startFrom": "Get started for $2,125",
+  "packages.build.headlineSub": "$8,500 total · 4 milestones",
+  "packages.build.milestoneAmount": "$2,125",
+  "packages.build.subscriptionEstimate": "+30% on base OPS sub",
+  "packages.build.retainerAmount": "$450/mo",
+  "packages.build.deposit": "$2,125 deposit",
   "packages.build.features": [
     "Everything in Setup",
     "1 custom module — new features, new views, new logic",
@@ -58,12 +125,17 @@
     { "trade": "ELECTRICIAN", "desc": "Permit and inspection module — track permits per job, auto-reminders for inspection dates, photo documentation with inspector sign-off" }
   ],
   "packages.build.ongoing": "$115-215/mo subscription. $450/mo maintenance retainer after support window.",
-  "packages.build.ctaText": "Pay $4,250 Deposit",
+  "packages.build.ctaText": "Pay $2,125 Deposit",
 
   "packages.enterprise.name": "ENTERPRISE",
   "packages.enterprise.tagline": "Your entire operation, custom-built on OPS",
   "packages.enterprise.price": "$18,000",
-  "packages.enterprise.deposit": "$9,000 deposit",
+  "packages.enterprise.startFrom": "Get started for $4,500",
+  "packages.enterprise.headlineSub": "$18,000 total · 4 milestones",
+  "packages.enterprise.milestoneAmount": "$4,500",
+  "packages.enterprise.subscriptionEstimate": "+50% on base OPS sub",
+  "packages.enterprise.retainerAmount": "$750/mo",
+  "packages.enterprise.deposit": "$4,500 deposit",
   "packages.enterprise.features": [
     "Everything in Build",
     "Multiple custom modules",
@@ -78,9 +150,7 @@
     { "trade": "MULTI-TRADE CO", "desc": "Trade-specific modules for each division, cross-division resource sharing, unified client view, division-level P&L reporting" }
   ],
   "packages.enterprise.ongoing": "$165-340/mo subscription. $750/mo maintenance retainer after support window.",
-  "packages.enterprise.ctaText": "Pay $9,000 Deposit",
-
-  "packages.contactCta": "Talk to the founder",
+  "packages.enterprise.ctaText": "Pay $4,500 Deposit",
 
   "included.sectionLabel": "WHAT EVERY PACKAGE INCLUDES",
   "included.every": [
@@ -99,39 +169,74 @@
     "Overage hours beyond retainer: $200-225/hr"
   ],
 
+  "guarantees.sectionLabel": "// STANDING BEHIND THE WORK",
+  "guarantees.col1.title": "30 days to walk away",
+  "guarantees.col1.body": "If you are not satisfied within 30 days after the walkthrough, send written notice. No defect proof. No cure period. Exclusions apply for chargebacks, fraud, misrepresentation, prohibited workflows, breach, non-payment disablement, and continued use after refund.",
+  "guarantees.col2.title": "Pay as work clears review",
+  "guarantees.col2.body": "Four checkpoints. Deposit funds discovery. Scope sign-off funds build kickoff. Midpoint and delivery bill when the work clears review.",
+  "guarantees.col3.title": "Scope is written before build",
+  "guarantees.col3.body": "Every feature has a written acceptance test in the scope doc, signed before build kicks off. Acceptance is measured against that written scope. If a feature fails its written test, OPS rebuilds it free.",
+  "guarantees.footerPrefix": "Full terms at",
+  "guarantees.footerLinkText": "/legal?page=spec-terms",
+  "guarantees.footerLinkHref": "/legal?page=spec-terms",
+
   "faq.sectionLabel": "QUESTIONS",
   "faq.items": [
     {
       "question": "What happens after I pay the deposit?",
-      "answer": "You get access to the intake interview within 24 hours. Complete it at your pace — it covers your workflows, pain points, and how your crew operates. We review the results and schedule your discovery session."
+      "answer": "You get the intake interview link within 24 hours. Complete it at your pace — workflows, crew, tools, pain points. We review the results and book your discovery session. Scope doc gets drafted and signed. Build kicks off. Total runtime: 2 to 8 weeks depending on tier."
     },
     {
-      "question": "How long does a custom build take?",
-      "answer": "Setup packages: 1-2 weeks. Build packages: 2-3 weeks. Enterprise: 4-6 weeks. We build fast because the founder does the work directly, with AI-assisted development."
+      "question": "How does the 4-milestone payment structure work?",
+      "answer": "Four equal payments. P1 deposit when you book. P2 when the scope doc is signed. P3 when you accept the midpoint demo. P4 when modules deliver at the live walkthrough. Each is 25 percent of the total."
     },
     {
-      "question": "What is the intake interview?",
-      "answer": "A guided interview about your business — your workflows, your team structure, your pain points, how jobs flow from lead to completion. Takes about 30-45 minutes. We use the results to show up to your discovery session already knowing your operation."
+      "question": "What is the 30-day Guarantee Refund, exactly?",
+      "answer": "30 days after your delivery walkthrough you can request a refund by written notice stating dissatisfaction. No defect proof. No cure period. One invocation per engagement. Exclusions: chargebacks, fraud, material misrepresentation, prohibited workflows, breach, non-payment disablement, and continued use after refund."
     },
     {
-      "question": "What if I need changes after the support window?",
-      "answer": "The maintenance retainer covers bug fixes, minor updates, and keeping your custom modules compatible with OPS platform updates. Bigger feature requests are quoted as new projects."
+      "question": "What's the intake interview?",
+      "answer": "A 30 to 45 min guided form covering your business, team, tools, workflow, top pain points, and what success looks like 90 days from now. You fill it out at your pace. We show up to discovery already knowing your operation."
     },
     {
-      "question": "Do I need a separate OPS subscription?",
-      "answer": "Yes. SPEC is a build service — your OPS subscription is your ongoing access to the platform. It may be higher than standard if your custom modules require additional infrastructure."
+      "question": "What does 'scope sign-off' mean — and what if I want changes after?",
+      "answer": "A signed document listing every feature with a written acceptance test, exclusions, midpoint definition, delivery definition, and subscription terms. Sign-off triggers the P2 invoice and locks the build. Post-sign-off changes flow through change orders."
     },
     {
-      "question": "Can I upgrade my package later?",
-      "answer": "Yes. Start with Setup to configure OPS for your workflow. If you want a custom module built later, the Build package fee applies (minus what you already paid for Setup). Same for Enterprise."
+      "question": "What's the difference between a 'minor change' and a 'major change order'?",
+      "answer": "Minor: under about 4 hours, billed at $225/hr CAD, bucketed to 30 minutes, invoiced at milestone close. Major: 4 hours or more, fixed-price quote, written acceptance, separate row on your project. We classify; you accept or decline."
+    },
+    {
+      "question": "Do I need an OPS subscription? When does it start?",
+      "answer": "Yes. SPEC delivers modules into your OPS subscription. Discovery and build run before billing starts. The subscription rate adjustment lands on the first billing cycle 30 days after your walkthrough."
+    },
+    {
+      "question": "What's the subscription premium and how is it calculated?",
+      "answer": "Setup: +15% on base OPS sub. Build: +30%. Enterprise: +50%. Locked at scope sign-off. Renegotiable at the 12-month mark if actual infra cost diverges. Heavy-infra modules may add a flat monthly surcharge disclosed at scope time."
+    },
+    {
+      "question": "What is the maintenance retainer?",
+      "answer": "Optional after the support window ends. Setup: $250/mo. Build: $450/mo. Enterprise: $750/mo. Covers bug fixes, minor in-scope enhancements, and OPS platform-update compat patches. Pause or cancel anytime via Stripe."
+    },
+    {
+      "question": "What happens if my build takes longer than estimated?",
+      "answer": "Delivery windows are good-faith estimates, not firm dates. If we expect a slip greater than 7 days we notify within 48 hours with a revised ETA. No automatic credits. If the slip is unacceptable, refund options apply per the matrix."
+    },
+    {
+      "question": "Can I refer someone? Do I get anything for it?",
+      "answer": "Yes. $500 CAD per referred engagement that completes. Paid 30 days after the referred customer's walkthrough, provided no refund was invoked. Requires Stripe Connect KYC. Canadian referrers crossing $500/yr cumulative trigger T4A reporting."
+    },
+    {
+      "question": "Is there a contract? Where can I read it?",
+      "answer": "Yes. The full SPEC Terms of Service lives at /legal?page=spec-terms. You accept the current version when you pay the deposit. The version hash is recorded with your acceptance for the dispute evidence chain."
     },
     {
       "question": "What if I am not sure which package I need?",
-      "answer": "Start with Setup. It is the lowest commitment and we will tell you honestly during discovery if your needs require Build or Enterprise. No pressure, no upsell games."
+      "answer": "Start with Setup. Lowest commitment. During discovery we will tell you straight whether your needs require Build or Enterprise. Pre-scope-signoff upgrades are pro-rated — what you paid for Setup counts toward the new tier."
     },
     {
-      "question": "Is there a refund policy on the deposit?",
-      "answer": "If we have not started work, the deposit is fully refundable. Once discovery sessions begin, the deposit covers work already completed. The remaining 50% is due at delivery."
+      "question": "Who owns the code you write?",
+      "answer": "OPS owns all code, configurations, designs, templates, and reusable know-how created for SPEC. Customer owns its business data. While Customer maintains an active OPS subscription and is not in breach, Customer has a limited, non-exclusive, non-transferable license to use delivered modules inside OPS; the license ends when the OPS subscription ends or the engagement is refunded."
     }
   ],
 
@@ -142,7 +247,7 @@
   "confirmation.heading": "YOU ARE IN.",
   "confirmation.subtitle": "Deposit received. Here is what happens next.",
   "confirmation.nextSteps": "Check your email for the intake interview link. Complete it at your pace — the more detail you give us, the better your custom build will be.",
-  "confirmation.timeline.setup": "Setup builds ship in 1-2 weeks.",
-  "confirmation.timeline.build": "Build packages ship in 2-3 weeks.",
-  "confirmation.timeline.enterprise": "Enterprise builds ship in 4-6 weeks."
+  "confirmation.timeline.setup": "Setup builds ship in 2-3 weeks from intake.",
+  "confirmation.timeline.build": "Build packages ship in 3-4 weeks from intake.",
+  "confirmation.timeline.enterprise": "Enterprise builds ship in 5-8 weeks from intake."
 }

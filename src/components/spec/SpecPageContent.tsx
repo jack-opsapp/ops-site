@@ -8,8 +8,11 @@ import SpecPricing, { type PackageData } from './SpecPricing';
 import WhatsIncluded from './WhatsIncluded';
 import SpecFAQ from './SpecFAQ';
 import SpecBottomCTA from './SpecBottomCTA';
+import SpecOpsBoard, { type SpecOpsBoardCopy } from './SpecOpsBoard';
+import SpecGuarantees from './SpecGuarantees';
 import SpecPhoneWrapper from './phone-scene/SpecPhoneWrapper';
 import type { SpecPhase } from './phone-scene/constants';
+import type { SpecBoardSnapshot, SpecBoardTier } from '@/lib/spec/board';
 
 interface SpecPageContentProps {
   dict: Dictionary;
@@ -19,6 +22,8 @@ interface SpecPageContentProps {
    * 503, and no automated deposits can fire.
    */
   depositsEnabled: boolean;
+  /** Server-fetched OPS BOARD snapshot. May be empty + stale on Supabase outage. */
+  boardSnapshot: SpecBoardSnapshot;
 }
 
 function t(dict: Dictionary, key: string): string {
@@ -28,7 +33,11 @@ function t(dict: Dictionary, key: string): string {
 
 const STEP_PHASES: SpecPhase[] = ['packages', 'analysis', 'building', 'custom'];
 
-export function SpecPageContent({ dict, depositsEnabled }: SpecPageContentProps) {
+export function SpecPageContent({
+  dict,
+  depositsEnabled,
+  boardSnapshot,
+}: SpecPageContentProps) {
   const [phonePhase, setPhonePhase] = useState<SpecPhase>('home');
   const [phoneTier, setPhoneTier] = useState<string | null>(null);
   const [isInHero, setIsInHero] = useState(true);
@@ -81,17 +90,75 @@ export function SpecPageContent({ dict, depositsEnabled }: SpecPageContentProps)
     tier,
     name: t(dict, `packages.${tier}.name`),
     tagline: t(dict, `packages.${tier}.tagline`),
-    price: t(dict, `packages.${tier}.price`),
-    // When deposits are paused, blank out deposit-related copy so the
-    // rendered HTML doesn't leak "$1,500 deposit" / "Pay $1,500 Deposit"
-    // claims to crawlers and AI discovery agents.
-    deposit: depositsEnabled ? t(dict, `packages.${tier}.deposit`) : '',
+    startFrom: t(dict, `packages.${tier}.startFrom`),
+    headlineSub: t(dict, `packages.${tier}.headlineSub`),
+    milestoneAmount: t(dict, `packages.${tier}.milestoneAmount`),
+    subscriptionEstimate: t(dict, `packages.${tier}.subscriptionEstimate`),
+    retainerAmount: t(dict, `packages.${tier}.retainerAmount`),
     features: (dict[`packages.${tier}.features`] as string[]) ?? [],
     examples: (dict[`packages.${tier}.examples`] as unknown as Array<{ trade: string; desc: string }>) ?? [],
-    ongoing: t(dict, `packages.${tier}.ongoing`),
+    // When deposits are paused, blank the CTA label so the rendered
+    // HTML doesn't leak "Pay $X Deposit" claims to crawlers and AI
+    // agents — the visible UI shows "Talk to the founder" instead.
     ctaText: depositsEnabled ? t(dict, `packages.${tier}.ctaText`) : '',
     recommended: tier === 'build',
   }));
+
+  const boardCopy: SpecOpsBoardCopy = {
+    sectionLabel: t(dict, 'board.sectionLabel'),
+    subEyebrow: t(dict, 'board.subEyebrow'),
+    liveLabel: t(dict, 'board.liveLabel'),
+    staleLabel: t(dict, 'board.staleLabel'),
+    updatedPrefix: t(dict, 'board.updatedPrefix'),
+    updatedJustNow: t(dict, 'board.updatedJustNow'),
+    updatedMinAgo: t(dict, 'board.updatedMinAgo'),
+    updatedHrAgo: t(dict, 'board.updatedHrAgo'),
+    updatedDaysAgo: t(dict, 'board.updatedDaysAgo'),
+    unavailableNote: t(dict, 'board.unavailableNote'),
+    headers: {
+      tier: t(dict, 'board.headers.tier'),
+      availability: t(dict, 'board.headers.availability'),
+      waitlist: t(dict, 'board.headers.waitlist'),
+      nextIntake: t(dict, 'board.headers.nextIntake'),
+      yourDelivery: t(dict, 'board.headers.yourDelivery'),
+    },
+    timeline: {
+      today: t(dict, 'board.timeline.today'),
+      discovery: t(dict, 'board.timeline.discovery'),
+      build: t(dict, 'board.timeline.build'),
+      delivery: t(dict, 'board.timeline.delivery'),
+    },
+    status: {
+      open: t(dict, 'board.status.open'),
+      limited: t(dict, 'board.status.limited'),
+      waitlist: t(dict, 'board.status.waitlist'),
+      closed: t(dict, 'board.status.closed'),
+    },
+    waitlist: {
+      zero: t(dict, 'board.waitlist.zero'),
+      range: t(dict, 'board.waitlist.range'),
+      many: t(dict, 'board.waitlist.many'),
+    },
+    closedPrefix: t(dict, 'board.closedPrefix'),
+    nextStartPrefix: t(dict, 'board.nextStartPrefix'),
+    deliveryPrefix: t(dict, 'board.deliveryPrefix'),
+    deliveryUnknown: t(dict, 'board.deliveryUnknown'),
+    fallback: (['setup', 'build', 'enterprise'] as const).reduce(
+      (acc, tier) => {
+        acc[tier] = {
+          nextIntake: t(dict, `board.fallback.${tier}.nextIntake`),
+          delivery: t(dict, `board.fallback.${tier}.delivery`),
+        };
+        return acc;
+      },
+      {} as Record<SpecBoardTier, { nextIntake: string; delivery: string }>,
+    ),
+    tierLabels: {
+      setup: t(dict, 'packages.setup.name'),
+      build: t(dict, 'packages.build.name'),
+      enterprise: t(dict, 'packages.enterprise.name'),
+    },
+  };
 
   return (
     <main className="bg-ops-background">
@@ -114,6 +181,8 @@ export function SpecPageContent({ dict, depositsEnabled }: SpecPageContentProps)
               subtitle={t(dict, 'hero.subtitle')}
               ctaPackages={t(dict, 'hero.ctaPackages')}
               ctaHowItWorks={t(dict, 'hero.ctaHowItWorks')}
+              founderEyebrow={t(dict, 'hero.founderEyebrow')}
+              founderLine={t(dict, 'hero.founderLine')}
             />
           </div>
 
@@ -128,16 +197,39 @@ export function SpecPageContent({ dict, depositsEnabled }: SpecPageContentProps)
               ]}
               onActiveStepChange={handleStepChange}
             />
-
-            <SpecPricing
-              sectionLabel={t(dict, 'packages.sectionLabel')}
-              packages={packages}
-              onTierSelect={handleTierSelect}
-              depositsEnabled={depositsEnabled}
-              contactCtaText={t(dict, 'packages.contactCta')}
-              contactCtaHref="/resources#contact"
-            />
           </div>
+        </div>
+      </div>
+
+      {/* OPS BOARD — full-width, breaks out of the 55% column so the
+          tactical table reads end-to-end on desktop and the timeline
+          has room to breathe. */}
+      <SpecOpsBoard initialSnapshot={boardSnapshot} copy={boardCopy} />
+
+      <div className="lg:w-[55%]">
+        <div className="max-w-[720px] px-6 sm:px-10 md:px-16 lg:px-24">
+          <SpecPricing
+            sectionLabel={t(dict, 'packages.sectionLabel')}
+            packages={packages}
+            milestoneLabels={{
+              p1: t(dict, 'packages.milestones.p1'),
+              p2: t(dict, 'packages.milestones.p2'),
+              p3: t(dict, 'packages.milestones.p3'),
+              p4: t(dict, 'packages.milestones.p4'),
+            }}
+            milestonesLabel={t(dict, 'packages.milestones.label')}
+            milestonesNote={t(dict, 'packages.milestonesNote')}
+            examplesLabel={t(dict, 'packages.examplesLabel')}
+            subscriptionLabel={t(dict, 'packages.subscriptionLabel')}
+            subscriptionNote={t(dict, 'packages.subscriptionNote')}
+            retainerLabel={t(dict, 'packages.retainerLabel')}
+            retainerNote={t(dict, 'packages.retainerNote')}
+            guaranteeBadge={t(dict, 'packages.guaranteeBadge')}
+            onTierSelect={handleTierSelect}
+            depositsEnabled={depositsEnabled}
+            contactCtaText={t(dict, 'packages.contactCta')}
+            contactCtaHref="/resources#contact"
+          />
         </div>
       </div>
 
@@ -146,6 +238,18 @@ export function SpecPageContent({ dict, depositsEnabled }: SpecPageContentProps)
         items={(dict['included.every'] as string[]) ?? []}
         ongoingLabel={t(dict, 'included.ongoingLabel')}
         ongoingItems={(dict['included.ongoing'] as string[]) ?? []}
+      />
+
+      <SpecGuarantees
+        sectionLabel={t(dict, 'guarantees.sectionLabel')}
+        columns={[
+          { title: t(dict, 'guarantees.col1.title'), body: t(dict, 'guarantees.col1.body') },
+          { title: t(dict, 'guarantees.col2.title'), body: t(dict, 'guarantees.col2.body') },
+          { title: t(dict, 'guarantees.col3.title'), body: t(dict, 'guarantees.col3.body') },
+        ]}
+        footerPrefix={t(dict, 'guarantees.footerPrefix')}
+        footerLinkText={t(dict, 'guarantees.footerLinkText')}
+        footerLinkHref={t(dict, 'guarantees.footerLinkHref')}
       />
 
       {/*
