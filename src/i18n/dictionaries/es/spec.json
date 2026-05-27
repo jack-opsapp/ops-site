@@ -139,9 +139,8 @@
   "bottomCta.subtitle": "Elige tu paquete. Paga el deposito. Nosotros nos encargamos del resto.",
   "bottomCta.ctaText": "Ver Paquetes",
 
-  "confirmation.heading": "ESTAS DENTRO.",
-  "confirmation.subtitle": "Deposito recibido. Esto es lo que sigue.",
-  "confirmation.nextSteps": "Revisa tu correo para el enlace de la entrevista de admision. Completala a tu ritmo — mientras mas detalles nos des, mejor sera tu construccion personalizada.",
+  "confirmation.heading": "Estas dentro.",
+  "confirmation.subtitle": "Deposito recibido. Tu enlace de admision esta en camino — eso es lo siguiente que importa.",
   "confirmation.timeline.setup": "Las construcciones Setup se entregan en 1-2 semanas.",
   "confirmation.timeline.build": "Los paquetes Build se entregan en 2-3 semanas.",
   "confirmation.timeline.enterprise": "Las construcciones Enterprise se entregan en 4-6 semanas."

@@ -139,9 +139,8 @@
   "bottomCta.subtitle": "Pick your package. Pay the deposit. We handle the rest.",
   "bottomCta.ctaText": "View Packages",
 
-  "confirmation.heading": "YOU ARE IN.",
-  "confirmation.subtitle": "Deposit received. Here is what happens next.",
-  "confirmation.nextSteps": "Check your email for the intake interview link. Complete it at your pace — the more detail you give us, the better your custom build will be.",
+  "confirmation.heading": "You're in.",
+  "confirmation.subtitle": "Deposit received. Your intake link is on the way — that's the next thing that matters.",
   "confirmation.timeline.setup": "Setup builds ship in 1-2 weeks.",
   "confirmation.timeline.build": "Build packages ship in 2-3 weeks.",
   "confirmation.timeline.enterprise": "Enterprise builds ship in 4-6 weeks."
