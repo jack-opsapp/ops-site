@@ -24,6 +24,15 @@ export const TIER_TOTAL_CENTS: Record<SpecTier, number> = {
 };
 
 /**
+ * Backwards-compatible alias kept for Stage C.2's webhook-handlers.ts (which
+ * uses the C.1-era plural name) + any other Stage C.* consumers that imported
+ * `SPEC_TIER_TOTALS_CENTS` before the Stage E ↔ Stage C.1 consolidation union
+ * collapsed both names into `TIER_TOTAL_CENTS`. Same data, same shape — deprecate
+ * by switching call sites to TIER_TOTAL_CENTS in a future polish pass.
+ */
+export const SPEC_TIER_TOTALS_CENTS = TIER_TOTAL_CENTS;
+
+/**
  * Display names used in Stripe line_item descriptions + customer-facing
  * surfaces that need the tier presented in long-form. Consumed by
  * Stage C.1's create-checkout-session route.
