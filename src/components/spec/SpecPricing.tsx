@@ -4,7 +4,10 @@ import { useState } from 'react';
 import { motion } from 'framer-motion';
 import { theme } from '@/lib/theme';
 import { SectionLabel } from '@/components/ui';
-import PackageCard, { type PackageExample } from './PackageCard';
+import PackageCard, {
+  type PackageExample,
+  type PackageMilestoneLabels,
+} from './PackageCard';
 
 const ease = theme.animation.easing as [number, number, number, number];
 
@@ -12,11 +15,13 @@ export interface PackageData {
   tier: 'setup' | 'build' | 'enterprise';
   name: string;
   tagline: string;
-  price: string;
-  deposit: string;
+  startFrom: string;
+  headlineSub: string;
+  milestoneAmount: string;
+  subscriptionEstimate: string;
+  retainerAmount: string;
   features: string[];
   examples: PackageExample[];
-  ongoing: string;
   ctaText: string;
   recommended?: boolean;
 }
@@ -24,6 +29,16 @@ export interface PackageData {
 interface SpecPricingProps {
   sectionLabel: string;
   packages: PackageData[];
+  /** Shared labels reused across all three cards. */
+  milestoneLabels: PackageMilestoneLabels;
+  milestonesLabel: string;
+  milestonesNote: string;
+  examplesLabel: string;
+  subscriptionLabel: string;
+  subscriptionNote: string;
+  retainerLabel: string;
+  retainerNote: string;
+  guaranteeBadge: string;
   onTierSelect?: (tier: string | null) => void;
   /** Phase 0 safety — when false, CTAs become contact links, not Stripe triggers. */
   depositsEnabled: boolean;
@@ -35,6 +50,15 @@ interface SpecPricingProps {
 export default function SpecPricing({
   sectionLabel,
   packages,
+  milestoneLabels,
+  milestonesLabel,
+  milestonesNote,
+  examplesLabel,
+  subscriptionLabel,
+  subscriptionNote,
+  retainerLabel,
+  retainerNote,
+  guaranteeBadge,
   onTierSelect,
   depositsEnabled,
   contactCtaText,
@@ -88,6 +112,15 @@ export default function SpecPricing({
               >
                 <PackageCard
                   {...pkg}
+                  milestoneLabels={milestoneLabels}
+                  milestonesLabel={milestonesLabel}
+                  milestonesNote={milestonesNote}
+                  examplesLabel={examplesLabel}
+                  subscriptionLabel={subscriptionLabel}
+                  subscriptionNote={subscriptionNote}
+                  retainerLabel={retainerLabel}
+                  retainerNote={retainerNote}
+                  guaranteeBadge={guaranteeBadge}
                   isExpanded={expandedTier === pkg.tier}
                   isOtherExpanded={expandedTier !== null && expandedTier !== pkg.tier}
                   onToggle={() => handleToggle(pkg.tier)}
@@ -99,7 +132,6 @@ export default function SpecPricing({
               </motion.div>
             ))}
           </div>
-
         </div>
       </div>
     </section>

@@ -1,5 +1,5 @@
 /**
- * SPEC — Custom build packages, pricing, Stripe deposit checkout.
+ * SPEC — Custom build packages, pricing, OPS BOARD, Stripe deposit checkout.
  *
  * Route: /spec (and /es/spec).
  *
@@ -7,11 +7,25 @@
  * (home → packages → analysis → building → custom). Three deposit
  * packages (Setup, Build, Enterprise) hit Stripe Checkout at
  * /api/spec/create-checkout-session.
+ *
+ * Phase 1 additions:
+ *   - OPS BOARD section between HowItWorks and Pricing
+ *   - "Standing Behind The Work" section between WhatsIncluded and FAQ
+ *   - FAQ rewritten as native <details>/<summary> + FAQPage JSON-LD
+ *     so answers ship in the initial HTML payload (SEO + AI discovery)
+ *   - 4-milestone PackageCard breakdown
+ *   - Founder presence text in hero
+ *
+ * The OPS BOARD snapshot is fetched at request time via
+ * lib/spec/board.ts → public.spec_public_board_snapshot. The downstream
+ * client component handles all interactivity and the static fallback if
+ * the snapshot is unavailable or stale.
  */
 
 import type { Metadata } from 'next';
 import { getLocale, getTDict, buildLocaleAlternates, buildLocaleUrl } from '@/i18n/server';
 import { SpecPageContent } from '@/components/spec/SpecPageContent';
+import { getSpecBoardSnapshot } from '@/lib/spec/board';
 
 export async function generateMetadata(): Promise<Metadata> {
   const locale = await getLocale();
@@ -20,13 +34,18 @@ export async function generateMetadata(): Promise<Metadata> {
       ? 'OPS SPEC — Software Personalizado Para Tu Oficio'
       : 'OPS SPEC — Custom Software For Your Trade',
     description: locale === 'es'
-      ? 'Construimos módulos personalizados para tu negocio sobre la plataforma OPS. Paquetes desde $3,000. Construido por un contratista, para contratistas.'
-      : 'We build custom modules for your business on the OPS platform. Packages from $3,000. Built by a contractor, for contractors.',
+      ? 'Construimos modulos personalizados para tu negocio sobre la plataforma OPS. Paquetes desde $3,000, pagados en 4 hitos. Construido por un contratista, para contratistas.'
+      : 'We build custom modules for your business on the OPS platform. Packages from $3,000, paid in 4 milestones. Built by a contractor, for contractors.',
     openGraph: {
       url: buildLocaleUrl('/spec', locale),
     },
     alternates: buildLocaleAlternates('/spec', locale),
   };
+}
+
+interface FAQItem {
+  question: string;
+  answer: string;
 }
 
 export default async function SpecPage() {
@@ -37,7 +56,7 @@ export default async function SpecPage() {
   const depositsEnabled = process.env.SPEC_LIVE_DEPOSITS_ENABLED === 'true';
 
   // Strip deposit-claim copy from the dict before it lands in the RSC
-  // hydration payload. Otherwise crawlers + AI agents see "Pay $1,500
+  // hydration payload. Otherwise crawlers + AI agents see "Pay $750
   // Deposit" in the page source even though the visible UI renders the
   // "Talk to the founder" link.
   const dict = depositsEnabled
@@ -51,6 +70,11 @@ export default async function SpecPage() {
         ),
       );
 
+  // Server-fetch the OPS BOARD snapshot. Always resolves — falls back to
+  // a stale-empty payload that the client component renders as the
+  // dictionary-driven static board.
+  const boardSnapshot = await getSpecBoardSnapshot();
+
   /* JSON-LD — Service (no Offers while deposits are paused per Phase 0).
      When SPEC_LIVE_DEPOSITS_ENABLED flips on, Offers with deposit prices
      are emitted again and availability flips back to InStock. Until then,
@@ -63,32 +87,32 @@ export default async function SpecPage() {
         '@type': 'Product',
         name: 'OPS SPEC',
         description:
-          'Custom modules built on the OPS platform — Setup, Build, and Enterprise packages. Built by a contractor, for contractors.',
+          'Custom modules built on the OPS platform — Setup, Build, and Enterprise packages. Built by a contractor, for contractors. Paid in 4 milestones with a 30-day Guarantee Refund.',
         brand: { '@type': 'Brand', name: 'OPS' },
         url: 'https://opsapp.co/spec',
         offers: [
           {
             '@type': 'Offer',
             name: 'SPEC — Setup',
-            price: '1500',
+            price: '750',
             priceCurrency: 'CAD',
-            description: '$1,500 deposit on a $3,000 Setup package.',
+            description: '$750 P1 deposit on a $3,000 Setup package, paid in 4 milestones.',
             availability: 'https://schema.org/InStock',
           },
           {
             '@type': 'Offer',
             name: 'SPEC — Build',
-            price: '4250',
+            price: '2125',
             priceCurrency: 'CAD',
-            description: '$4,250 deposit on a $8,500 Build package.',
+            description: '$2,125 P1 deposit on a $8,500 Build package, paid in 4 milestones.',
             availability: 'https://schema.org/InStock',
           },
           {
             '@type': 'Offer',
             name: 'SPEC — Enterprise',
-            price: '9000',
+            price: '4500',
             priceCurrency: 'CAD',
-            description: '$9,000 deposit on a $18,000 Enterprise package.',
+            description: '$4,500 P1 deposit on a $18,000 Enterprise package, paid in 4 milestones.',
             availability: 'https://schema.org/InStock',
           },
         ],
@@ -113,6 +137,27 @@ export default async function SpecPage() {
     ],
   };
 
+  // FAQPage JSON-LD. Built from the same dictionary items rendered in
+  // SpecFAQ — single source of truth. Each Question/Answer pair is
+  // emitted in the markup. SEO crawlers + AI discovery agents read this
+  // block first, then verify against the visible <details> content.
+  const faqItems: FAQItem[] = (rawDict['faq.items'] as unknown as FAQItem[]) ?? [];
+  const faqLd =
+    faqItems.length > 0
+      ? {
+          '@context': 'https://schema.org',
+          '@type': 'FAQPage',
+          mainEntity: faqItems.map((item) => ({
+            '@type': 'Question',
+            name: item.question,
+            acceptedAnswer: {
+              '@type': 'Answer',
+              text: item.answer,
+            },
+          })),
+        }
+      : null;
+
   return (
     <>
       <script
@@ -123,7 +168,17 @@ export default async function SpecPage() {
         type="application/ld+json"
         dangerouslySetInnerHTML={{ __html: JSON.stringify(breadcrumbLd) }}
       />
-      <SpecPageContent dict={dict} depositsEnabled={depositsEnabled} />
+      {faqLd && (
+        <script
+          type="application/ld+json"
+          dangerouslySetInnerHTML={{ __html: JSON.stringify(faqLd) }}
+        />
+      )}
+      <SpecPageContent
+        dict={dict}
+        depositsEnabled={depositsEnabled}
+        boardSnapshot={boardSnapshot}
+      />
     </>
   );
 }

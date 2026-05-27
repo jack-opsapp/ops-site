@@ -12,6 +12,9 @@ interface SpecHeroProps {
   subtitle: string;
   ctaPackages: string;
   ctaHowItWorks: string;
+  /** Phase 1: text-only founder presence line (video deferred — see 07_ROLLOUT.md open item 1). */
+  founderEyebrow: string;
+  founderLine: string;
 }
 
 function scrollTo(id: string) {
@@ -24,6 +27,8 @@ export default function SpecHero({
   subtitle,
   ctaPackages,
   ctaHowItWorks,
+  founderEyebrow,
+  founderLine,
 }: SpecHeroProps) {
   return (
     <section className="relative min-h-screen w-full overflow-clip bg-ops-background">
@@ -92,6 +97,22 @@ export default function SpecHero({
               >
                 {ctaHowItWorks}
               </button>
+            </motion.div>
+
+            {/* Founder presence — Phase 1 text-only credibility line.
+                Video asset deferred per 07_ROLLOUT.md open item 1. */}
+            <motion.div
+              className="mt-12 max-w-[440px] border-t border-white/[0.08] pt-5"
+              initial={{ opacity: 0, y: 12 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.5, delay: 0.5, ease }}
+            >
+              <p className="font-mono text-[10px] uppercase tracking-[0.18em] text-ops-text-mute [font-variant-numeric:tabular-nums_slashed-zero]">
+                {founderEyebrow}
+              </p>
+              <p className="mt-2 font-heading font-light text-sm text-ops-text-secondary leading-relaxed">
+                {founderLine}
+              </p>
             </motion.div>
           </div>
         </div>

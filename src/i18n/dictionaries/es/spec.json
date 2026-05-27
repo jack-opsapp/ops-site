@@ -1,29 +1,91 @@
 {
-  "hero.eyebrow": "OPS A MEDIDA",
+  "hero.eyebrow": "OPS SPEC",
   "hero.heading": "TU FLUJO DE TRABAJO. TUS MODULOS. TU OPS.",
-  "hero.subtitle": "Trabajamos contigo para construir modulos personalizados que se ajusten a como realmente manejas tu negocio. No una plantilla. No un parche. Software moldeado alrededor de tu operacion, construido sobre la base de OPS.",
+  "hero.subtitle": "Construimos modulos personalizados que se ajustan a como realmente manejas tu negocio. No una plantilla. No un parche. Software moldeado alrededor de tu operacion, construido sobre la base de OPS.",
   "hero.ctaPackages": "Ver Paquetes",
   "hero.ctaHowItWorks": "Como Funciona",
+  "hero.founderEyebrow": "// FUNDADOR :: JACKSON",
+  "hero.founderLine": "Construido por el contratista que opera OPS en su propia empresa. SPEC es la misma construccion practica, aplicada a tu operacion.",
 
   "process.sectionLabel": "COMO FUNCIONA",
   "process.step1.number": "01",
-  "process.step1.title": "Elige tu paquete, asegura tu lugar",
-  "process.step1.desc": "Elige Setup, Build o Enterprise. Paga el 50% de deposito para reservar tu lugar. Aceptamos un numero limitado de clientes SPEC para garantizar calidad.",
+  "process.step1.title": "Elige tu paquete, inicia sesion, asegura tu lugar",
+  "process.step1.desc": "Elige Setup, Build o Enterprise. Inicia sesion en OPS. Paga el deposito para reservar tu lugar — aceptamos un numero limitado de clientes SPEC cada trimestre.",
   "process.step2.number": "02",
   "process.step2.title": "Cuentanos como trabajas",
-  "process.step2.desc": "Completa una entrevista detallada sobre tus flujos de trabajo, puntos de dolor y como opera tu equipo dia a dia. Estudiamos los resultados antes de reunirnos.",
+  "process.step2.desc": "Entrevista personalizada de 30 a 45 min cubriendo tus flujos de trabajo, tu equipo, tus herramientas, tus puntos de dolor. Estudiamos los resultados antes de reunirnos.",
   "process.step3.number": "03",
-  "process.step3.title": "Nos reunimos. Construimos.",
-  "process.step3.desc": "Sesion de descubrimiento con tu analisis ya hecho. Luego construimos tus modulos personalizados directamente en OPS. Ves el progreso en tiempo real.",
+  "process.step3.title": "Nos reunimos. Construimos. Pagas en cuatro puntos de control.",
+  "process.step3.desc": "Sesion de descubrimiento con tu analisis ya hecho. Firma del alcance. Demo intermedia. Recorrido de entrega. Cada hito factura el 25 por ciento del total cuando el trabajo pasa la revision.",
   "process.step4.number": "04",
-  "process.step4.title": "En vivo. Seguimos evolucionando.",
-  "process.step4.desc": "Lanza tu OPS personalizado con un periodo de soporte incluido. Despues, un retenedor opcional mantiene tus modulos actualizados y evolucionando con tu negocio.",
+  "process.step4.title": "En vivo con un Reembolso Garantizado de 30 dias",
+  "process.step4.desc": "Recorrido en vivo al entregar. 30 dias para solicitar reembolso por escrito — sin necesidad de probar defectos, sin periodo de correccion. Aplican exclusiones. Retenedor opcional para seguir evolucionando.",
+
+  "board.sectionLabel": "// OPS BOARD",
+  "board.subEyebrow": "INGRESO ACTUAL",
+  "board.liveLabel": "EN VIVO",
+  "board.staleLabel": "FUERA DE LINEA",
+  "board.updatedPrefix": "ACTUALIZADO",
+  "board.updatedJustNow": "AHORA",
+  "board.updatedMinAgo": "MIN ATRAS",
+  "board.updatedHrAgo": "HR ATRAS",
+  "board.updatedDaysAgo": "DIAS ATRAS",
+  "board.unavailableNote": "Capacidad en vivo no disponible. Mostrando valores predeterminados.",
+  "board.headers.tier": "PAQUETE",
+  "board.headers.availability": "DISPONIBILIDAD",
+  "board.headers.waitlist": "LISTA DE ESPERA",
+  "board.headers.nextIntake": "PROXIMO INGRESO",
+  "board.headers.yourDelivery": "TU ENTREGA",
+  "board.timeline.today": "HOY",
+  "board.timeline.discovery": "DESCUBRIMIENTO",
+  "board.timeline.build": "CONSTRUCCION",
+  "board.timeline.delivery": "ENTREGA",
+  "board.status.open": "ABIERTO",
+  "board.status.limited": "LIMITADO",
+  "board.status.waitlist": "LISTA DE ESPERA",
+  "board.status.closed": "CERRADO",
+  "board.waitlist.zero": "0",
+  "board.waitlist.range": "1-2",
+  "board.waitlist.many": "3+",
+  "board.closedPrefix": "CERRADO — REGRESA",
+  "board.nextStartPrefix": "SEMANA DEL",
+  "board.deliveryPrefix": "EST.",
+  "board.deliveryUnknown": "—",
+  "board.openCta": "Empezar",
+  "board.waitlistCta": "Unirse a la lista",
+  "board.closedCta": "Avisarme",
+  "board.fallback.setup.nextIntake": "CONTINUO",
+  "board.fallback.build.nextIntake": "CONTINUO",
+  "board.fallback.enterprise.nextIntake": "POR SOLICITUD",
+  "board.fallback.setup.delivery": "10-19 DIAS DESDE INGRESO",
+  "board.fallback.build.delivery": "19-28 DIAS DESDE INGRESO",
+  "board.fallback.enterprise.delivery": "35-56 DIAS DESDE INGRESO",
 
   "packages.sectionLabel": "PAQUETES",
+  "packages.milestones.label": "4 HITOS",
+  "packages.milestones.p1": "Deposito",
+  "packages.milestones.p2": "Alcance",
+  "packages.milestones.p3": "Demo",
+  "packages.milestones.p4": "Entrega",
+  "packages.milestonesNote": "Cada hito factura cuando el trabajo pasa la revision.",
+  "packages.subscriptionLabel": "SUSCRIPCION ESTIMADA",
+  "packages.subscriptionNote": "Fijada al firmar el alcance",
+  "packages.retainerLabel": "RETENEDOR (opcional)",
+  "packages.retainerNote": "Despues del periodo de soporte",
+  "packages.guaranteeBadge": "REEMBOLSO GARANTIZADO DE 30 DIAS",
+  "packages.totalPrefix": "TOTAL",
+  "packages.examplesLabel": "EJEMPLOS — COMO SE VE",
+  "packages.contactCta": "Habla con el fundador",
+
   "packages.setup.name": "SETUP",
   "packages.setup.tagline": "Configuramos OPS alrededor de tu flujo de trabajo",
   "packages.setup.price": "$3,000",
-  "packages.setup.deposit": "$1,500 deposito",
+  "packages.setup.startFrom": "Empieza por $750",
+  "packages.setup.headlineSub": "$3,000 total · 4 hitos",
+  "packages.setup.milestoneAmount": "$750",
+  "packages.setup.subscriptionEstimate": "+15% sobre la sub base de OPS",
+  "packages.setup.retainerAmount": "$250/mes",
+  "packages.setup.deposit": "$750 deposito",
   "packages.setup.features": [
     "2 sesiones de descubrimiento",
     "Analisis de flujo de trabajo",
@@ -38,12 +100,17 @@
     { "trade": "JARDINERO", "desc": "Categorias de clientes estacionales vs mantenimiento, plantillas de trabajo recurrente, campos de asignacion de equipo por zona" }
   ],
   "packages.setup.ongoing": "Suscripcion $90-190/mes. Retenedor de mantenimiento $250/mes despues del periodo de soporte.",
-  "packages.setup.ctaText": "Pagar $1,500 Deposito",
+  "packages.setup.ctaText": "Pagar $750 Deposito",
 
   "packages.build.name": "BUILD",
   "packages.build.tagline": "Un modulo personalizado construido para tu oficio",
   "packages.build.price": "$8,500",
-  "packages.build.deposit": "$4,250 deposito",
+  "packages.build.startFrom": "Empieza por $2,125",
+  "packages.build.headlineSub": "$8,500 total · 4 hitos",
+  "packages.build.milestoneAmount": "$2,125",
+  "packages.build.subscriptionEstimate": "+30% sobre la sub base de OPS",
+  "packages.build.retainerAmount": "$450/mes",
+  "packages.build.deposit": "$2,125 deposito",
   "packages.build.features": [
     "Todo lo del Setup",
     "1 modulo personalizado — nuevas funciones, vistas y logica",
@@ -58,12 +125,17 @@
     { "trade": "ELECTRICISTA", "desc": "Modulo de permisos e inspecciones — rastrea permisos por trabajo, recordatorios automaticos, documentacion fotografica con firma de inspector" }
   ],
   "packages.build.ongoing": "Suscripcion $115-215/mes. Retenedor de mantenimiento $450/mes despues del periodo de soporte.",
-  "packages.build.ctaText": "Pagar $4,250 Deposito",
+  "packages.build.ctaText": "Pagar $2,125 Deposito",
 
   "packages.enterprise.name": "ENTERPRISE",
   "packages.enterprise.tagline": "Toda tu operacion, construida a medida sobre OPS",
   "packages.enterprise.price": "$18,000",
-  "packages.enterprise.deposit": "$9,000 deposito",
+  "packages.enterprise.startFrom": "Empieza por $4,500",
+  "packages.enterprise.headlineSub": "$18,000 total · 4 hitos",
+  "packages.enterprise.milestoneAmount": "$4,500",
+  "packages.enterprise.subscriptionEstimate": "+50% sobre la sub base de OPS",
+  "packages.enterprise.retainerAmount": "$750/mes",
+  "packages.enterprise.deposit": "$4,500 deposito",
   "packages.enterprise.features": [
     "Todo lo del Build",
     "Multiples modulos personalizados",
@@ -78,9 +150,7 @@
     { "trade": "EMPRESA MULTI-OFICIO", "desc": "Modulos especificos por division, recursos compartidos entre divisiones, vista unificada de clientes, reportes de P&L por division" }
   ],
   "packages.enterprise.ongoing": "Suscripcion $165-340/mes. Retenedor de mantenimiento $750/mes despues del periodo de soporte.",
-  "packages.enterprise.ctaText": "Pagar $9,000 Deposito",
-
-  "packages.contactCta": "Habla con el fundador",
+  "packages.enterprise.ctaText": "Pagar $4,500 Deposito",
 
   "included.sectionLabel": "QUE INCLUYE CADA PAQUETE",
   "included.every": [
@@ -99,39 +169,74 @@
     "Horas excedentes del retenedor: $200-225/hr"
   ],
 
+  "guarantees.sectionLabel": "// RESPALDAMOS EL TRABAJO",
+  "guarantees.col1.title": "30 dias para retirarte",
+  "guarantees.col1.body": "Si no estas satisfecho dentro de los 30 dias despues del recorrido, envia aviso por escrito. Sin necesidad de probar defectos. Sin periodo de correccion. Aplican exclusiones por contracargos, fraude, tergiversacion, flujos prohibidos, incumplimiento, desactivacion por falta de pago y uso continuado tras el reembolso.",
+  "guarantees.col2.title": "Pagas cuando el trabajo pasa la revision",
+  "guarantees.col2.body": "Cuatro puntos de control. El deposito financia el descubrimiento. La firma del alcance financia el inicio de la construccion. La demo intermedia y la entrega facturan cuando el trabajo pasa la revision.",
+  "guarantees.col3.title": "El alcance se escribe antes de construir",
+  "guarantees.col3.body": "Cada funcion tiene una prueba de aceptacion escrita en el documento de alcance, firmado antes de iniciar la construccion. La aceptacion se mide contra ese alcance escrito. Si una funcion falla su prueba escrita, OPS la reconstruye gratis.",
+  "guarantees.footerPrefix": "Terminos completos en",
+  "guarantees.footerLinkText": "/legal?page=spec-terms",
+  "guarantees.footerLinkHref": "/legal?page=spec-terms",
+
   "faq.sectionLabel": "PREGUNTAS",
   "faq.items": [
     {
       "question": "Que pasa despues de pagar el deposito?",
-      "answer": "Recibiras la entrevista de admision dentro de 24 horas. Completala a tu ritmo — cubre tus flujos de trabajo, puntos de dolor y como opera tu equipo. Revisamos los resultados y programamos tu sesion de descubrimiento."
+      "answer": "Recibiras el enlace de la entrevista de admision dentro de 24 horas. Completala a tu ritmo — flujos de trabajo, equipo, herramientas, puntos de dolor. Revisamos los resultados y agendamos tu sesion de descubrimiento. Se redacta y firma el alcance. La construccion arranca. Duracion total: 2 a 8 semanas segun el paquete."
     },
     {
-      "question": "Cuanto tarda una construccion personalizada?",
-      "answer": "Paquetes Setup: 1-2 semanas. Paquetes Build: 2-3 semanas. Enterprise: 4-6 semanas. Construimos rapido porque el fundador hace el trabajo directamente, con desarrollo asistido por IA."
+      "question": "Como funciona la estructura de pagos en 4 hitos?",
+      "answer": "Cuatro pagos iguales. P1 deposito al reservar. P2 al firmar el documento de alcance. P3 cuando aceptas la demo intermedia. P4 cuando los modulos entregan en el recorrido en vivo. Cada uno es el 25 por ciento del total."
+    },
+    {
+      "question": "Que es exactamente el Reembolso Garantizado de 30 dias?",
+      "answer": "30 dias despues del recorrido de entrega puedes solicitar reembolso por aviso escrito indicando insatisfaccion. Sin necesidad de probar defectos. Sin periodo de correccion. Una invocacion por compromiso. Exclusiones: contracargos, fraude, tergiversacion material, flujos prohibidos, incumplimiento, desactivacion por falta de pago y uso continuado tras el reembolso."
     },
     {
       "question": "Que es la entrevista de admision?",
-      "answer": "Una entrevista guiada sobre tu negocio — tus flujos de trabajo, estructura de equipo, puntos de dolor, como fluyen los trabajos desde el lead hasta completar. Toma unos 30-45 minutos."
+      "answer": "Un formulario guiado de 30 a 45 min sobre tu negocio, equipo, herramientas, flujo de trabajo, principales puntos de dolor y como se ve el exito 90 dias a partir de hoy. La llenas a tu ritmo. Llegamos al descubrimiento ya conociendo tu operacion."
     },
     {
-      "question": "Que pasa si necesito cambios despues del periodo de soporte?",
-      "answer": "El retenedor de mantenimiento cubre correcciones de errores, actualizaciones menores y mantener tus modulos compatibles con las actualizaciones de OPS. Solicitudes mas grandes se cotizan como nuevos proyectos."
+      "question": "Que significa 'firma del alcance' — y si quiero cambios despues?",
+      "answer": "Un documento firmado que lista cada funcion con prueba de aceptacion escrita, exclusiones, definicion de la demo intermedia, definicion de entrega y terminos de suscripcion. La firma dispara la factura P2 y bloquea la construccion. Los cambios posteriores fluyen por ordenes de cambio."
     },
     {
-      "question": "Necesito una suscripcion OPS separada?",
-      "answer": "Si. SPEC es un servicio de construccion — tu suscripcion OPS es tu acceso continuo a la plataforma. Puede ser mas alta que la estandar si tus modulos personalizados requieren infraestructura adicional."
+      "question": "Cual es la diferencia entre un 'cambio menor' y una 'orden de cambio mayor'?",
+      "answer": "Menor: menos de unas 4 horas, facturado a $225/hr CAD, en intervalos de 30 minutos, facturado al cierre del hito. Mayor: 4 horas o mas, cotizacion de precio fijo, aceptacion por escrito, fila separada en tu proyecto. Nosotros clasificamos; tu aceptas o rechazas."
     },
     {
-      "question": "Puedo mejorar mi paquete despues?",
-      "answer": "Si. Empieza con Setup para configurar OPS para tu flujo de trabajo. Si quieres un modulo personalizado despues, aplica la tarifa de Build (menos lo que ya pagaste por Setup). Igual para Enterprise."
+      "question": "Necesito una suscripcion OPS? Cuando empieza?",
+      "answer": "Si. SPEC entrega modulos en tu suscripcion OPS. El descubrimiento y la construccion ocurren antes de que empiece el cobro. El ajuste de la suscripcion aterriza en el primer ciclo de facturacion 30 dias despues de tu recorrido."
     },
     {
-      "question": "Que pasa si no estoy seguro de que paquete necesito?",
-      "answer": "Empieza con Setup. Es el menor compromiso y te diremos honestamente durante el descubrimiento si tus necesidades requieren Build o Enterprise. Sin presion, sin trucos de venta."
+      "question": "Cual es la prima de suscripcion y como se calcula?",
+      "answer": "Setup: +15% sobre la sub base de OPS. Build: +30%. Enterprise: +50%. Fijado al firmar el alcance. Renegociable a los 12 meses si el costo real de infraestructura diverge. Modulos de infraestructura pesada pueden agregar un recargo mensual fijo, declarado en el alcance."
     },
     {
-      "question": "Hay politica de reembolso del deposito?",
-      "answer": "Si no hemos comenzado el trabajo, el deposito es completamente reembolsable. Una vez que comienzan las sesiones de descubrimiento, el deposito cubre el trabajo ya completado. El 50% restante se paga al entregar."
+      "question": "Que es el retenedor de mantenimiento?",
+      "answer": "Opcional despues de que termina el periodo de soporte. Setup: $250/mes. Build: $450/mes. Enterprise: $750/mes. Cubre correccion de errores, mejoras menores dentro del alcance y parches de compatibilidad con actualizaciones de OPS. Pausa o cancela cuando quieras via Stripe."
+    },
+    {
+      "question": "Que pasa si mi construccion toma mas tiempo del estimado?",
+      "answer": "Las ventanas de entrega son estimaciones de buena fe, no fechas firmes. Si esperamos un retraso mayor a 7 dias avisamos dentro de 48 horas con un ETA revisado. Sin creditos automaticos. Si el retraso es inaceptable aplican las opciones de reembolso de la matriz."
+    },
+    {
+      "question": "Puedo referir a alguien? Recibo algo por eso?",
+      "answer": "Si. $500 CAD por cada compromiso referido que se complete. Pagado 30 dias despues del recorrido del cliente referido, siempre que no se haya invocado reembolso. Requiere KYC de Stripe Connect. Referidores canadienses que crucen $500/ano acumulados activan reporte T4A."
+    },
+    {
+      "question": "Hay contrato? Donde lo leo?",
+      "answer": "Si. Los Terminos de Servicio SPEC completos viven en /legal?page=spec-terms. Aceptas la version vigente al pagar el deposito. El hash de version se registra con tu aceptacion para la cadena de evidencia de disputas."
+    },
+    {
+      "question": "Y si no estoy seguro de cual paquete necesito?",
+      "answer": "Empieza con Setup. El menor compromiso. Durante el descubrimiento te diremos honestamente si tus necesidades requieren Build o Enterprise. Las mejoras pre-firma-de-alcance son prorrateadas — lo que pagaste por Setup cuenta hacia el nuevo paquete."
+    },
+    {
+      "question": "Quien es dueno del codigo que escriben?",
+      "answer": "OPS es dueno de todo el codigo, configuraciones, disenos, plantillas y conocimiento reutilizable creado para SPEC. El Cliente es dueno de sus datos de negocio. Mientras el Cliente mantenga una suscripcion OPS activa y no este en incumplimiento, el Cliente tiene una licencia limitada, no exclusiva y no transferible para usar los modulos entregados dentro de OPS; la licencia termina cuando la suscripcion OPS termina o el compromiso es reembolsado."
     }
   ],
 
@@ -142,7 +247,7 @@
   "confirmation.heading": "ESTAS DENTRO.",
   "confirmation.subtitle": "Deposito recibido. Esto es lo que sigue.",
   "confirmation.nextSteps": "Revisa tu correo para el enlace de la entrevista de admision. Completala a tu ritmo — mientras mas detalles nos des, mejor sera tu construccion personalizada.",
-  "confirmation.timeline.setup": "Las construcciones Setup se entregan en 1-2 semanas.",
-  "confirmation.timeline.build": "Los paquetes Build se entregan en 2-3 semanas.",
-  "confirmation.timeline.enterprise": "Las construcciones Enterprise se entregan en 4-6 semanas."
+  "confirmation.timeline.setup": "Las construcciones Setup se entregan en 2-3 semanas desde la admision.",
+  "confirmation.timeline.build": "Los paquetes Build se entregan en 3-4 semanas desde la admision.",
+  "confirmation.timeline.enterprise": "Las construcciones Enterprise se entregan en 5-8 semanas desde la admision."
 }
