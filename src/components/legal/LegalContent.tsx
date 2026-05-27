@@ -11,11 +11,57 @@
 'use client';
 
 import { AnimatePresence, motion } from 'framer-motion';
+import type { ReactNode } from 'react';
 import { Divider } from '@/components/ui';
 import type { LegalDocument } from '@/lib/legal-content';
 
 interface LegalContentProps {
   document: LegalDocument;
+}
+
+/**
+ * Render inline markdown: **bold**, *italic*, and `code` spans.
+ * Preserves verbatim source from the bible without changing the prose.
+ */
+function renderInline(text: string): ReactNode {
+  const tokenRegex = /(\*\*[^*\n]+\*\*|`[^`\n]+`|\*[^*\n]+\*)/g;
+  const parts: ReactNode[] = [];
+  let lastIndex = 0;
+  let key = 0;
+  for (const match of text.matchAll(tokenRegex)) {
+    const start = match.index ?? 0;
+    if (start > lastIndex) {
+      parts.push(text.slice(lastIndex, start));
+    }
+    const token = match[0];
+    if (token.startsWith('**')) {
+      parts.push(
+        <strong key={key++} className="font-semibold text-ops-text-dark">
+          {token.slice(2, -2)}
+        </strong>,
+      );
+    } else if (token.startsWith('`')) {
+      parts.push(
+        <code
+          key={key++}
+          className="font-mono text-[0.875em] bg-ops-text-dark/[0.05] text-ops-text-dark px-1 py-0.5 rounded"
+        >
+          {token.slice(1, -1)}
+        </code>,
+      );
+    } else {
+      parts.push(
+        <em key={key++} className="italic">
+          {token.slice(1, -1)}
+        </em>,
+      );
+    }
+    lastIndex = start + token.length;
+  }
+  if (lastIndex < text.length) {
+    parts.push(text.slice(lastIndex));
+  }
+  return parts.length > 0 ? parts : text;
 }
 
 /**
@@ -78,7 +124,7 @@ function ContentBlock({ text, index }: { text: string; index: number }) {
                     key={ci}
                     className="font-body text-sm text-ops-text-dark/80 px-3 py-2 border-b border-ops-text-dark/8 align-top"
                   >
-                    {cell}
+                    {renderInline(cell)}
                   </td>
                 ))}
               </tr>
@@ -103,7 +149,7 @@ function ContentBlock({ text, index }: { text: string; index: number }) {
             key={li}
             className="font-body text-base leading-relaxed text-ops-text-dark/80"
           >
-            {line.replace(/^- /, '')}
+            {renderInline(line.replace(/^- /, ''))}
           </li>
         ))}
       </ul>
@@ -141,7 +187,7 @@ function ContentBlock({ text, index }: { text: string; index: number }) {
                     key={li}
                     className="font-body text-base leading-relaxed text-ops-text-dark/80"
                   >
-                    {line.replace(/^- /, '')}
+                    {renderInline(line.replace(/^- /, ''))}
                   </li>
                 ))}
               </ul>
@@ -152,7 +198,7 @@ function ContentBlock({ text, index }: { text: string; index: number }) {
               key={gi}
               className="font-body text-base leading-relaxed text-ops-text-dark/80 my-2"
             >
-              {group.lines.join('\n')}
+              {renderInline(group.lines.join('\n'))}
             </p>
           );
         })}
@@ -166,7 +212,7 @@ function ContentBlock({ text, index }: { text: string; index: number }) {
       key={index}
       className="font-body text-base leading-relaxed text-ops-text-dark/80 my-2"
     >
-      {text}
+      {renderInline(text)}
     </p>
   );
 }
@@ -182,7 +228,7 @@ export default function LegalContent({ document: doc }: LegalContentProps) {
         transition={{ duration: 0.25 }}
         className="max-w-3xl"
       >
-        {/* Last updated + effective date */}
+        {/* Last updated + effective date + version */}
         <div className="mt-10 mb-8 space-y-1">
           <p className="font-caption uppercase text-[10px] tracking-[0.15em] text-ops-text-secondary">
             Last updated: {doc.lastUpdated}
@@ -190,6 +236,11 @@ export default function LegalContent({ document: doc }: LegalContentProps) {
           {doc.effectiveDate && (
             <p className="font-caption uppercase text-[10px] tracking-[0.15em] text-ops-text-secondary">
               Effective date: {doc.effectiveDate}
+            </p>
+          )}
+          {doc.version && (
+            <p className="font-caption uppercase text-[10px] tracking-[0.15em] text-ops-text-secondary">
+              Version: {doc.version}
             </p>
           )}
         </div>

@@ -12,6 +12,7 @@ import type { Dictionary } from '@/i18n/types';
 
 const tabKeys = [
   { key: 'terms', dictKey: 'tab.terms', fallback: 'TERMS' },
+  { key: 'spec-terms', dictKey: 'tab.spec-terms', fallback: 'SPEC TERMS' },
   { key: 'privacy', dictKey: 'tab.privacy', fallback: 'PRIVACY' },
   { key: 'eula', dictKey: 'tab.eula', fallback: 'EULA' },
   { key: 'dpa', dictKey: 'tab.dpa', fallback: 'DPA' },
