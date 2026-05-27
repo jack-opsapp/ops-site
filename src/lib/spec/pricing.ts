@@ -145,3 +145,14 @@ const CAD_FORMATTER = new Intl.NumberFormat('en-CA', {
 export function formatCad(cents: number): string {
   return CAD_FORMATTER.format(Math.round(cents / 100));
 }
+
+/**
+ * Backwards-compatible alias of formatCad, kept for the Stage C.1 +
+ * C.3 routes that import `formatTierCents` (the name from C.1's
+ * original pricing.ts before the Stage E/Stage C.1 consolidation
+ * union). Identical output to formatCad for all integer-cents inputs;
+ * deprecate by switching call sites to formatCad in a future polish
+ * pass. Source: ops-site/src/app/spec/{awaiting-approval, billing-address,
+ * owner-approval/[approval_token]}/page.tsx.
+ */
+export const formatTierCents = formatCad;
