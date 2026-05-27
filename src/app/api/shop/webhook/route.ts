@@ -1,7 +1,7 @@
 /**
  * POST /api/shop/webhook
  *
- * Single Stripe webhook for the marketing site. Handles two unrelated
+ * Single Stripe webhook for the marketing site. Handles three unrelated
  * product flows on one endpoint so Stripe Dashboard stays simple (one
  * URL, one signing secret, one event subscription).
  *
@@ -14,15 +14,31 @@
  *      checkout.session.completed   → only when metadata.type is
  *                                     'spec_deposit' (legacy
  *                                     'tailored_deposit' also accepted
- *                                     during cutover).
+ *                                     during cutover). Dispatches through
+ *                                     handleSpecCheckoutSessionCompleted —
+ *                                     Quebec post-Stripe defense fires FIRST,
+ *                                     then the normal deposit_paid flow.
+ *
+ *   3. SPEC dispute
+ *      charge.dispute.created       → resolves to a SPEC payment via
+ *                                     spec_payments.stripe_payment_intent_id;
+ *                                     non-SPEC charges fall through.
  *
  * Uses raw request body for Stripe signature verification.
- * Requires STRIPE_WEBHOOK_SECRET env var (separate from OPS-Web's webhook).
+ * Requires STRIPE_WEBHOOK_SECRET env var.
+ *
+ * Idempotency is owned by the SPEC handlers (stripe_webhook_events dedup
+ * table). The shop handlers remain naturally idempotent via the order
+ * status check.
  */
 
 import { NextResponse } from 'next/server';
 import { getSupabaseAdmin } from '@/lib/supabase-admin';
 import { getStripe } from '@/lib/shop/stripe';
+import {
+  handleSpecCheckoutSessionCompleted,
+  handleSpecChargeDisputeCreated,
+} from '@/lib/spec/webhook-handlers';
 import type Stripe from 'stripe';
 
 export async function POST(request: Request) {
@@ -40,9 +56,9 @@ export async function POST(request: Request) {
   }
 
   let event: Stripe.Event;
+  const stripe = getStripe();
 
   try {
-    const stripe = getStripe();
     event = stripe.webhooks.constructEvent(body, signature, webhookSecret);
   } catch (err) {
     console.error('[SHOP WEBHOOK] Signature verification failed:', err);
@@ -53,27 +69,35 @@ export async function POST(request: Request) {
 
   switch (event.type) {
     case 'checkout.session.completed': {
-      // SPEC deposit flow only — shop checkouts use PaymentIntents, not
-      // Checkout Sessions, so any session that reaches here came from
-      // /api/spec/create-checkout-session.
       const session = event.data.object as Stripe.Checkout.Session;
       const metadata = session.metadata ?? {};
 
-      if (metadata.type !== 'spec_deposit' && metadata.type !== 'tailored_deposit') {
+      if (metadata.type === 'spec_deposit' || metadata.type === 'tailored_deposit') {
+        const outcome = await handleSpecCheckoutSessionCompleted(event, session, stripe);
+        if (!outcome.ok) {
+          console.error('[SPEC webhook] deposit handler returned error', outcome);
+        }
         break;
       }
 
-      console.log('[SPEC Webhook] Deposit received:', {
-        package: metadata.package,
-        deposit: metadata.deposit_amount,
-        fullPrice: metadata.full_price,
-        email: session.customer_details?.email,
+      // Non-SPEC checkout sessions are not currently used by ops-site, but
+      // log them for visibility instead of silently dropping.
+      console.log('[SHOP WEBHOOK] checkout.session.completed (non-SPEC) — no handler', {
         sessionId: session.id,
+        metadataType: metadata.type ?? null,
       });
+      break;
+    }
 
-      // Future: write to Supabase spec_deposits table
-      // Future: trigger intake interview link generation
-      // Future: send confirmation email
+    case 'charge.dispute.created': {
+      const dispute = event.data.object as Stripe.Dispute;
+      const outcome = await handleSpecChargeDisputeCreated(event, dispute, stripe);
+      if (!outcome.ok) {
+        console.error('[SPEC webhook] dispute handler returned error', outcome);
+      }
+      // outcome.status === 'skipped' means the dispute did not match a SPEC
+      // payment — non-SPEC disputes have no shop-side handler today (shop
+      // orders use PaymentIntents on the marketing site path).
       break;
     }
 
