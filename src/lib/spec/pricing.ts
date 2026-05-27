@@ -4,7 +4,8 @@
  * Single source of truth for the 4-milestone (25/25/25/25) payment
  * structure introduced in Phase 1 ([01_BUSINESS_MODEL.md] § 2).
  * Every $ value rendered on /spec or written into the dictionary
- * traces back to this file.
+ * traces back to this file. Stripe checkout (Stage C.1) consumes
+ * the typed helpers + display names.
  *
  * Pure functions. No I/O. Safe to import from RSC, route handlers,
  * client components, and tests.
@@ -20,6 +21,17 @@ export const TIER_TOTAL_CENTS: Record<SpecTier, number> = {
   setup: 300_000, //  $3,000
   build: 850_000, //  $8,500
   enterprise: 1_800_000, // $18,000
+};
+
+/**
+ * Display names used in Stripe line_item descriptions + customer-facing
+ * surfaces that need the tier presented in long-form. Consumed by
+ * Stage C.1's create-checkout-session route.
+ */
+export const SPEC_TIER_DISPLAY_NAMES: Record<SpecTier, string> = {
+  setup: 'OPS SPEC — Setup',
+  build: 'OPS SPEC — Build',
+  enterprise: 'OPS SPEC — Enterprise',
 };
 
 /**
@@ -85,6 +97,39 @@ export function computeMilestones(totalCents: number): MilestoneBreakdown {
   };
 }
 
+/**
+ * Per-tier milestone summary used by PackageCard, JSON-LD generation,
+ * and the Stripe checkout (Stage C). Exposed here so every surface
+ * reads the same numbers.
+ */
+export function getTierMilestones(tier: SpecTier): MilestoneBreakdown {
+  return computeMilestones(TIER_TOTAL_CENTS[tier]);
+}
+
+/**
+ * Convenience wrappers used by Stage C.1's create-checkout-session route.
+ * Implemented in terms of getTierMilestones so the math stays in one place.
+ */
+export function tierTotalCents(tier: SpecTier): number {
+  return TIER_TOTAL_CENTS[tier];
+}
+
+export function tierDepositCents(tier: SpecTier): number {
+  return getTierMilestones(tier).p1Cents;
+}
+
+export function tierMilestoneCents(tier: SpecTier): number {
+  return getTierMilestones(tier).milestoneCents;
+}
+
+/**
+ * Type guard used by API routes that accept a tier from the wire and
+ * need to narrow `unknown` → `SpecTier` before passing to typed helpers.
+ */
+export function isValidTier(value: unknown): value is SpecTier {
+  return value === 'setup' || value === 'build' || value === 'enterprise';
+}
+
 const CAD_FORMATTER = new Intl.NumberFormat('en-CA', {
   style: 'currency',
   currency: 'CAD',
@@ -99,13 +144,4 @@ const CAD_FORMATTER = new Intl.NumberFormat('en-CA', {
  */
 export function formatCad(cents: number): string {
   return CAD_FORMATTER.format(Math.round(cents / 100));
-}
-
-/**
- * Per-tier milestone summary used by PackageCard, JSON-LD generation,
- * and the Stripe checkout (Stage C). Exposed here so every surface
- * reads the same numbers.
- */
-export function getTierMilestones(tier: SpecTier): MilestoneBreakdown {
-  return computeMilestones(TIER_TOTAL_CENTS[tier]);
 }
