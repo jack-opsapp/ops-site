@@ -6,7 +6,8 @@
     "dev": "next dev",
     "build": "next build",
     "start": "next start",
-    "lint": "eslint"
+    "lint": "eslint",
+    "test:spec-cron": "tsx --test src/lib/spec/cron/__tests__/*.test.ts"
   },
   "dependencies": {
     "@react-three/drei": "^10.7.7",
