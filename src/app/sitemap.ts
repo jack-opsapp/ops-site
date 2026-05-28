@@ -92,12 +92,14 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
     }),
   );
 
-  // Legal docs are English-only (see englishOnlyNotice on the legal page);
-  // no /es variant gets a sitemap entry.
+  // Legal docs are English-only (see englishOnlyNotice on the legal page).
+  // The /legal page tab-switches between terms / privacy / eula / dpa via a
+  // ?page= search param, but the page's metadata canonicalizes all variants
+  // to the bare /legal URL — so the sitemap lists only the canonical entry.
+  // Listing the three ?page= URLs caused "Duplicate without user-selected
+  // canonical" warnings in Google Search Console (verified May 2026 pull).
   const legalPages: MetadataRoute.Sitemap = [
-    { url: `${BASE_URL}/legal?page=terms`, lastModified: lastUpdated, changeFrequency: 'yearly', priority: 0.3 },
-    { url: `${BASE_URL}/legal?page=privacy`, lastModified: lastUpdated, changeFrequency: 'yearly', priority: 0.3 },
-    { url: `${BASE_URL}/legal?page=eula`, lastModified: lastUpdated, changeFrequency: 'yearly', priority: 0.3 },
+    { url: `${BASE_URL}/legal`, lastModified: lastUpdated, changeFrequency: 'yearly', priority: 0.3 },
   ];
 
   const blogSlugs = await getAllLiveSlugs();

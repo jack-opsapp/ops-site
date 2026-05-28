@@ -62,16 +62,44 @@ export const seoRedirects: Redirect[] = [
   // visible in Search Console (verified May 2026 GSC pull). Each redirect
   // here targets the closest surviving article by topic.
   //
-  // If future GSC data shows another /blog_post/<slug> hitting a 404, the
-  // pattern is: that slug still exists as a draft in Supabase (is_live=false)
-  // but no live equivalent. Add a new explicit redirect here above the
-  // catch-all. There are ~10 other draft slugs that could plausibly leak
-  // this way (e.g. essential-guide-for-blue-collar-truck-buyers,
-  // the-real-cost-of-inefficiency, top-challenges-for-contractors-in-western-canada).
+  // Audit 2026-05-28: pulled every is_live=false slug from Supabase
+  // blog_posts and mapped each to its nearest live cousin. Twenty draft
+  // slugs added below. Real-article drafts redirect to topically-related
+  // live posts; in-app help-style drafts (calendar--scheduling,
+  // dashboard--reporting, etc.) redirect to /resources.
+  // If a future draft is published live with its own /journal/<slug>,
+  // remove its row here so the catch-all takes over again.
   { source: '/blog_post/client-management', destination: '/journal/craft-a-6-star-experience', statusCode: 301 },
   { source: '/blog_post/team-coordination--role-management', destination: '/journal/building-self-sufficient-crews', statusCode: 301 },
   { source: '/blog_post/make-smart-decisions-on-the-job-site', destination: '/journal/use-inversion-to-avoid-job-site-failures', statusCode: 301 },
   { source: '/blog_post/dashboard--reporting', destination: '/journal/track-job-costs-like-a-pro', statusCode: 301 },
+
+  // Article-style drafts → closest live cousin
+  { source: '/blog_post/are-you-successful-for-your-age', destination: '/journal/the-die-with-zero-approach', statusCode: 301 },
+  { source: '/blog_post/diesel-up-50-shield-your-margin', destination: '/journal/tariff-proof-your-next-bid', statusCode: 301 },
+  { source: '/blog_post/essential-guide-for-blue-collar-truck-buyers', destination: '/journal/top-5-pickups-of-2025', statusCode: 301 },
+  { source: '/blog_post/handling-emergency-calls-without-derailing-your-entire-day', destination: '/journal/how-to-handle-difficult-site-management', statusCode: 301 },
+  { source: '/blog_post/how-to-work-effectively-with-other-trades', destination: '/journal/the-hidden-communication-gap-between-office-and-field-teams', statusCode: 301 },
+  { source: '/blog_post/job-site-communication-eliminating-costly-mistakes-without-endless-meetings', destination: '/journal/the-hidden-communication-gap-between-office-and-field-teams', statusCode: 301 },
+  { source: '/blog_post/milwaukee-s-latest-tools', destination: '/journal/top-5-pickups-of-2025', statusCode: 301 },
+  { source: '/blog_post/the-milwaukee-one-key-system', destination: '/journal/top-5-pickups-of-2025', statusCode: 301 },
+  { source: '/blog_post/the-real-cost-of-inefficiency', destination: '/journal/profit-first-for-trades', statusCode: 301 },
+  { source: '/blog_post/top-challenges-for-contractors-in-western-canada', destination: '/journal/tariff-proof-your-next-bid', statusCode: 301 },
+  { source: '/blog_post/your-reviews-run-your-business', destination: '/journal/craft-a-6-star-experience', statusCode: 301 },
+
+  // In-app help-style drafts → /resources (not blog-grade content)
+  { source: '/blog_post/calendar--scheduling', destination: '/resources', statusCode: 301 },
+  { source: '/blog_post/company-administration-admin-only', destination: '/resources', statusCode: 301 },
+  { source: '/blog_post/daily-workflow', destination: '/resources', statusCode: 301 },
+  { source: '/blog_post/getting-started--setup', destination: '/resources', statusCode: 301 },
+  { source: '/blog_post/phone-use-guide', destination: '/resources', statusCode: 301 },
+  { source: '/blog_post/project--task-details', destination: '/resources', statusCode: 301 },
+  { source: '/blog_post/project-creation--management', destination: '/resources', statusCode: 301 },
+  { source: '/blog_post/status-updates--notes', destination: '/resources', statusCode: 301 },
+  { source: '/blog_post/troubleshooting', destination: '/resources', statusCode: 301 },
+
+  // Malformed slug (double-hyphen typo `2025--construction`) → fixed slug
+  { source: '/journal/understanding-the-2025--construction-tech-landscape', destination: '/journal/understanding-the-2025-construction-tech-landscape', statusCode: 301 },
 
   { source: '/blog_post/:slug', destination: '/journal/:slug', statusCode: 301 },
   { source: '/10_minute_test', destination: '/tools/leadership', statusCode: 301 },
