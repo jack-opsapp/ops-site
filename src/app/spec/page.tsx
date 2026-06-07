@@ -64,8 +64,8 @@ export default async function SpecPage() {
     : Object.fromEntries(
         Object.entries(rawDict).filter(
           ([key]) =>
-            !key.endsWith('.ctaText') &&
-            !key.endsWith('.deposit') &&
+            !(key.startsWith('packages.') && key.endsWith('.ctaText')) &&
+            !(key.startsWith('packages.') && key.endsWith('.deposit')) &&
             !key.startsWith('confirmation.'),
         ),
       );
