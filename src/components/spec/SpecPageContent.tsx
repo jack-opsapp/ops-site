@@ -270,6 +270,8 @@ export function SpecPageContent({
         heading={t(dict, 'bottomCta.heading')}
         subtitle={t(dict, 'bottomCta.subtitle')}
         ctaText={t(dict, 'bottomCta.ctaText')}
+        defaultOpsText={t(dict, 'bottomCta.defaultOpsText')}
+        defaultOpsHref={t(dict, 'bottomCta.defaultOpsHref')}
       />
     </main>
   );

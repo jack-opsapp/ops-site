@@ -1,7 +1,7 @@
 'use client';
 
 import { useEffect } from 'react';
-import { trackMarketingEvent } from '@/lib/marketing-analytics';
+import { sanitizeMarketingUrl, trackMarketingEvent } from '@/lib/marketing-analytics';
 
 const SCROLL_THRESHOLDS = [25, 50, 75, 90] as const;
 
@@ -36,7 +36,7 @@ export default function MarketingAnalytics() {
       if (!eventName) return;
 
       trackMarketingEvent(eventName, {
-        link_url: url.toString(),
+        link_url: sanitizeMarketingUrl(url.toString(), window.location.href),
         link_domain: url.hostname,
         link_text: anchor.innerText.trim().replace(/\s+/g, ' '),
         link_context: getLinkContext(anchor),

@@ -29,6 +29,9 @@ interface ConversionRow {
   event_name: string;
   payload: Record<string, unknown>;
   attempts: number;
+  status: 'pending' | 'failed';
+  last_attempt_at: string | null;
+  created_at: string;
 }
 
 export async function runConversionEventOutboxRetry(
@@ -53,7 +56,7 @@ export async function runConversionEventOutboxRetry(
   const cooldownIso = new Date(now.getTime() - RETRY_COOLDOWN_MS).toISOString();
   const { data: rows, error } = await db
     .from('conversion_event_outbox')
-    .select('id, event_name, payload, attempts, last_attempt_at')
+    .select('id, event_name, payload, attempts, status, last_attempt_at, created_at')
     .in('status', ['pending', 'failed'])
     .lt('attempts', MAX_ATTEMPTS)
     .or(`last_attempt_at.is.null,last_attempt_at.lt.${cooldownIso}`)
@@ -65,7 +68,7 @@ export async function runConversionEventOutboxRetry(
     result.errored += 1;
     return result;
   }
-  const candidates = (rows ?? []) as Array<ConversionRow & { last_attempt_at: string | null }>;
+  const candidates = (rows ?? []) as ConversionRow[];
   result.considered = candidates.length;
 
   if (!hasGoogle) {
@@ -79,18 +82,56 @@ export async function runConversionEventOutboxRetry(
   // Phase 1 paid validation path and remains outbox-first.
   for (const row of candidates) {
     await safeMutate(result, row.id, async () => {
+      const originalAttempts = row.attempts;
+      const originalLastAttemptAt = row.last_attempt_at;
+      const originalStatus = row.status;
+      const nextAttempts = originalAttempts + 1;
+      const reachedCap = nextAttempts >= MAX_ATTEMPTS;
+      const nowIso = now.toISOString();
+      const occurredAt = Number.isNaN(Date.parse(row.created_at))
+        ? now
+        : new Date(row.created_at);
+
+      let claimQuery = db
+        .from('conversion_event_outbox')
+        .update({ attempts: nextAttempts, last_attempt_at: nowIso })
+        .select('id')
+        .eq('id', row.id)
+        .eq('status', originalStatus)
+        .eq('attempts', originalAttempts);
+      claimQuery = originalLastAttemptAt
+        ? claimQuery.eq('last_attempt_at', originalLastAttemptAt)
+        : claimQuery.is('last_attempt_at', null);
+      const claim = await claimQuery.maybeSingle();
+      if (claim.error) throw new Error(`claim failed: ${claim.error.message}`);
+      if (!claim.data) {
+        result.details.push(`skipped claimed row: ${row.id}`);
+        return;
+      }
+
       const sendOutcome = await sendGoogleEnhancedConversion(
         row.event_name as SpecConversionEventName,
         row.payload,
+        occurredAt,
       );
-      const nextAttempts = row.attempts + 1;
-      const reachedCap = nextAttempts >= MAX_ATTEMPTS;
+
+      if (sendOutcome.configurationMissing) {
+        const { error: resetErr } = await db
+          .from('conversion_event_outbox')
+          .update({ attempts: originalAttempts, last_attempt_at: originalLastAttemptAt, last_error: sendOutcome.error })
+          .eq('id', row.id)
+          .eq('attempts', nextAttempts);
+        if (resetErr) throw new Error(`configuration reset failed: ${resetErr.message}`);
+        result.details.push(`Google conversion configuration incomplete: ${row.id} ${sendOutcome.error ?? ''}`.trim());
+        return;
+      }
 
       if (sendOutcome.ok) {
         const { error: upErr } = await db
           .from('conversion_event_outbox')
-          .update({ status: 'sent', sent_at: now.toISOString(), last_attempt_at: now.toISOString(), last_error: null })
-          .eq('id', row.id);
+          .update({ status: 'sent', sent_at: nowIso, last_attempt_at: nowIso, last_error: null })
+          .eq('id', row.id)
+          .eq('attempts', nextAttempts);
         if (upErr) throw new Error(`success update failed: ${upErr.message}`);
         if (sendOutcome.sent) {
           result.fired += 1;
@@ -104,11 +145,10 @@ export async function runConversionEventOutboxRetry(
         .from('conversion_event_outbox')
         .update({
           status: reachedCap ? 'permanent_failure' : 'failed',
-          attempts: nextAttempts,
-          last_attempt_at: now.toISOString(),
           last_error: (sendOutcome.error ?? 'google_send_failed').slice(0, 400),
         })
-        .eq('id', row.id);
+        .eq('id', row.id)
+        .eq('attempts', nextAttempts);
       if (upErr) throw new Error(`failure update failed: ${upErr.message}`);
     });
   }

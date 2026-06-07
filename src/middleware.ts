@@ -36,6 +36,11 @@
 
 import { NextRequest, NextResponse } from 'next/server';
 import { COOKIE_NAME, COOKIE_MAX_AGE } from '@/i18n/config';
+import {
+  maybeBuildFirstTouchPayload,
+  readAttributionFromRequest,
+  writeAttributionCookie,
+} from '@/lib/spec/attribution';
 
 // Mirror of TRANSLATED_PATHS in src/i18n/server.ts — kept here as a
 // constant rather than imported because middleware runs in the Edge
@@ -56,6 +61,15 @@ function isTranslated(pathname: string): boolean {
   return TRANSLATED_PATHS.has(pathname);
 }
 
+function withAttributionCookie(request: NextRequest, response: NextResponse): NextResponse {
+  const payload = maybeBuildFirstTouchPayload(
+    request.nextUrl,
+    readAttributionFromRequest(request),
+  );
+  if (payload) writeAttributionCookie(response, payload);
+  return response;
+}
+
 export function middleware(request: NextRequest) {
   const { pathname } = request.nextUrl;
 
@@ -68,7 +82,7 @@ export function middleware(request: NextRequest) {
     if (!isTranslated(internalPath)) {
       const url = request.nextUrl.clone();
       url.pathname = internalPath;
-      return NextResponse.redirect(url, 308);
+      return withAttributionCookie(request, NextResponse.redirect(url, 308));
     }
 
     // Translated route: rewrite internally with the locale header + cookie sync.
@@ -87,7 +101,7 @@ export function middleware(request: NextRequest) {
       maxAge: COOKIE_MAX_AGE,
       sameSite: 'lax',
     });
-    return response;
+    return withAttributionCookie(request, response);
   }
 
   // --- Unprefixed URL with cookie=es ---
@@ -96,14 +110,17 @@ export function middleware(request: NextRequest) {
   if (cookieLocale === 'es' && isTranslated(pathname)) {
     const url = request.nextUrl.clone();
     url.pathname = pathname === '/' ? '/es' : `/es${pathname}`;
-    return NextResponse.redirect(url, 308);
+    return withAttributionCookie(request, NextResponse.redirect(url, 308));
   }
 
   // --- Default: English ---
   const requestHeaders = new Headers(request.headers);
   requestHeaders.set('x-locale', 'en');
   requestHeaders.set('x-pathname', pathname);
-  return NextResponse.next({ request: { headers: requestHeaders } });
+  return withAttributionCookie(
+    request,
+    NextResponse.next({ request: { headers: requestHeaders } }),
+  );
 }
 
 export const config = {

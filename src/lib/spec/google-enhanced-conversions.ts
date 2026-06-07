@@ -34,6 +34,8 @@ export interface GoogleSendResult {
   ok: boolean;
   sent: boolean;
   error: string | null;
+  retryable: boolean;
+  configurationMissing: boolean;
 }
 
 interface GoogleAccessTokenResponse {
@@ -91,6 +93,10 @@ function conversionActionResource(eventName: SpecConversionEventName): string | 
   const actionId = envName ? digitsOnly(process.env[envName] ?? '') : '';
   if (!actionId) return null;
   return `customers/${cleanCustomerId()}/conversionActions/${actionId}`;
+}
+
+function isConfigurationMissing(error: string | null): boolean {
+  return Boolean(error?.startsWith('missing_google_conversion_action_'));
 }
 
 export function formatGoogleAdsDateTime(date: Date): string {
@@ -165,23 +171,26 @@ export function buildGoogleConversionRequest(
 export async function sendGoogleEnhancedConversion(
   eventName: SpecConversionEventName,
   payload: ConversionEventPayload,
+  occurredAt = new Date(),
 ): Promise<GoogleSendResult> {
   if (!isGoogleConversionConfigured()) {
-    return { ok: true, sent: false, error: null };
+    return { ok: true, sent: false, error: null, retryable: true, configurationMissing: true };
   }
 
   let body: GoogleConversionRequest | null;
   try {
-    body = buildGoogleConversionRequest(eventName, payload);
+    body = buildGoogleConversionRequest(eventName, payload, occurredAt);
   } catch (err) {
     return {
       ok: false,
       sent: false,
       error: err instanceof Error ? err.message : String(err),
+      retryable: true,
+      configurationMissing: isConfigurationMissing(err instanceof Error ? err.message : String(err)),
     };
   }
 
-  if (!body) return { ok: true, sent: false, error: null };
+  if (!body) return { ok: true, sent: false, error: null, retryable: false, configurationMissing: false };
 
   let accessToken: string;
   try {
@@ -191,6 +200,8 @@ export async function sendGoogleEnhancedConversion(
       ok: false,
       sent: false,
       error: err instanceof Error ? err.message : String(err),
+      retryable: true,
+      configurationMissing: false,
     };
   }
 
@@ -216,11 +227,23 @@ export async function sendGoogleEnhancedConversion(
   } | null;
 
   if (!response.ok) {
-    return { ok: false, sent: false, error: `google_ads_${response.status}` };
+    return {
+      ok: false,
+      sent: false,
+      error: `google_ads_${response.status}`,
+      retryable: response.status >= 500 || response.status === 429,
+      configurationMissing: false,
+    };
   }
   if (responseBody?.partialFailureError?.message) {
-    return { ok: false, sent: false, error: responseBody.partialFailureError.message };
+    return {
+      ok: false,
+      sent: false,
+      error: responseBody.partialFailureError.message,
+      retryable: false,
+      configurationMissing: false,
+    };
   }
 
-  return { ok: true, sent: true, error: null };
+  return { ok: true, sent: true, error: null, retryable: false, configurationMissing: false };
 }

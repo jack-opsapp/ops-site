@@ -2,6 +2,7 @@
 
 import { motion } from 'framer-motion';
 import { theme } from '@/lib/theme';
+import { trackSpecMarketingEvent } from '@/lib/marketing-analytics';
 
 const ease = theme.animation.easing as [number, number, number, number];
 
@@ -9,6 +10,8 @@ interface SpecBottomCTAProps {
   heading: string;
   subtitle: string;
   ctaText: string;
+  defaultOpsText: string;
+  defaultOpsHref: string;
 }
 
 function scrollTo(id: string) {
@@ -19,6 +22,8 @@ export default function SpecBottomCTA({
   heading,
   subtitle,
   ctaText,
+  defaultOpsText,
+  defaultOpsHref,
 }: SpecBottomCTAProps) {
   return (
     <section className="py-24 md:py-32 bg-ops-background">
@@ -53,6 +58,15 @@ export default function SpecBottomCTA({
           >
             {ctaText}
           </button>
+          <a
+            href={defaultOpsHref}
+            onClick={() => trackSpecMarketingEvent('spec_default_ops_cta_click', {
+              destination: 'default_ops',
+            })}
+            className="ml-3 mt-8 inline-flex items-center justify-center rounded-[3px] border border-ops-border px-8 py-3.5 font-caption text-xs uppercase tracking-[0.15em] text-ops-text-primary transition-all duration-200 hover:border-ops-border-hover"
+          >
+            {defaultOpsText}
+          </a>
         </motion.div>
       </div>
     </section>

@@ -134,6 +134,10 @@ test('marks Google conversion rows sent when upload succeeds', async () => {
   assert.equal(result.fired, 1);
   assert.equal(calls[1], 'https://googleads.googleapis.com/v23/customers/1234567890:uploadClickConversions');
   assert.deepEqual(db.recordedUpdates[0].patch, {
+    attempts: 1,
+    last_attempt_at: '2026-06-07T12:00:00.000Z',
+  });
+  assert.deepEqual(db.recordedUpdates[1].patch, {
     status: 'sent',
     sent_at: '2026-06-07T12:00:00.000Z',
     last_attempt_at: '2026-06-07T12:00:00.000Z',
@@ -174,14 +178,16 @@ test('marks Google conversion rows failed when upload rejects the match', async 
   assert.equal(result.considered, 1);
   assert.equal(result.fired, 0);
   assert.deepEqual(db.recordedUpdates[0].patch, {
-    status: 'failed',
     attempts: 1,
     last_attempt_at: '2026-06-07T12:00:00.000Z',
+  });
+  assert.deepEqual(db.recordedUpdates[1].patch, {
+    status: 'failed',
     last_error: 'bad conversion',
   });
 });
 
-test('marks Google conversion rows failed when conversion action ID is missing', async () => {
+test('leaves Google conversion rows pending when conversion action ID is missing', async () => {
   configureGoogleEnv();
   delete process.env.GOOGLE_ADS_CONVERSION_ACTION_STRIPE_CHECKOUT_COMPLETED;
 
@@ -208,10 +214,16 @@ test('marks Google conversion rows failed when conversion action ID is missing',
 
   assert.equal(result.considered, 1);
   assert.equal(result.fired, 0);
+  assert.match(result.details[0] ?? '', /Google conversion configuration incomplete/);
   assert.deepEqual(db.recordedUpdates[0].patch, {
-    status: 'failed',
     attempts: 1,
     last_attempt_at: '2026-06-07T12:00:00.000Z',
+  });
+  assert.deepEqual(db.recordedUpdates[1].patch, {
+    attempts: 0,
+    last_attempt_at: null,
     last_error: 'missing_google_conversion_action_stripe_checkout_completed',
   });
+  assert.equal(db.rows.conversion_event_outbox[0].status, 'pending');
+  assert.equal(db.rows.conversion_event_outbox[0].attempts, 0);
 });

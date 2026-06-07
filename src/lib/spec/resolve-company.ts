@@ -49,7 +49,7 @@ export async function resolveSpecCompanyForProject(
     return {
       ok: false,
       reason: 'no_company',
-      redirectTo: `/setup?returnTo=${encodeURIComponent(`/spec?tier=${tier}`)}`,
+      redirectTo: `/setup?source=spec&returnTo=${encodeURIComponent(`/spec?tier=${tier}`)}`,
     };
   }
 
@@ -64,7 +64,7 @@ export async function resolveSpecCompanyForProject(
     return {
       ok: false,
       reason: 'company_deleted',
-      redirectTo: `/setup?returnTo=${encodeURIComponent(`/spec?tier=${tier}`)}`,
+      redirectTo: `/setup?source=spec&returnTo=${encodeURIComponent(`/spec?tier=${tier}`)}`,
     };
   }
 

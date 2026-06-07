@@ -3,7 +3,10 @@ import { test } from 'node:test';
 
 import {
   buildMarketingProperties,
+  buildSafeSearchProperties,
   buildSpecMarketingProperties,
+  sanitizeMarketingPath,
+  sanitizeMarketingUrl,
 } from '../marketing-analytics';
 
 test('drops nullish marketing properties and truncates long strings', () => {
@@ -24,4 +27,37 @@ test('adds SPEC surface to SPEC marketing events', () => {
     surface: 'spec',
     tier: 'setup',
   });
+});
+
+test('redacts tokenized SPEC paths before analytics dispatch', () => {
+  assert.equal(
+    sanitizeMarketingPath('/spec/checkout/buyer-token-123'),
+    '/spec/checkout/[token]',
+  );
+  assert.equal(
+    sanitizeMarketingPath('/spec/owner-approval/approval-token-123'),
+    '/spec/owner-approval/[token]',
+  );
+  assert.equal(
+    sanitizeMarketingPath('/spec/intake/intake-token-123'),
+    '/spec/intake/[token]',
+  );
+});
+
+test('keeps only safe attribution query properties', () => {
+  assert.deepEqual(
+    buildSafeSearchProperties('?session_id=cs_live_secret&utm_campaign=spec&gclid=abc123'),
+    { utm_campaign: 'spec', has_gclid: true },
+  );
+});
+
+test('redacts sensitive URL search params and token paths', () => {
+  assert.equal(
+    sanitizeMarketingUrl('https://opsapp.co/spec/confirmation?session_id=cs_live_secret&utm_source=google'),
+    'https://opsapp.co/spec/confirmation?utm_source=google',
+  );
+  assert.equal(
+    sanitizeMarketingUrl('https://opsapp.co/spec/intake/raw-token?fbclid=secret'),
+    'https://opsapp.co/spec/intake/[token]?has_fbclid=1',
+  );
 });

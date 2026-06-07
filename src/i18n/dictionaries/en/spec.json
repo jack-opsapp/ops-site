@@ -138,6 +138,8 @@
   "bottomCta.heading": "READY TO BUILD SOMETHING THAT FITS?",
   "bottomCta.subtitle": "Pick your package. Pay the deposit. We handle the rest.",
   "bottomCta.ctaText": "View Packages",
+  "bottomCta.defaultOpsText": "Use default OPS",
+  "bottomCta.defaultOpsHref": "https://app.opsapp.co/setup?source=spec",
 
   "confirmation.heading": "You're in.",
   "confirmation.subtitle": "Deposit received. Your intake link is on the way — that's the next thing that matters.",

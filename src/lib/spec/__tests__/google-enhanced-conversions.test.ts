@@ -148,13 +148,23 @@ test('sends to the v23 uploadClickConversions endpoint', async () => {
     gclid: 'gclid-1',
     value_cents: 75000,
     currency: 'CAD',
-  });
+  }, new Date('2026-06-07T10:00:00.000Z'));
 
-  assert.deepEqual(result, { ok: true, sent: true, error: null });
+  assert.deepEqual(result, {
+    ok: true,
+    sent: true,
+    error: null,
+    retryable: false,
+    configurationMissing: false,
+  });
   assert.equal(calls[1].url, 'https://googleads.googleapis.com/v23/customers/1234567890:uploadClickConversions');
   assert.equal((calls[1].init.headers as Record<string, string>)['developer-token'], 'dev-token');
   assert.equal((calls[1].init.headers as Record<string, string>).authorization, 'Bearer access-token');
   assert.equal((calls[1].init.headers as Record<string, string>)['login-customer-id'], '9998887777');
+  const uploaded = JSON.parse(String(calls[1].init.body)) as {
+    conversions: Array<{ conversionDateTime: string }>;
+  };
+  assert.equal(uploaded.conversions[0].conversionDateTime, '2026-06-07 10:00:00+00:00');
 });
 
 test('reports Google Ads partial failure', async () => {
@@ -171,7 +181,13 @@ test('reports Google Ads partial failure', async () => {
     value_cents: 75000,
   });
 
-  assert.deepEqual(result, { ok: false, sent: false, error: 'bad conversion' });
+  assert.deepEqual(result, {
+    ok: false,
+    sent: false,
+    error: 'bad conversion',
+    retryable: false,
+    configurationMissing: false,
+  });
 });
 
 test('reports missing conversion action ID without hitting Google', async () => {
@@ -192,6 +208,8 @@ test('reports missing conversion action ID without hitting Google', async () => 
     ok: false,
     sent: false,
     error: 'missing_google_conversion_action_stripe_checkout_completed',
+    retryable: true,
+    configurationMissing: true,
   });
   assert.deepEqual(calls, []);
 });

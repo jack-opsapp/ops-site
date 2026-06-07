@@ -138,6 +138,8 @@
   "bottomCta.heading": "LISTO PARA CONSTRUIR ALGO QUE SE AJUSTE?",
   "bottomCta.subtitle": "Elige tu paquete. Paga el deposito. Nosotros nos encargamos del resto.",
   "bottomCta.ctaText": "Ver Paquetes",
+  "bottomCta.defaultOpsText": "Usar OPS base",
+  "bottomCta.defaultOpsHref": "https://app.opsapp.co/setup?source=spec",
 
   "confirmation.heading": "Estas dentro.",
   "confirmation.subtitle": "Deposito recibido. Tu enlace de admision esta en camino — eso es lo siguiente que importa.",

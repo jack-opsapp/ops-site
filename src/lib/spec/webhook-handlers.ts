@@ -30,6 +30,7 @@ import { getSupabaseAdmin } from '@/lib/supabase-admin';
 import { queueSpecEmail } from '@/lib/spec/email-outbox';
 import { sendConversionEvent } from '@/lib/spec/conversion-events';
 import { isValidTier, type SpecTier } from '@/lib/spec/pricing';
+import type { OpsAttribution } from '@/lib/spec/attribution';
 import {
   dispatchSpecCustomerNotification,
   dispatchSpecOperatorNotification,
@@ -69,6 +70,15 @@ interface SpecDepositMetadata {
   company_id?: string;
   tier?: string;
   tos_version_hash?: string;
+  utm_source?: string;
+  utm_medium?: string;
+  utm_campaign?: string;
+  utm_content?: string;
+  utm_term?: string;
+  gclid?: string;
+  fbclid?: string;
+  landing_url?: string;
+  first_touch_at?: string;
 }
 
 const QC_BLOCK_TEMPLATE_ID = 'spec.quebec_rejected_post_stripe';
@@ -111,6 +121,25 @@ function tierDisplayLabel(tier: SpecTier): 'Setup' | 'Build' | 'Enterprise' {
     case 'enterprise':
       return 'Enterprise';
   }
+}
+
+function attributionFromMetadata(metadata: Partial<SpecDepositMetadata>): OpsAttribution {
+  const out: OpsAttribution = {};
+  for (const key of [
+    'utm_source',
+    'utm_medium',
+    'utm_campaign',
+    'utm_content',
+    'utm_term',
+    'gclid',
+    'fbclid',
+    'landing_url',
+    'first_touch_at',
+  ] as const) {
+    const value = metadata[key];
+    if (typeof value === 'string' && value.trim()) out[key] = value.trim();
+  }
+  return out;
 }
 
 /**
@@ -210,6 +239,7 @@ export async function handleSpecCheckoutSessionCompleted(
     companyId,
     tier,
     tosVersionHash,
+    attribution: attributionFromMetadata(metadata),
   });
 
   await recordEventProcessed(db, event.id, event.type);
@@ -381,10 +411,11 @@ interface DepositPaidArgs {
   companyId: string;
   tier: SpecTier;
   tosVersionHash: string;
+  attribution: OpsAttribution;
 }
 
 async function handleNormalDepositPaid(args: DepositPaidArgs): Promise<void> {
-  const { db, session, specProjectId, userId, companyId, tier, tosVersionHash } = args;
+  const { db, session, specProjectId, userId, companyId, tier, tosVersionHash, attribution } = args;
   const nowIso = new Date().toISOString();
   const paymentIntentId =
     typeof session.payment_intent === 'string'
@@ -573,6 +604,7 @@ async function handleNormalDepositPaid(args: DepositPaidArgs): Promise<void> {
     email: customerEmail || undefined,
     value_cents: amountTotal,
     currency: (session.currency ?? 'CAD').toUpperCase(),
+    ...attribution,
   });
 
   // ── 12. spec_communications audit row.
