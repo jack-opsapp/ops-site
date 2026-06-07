@@ -4,6 +4,7 @@ import { useState } from 'react';
 import { motion } from 'framer-motion';
 import { theme } from '@/lib/theme';
 import { SectionLabel } from '@/components/ui';
+import { trackSpecMarketingEvent } from '@/lib/marketing-analytics';
 import PackageCard, {
   type PackageExample,
   type PackageMilestoneLabels,
@@ -68,11 +69,18 @@ export default function SpecPricing({
 
   function handleToggle(tier: string) {
     const newTier = expandedTier === tier ? null : tier;
+    if (newTier) {
+      trackSpecMarketingEvent('spec_card_expand', {
+        tier,
+        deposits_enabled: depositsEnabled,
+      });
+    }
     setExpandedTier(newTier);
     onTierSelect?.(newTier);
   }
 
   async function handleDeposit(tier: string) {
+    trackSpecMarketingEvent('pay_deposit_click', { tier });
     try {
       const res = await fetch('/api/spec/create-checkout-session', {
         method: 'POST',

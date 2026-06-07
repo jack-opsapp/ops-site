@@ -10,6 +10,7 @@ import SpecFAQ from './SpecFAQ';
 import SpecBottomCTA from './SpecBottomCTA';
 import SpecOpsBoard, { type SpecOpsBoardCopy } from './SpecOpsBoard';
 import SpecGuarantees from './SpecGuarantees';
+import { SpecPageAnalytics } from './SpecPageAnalytics';
 import SpecPhoneWrapper from './phone-scene/SpecPhoneWrapper';
 import type { SpecPhase } from './phone-scene/constants';
 import type { SpecBoardSnapshot, SpecBoardTier } from '@/lib/spec/board';
@@ -162,6 +163,7 @@ export function SpecPageContent({
 
   return (
     <main className="bg-ops-background">
+      <SpecPageAnalytics />
       {/* Fixed phone — separate layer, immune to content layout shifts */}
       <div
         ref={phoneContainerRef}
