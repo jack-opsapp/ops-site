@@ -95,7 +95,7 @@
     "Everything in Setup",
     "1 custom module — new features, new views, new logic",
     "iOS and web support",
-    "AI-powered features included",
+    "Intelligent features included",
     "Feature-flagged per company",
     "60-day support window"
   ],
@@ -125,7 +125,7 @@
     "90-day support window"
   ],
   "packages.enterprise.examples": [
-    { "trade": "GENERAL CONTRACTOR", "desc": "Sub-contractor management, multi-trade scheduling, bid comparison tool, QuickBooks integration, full migration from Buildertrend" },
+    { "trade": "GENERAL BUILDER", "desc": "Subtrade management, multi-trade scheduling, bid comparison tool, QuickBooks integration, full migration from Buildertrend" },
     { "trade": "PROPERTY MGMT", "desc": "Tenant portal, work order routing, vendor dispatch, unit-level maintenance history, lease integration, migration from AppFolio" },
     { "trade": "MULTI-TRADE CO", "desc": "Trade-specific modules for each division, cross-division resource sharing, unified client view, division-level P&L reporting" }
   ],
@@ -184,7 +184,7 @@
     },
     {
       "question": "How long does a custom build take?",
-      "answer": "Setup packages: 1-2 weeks. Build packages: 2-3 weeks. Enterprise: 4-6 weeks. We build fast because the founder does the work directly, with AI-assisted development."
+      "answer": "Setup packages: 1-2 weeks. Build packages: 2-3 weeks. Enterprise: 4-6 weeks. We build fast because the founder does the work directly, with modern tooling."
     },
     {
       "question": "What is the intake interview?",
