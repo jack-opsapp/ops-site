@@ -18,17 +18,22 @@
  *     edge-cache hydration
  *   - `app/spec/page.tsx` RSC — for the initial render of SpecOpsBoard
  *
- * Failure modes (all return `{ tiers: [], refreshed_at: null,
- * is_stale: true }` so the UI cleanly falls back to the dictionary
- * static defaults):
- *   - Supabase env vars missing → graceful fallback
- *   - Network / RLS error → graceful fallback
- *   - Snapshot row missing → graceful fallback
+ * Failure modes (all return a FALLBACK snapshot — `is_stale: true` so the
+ * UI hides the LIVE indicator and shifts the timestamp to amber):
+ *   - Supabase env vars missing → seeded operator baseline (board-baseline)
+ *   - Network / RLS error → seeded operator baseline
+ *   - Snapshot row missing → seeded operator baseline
+ *   - Snapshot row present but empty → dictionary static defaults
  *   - Snapshot row older than 72h → returns the data but flags
  *     `is_stale = true` so the UI shifts to amber
+ *
+ * The baseline keeps the board from ever rendering a dead all-OPEN grid;
+ * it is explicit, reviewable operator policy with rolling next-intake
+ * dates, NOT synthetic scarcity. See lib/spec/board-baseline.ts.
  */
 
 import { createClient } from '@supabase/supabase-js';
+import { buildBaselineSnapshot } from './board-baseline';
 
 export const SPEC_BOARD_TIERS = ['setup', 'build', 'enterprise'] as const;
 export type SpecBoardTier = (typeof SPEC_BOARD_TIERS)[number];
@@ -105,8 +110,15 @@ function coerceTierRow(raw: unknown): SpecBoardTierRow | null {
   };
 }
 
-function staleFallback(): SpecBoardSnapshot {
-  return { tiers: [], refreshed_at: null, is_stale: true };
+/**
+ * Fallback snapshot used whenever the live snapshot can't be read (env
+ * missing, network/RLS error, or no snapshot row at all). Returns the
+ * seeded operator baseline so the board never renders dead. `new Date()`
+ * is read here at server request time and serialized into the board's
+ * initial props, keeping the derived rows SSR/CSR-stable.
+ */
+function fallbackSnapshot(): SpecBoardSnapshot {
+  return buildBaselineSnapshot(new Date());
 }
 
 function hoursBetween(latest: string, now: number): number {
@@ -118,17 +130,18 @@ function hoursBetween(latest: string, now: number): number {
 /**
  * Fetch the current OPS BOARD snapshot.
  *
- * Always resolves (never throws). On any failure, returns
- * `staleFallback()` so the UI renders the dictionary-driven static
- * defaults with the "LIVE" indicator hidden + amber timestamp.
+ * Always resolves (never throws). On any failure, returns the seeded
+ * operator baseline (`fallbackSnapshot()`) with the "LIVE" indicator
+ * hidden + amber timestamp, so the board shows plausible capacity rather
+ * than a dead grid.
  */
 export async function getSpecBoardSnapshot(): Promise<SpecBoardSnapshot> {
   const url = process.env.NEXT_PUBLIC_SUPABASE_URL;
   const anonKey = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY;
 
   // No Supabase configured (local dev without .env.local, build env
-  // missing the key) — fall through to the static UI fallback.
-  if (!url || !anonKey) return staleFallback();
+  // missing the key) — show the seeded operator baseline.
+  if (!url || !anonKey) return fallbackSnapshot();
 
   let row: SnapshotRow | null = null;
   try {
@@ -141,10 +154,10 @@ export async function getSpecBoardSnapshot(): Promise<SpecBoardSnapshot> {
       .limit(1)
       .maybeSingle();
 
-    if (error || !data) return staleFallback();
+    if (error || !data) return fallbackSnapshot();
     row = data as SnapshotRow;
   } catch {
-    return staleFallback();
+    return fallbackSnapshot();
   }
 
   const refreshedAt = row.refreshed_at;
