@@ -135,6 +135,9 @@
   "packages.enterprise.ctaText": "Pay $4,500 Deposit",
 
   "packages.contactCta": "Talk to the founder",
+  "packages.recommendedBadge": "MOST CHOSEN",
+  "packages.detailsToggle": "DETAILS",
+  "packages.depositLedger": "RESERVES YOUR SLOT · CREDITED TO YOUR BUILD",
   "packages.milestones.label": "4 MILESTONES",
   "packages.milestones.p1": "Deposit",
   "packages.milestones.p2": "Scope",

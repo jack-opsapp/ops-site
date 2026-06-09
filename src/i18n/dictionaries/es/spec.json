@@ -135,6 +135,9 @@
   "packages.enterprise.ctaText": "Pagar $4,500 Depósito",
 
   "packages.contactCta": "Habla con el fundador",
+  "packages.recommendedBadge": "MÁS ELEGIDO",
+  "packages.detailsToggle": "DETALLES",
+  "packages.depositLedger": "RESERVA TU LUGAR · SE ACREDITA A TU PROYECTO",
   "packages.milestones.label": "4 HITOS",
   "packages.milestones.p1": "Depósito",
   "packages.milestones.p2": "Alcance",

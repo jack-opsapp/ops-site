@@ -1,6 +1,5 @@
 'use client';
 
-import { useState } from 'react';
 import { motion } from 'framer-motion';
 import { theme } from '@/lib/theme';
 import { SectionLabel } from '@/components/ui';
@@ -40,6 +39,9 @@ interface SpecPricingProps {
   retainerLabel: string;
   retainerNote: string;
   guaranteeBadge: string;
+  recommendedBadge: string;
+  detailsToggle: string;
+  depositLedger: string;
   onTierSelect?: (tier: string | null) => void;
   /** Phase 0 safety — when false, CTAs become contact links, not Stripe triggers. */
   depositsEnabled: boolean;
@@ -60,25 +62,14 @@ export default function SpecPricing({
   retainerLabel,
   retainerNote,
   guaranteeBadge,
+  recommendedBadge,
+  detailsToggle,
+  depositLedger,
   onTierSelect,
   depositsEnabled,
   contactCtaText,
   contactCtaHref,
 }: SpecPricingProps) {
-  const [expandedTier, setExpandedTier] = useState<string | null>(null);
-
-  function handleToggle(tier: string) {
-    const newTier = expandedTier === tier ? null : tier;
-    if (newTier) {
-      trackSpecMarketingEvent('spec_card_expand', {
-        tier,
-        deposits_enabled: depositsEnabled,
-      });
-    }
-    setExpandedTier(newTier);
-    onTierSelect?.(newTier);
-  }
-
   async function handleDeposit(tier: string) {
     trackSpecMarketingEvent('pay_deposit_click', { tier });
     try {
@@ -96,9 +87,14 @@ export default function SpecPricing({
     }
   }
 
+  function handleSelect(tier: string) {
+    trackSpecMarketingEvent('spec_card_expand', { tier, deposits_enabled: depositsEnabled });
+    onTierSelect?.(tier);
+  }
+
   return (
     <section id="packages" className="py-24 md:py-32 bg-ops-background">
-      <div>
+      <div className="max-w-[1320px] mx-auto px-6 sm:px-10 md:px-16 lg:px-24">
         <motion.div
           initial={{ opacity: 0, y: 16 }}
           whileInView={{ opacity: 1, y: 0 }}
@@ -108,38 +104,39 @@ export default function SpecPricing({
           <SectionLabel label={sectionLabel} className="mb-12" />
         </motion.div>
 
-        <div>
-          <div className="max-w-[720px] flex flex-col gap-3">
-            {packages.map((pkg, index) => (
-              <motion.div
-                key={pkg.tier}
-                initial={{ opacity: 0, y: 20 }}
-                whileInView={{ opacity: 1, y: 0 }}
-                transition={{ duration: 0.5, delay: index * 0.08, ease }}
-                viewport={{ once: true, amount: 0.2 }}
-              >
-                <PackageCard
-                  {...pkg}
-                  milestoneLabels={milestoneLabels}
-                  milestonesLabel={milestonesLabel}
-                  milestonesNote={milestonesNote}
-                  examplesLabel={examplesLabel}
-                  subscriptionLabel={subscriptionLabel}
-                  subscriptionNote={subscriptionNote}
-                  retainerLabel={retainerLabel}
-                  retainerNote={retainerNote}
-                  guaranteeBadge={guaranteeBadge}
-                  isExpanded={expandedTier === pkg.tier}
-                  isOtherExpanded={expandedTier !== null && expandedTier !== pkg.tier}
-                  onToggle={() => handleToggle(pkg.tier)}
-                  onDeposit={handleDeposit}
-                  depositsEnabled={depositsEnabled}
-                  contactCtaText={contactCtaText}
-                  contactCtaHref={contactCtaHref}
-                />
-              </motion.div>
-            ))}
-          </div>
+        {/* Full-width 3-up tier comparison. Build is elevated (recommended). */}
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-4 lg:gap-5 items-stretch">
+          {packages.map((pkg, index) => (
+            <motion.div
+              key={pkg.tier}
+              initial={{ opacity: 0, y: 20 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.5, delay: index * 0.08, ease }}
+              viewport={{ once: true, amount: 0.2 }}
+              className="h-full"
+            >
+              <PackageCard
+                {...pkg}
+                milestoneLabels={milestoneLabels}
+                milestonesLabel={milestonesLabel}
+                milestonesNote={milestonesNote}
+                examplesLabel={examplesLabel}
+                subscriptionLabel={subscriptionLabel}
+                subscriptionNote={subscriptionNote}
+                retainerLabel={retainerLabel}
+                retainerNote={retainerNote}
+                guaranteeBadge={guaranteeBadge}
+                recommendedBadge={recommendedBadge}
+                detailsToggle={detailsToggle}
+                depositLedger={depositLedger}
+                onDeposit={handleDeposit}
+                onSelect={handleSelect}
+                depositsEnabled={depositsEnabled}
+                contactCtaText={contactCtaText}
+                contactCtaHref={contactCtaHref}
+              />
+            </motion.div>
+          ))}
         </div>
       </div>
     </section>

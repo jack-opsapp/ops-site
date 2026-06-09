@@ -208,32 +208,31 @@ export function SpecPageContent({
           has room to breathe. */}
       <SpecOpsBoard initialSnapshot={boardSnapshot} copy={boardCopy} />
 
-      <div className="lg:w-[55%]">
-        <div className="max-w-[720px] px-6 sm:px-10 md:px-16 lg:px-24">
-          <SpecPricing
-            sectionLabel={t(dict, 'packages.sectionLabel')}
-            packages={packages}
-            milestoneLabels={{
-              p1: t(dict, 'packages.milestones.p1'),
-              p2: t(dict, 'packages.milestones.p2'),
-              p3: t(dict, 'packages.milestones.p3'),
-              p4: t(dict, 'packages.milestones.p4'),
-            }}
-            milestonesLabel={t(dict, 'packages.milestones.label')}
-            milestonesNote={t(dict, 'packages.milestonesNote')}
-            examplesLabel={t(dict, 'packages.examplesLabel')}
-            subscriptionLabel={t(dict, 'packages.subscriptionLabel')}
-            subscriptionNote={t(dict, 'packages.subscriptionNote')}
-            retainerLabel={t(dict, 'packages.retainerLabel')}
-            retainerNote={t(dict, 'packages.retainerNote')}
-            guaranteeBadge={t(dict, 'packages.guaranteeBadge')}
-            onTierSelect={handleTierSelect}
-            depositsEnabled={depositsEnabled}
-            contactCtaText={t(dict, 'packages.contactCta')}
-            contactCtaHref="/resources#contact"
-          />
-        </div>
-      </div>
+      <SpecPricing
+        sectionLabel={t(dict, 'packages.sectionLabel')}
+        packages={packages}
+        milestoneLabels={{
+          p1: t(dict, 'packages.milestones.p1'),
+          p2: t(dict, 'packages.milestones.p2'),
+          p3: t(dict, 'packages.milestones.p3'),
+          p4: t(dict, 'packages.milestones.p4'),
+        }}
+        milestonesLabel={t(dict, 'packages.milestones.label')}
+        milestonesNote={t(dict, 'packages.milestonesNote')}
+        examplesLabel={t(dict, 'packages.examplesLabel')}
+        subscriptionLabel={t(dict, 'packages.subscriptionLabel')}
+        subscriptionNote={t(dict, 'packages.subscriptionNote')}
+        retainerLabel={t(dict, 'packages.retainerLabel')}
+        retainerNote={t(dict, 'packages.retainerNote')}
+        guaranteeBadge={t(dict, 'packages.guaranteeBadge')}
+        recommendedBadge={t(dict, 'packages.recommendedBadge')}
+        detailsToggle={t(dict, 'packages.detailsToggle')}
+        depositLedger={t(dict, 'packages.depositLedger')}
+        onTierSelect={handleTierSelect}
+        depositsEnabled={depositsEnabled}
+        contactCtaText={t(dict, 'packages.contactCta')}
+        contactCtaHref="/resources#contact"
+      />
 
       <WhatsIncluded
         sectionLabel={t(dict, 'included.sectionLabel')}
