@@ -424,14 +424,14 @@ export default function SpecOpsBoard({ initialSnapshot, copy }: SpecOpsBoardProp
                     relative grid grid-cols-[1.2fr_1fr_0.8fr_1.4fr_1.6fr] gap-4 py-5 border-b border-white/[0.04]
                     text-left transition-colors duration-200 cursor-pointer
                     ${row.isAcceptingBookings ? 'hover:bg-white/[0.02]' : 'cursor-not-allowed'}
-                    ${isSelected ? 'bg-ops-accent/[0.04]' : ''}
+                    ${isSelected ? 'bg-white/[0.03]' : ''}
                   `}
                 >
                   {/* Selection left rail */}
                   <span
                     aria-hidden="true"
                     className={`absolute left-0 top-1 bottom-1 w-[2px] transition-all duration-200 ${
-                      isSelected ? 'bg-ops-accent opacity-100' : 'bg-transparent opacity-0'
+                      isSelected ? 'bg-white/50 opacity-100' : 'bg-transparent opacity-0'
                     }`}
                   />
                   {/* TIER */}
@@ -487,7 +487,7 @@ export default function SpecOpsBoard({ initialSnapshot, copy }: SpecOpsBoardProp
                 className={`
                   relative w-full text-left p-5 rounded-[3px] border transition-colors duration-200
                   ${isSelected
-                    ? 'border-ops-accent/40 bg-ops-accent/[0.04]'
+                    ? 'border-white/[0.20] bg-white/[0.03]'
                     : 'border-white/[0.08] hover:border-white/[0.15]'}
                   ${row.isAcceptingBookings ? 'cursor-pointer' : 'cursor-not-allowed opacity-60'}
                 `}
