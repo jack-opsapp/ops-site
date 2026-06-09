@@ -45,7 +45,7 @@ export default async function SpecIntakePage({ params }: PageProps) {
 
   if (resolution.completed) {
     return (
-      <main className="min-h-screen bg-ops-canvas px-6 py-16 sm:py-24">
+      <main className="min-h-screen bg-ops-background px-6 py-16 sm:py-24">
         <div className="w-full max-w-[620px] mx-auto">
           <p className="font-caption text-[11px] uppercase tracking-[0.18em] text-ops-text-tertiary">
             {'// INTAKE COMPLETE'}
@@ -88,7 +88,7 @@ export default async function SpecIntakePage({ params }: PageProps) {
   }));
 
   return (
-    <main className="min-h-screen bg-ops-canvas px-6 py-16 sm:py-24">
+    <main className="min-h-screen bg-ops-background px-6 py-16 sm:py-24">
       <IntakeForm
         token={decoded}
         tier={project.tier}
