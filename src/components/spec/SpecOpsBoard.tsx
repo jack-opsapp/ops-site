@@ -25,8 +25,11 @@
  * Edge cases:
  *   • Tier WAITLIST → row in amber + "Join waitlist" CTA
  *   • Tier closed (is_accepting_bookings = false) → "CLOSED — RESUMES [public_note]"
- *   • Snapshot unavailable / is_stale → static fallback from dictionary,
- *     "LIVE" indicator hidden, timestamp shifts to amber
+ *   • Snapshot derivation lives in lib/spec/board-display (selectDisplayRows),
+ *     shared with the sticky deposit bar. A populated snapshot — live, stale,
+ *     or the seeded operator baseline — renders its rows; only a zero-tier
+ *     snapshot falls back to the dictionary defaults. The is_stale flag drives
+ *     the LIVE/FALLBACK badge + amber timestamp, not whether rows are shown.
  *   • refreshed_at > 72h → amber timestamp + "UPDATED [N] DAYS AGO"
  *   • All-tiers-OPEN → hides any future "WAITLIST" UI
  *
@@ -37,206 +40,27 @@ import { useEffect, useMemo, useRef, useState } from 'react';
 import { motion, useReducedMotion } from 'framer-motion';
 import { theme } from '@/lib/theme';
 import { SectionLabel } from '@/components/ui';
-import type {
-  SpecBoardSnapshot,
-  SpecBoardTier,
-  SpecBoardTierRow,
-} from '@/lib/spec/board';
-import { SPEC_BOARD_TIERS } from '@/lib/spec/board';
+import type { SpecBoardSnapshot, SpecBoardTier } from '@/lib/spec/board';
+import {
+  TIER_DURATIONS,
+  type DisplayRow,
+  type SpecOpsBoardCopy,
+  selectDisplayRows,
+  availabilityTone,
+} from '@/lib/spec/board-display';
 import { computeTimelineWindows } from '@/lib/spec/timeline';
 
+// The snapshot → display-row derivation moved to lib/spec/board-display so
+// the sticky deposit bar can reuse the exact same logic. Re-export the copy
+// shape so existing consumers (SpecPageContent) keep their import path.
+export type { SpecOpsBoardCopy } from '@/lib/spec/board-display';
+
 const ease = theme.animation.easing as [number, number, number, number];
-
-/**
- * Per-tier duration window (days). Mirrors `public.spec_capacity` seed
- * in 02_DATA_MODEL.md. Used to compute the delivery date strip when a
- * row is selected. Defensive defaults — if the snapshot lacks
- * `next_start_week`, the helper falls back to a relative window.
- */
-const TIER_DURATIONS: Record<SpecBoardTier, {
-  discovery: [number, number];
-  build: [number, number];
-}> = {
-  setup: { discovery: [3, 5], build: [7, 14] },
-  build: { discovery: [5, 7], build: [14, 21] },
-  enterprise: { discovery: [7, 14], build: [28, 42] },
-};
-
-/** Section copy keys — pulled from spec.json so en/es swap cleanly. */
-export interface SpecOpsBoardCopy {
-  sectionLabel: string;
-  subEyebrow: string;
-  liveLabel: string;
-  staleLabel: string;
-  updatedPrefix: string;
-  updatedJustNow: string;
-  updatedMinAgo: string;
-  updatedHrAgo: string;
-  updatedDaysAgo: string;
-  unavailableNote: string;
-  headers: {
-    tier: string;
-    availability: string;
-    waitlist: string;
-    nextIntake: string;
-    yourDelivery: string;
-  };
-  timeline: {
-    today: string;
-    discovery: string;
-    build: string;
-    delivery: string;
-  };
-  status: {
-    open: string;
-    limited: string;
-    waitlist: string;
-    closed: string;
-  };
-  waitlist: {
-    zero: string;
-    range: string;
-    many: string;
-  };
-  closedPrefix: string;
-  nextStartPrefix: string;
-  deliveryPrefix: string;
-  deliveryUnknown: string;
-  fallback: Record<
-    SpecBoardTier,
-    { nextIntake: string; delivery: string }
-  >;
-  /** Per-tier display label (SETUP / BUILD / ENTERPRISE). */
-  tierLabels: Record<SpecBoardTier, string>;
-}
 
 interface SpecOpsBoardProps {
   /** Server-rendered snapshot. May be empty + stale on Supabase outage. */
   initialSnapshot: SpecBoardSnapshot;
   copy: SpecOpsBoardCopy;
-}
-
-interface DisplayRow {
-  tier: SpecBoardTier;
-  label: string;
-  availability: 'OPEN' | 'LIMITED' | 'WAITLIST' | 'CLOSED';
-  waitlistText: string;
-  nextIntakeText: string;
-  deliveryText: string;
-  /** Parsed next-open-slot Monday for the timeline engine; null → engine projects forward. */
-  startMonday: Date | null;
-  isAcceptingBookings: boolean;
-  publicNote: string | null;
-}
-
-/** Static fallback rows used when the snapshot is unavailable. */
-function buildFallbackRows(copy: SpecOpsBoardCopy): DisplayRow[] {
-  return SPEC_BOARD_TIERS.map((tier) => ({
-    tier,
-    label: copy.tierLabels[tier],
-    availability: 'OPEN' as const,
-    waitlistText: copy.waitlist.zero,
-    nextIntakeText: copy.fallback[tier].nextIntake,
-    deliveryText: copy.fallback[tier].delivery,
-    startMonday: null,
-    isAcceptingBookings: true,
-    publicNote: null,
-  }));
-}
-
-/** Parse ISO year-week like "2026-23" into the Monday of that week. */
-function parseIsoYearWeek(yearWeek: string): Date | null {
-  const match = /^(\d{4})-?W?-?(\d{1,2})$/.exec(yearWeek);
-  if (!match) return null;
-  const year = Number(match[1]);
-  const week = Number(match[2]);
-  if (!Number.isFinite(year) || !Number.isFinite(week) || week < 1 || week > 53) return null;
-  // ISO 8601: week 1 is the week containing the first Thursday.
-  // Jan 4 always falls in week 1, so we work from there.
-  const jan4 = new Date(Date.UTC(year, 0, 4));
-  const jan4Day = jan4.getUTCDay() || 7; // 1..7 (Mon..Sun)
-  const week1Monday = new Date(jan4);
-  week1Monday.setUTCDate(jan4.getUTCDate() - (jan4Day - 1));
-  const target = new Date(week1Monday);
-  target.setUTCDate(week1Monday.getUTCDate() + (week - 1) * 7);
-  return target;
-}
-
-const SHORT_MONTH = ['JAN', 'FEB', 'MAR', 'APR', 'MAY', 'JUN', 'JUL', 'AUG', 'SEP', 'OCT', 'NOV', 'DEC'];
-
-function formatShortDate(d: Date): string {
-  return `${SHORT_MONTH[d.getUTCMonth()]} ${String(d.getUTCDate()).padStart(2, '0')}`;
-}
-
-function buildLiveRows(
-  snapshot: SpecBoardSnapshot,
-  copy: SpecOpsBoardCopy,
-): DisplayRow[] {
-  // Index snapshot rows by tier for fast lookup. Tiers missing from the
-  // snapshot fall back to OPEN / dictionary defaults.
-  const byTier = new Map<SpecBoardTier, SpecBoardTierRow>();
-  for (const row of snapshot.tiers) byTier.set(row.tier, row);
-
-  return SPEC_BOARD_TIERS.map((tier) => {
-    const row = byTier.get(tier);
-    const fallbackText = copy.fallback[tier];
-    if (!row) {
-      return {
-        tier,
-        label: copy.tierLabels[tier],
-        availability: 'OPEN' as const,
-        waitlistText: copy.waitlist.zero,
-        nextIntakeText: fallbackText.nextIntake,
-        deliveryText: fallbackText.delivery,
-        startMonday: null,
-        isAcceptingBookings: true,
-        publicNote: null,
-      };
-    }
-
-    const isClosed = !row.is_accepting_bookings;
-    const availability = isClosed ? 'CLOSED' : row.availability;
-
-    const waitlistText =
-      row.waitlist_bucket === '0'
-        ? copy.waitlist.zero
-        : row.waitlist_bucket === '1-2'
-          ? copy.waitlist.range
-          : copy.waitlist.many;
-
-    let nextIntakeText = fallbackText.nextIntake;
-    let deliveryText = fallbackText.delivery;
-    let startMonday: Date | null = null;
-    if (!isClosed && row.next_start_week) {
-      startMonday = parseIsoYearWeek(row.next_start_week);
-      if (startMonday) {
-        nextIntakeText = `${copy.nextStartPrefix} ${formatShortDate(startMonday)}`;
-        const { discovery, build } = TIER_DURATIONS[tier];
-        const deliveryMin = new Date(startMonday);
-        deliveryMin.setUTCDate(startMonday.getUTCDate() + discovery[0] + build[0]);
-        const deliveryMax = new Date(startMonday);
-        deliveryMax.setUTCDate(startMonday.getUTCDate() + discovery[1] + build[1]);
-        deliveryText = `${formatShortDate(deliveryMin)} — ${formatShortDate(deliveryMax)}`;
-      }
-    } else if (isClosed) {
-      nextIntakeText = row.public_note
-        ? `${copy.closedPrefix} ${row.public_note.toUpperCase()}`
-        : copy.closedPrefix;
-      deliveryText = copy.deliveryUnknown;
-    }
-
-    return {
-      tier,
-      label: copy.tierLabels[tier],
-      availability,
-      waitlistText,
-      nextIntakeText,
-      deliveryText,
-      startMonday,
-      isAcceptingBookings: !isClosed,
-      publicNote: row.public_note,
-    };
-  });
 }
 
 function buildUpdatedLabel(refreshedAt: string | null, copy: SpecOpsBoardCopy): string {
@@ -257,20 +81,10 @@ function availabilityToneClass(
   isSelected: boolean,
   isDimmed: boolean,
 ): string {
-  // The status text gets the earth-tone semantic colour. Olive for OPEN,
-  // tan for LIMITED, amber/tan for WAITLIST, rose for CLOSED.
-  // Dimming overrides for unselected rows once a row is active.
+  // Earth-tone semantic colour (shared with the sticky deposit bar via
+  // board-display). Dimming overrides for unselected rows once active.
   if (isDimmed && !isSelected) return 'text-ops-text-mute';
-  switch (availability) {
-    case 'OPEN':
-      return 'text-ops-olive';
-    case 'LIMITED':
-      return 'text-ops-tan';
-    case 'WAITLIST':
-      return 'text-ops-tan';
-    case 'CLOSED':
-      return 'text-ops-rose';
-  }
+  return availabilityTone(availability);
 }
 
 export default function SpecOpsBoard({ initialSnapshot, copy }: SpecOpsBoardProps) {
@@ -288,12 +102,10 @@ export default function SpecOpsBoard({ initialSnapshot, copy }: SpecOpsBoardProp
   // work can poll /api/spec/board if Phase 2 wants sub-5min freshness.
   const snapshot = initialSnapshot;
 
-  const rows = useMemo<DisplayRow[]>(() => {
-    if (snapshot.is_stale || snapshot.tiers.length === 0) {
-      return buildFallbackRows(copy);
-    }
-    return buildLiveRows(snapshot, copy);
-  }, [snapshot, copy]);
+  const rows = useMemo<DisplayRow[]>(
+    () => selectDisplayRows(snapshot, copy),
+    [snapshot, copy],
+  );
 
   // Default selected row: BUILD (per spec § 3) unless not present.
   const [selectedTier, setSelectedTier] = useState<SpecBoardTier>(() => {
