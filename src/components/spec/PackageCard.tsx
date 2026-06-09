@@ -267,10 +267,11 @@ export default function PackageCard({
                       onDeposit(tier);
                     }}
                     className={`
-                      flex-shrink-0 font-caption uppercase tracking-[0.15em] text-xs px-6 py-3 rounded-[3px]
+                      flex-shrink-0 font-caption uppercase tracking-[0.15em] text-xs px-6 py-3 rounded-[5px]
                       transition-all duration-200 cursor-pointer whitespace-nowrap [font-variant-numeric:tabular-nums_slashed-zero]
+                      focus-visible:outline focus-visible:outline-[1.5px] focus-visible:outline-ops-accent focus-visible:outline-offset-2
                       ${recommended
-                        ? 'bg-ops-accent text-white hover:bg-ops-accent/90'
+                        ? 'bg-ops-accent text-ops-background hover:bg-ops-accent/90'
                         : 'bg-transparent text-ops-text-primary border border-ops-border hover:border-ops-border-hover'
                       }
                     `}
@@ -282,10 +283,11 @@ export default function PackageCard({
                     href={contactCtaHref}
                     onClick={(e) => e.stopPropagation()}
                     className={`
-                      flex-shrink-0 font-caption uppercase tracking-[0.15em] text-xs px-6 py-3 rounded-[3px]
+                      flex-shrink-0 font-caption uppercase tracking-[0.15em] text-xs px-6 py-3 rounded-[5px]
                       transition-all duration-200 cursor-pointer whitespace-nowrap inline-flex items-center justify-center
+                      focus-visible:outline focus-visible:outline-[1.5px] focus-visible:outline-ops-accent focus-visible:outline-offset-2
                       ${recommended
-                        ? 'bg-ops-accent text-white hover:bg-ops-accent/90'
+                        ? 'bg-ops-accent text-ops-background hover:bg-ops-accent/90'
                         : 'bg-transparent text-ops-text-primary border border-ops-border hover:border-ops-border-hover'
                       }
                     `}
