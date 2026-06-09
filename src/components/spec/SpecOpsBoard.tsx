@@ -43,6 +43,7 @@ import type {
   SpecBoardTierRow,
 } from '@/lib/spec/board';
 import { SPEC_BOARD_TIERS } from '@/lib/spec/board';
+import { computeTimelineWindows } from '@/lib/spec/timeline';
 
 const ease = theme.animation.easing as [number, number, number, number];
 
@@ -122,6 +123,8 @@ interface DisplayRow {
   waitlistText: string;
   nextIntakeText: string;
   deliveryText: string;
+  /** Parsed next-open-slot Monday for the timeline engine; null → engine projects forward. */
+  startMonday: Date | null;
   isAcceptingBookings: boolean;
   publicNote: string | null;
 }
@@ -135,6 +138,7 @@ function buildFallbackRows(copy: SpecOpsBoardCopy): DisplayRow[] {
     waitlistText: copy.waitlist.zero,
     nextIntakeText: copy.fallback[tier].nextIntake,
     deliveryText: copy.fallback[tier].delivery,
+    startMonday: null,
     isAcceptingBookings: true,
     publicNote: null,
   }));
@@ -184,6 +188,7 @@ function buildLiveRows(
         waitlistText: copy.waitlist.zero,
         nextIntakeText: fallbackText.nextIntake,
         deliveryText: fallbackText.delivery,
+        startMonday: null,
         isAcceptingBookings: true,
         publicNote: null,
       };
@@ -201,8 +206,9 @@ function buildLiveRows(
 
     let nextIntakeText = fallbackText.nextIntake;
     let deliveryText = fallbackText.delivery;
+    let startMonday: Date | null = null;
     if (!isClosed && row.next_start_week) {
-      const startMonday = parseIsoYearWeek(row.next_start_week);
+      startMonday = parseIsoYearWeek(row.next_start_week);
       if (startMonday) {
         nextIntakeText = `${copy.nextStartPrefix} ${formatShortDate(startMonday)}`;
         const { discovery, build } = TIER_DURATIONS[tier];
@@ -226,6 +232,7 @@ function buildLiveRows(
       waitlistText,
       nextIntakeText,
       deliveryText,
+      startMonday,
       isAcceptingBookings: !isClosed,
       publicNote: row.public_note,
     };
@@ -524,9 +531,6 @@ export default function SpecOpsBoard({ initialSnapshot, copy }: SpecOpsBoardProp
           className="mt-12"
           aria-label="Engagement timeline"
         >
-          <p className="font-mono text-[10px] uppercase tracking-[0.18em] text-ops-text-mute mb-4">
-            {copy.timeline.today} / {copy.timeline.discovery} / {copy.timeline.build} / {copy.timeline.delivery}
-          </p>
           <SpecBoardTimeline
             selectedRow={selectedRow}
             copy={copy}
@@ -552,60 +556,122 @@ interface SpecBoardTimelineProps {
  * surface the delivery window beneath the DELIVERY marker.
  */
 function SpecBoardTimeline({ selectedRow, copy, hasEntered, reduceMotion }: SpecBoardTimelineProps) {
-  // Fixed marker positions along the timeline (0..1).
-  // TODAY=0, DISCOVERY=0.18, BUILD=0.5, DELIVERY=0.92.
-  // These are visual proportions, not literal time scales — the actual
-  // dates come from copy + the selected row.
-  const markers = [
-    { key: 'today', x: 0, label: copy.timeline.today, sub: null as string | null },
-    { key: 'discovery', x: 0.18, label: copy.timeline.discovery, sub: selectedRow.nextIntakeText },
-    { key: 'build', x: 0.5, label: copy.timeline.build, sub: null },
-    { key: 'delivery', x: 0.92, label: copy.timeline.delivery, sub: selectedRow.deliveryText },
-  ] as const;
+  const { discovery, build } = TIER_DURATIONS[selectedRow.tier];
+
+  // Real date windows projected forward from today + the selected tier's
+  // durations. `new Date()` is read at render; the date spans carry
+  // suppressHydrationWarning so an SSR/CSR midnight-boundary difference
+  // reconciles to the client's day rather than throwing a hydration mismatch.
+  const phases = useMemo(
+    () =>
+      computeTimelineWindows({
+        today: new Date(),
+        start: selectedRow.startMonday,
+        discovery,
+        build,
+        labels: copy.timeline,
+        unavailable: !selectedRow.isAcceptingBookings,
+      }),
+    [selectedRow, discovery, build, copy.timeline],
+  );
+
+  // Visual x-positions (0..1). Proportions, not a literal time scale —
+  // discovery sits near the start, build spans the middle, delivery anchors
+  // the right edge.
+  const X = [0, 0.22, 0.58, 1] as const;
 
   return (
     <div className="relative w-full">
-      {/* Track — a horizontal hairline */}
-      <motion.div
-        initial={reduceMotion ? false : { scaleX: 0, transformOrigin: 'left' }}
-        animate={hasEntered ? { scaleX: 1 } : { scaleX: 0 }}
-        transition={{ duration: 0.6, delay: 0.7, ease }}
-        className="absolute left-0 right-0 top-3 h-px bg-white/[0.12]"
+      {/* Ticked measurement substrate — minor ticks hanging below the rail,
+          faded at both ends. Reads as an aerospace tape, not a stepper. */}
+      <div
         aria-hidden="true"
+        className="absolute left-0 right-0 top-2 h-2"
+        style={{
+          backgroundImage:
+            'linear-gradient(90deg, rgba(255,255,255,0.12) 0 1px, transparent 1px)',
+          backgroundRepeat: 'repeat-x',
+          backgroundSize: '11px 8px',
+          backgroundPosition: '0 top',
+          maskImage: 'linear-gradient(90deg, transparent, #000 5%, #000 95%, transparent)',
+          WebkitMaskImage: 'linear-gradient(90deg, transparent, #000 5%, #000 95%, transparent)',
+        }}
       />
-      {/* Markers */}
-      <ul className="relative grid grid-cols-1 gap-0 h-24" role="list">
-        {markers.map((marker, index) => (
-          <li
-            key={marker.key}
-            className="absolute top-0 -translate-x-1/2 flex flex-col items-center text-center"
-            style={{ left: `${marker.x * 100}%` }}
-          >
-            <motion.span
-              initial={reduceMotion ? false : { opacity: 0, scale: 0.4 }}
-              animate={hasEntered ? { opacity: 1, scale: 1 } : { opacity: 0, scale: 0.4 }}
-              transition={{ duration: 0.35, delay: 0.9 + index * 0.08, ease }}
-              className={`block w-2.5 h-2.5 rounded-full ${
-                marker.key === 'today' ? 'bg-ops-accent' : 'bg-white/40'
-              }`}
-              aria-hidden="true"
-            />
-            <span className="mt-3 font-mono text-[10px] uppercase tracking-[0.15em] text-ops-text-tertiary [font-variant-numeric:tabular-nums_slashed-zero] whitespace-nowrap">
-              {marker.label}
-            </span>
-            {marker.sub && (
-              <motion.span
-                key={`${marker.key}-${marker.sub}`}
-                initial={reduceMotion ? false : { opacity: 0, y: 4 }}
-                animate={{ opacity: 1, y: 0 }}
-                transition={{ duration: 0.35, ease }}
-                className="mt-1 font-mono text-[10px] text-ops-text-mute [font-variant-numeric:tabular-nums_slashed-zero] whitespace-nowrap max-w-[160px] truncate"
+      {/* Base rail hairline */}
+      <div aria-hidden="true" className="absolute left-0 right-0 top-2 h-px bg-white/[0.12]" />
+      {/* Rail draw-in — the one entrance. The rail builds itself left→right. */}
+      <motion.div
+        aria-hidden="true"
+        initial={reduceMotion ? false : { scaleX: 0 }}
+        animate={hasEntered ? { scaleX: 1 } : { scaleX: 0 }}
+        transition={{ duration: reduceMotion ? 0 : 0.8, delay: reduceMotion ? 0 : 0.6, ease }}
+        style={{ transformOrigin: 'left' }}
+        className="absolute left-0 right-0 top-2 h-px bg-white/[0.22]"
+      />
+      {/* "Next: discovery" accent segment — TODAY → DISCOVERY, the imminent step. */}
+      <motion.div
+        aria-hidden="true"
+        initial={reduceMotion ? false : { scaleX: 0 }}
+        animate={hasEntered ? { scaleX: 1 } : { scaleX: 0 }}
+        transition={{ duration: reduceMotion ? 0 : 0.5, delay: reduceMotion ? 0 : 1.05, ease }}
+        style={{ transformOrigin: 'left', width: `${X[1] * 100}%` }}
+        className="absolute left-0 top-2 h-px bg-ops-accent"
+      />
+
+      {/* Nodes + monospaced date windows */}
+      <ul className="relative h-[92px]" role="list">
+        {phases.map((phase, i) => {
+          const isToday = phase.key === 'today';
+          const isLast = i === phases.length - 1;
+          const colAlign = isToday
+            ? 'items-start text-left'
+            : isLast
+              ? 'items-end text-right'
+              : 'items-center text-center';
+          const shift = isToday ? 'translate-x-0' : isLast ? '-translate-x-full' : '-translate-x-1/2';
+          return (
+            <li
+              key={phase.key}
+              className={`absolute top-0 flex flex-col ${colAlign} ${shift}`}
+              style={{ left: `${X[i] * 100}%` }}
+            >
+              {/* Node box (16px) centered on the rail at top-2 (8px). */}
+              <span className="relative flex h-4 w-4 items-center justify-center" aria-hidden="true">
+                {isToday && !reduceMotion && (
+                  // Single pulsing halo — the page's ONLY infinite animation.
+                  <motion.span
+                    className="absolute h-2.5 w-2.5 rounded-[2px] ring-1 ring-ops-accent"
+                    animate={{ scale: [1, 1.8], opacity: [0.5, 0] }}
+                    transition={{ duration: 2.0, repeat: Infinity, ease }}
+                  />
+                )}
+                <motion.span
+                  initial={reduceMotion ? false : { scale: 0.4, opacity: 0 }}
+                  animate={hasEntered ? { scale: 1, opacity: 1 } : { scale: 0.4, opacity: 0 }}
+                  transition={{ duration: reduceMotion ? 0 : 0.35, delay: reduceMotion ? 0 : 0.95 + i * 0.1, ease }}
+                  className={
+                    isToday
+                      ? 'block h-2.5 w-2.5 rounded-[2px] bg-ops-accent'
+                      : 'block h-2.5 w-2.5 rounded-[2px] border border-white/30 bg-ops-background'
+                  }
+                />
+              </span>
+              {/* Phase label */}
+              <span className="mt-3 font-mono text-[10px] uppercase tracking-[0.16em] text-ops-text-tertiary [font-variant-numeric:tabular-nums_slashed-zero] whitespace-nowrap">
+                {phase.label}
+              </span>
+              {/* Date window — real, projected forward from today */}
+              <span
+                suppressHydrationWarning
+                className={`mt-1.5 font-mono text-[11px] [font-variant-numeric:tabular-nums_slashed-zero] whitespace-nowrap ${
+                  isToday ? 'text-ops-text-secondary' : 'text-ops-text-mute'
+                }`}
               >
-                {marker.sub}
-              </motion.span>
-            )}
-          </li>
-        ))}
+                {phase.range}
+              </span>
+            </li>
+          );
+        })}
       </ul>
     </div>
   );
