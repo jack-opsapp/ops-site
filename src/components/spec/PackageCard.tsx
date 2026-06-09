@@ -120,7 +120,7 @@ export default function PackageCard({
       className={`
         cursor-pointer rounded-[3px] transition-colors duration-300
         ${isExpanded
-          ? 'border-2 border-ops-accent/50 bg-ops-accent/[0.04]'
+          ? 'border-2 border-white/[0.18] bg-white/[0.02]'
           : isCompressed
             ? 'border border-white/[0.04] opacity-50'
             : 'border border-white/[0.08] hover:border-white/[0.15]'
@@ -139,7 +139,7 @@ export default function PackageCard({
         <div className="min-w-0">
           <span className={`
             font-caption uppercase tracking-[0.15em] [font-variant-numeric:tabular-nums_slashed-zero]
-            ${isCompressed ? 'text-[10px] text-white/40' : 'text-xs text-ops-accent'}
+            ${isCompressed ? 'text-[10px] text-white/40' : 'text-xs text-ops-text-secondary'}
           `}>
             {name}
           </span>
@@ -187,7 +187,7 @@ export default function PackageCard({
                 {features.map((feature) => (
                   <div key={feature} className="flex gap-2 items-start">
                     <svg
-                      className="w-3.5 h-3.5 mt-0.5 text-ops-accent flex-shrink-0"
+                      className="w-3.5 h-3.5 mt-0.5 text-ops-text-tertiary flex-shrink-0"
                       fill="none"
                       viewBox="0 0 16 16"
                       stroke="currentColor"
@@ -211,9 +211,9 @@ export default function PackageCard({
                 {examples.map((ex) => (
                   <div
                     key={ex.trade}
-                    className="flex gap-3 items-start p-3 rounded-[2px] bg-ops-accent/[0.03] border border-ops-accent/[0.08]"
+                    className="flex gap-3 items-start p-3 rounded-[2px] bg-white/[0.02] border border-white/[0.06]"
                   >
-                    <span className="font-caption text-[10px] text-ops-accent tracking-[0.1em] whitespace-nowrap pt-0.5">
+                    <span className="font-caption text-[10px] text-ops-text-tertiary tracking-[0.1em] whitespace-nowrap pt-0.5">
                       {ex.trade}
                     </span>
                     <span className="font-heading font-light text-xs text-ops-text-secondary leading-relaxed">
