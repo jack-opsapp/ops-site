@@ -151,6 +151,9 @@
   "packages.retainerNote": "Opcional después del periodo de soporte.",
   "packages.guaranteeBadge": "REEMBOLSO GARANTIZADO 30 DÍAS",
 
+  "stickyBar.reserveTemplate": "Reserva tu lugar en {tier} — depósito de {deposit}",
+  "stickyBar.ariaLabel": "Reserva tu lugar en SPEC",
+
   "included.sectionLabel": "QUÉ INCLUYE CADA PAQUETE",
   "included.every": [
     "Sesiones de descubrimiento para entender tu flujo de trabajo",

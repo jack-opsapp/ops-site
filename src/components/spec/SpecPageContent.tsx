@@ -10,6 +10,7 @@ import SpecFAQ from './SpecFAQ';
 import SpecBottomCTA from './SpecBottomCTA';
 import SpecOpsBoard, { type SpecOpsBoardCopy } from './SpecOpsBoard';
 import SpecGuarantees from './SpecGuarantees';
+import SpecStickyDepositBar from './SpecStickyDepositBar';
 import { SpecPageAnalytics } from './SpecPageAnalytics';
 import SpecPhoneWrapper from './phone-scene/SpecPhoneWrapper';
 import type { SpecPhase } from './phone-scene/constants';
@@ -271,6 +272,20 @@ export function SpecPageContent({
         ctaText={t(dict, 'bottomCta.ctaText')}
         defaultOpsText={t(dict, 'bottomCta.defaultOpsText')}
         defaultOpsHref={t(dict, 'bottomCta.defaultOpsHref')}
+      />
+
+      {/* Persistent deposit CTA — reveals after the hero scrolls out. Focal
+          tier defaults to build; the questionnaire repoints it. */}
+      <SpecStickyDepositBar
+        depositsEnabled={depositsEnabled}
+        focalTier="build"
+        boardSnapshot={boardSnapshot}
+        copy={boardCopy}
+        reserveTemplate={t(dict, 'stickyBar.reserveTemplate')}
+        ariaLabel={t(dict, 'stickyBar.ariaLabel')}
+        contactCtaText={t(dict, 'packages.contactCta')}
+        contactCtaHref="/resources#contact"
+        revealAfterRef={heroRef}
       />
     </main>
   );

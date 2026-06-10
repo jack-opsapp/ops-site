@@ -4,6 +4,8 @@ import { motion } from 'framer-motion';
 import { theme } from '@/lib/theme';
 import { SectionLabel } from '@/components/ui';
 import { trackSpecMarketingEvent } from '@/lib/marketing-analytics';
+import { specBillingAddressPath } from '@/lib/spec/deposit-entry';
+import type { SpecTier } from '@/lib/spec/pricing';
 import PackageCard, {
   type PackageExample,
   type PackageMilestoneLabels,
@@ -70,21 +72,14 @@ export default function SpecPricing({
   contactCtaText,
   contactCtaHref,
 }: SpecPricingProps) {
-  async function handleDeposit(tier: string) {
-    trackSpecMarketingEvent('pay_deposit_click', { tier });
-    try {
-      const res = await fetch('/api/spec/create-checkout-session', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ package: tier }),
-      });
-      const data = await res.json();
-      if (data.url) {
-        window.location.href = data.url;
-      }
-    } catch (err) {
-      console.error('Checkout error:', err);
-    }
+  function handleDeposit(tier: string) {
+    // Route to the canonical pre-Stripe entry (/spec/billing-address →
+    // create-checkout-session), shared with the sticky deposit bar. The old
+    // direct POST sent { package } and read { url }, neither of which the
+    // route accepts — it needs auth + billing + the Quebec attestations the
+    // billing-address page collects.
+    trackSpecMarketingEvent('pay_deposit_click', { tier, source: 'package_card' });
+    window.location.href = specBillingAddressPath(tier as SpecTier);
   }
 
   function handleSelect(tier: string) {

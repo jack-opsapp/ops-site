@@ -151,6 +151,9 @@
   "packages.retainerNote": "Optional after the support window.",
   "packages.guaranteeBadge": "30-DAY GUARANTEE REFUND",
 
+  "stickyBar.reserveTemplate": "Reserve your {tier} slot — {deposit} deposit",
+  "stickyBar.ariaLabel": "Reserve your SPEC slot",
+
   "included.sectionLabel": "WHAT EVERY PACKAGE INCLUDES",
   "included.every": [
     "Discovery sessions to understand your workflow",
