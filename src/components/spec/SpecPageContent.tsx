@@ -11,10 +11,12 @@ import SpecBottomCTA from './SpecBottomCTA';
 import SpecOpsBoard, { type SpecOpsBoardCopy } from './SpecOpsBoard';
 import SpecGuarantees from './SpecGuarantees';
 import SpecStickyDepositBar from './SpecStickyDepositBar';
+import SpecFitQuestionnaire, { type FitQuestionnaireCopy } from './SpecFitQuestionnaire';
 import { SpecPageAnalytics } from './SpecPageAnalytics';
 import SpecPhoneWrapper from './phone-scene/SpecPhoneWrapper';
 import type { SpecPhase } from './phone-scene/constants';
 import type { SpecBoardSnapshot, SpecBoardTier } from '@/lib/spec/board';
+import type { SpecTier } from '@/lib/spec/pricing';
 
 interface SpecPageContentProps {
   dict: Dictionary;
@@ -26,6 +28,8 @@ interface SpecPageContentProps {
   depositsEnabled: boolean;
   /** Server-fetched OPS BOARD snapshot. May be empty + stale on Supabase outage. */
   boardSnapshot: SpecBoardSnapshot;
+  /** Fit tier from the ?fit= URL param (shareable questionnaire result), or null. */
+  initialFit: SpecTier | null;
 }
 
 function t(dict: Dictionary, key: string): string {
@@ -39,10 +43,13 @@ export function SpecPageContent({
   dict,
   depositsEnabled,
   boardSnapshot,
+  initialFit,
 }: SpecPageContentProps) {
   const [phonePhase, setPhonePhase] = useState<SpecPhase>('home');
   const [phoneTier, setPhoneTier] = useState<string | null>(null);
   const [isInHero, setIsInHero] = useState(true);
+  const [fit, setFit] = useState<SpecTier | null>(initialFit);
+  const [questionnaireOpen, setQuestionnaireOpen] = useState(false);
 
   const heroRef = useRef<HTMLDivElement>(null);
   const phoneScopeRef = useRef<HTMLDivElement>(null);
@@ -86,6 +93,26 @@ export function SpecPageContent({
   const handleTierSelect = useCallback((tier: string | null) => {
     setPhonePhase('custom');
     setPhoneTier(tier);
+  }, []);
+
+  const openQuestionnaire = useCallback(() => setQuestionnaireOpen(true), []);
+
+  const handleFitComplete = useCallback((tier: SpecTier) => {
+    setFit(tier);
+    setQuestionnaireOpen(false);
+    // Persist the result to a shareable URL param (a co-owner opening
+    // /spec?fit=<tier> lands on the same highlight). replaceState keeps the
+    // back button clean.
+    const url = new URL(window.location.href);
+    url.searchParams.set('fit', tier);
+    window.history.replaceState({}, '', url);
+    // Resolve by scrolling to the packages — reduced-motion aware.
+    const prefersReduced = window.matchMedia?.('(prefers-reduced-motion: reduce)').matches;
+    requestAnimationFrame(() => {
+      document
+        .getElementById('packages')
+        ?.scrollIntoView({ behavior: prefersReduced ? 'auto' : 'smooth', block: 'start' });
+    });
   }, []);
 
   const packages: PackageData[] = (['setup', 'build', 'enterprise'] as const).map((tier) => ({
@@ -162,6 +189,51 @@ export function SpecPageContent({
     },
   };
 
+  const fitQuestionnaireCopy: FitQuestionnaireCopy = {
+    eyebrow: t(dict, 'questionnaire.eyebrow'),
+    title: t(dict, 'questionnaire.title'),
+    back: t(dict, 'questionnaire.back'),
+    close: t(dict, 'questionnaire.close'),
+    questions: [
+      {
+        key: 'scope',
+        question: t(dict, 'questionnaire.q1.question'),
+        options: [
+          { value: 'configure', label: t(dict, 'questionnaire.q1.configure') },
+          { value: 'one_module', label: t(dict, 'questionnaire.q1.one_module') },
+          { value: 'rebuild', label: t(dict, 'questionnaire.q1.rebuild') },
+        ],
+      },
+      {
+        key: 'timeline',
+        question: t(dict, 'questionnaire.q2.question'),
+        options: [
+          { value: 'rush', label: t(dict, 'questionnaire.q2.rush') },
+          { value: 'few_weeks', label: t(dict, 'questionnaire.q2.few_weeks') },
+          { value: 'no_rush', label: t(dict, 'questionnaire.q2.no_rush') },
+        ],
+      },
+      {
+        key: 'team',
+        question: t(dict, 'questionnaire.q3.question'),
+        options: [
+          { value: 'solo', label: t(dict, 'questionnaire.q3.solo') },
+          { value: 'small', label: t(dict, 'questionnaire.q3.small') },
+          { value: 'large', label: t(dict, 'questionnaire.q3.large') },
+        ],
+      },
+      {
+        key: 'budget',
+        question: t(dict, 'questionnaire.q4.question'),
+        options: [
+          { value: 'low', label: t(dict, 'questionnaire.q4.low') },
+          { value: 'mid', label: t(dict, 'questionnaire.q4.mid') },
+          { value: 'high', label: t(dict, 'questionnaire.q4.high') },
+        ],
+      },
+    ],
+  };
+
   return (
     <main className="bg-ops-background">
       <SpecPageAnalytics />
@@ -233,6 +305,13 @@ export function SpecPageContent({
         depositsEnabled={depositsEnabled}
         contactCtaText={t(dict, 'packages.contactCta')}
         contactCtaHref="/resources#contact"
+        highlightedTier={fit}
+        yourFitLabel={t(dict, 'questionnaire.resultEyebrow')}
+        fitRationale={fit ? t(dict, `questionnaire.rationale.${fit}`) : ''}
+        retakeLabel={t(dict, 'questionnaire.retake')}
+        entryPrompt={t(dict, 'questionnaire.entryPrompt')}
+        entryCta={t(dict, 'questionnaire.entryCta')}
+        onOpenQuestionnaire={openQuestionnaire}
       />
 
       <WhatsIncluded
@@ -278,7 +357,7 @@ export function SpecPageContent({
           tier defaults to build; the questionnaire repoints it. */}
       <SpecStickyDepositBar
         depositsEnabled={depositsEnabled}
-        focalTier="build"
+        focalTier={fit ?? 'build'}
         boardSnapshot={boardSnapshot}
         copy={boardCopy}
         reserveTemplate={t(dict, 'stickyBar.reserveTemplate')}
@@ -286,6 +365,15 @@ export function SpecPageContent({
         contactCtaText={t(dict, 'packages.contactCta')}
         contactCtaHref="/resources#contact"
         revealAfterRef={heroRef}
+        onHelpMeChoose={openQuestionnaire}
+        helpMeChooseLabel={t(dict, 'questionnaire.barCta')}
+      />
+
+      <SpecFitQuestionnaire
+        open={questionnaireOpen}
+        copy={fitQuestionnaireCopy}
+        onClose={() => setQuestionnaireOpen(false)}
+        onComplete={handleFitComplete}
       />
     </main>
   );

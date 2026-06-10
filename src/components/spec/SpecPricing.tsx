@@ -50,6 +50,19 @@ interface SpecPricingProps {
   /** Copy + href used when depositsEnabled is false. */
   contactCtaText: string;
   contactCtaHref: string;
+  /** Questionnaire fit (null = none chosen). Drives card highlight + CTA primary. */
+  highlightedTier: 'setup' | 'build' | 'enterprise' | null;
+  /** "// YOUR FIT" tag + banner eyebrow. */
+  yourFitLabel: string;
+  /** One-line rationale for the highlighted tier ('' when none). */
+  fitRationale: string;
+  /** "RETAKE" affordance label. */
+  retakeLabel: string;
+  /** Opt-in entry copy near the grid. */
+  entryPrompt: string;
+  entryCta: string;
+  /** Opens the "help me choose" modal. */
+  onOpenQuestionnaire: () => void;
 }
 
 export default function SpecPricing({
@@ -71,6 +84,13 @@ export default function SpecPricing({
   depositsEnabled,
   contactCtaText,
   contactCtaHref,
+  highlightedTier,
+  yourFitLabel,
+  fitRationale,
+  retakeLabel,
+  entryPrompt,
+  entryCta,
+  onOpenQuestionnaire,
 }: SpecPricingProps) {
   function handleDeposit(tier: string) {
     // Route to the canonical pre-Stripe entry (/spec/billing-address →
@@ -96,42 +116,86 @@ export default function SpecPricing({
           transition={{ duration: 0.5, ease }}
           viewport={{ once: true, amount: 0.3 }}
         >
-          <SectionLabel label={sectionLabel} className="mb-12" />
+          <SectionLabel label={sectionLabel} className="mb-6" />
         </motion.div>
 
-        {/* Full-width 3-up tier comparison. Build is elevated (recommended). */}
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-4 lg:gap-5 items-stretch">
-          {packages.map((pkg, index) => (
-            <motion.div
-              key={pkg.tier}
-              initial={{ opacity: 0, y: 20 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.5, delay: index * 0.08, ease }}
-              viewport={{ once: true, amount: 0.2 }}
-              className="h-full"
+        {/* Opt-in fit finder — swaps to the result once the buyer answers. */}
+        {highlightedTier ? (
+          <div className="mb-12 flex flex-wrap items-center gap-x-3 gap-y-1.5 border-l-2 border-white/20 pl-4">
+            <span className="font-mono text-[11px] uppercase tracking-[0.18em] text-ops-text-primary [font-variant-numeric:tabular-nums_slashed-zero]">
+              {yourFitLabel}
+            </span>
+            <span className="text-ops-text-mute" aria-hidden="true">·</span>
+            <span className="font-heading font-light text-sm text-ops-text-secondary">
+              {fitRationale}
+            </span>
+            <button
+              type="button"
+              onClick={onOpenQuestionnaire}
+              className="ml-1 cursor-pointer font-mono text-[10px] uppercase tracking-[0.18em] text-ops-text-tertiary transition-colors duration-150 hover:text-ops-text-primary focus-visible:outline focus-visible:outline-[1.5px] focus-visible:outline-ops-accent focus-visible:outline-offset-2"
             >
-              <PackageCard
-                {...pkg}
-                milestoneLabels={milestoneLabels}
-                milestonesLabel={milestonesLabel}
-                milestonesNote={milestonesNote}
-                examplesLabel={examplesLabel}
-                subscriptionLabel={subscriptionLabel}
-                subscriptionNote={subscriptionNote}
-                retainerLabel={retainerLabel}
-                retainerNote={retainerNote}
-                guaranteeBadge={guaranteeBadge}
-                recommendedBadge={recommendedBadge}
-                detailsToggle={detailsToggle}
-                depositLedger={depositLedger}
-                onDeposit={handleDeposit}
-                onSelect={handleSelect}
-                depositsEnabled={depositsEnabled}
-                contactCtaText={contactCtaText}
-                contactCtaHref={contactCtaHref}
-              />
-            </motion.div>
-          ))}
+              {retakeLabel}
+            </button>
+          </div>
+        ) : (
+          <div className="mb-12 flex flex-wrap items-center gap-x-3 gap-y-1.5">
+            <span className="font-heading font-light text-sm text-ops-text-tertiary">
+              {entryPrompt}
+            </span>
+            <button
+              type="button"
+              onClick={onOpenQuestionnaire}
+              className="inline-flex cursor-pointer items-center gap-1.5 border-b border-white/20 pb-0.5 font-mono text-[11px] uppercase tracking-[0.18em] text-ops-text-primary transition-colors duration-150 hover:border-white/50 focus-visible:outline focus-visible:outline-[1.5px] focus-visible:outline-ops-accent focus-visible:outline-offset-2"
+            >
+              {entryCta}
+              <svg className="h-3 w-3" viewBox="0 0 12 12" fill="none" stroke="currentColor" strokeWidth="1.5" aria-hidden="true">
+                <path d="M2.5 6h7M6 2.5l3.5 3.5L6 9.5" strokeLinecap="round" strokeLinejoin="round" />
+              </svg>
+            </button>
+          </div>
+        )}
+
+        {/* Full-width 3-up tier comparison. The fit (or Build by default) is elevated. */}
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-4 lg:gap-5 items-stretch">
+          {packages.map((pkg, index) => {
+            const isYourFit = highlightedTier === pkg.tier;
+            // One accent CTA on the page: the fit card if chosen, else Build.
+            const ctaPrimary = highlightedTier ? isYourFit : !!pkg.recommended;
+            return (
+              <motion.div
+                key={pkg.tier}
+                initial={{ opacity: 0, y: 20 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                transition={{ duration: 0.5, delay: index * 0.08, ease }}
+                viewport={{ once: true, amount: 0.2 }}
+                className="h-full"
+              >
+                <PackageCard
+                  {...pkg}
+                  isYourFit={isYourFit}
+                  yourFitLabel={yourFitLabel}
+                  ctaPrimary={ctaPrimary}
+                  milestoneLabels={milestoneLabels}
+                  milestonesLabel={milestonesLabel}
+                  milestonesNote={milestonesNote}
+                  examplesLabel={examplesLabel}
+                  subscriptionLabel={subscriptionLabel}
+                  subscriptionNote={subscriptionNote}
+                  retainerLabel={retainerLabel}
+                  retainerNote={retainerNote}
+                  guaranteeBadge={guaranteeBadge}
+                  recommendedBadge={recommendedBadge}
+                  detailsToggle={detailsToggle}
+                  depositLedger={depositLedger}
+                  onDeposit={handleDeposit}
+                  onSelect={handleSelect}
+                  depositsEnabled={depositsEnabled}
+                  contactCtaText={contactCtaText}
+                  contactCtaHref={contactCtaHref}
+                />
+              </motion.div>
+            );
+          })}
         </div>
       </div>
     </section>

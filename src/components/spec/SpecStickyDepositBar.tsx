@@ -12,10 +12,11 @@
  * state when unknown.
  *
  * Motion (animation-architect + web-animations): a Framer useScroll-driven
- * translateY + fade reveal on the one OPS easing curve, triggered once the
- * hero's bottom passes. Under prefers-reduced-motion the bar simply docks
- * (snaps in/out, no slide/fade) at the same threshold — an equivalent
- * reduced variant, not a disabled one. No infinite/ambient motion.
+ * translateY + fade reveal bound to scroll position — the bar tracks the
+ * scroll as the hero's bottom passes (no time-based easing). Under
+ * prefers-reduced-motion it simply docks (snaps in/out, no slide/fade) at
+ * the same threshold — an equivalent reduced variant, not a disabled one.
+ * No infinite/ambient motion.
  *
  * Flag-safe: when depositsEnabled is false the single action becomes the
  * "Talk to the founder" contact link; when true it routes to the canonical
@@ -30,7 +31,6 @@ import {
   useScroll,
   useTransform,
 } from 'framer-motion';
-import { theme } from '@/lib/theme';
 import type { SpecBoardSnapshot } from '@/lib/spec/board';
 import {
   availabilityLabel,
@@ -41,8 +41,6 @@ import {
 import { formatCad, tierDepositCents, type SpecTier } from '@/lib/spec/pricing';
 import { specBillingAddressPath } from '@/lib/spec/deposit-entry';
 import { trackSpecMarketingEvent } from '@/lib/marketing-analytics';
-
-const ease = theme.animation.easing as [number, number, number, number];
 
 /** Pixels of slide travel for the reveal. */
 const TRAVEL = 64;
@@ -65,6 +63,9 @@ interface SpecStickyDepositBarProps {
   contactCtaHref: string;
   /** Ref to the hero block — the bar reveals once its bottom scrolls past. */
   revealAfterRef: React.RefObject<HTMLElement | null>;
+  /** Optional secondary "help me choose" affordance (desktop only). */
+  onHelpMeChoose?: () => void;
+  helpMeChooseLabel?: string;
 }
 
 function clamp01(n: number): number {
@@ -81,6 +82,8 @@ export default function SpecStickyDepositBar({
   contactCtaText,
   contactCtaHref,
   revealAfterRef,
+  onHelpMeChoose,
+  helpMeChooseLabel,
 }: SpecStickyDepositBarProps) {
   const reduceMotion = useReducedMotion() ?? false;
   const { scrollY } = useScroll();
@@ -179,16 +182,27 @@ export default function SpecStickyDepositBar({
           <span className="hidden text-ops-text-secondary sm:inline">{focalRow.nextIntakeText}</span>
         </div>
 
-        {/* The one action. */}
-        {depositsEnabled ? (
-          <button type="button" onClick={handleReserve} className={`${ctaClass} w-full sm:w-auto`}>
-            {reserveLabel}
-          </button>
-        ) : (
-          <a href={contactCtaHref} className={`${ctaClass} w-full sm:w-auto`}>
-            {contactCtaText}
-          </a>
-        )}
+        {/* Secondary "help me choose" (desktop) + the one primary action. */}
+        <div className="flex w-full items-center justify-end gap-3 sm:w-auto sm:gap-4">
+          {onHelpMeChoose && helpMeChooseLabel && (
+            <button
+              type="button"
+              onClick={onHelpMeChoose}
+              className="hidden cursor-pointer font-mono text-[10px] uppercase tracking-[0.18em] text-ops-text-tertiary transition-colors duration-150 hover:text-ops-text-primary focus-visible:outline focus-visible:outline-[1.5px] focus-visible:outline-ops-accent focus-visible:outline-offset-2 sm:inline-flex"
+            >
+              {helpMeChooseLabel}
+            </button>
+          )}
+          {depositsEnabled ? (
+            <button type="button" onClick={handleReserve} className={`${ctaClass} w-full sm:w-auto`}>
+              {reserveLabel}
+            </button>
+          ) : (
+            <a href={contactCtaHref} className={`${ctaClass} w-full sm:w-auto`}>
+              {contactCtaText}
+            </a>
+          )}
+        </div>
       </div>
     </motion.aside>
   );

@@ -62,6 +62,12 @@ export interface PackageCardProps {
   recommended?: boolean;
   /** Badge shown on the recommended tier, e.g. "MOST CHOSEN". */
   recommendedBadge: string;
+  /** True when the questionnaire picked this tier — neutral "YOUR FIT" emphasis. */
+  isYourFit?: boolean;
+  /** Label for the questionnaire-fit tag, e.g. "// YOUR FIT". */
+  yourFitLabel?: string;
+  /** When true, this card's deposit CTA carries the accent fill (the one primary). */
+  ctaPrimary?: boolean;
   /** Disclosure toggle label, e.g. "DETAILS". */
   detailsToggle: string;
   /** Mono ledger under the CTA, e.g. "RESERVES YOUR SLOT · CREDITED TO YOUR BUILD". */
@@ -98,6 +104,9 @@ export default function PackageCard({
   ctaText,
   recommended,
   recommendedBadge,
+  isYourFit,
+  yourFitLabel,
+  ctaPrimary,
   detailsToggle,
   depositLedger,
   onDeposit,
@@ -120,15 +129,22 @@ export default function PackageCard({
       layout
       transition={{ layout: { duration: 0.35, ease } }}
       className={`relative flex h-full flex-col rounded-[3px] border p-6 transition-colors duration-300 ${
-        recommended
-          ? 'border-white/[0.22] bg-white/[0.02]'
-          : 'border-white/[0.08] hover:border-white/[0.15]'
+        isYourFit
+          ? 'border-white/30 bg-white/[0.03] ring-1 ring-white/10'
+          : recommended
+            ? 'border-white/[0.22] bg-white/[0.02]'
+            : 'border-white/[0.08] hover:border-white/[0.15]'
       }`}
     >
-      {/* Recommended badge */}
-      {recommended && (
-        <span className="absolute -top-px right-5 -translate-y-1/2 bg-ops-background px-2 font-mono text-[10px] uppercase tracking-[0.18em] text-ops-text-secondary [font-variant-numeric:tabular-nums_slashed-zero]">
-          {recommendedBadge}
+      {/* Badge — questionnaire fit overrides the static "most chosen". Both
+          are neutral emphasis; accent stays on the CTA + focus rings only. */}
+      {(isYourFit || recommended) && (
+        <span
+          className={`absolute -top-px right-5 -translate-y-1/2 bg-ops-background px-2 font-mono text-[10px] uppercase tracking-[0.18em] [font-variant-numeric:tabular-nums_slashed-zero] ${
+            isYourFit ? 'text-ops-text-primary' : 'text-ops-text-secondary'
+          }`}
+        >
+          {isYourFit ? yourFitLabel : recommendedBadge}
         </span>
       )}
 
@@ -255,7 +271,7 @@ export default function PackageCard({
             type="button"
             onClick={() => onDeposit(tier)}
             className={`block w-full text-center font-caption uppercase tracking-[0.15em] text-xs px-6 py-3.5 rounded-[5px] transition-all duration-200 cursor-pointer [font-variant-numeric:tabular-nums_slashed-zero] focus-visible:outline focus-visible:outline-[1.5px] focus-visible:outline-ops-accent focus-visible:outline-offset-2 ${
-              recommended
+              ctaPrimary
                 ? 'bg-ops-accent text-ops-background hover:bg-ops-accent/90'
                 : 'bg-transparent text-ops-text-primary border border-ops-border hover:border-ops-border-hover'
             }`}
@@ -266,7 +282,7 @@ export default function PackageCard({
           <a
             href={contactCtaHref}
             className={`block w-full text-center font-caption uppercase tracking-[0.15em] text-xs px-6 py-3.5 rounded-[5px] transition-all duration-200 cursor-pointer [font-variant-numeric:tabular-nums_slashed-zero] focus-visible:outline focus-visible:outline-[1.5px] focus-visible:outline-ops-accent focus-visible:outline-offset-2 ${
-              recommended
+              ctaPrimary
                 ? 'bg-ops-accent text-ops-background hover:bg-ops-accent/90'
                 : 'bg-transparent text-ops-text-primary border border-ops-border hover:border-ops-border-hover'
             }`}

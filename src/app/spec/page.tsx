@@ -26,6 +26,7 @@ import type { Metadata } from 'next';
 import { getLocale, getTDict, buildLocaleAlternates, buildLocaleUrl } from '@/i18n/server';
 import { SpecPageContent } from '@/components/spec/SpecPageContent';
 import { getSpecBoardSnapshot } from '@/lib/spec/board';
+import { isValidTier, type SpecTier } from '@/lib/spec/pricing';
 
 export async function generateMetadata(): Promise<Metadata> {
   const locale = await getLocale();
@@ -48,8 +49,16 @@ interface FAQItem {
   answer: string;
 }
 
-export default async function SpecPage() {
+interface SpecPageProps {
+  searchParams: Promise<{ fit?: string }>;
+}
+
+export default async function SpecPage({ searchParams }: SpecPageProps) {
   const rawDict = await getTDict('spec');
+  // Shareable questionnaire result — /spec?fit=<tier> pre-highlights that tier
+  // server-side (no hydration flash for a co-owner opening the link).
+  const fitParam = (await searchParams)?.fit;
+  const initialFit: SpecTier | null = isValidTier(fitParam) ? fitParam : null;
   // Phase 0 safety — until SPEC_LIVE_DEPOSITS_ENABLED flips to 'true',
   // Pay Deposit buttons render as "Talk to the founder" links pointing
   // at the contact form. The Stripe route returns 503 on the API side.
@@ -178,6 +187,7 @@ export default async function SpecPage() {
         dict={dict}
         depositsEnabled={depositsEnabled}
         boardSnapshot={boardSnapshot}
+        initialFit={initialFit}
       />
     </>
   );
