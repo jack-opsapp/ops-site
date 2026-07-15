@@ -3,7 +3,6 @@
 import { useState, useCallback, useRef, useEffect } from 'react';
 import type { Dictionary } from '@/i18n/types';
 import SpecHero from './SpecHero';
-import HowItWorks from './HowItWorks';
 import SpecPricing, { type PackageData } from './SpecPricing';
 import SpecWhiteLabel from './SpecWhiteLabel';
 import WhatsIncluded from './WhatsIncluded';
@@ -44,7 +43,6 @@ function t(dict: Dictionary, key: string): string {
   return typeof value === 'string' ? value : key;
 }
 
-const STEP_PHASES: SpecPhase[] = ['packages', 'analysis', 'building', 'custom'];
 
 export function SpecPageContent({
   dict,
@@ -61,6 +59,9 @@ export function SpecPageContent({
   const heroRef = useRef<HTMLDivElement>(null);
   const phoneScopeRef = useRef<HTMLDivElement>(null);
   const phoneContainerRef = useRef<HTMLDivElement>(null);
+  const ladderZoneRef = useRef<HTMLDivElement>(null);
+  const boardZoneRef = useRef<HTMLDivElement>(null);
+  const buildingZoneRef = useRef<HTMLDivElement>(null);
 
   // Track hero visibility — phone constrains rotation when hero scrolls out
   useEffect(() => {
@@ -92,9 +93,32 @@ export function SpecPageContent({
     return () => window.removeEventListener('scroll', handleScroll);
   }, []);
 
-  const handleStepChange = useCallback((step: number) => {
-    setPhonePhase(STEP_PHASES[step] ?? 'home');
-    setPhoneTier(null);
+  // Phase choreography — the phone scene morphs as the page's zones cross
+  // the viewport's center band (same vocabulary the retired process section
+  // used, re-bound to the v2 section order). Tier selects override to
+  // 'custom'; leaving every zone falls back to 'home'.
+  useEffect(() => {
+    const zoneEls: Array<[SpecPhase, HTMLDivElement | null]> = [
+      ['packages', ladderZoneRef.current],
+      ['analysis', boardZoneRef.current],
+      ['building', buildingZoneRef.current],
+    ];
+    const observers: IntersectionObserver[] = [];
+    for (const [phase, el] of zoneEls) {
+      if (!el) continue;
+      const observer = new IntersectionObserver(
+        ([entry]) => {
+          if (entry.isIntersecting) {
+            setPhonePhase(phase);
+            setPhoneTier(null);
+          }
+        },
+        { rootMargin: '-40% 0px -40% 0px' },
+      );
+      observer.observe(el);
+      observers.push(observer);
+    }
+    return () => observers.forEach((o) => o.disconnect());
   }, []);
 
   const handleTierSelect = useCallback((tier: string | null) => {
@@ -259,35 +283,21 @@ export function SpecPageContent({
               heading={t(dict, 'hero.heading')}
               subtitle={t(dict, 'hero.subtitle')}
               ctaPackages={t(dict, 'hero.ctaPackages')}
-              ctaHowItWorks={t(dict, 'hero.ctaHowItWorks')}
+              ctaGuide={t(dict, 'questionnaire.entryCta')}
+              onOpenGuide={openQuestionnaire}
               founderEyebrow={t(dict, 'hero.founderEyebrow')}
               founderLine={t(dict, 'hero.founderLine')}
-            />
-          </div>
-
-          <div className="max-w-[720px] px-6 sm:px-10 md:px-16 lg:px-24">
-            <HowItWorks
-              sectionLabel={t(dict, 'process.sectionLabel')}
-              steps={[
-                { number: t(dict, 'process.step1.number'), title: t(dict, 'process.step1.title'), desc: t(dict, 'process.step1.desc') },
-                { number: t(dict, 'process.step2.number'), title: t(dict, 'process.step2.title'), desc: t(dict, 'process.step2.desc') },
-                { number: t(dict, 'process.step3.number'), title: t(dict, 'process.step3.title'), desc: t(dict, 'process.step3.desc') },
-                { number: t(dict, 'process.step4.number'), title: t(dict, 'process.step4.title'), desc: t(dict, 'process.step4.desc') },
-              ]}
-              onActiveStepChange={handleStepChange}
             />
           </div>
         </div>
       </div>
 
-      {/* OPS BOARD — full-width, breaks out of the 55% column so the
-          tactical table reads end-to-end on desktop and the timeline
-          has room to breathe. */}
-      <SpecOpsBoard initialSnapshot={boardSnapshot} copy={boardCopy} />
-
-      <SpecPricing
-        sectionLabel={t(dict, 'packages.sectionLabel')}
-        packages={packages}
+      {/* v2 section order (10 § 8): ladder + guide entry lead; the board
+          follows as proof of live capacity. */}
+      <div ref={ladderZoneRef}>
+        <SpecPricing
+          sectionLabel={t(dict, 'packages.sectionLabel')}
+          packages={packages}
         checkpointsLabel={t(dict, 'packages.milestones.label')}
         checkpointsNote={t(dict, 'packages.milestonesNote')}
         examplesLabel={t(dict, 'packages.examplesLabel')}
@@ -309,23 +319,31 @@ export function SpecPageContent({
         entryPrompt={t(dict, 'questionnaire.entryPrompt')}
         entryCta={t(dict, 'questionnaire.entryCta')}
         onOpenQuestionnaire={openQuestionnaire}
-      />
+        />
+      </div>
 
-      {/* White-label strip — quiet, after the SPEC-03 card zone (10 § 8.6). */}
-      <SpecWhiteLabel
-        label={t(dict, 'whiteLabel.label')}
-        line={t(dict, 'whiteLabel.line')}
-        priceLine={t(dict, 'whiteLabel.priceLine')}
-        detail={t(dict, 'whiteLabel.detail')}
-      />
+      {/* OPS BOARD — live capacity proof, after the ladder (10 § 8.4). */}
+      <div ref={boardZoneRef}>
+        <SpecOpsBoard initialSnapshot={boardSnapshot} copy={boardCopy} />
+      </div>
 
-      <WhatsIncluded
-        sectionLabel={t(dict, 'included.sectionLabel')}
-        items={(dict['included.every'] as string[]) ?? []}
-        ongoingLabel={t(dict, 'included.ongoingLabel')}
-        ongoingItems={(dict['included.ongoing'] as string[]) ?? []}
-        ongoingFinePrint={[t(dict, 'ongoing.careStartNote'), t(dict, 'ongoing.overageNote')]}
-      />
+      <div ref={buildingZoneRef}>
+        {/* White-label strip — quiet, after the SPEC-03 card zone (10 § 8.6). */}
+        <SpecWhiteLabel
+          label={t(dict, 'whiteLabel.label')}
+          line={t(dict, 'whiteLabel.line')}
+          priceLine={t(dict, 'whiteLabel.priceLine')}
+          detail={t(dict, 'whiteLabel.detail')}
+        />
+
+        <WhatsIncluded
+          sectionLabel={t(dict, 'included.sectionLabel')}
+          items={(dict['included.every'] as string[]) ?? []}
+          ongoingLabel={t(dict, 'included.ongoingLabel')}
+          ongoingItems={(dict['included.ongoing'] as string[]) ?? []}
+          ongoingFinePrint={[t(dict, 'ongoing.careStartNote'), t(dict, 'ongoing.overageNote')]}
+        />
+      </div>
 
       <SpecGuarantees
         sectionLabel={t(dict, 'guarantees.sectionLabel')}

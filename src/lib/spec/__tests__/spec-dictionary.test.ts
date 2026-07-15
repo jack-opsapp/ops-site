@@ -34,16 +34,12 @@ function assertTierCopy(dict: SpecDictionary, tier: SpecTier) {
   const deposit = formatCad(tierDepositCents(tier));
   const total = formatCad(tierTotalCents(tier));
 
-  assert.match(requiredString(dict, `packages.${tier}.startFrom`), escaped(deposit));
-  assert.match(requiredString(dict, `packages.${tier}.headlineSub`), escaped(total));
-  assert.equal(requiredString(dict, `packages.${tier}.milestoneAmount`), deposit);
-  assert.match(requiredString(dict, `packages.${tier}.ctaText`), escaped(deposit));
-
   // v2 schema (10_TIER_MODEL_V2 § 2): designation lockup, total, payment
-  // shape, and care line — the four numbers-facing strings every card renders.
+  // shape, and care line — the numbers-facing strings every card renders.
   assert.match(requiredString(dict, `packages.${tier}.designation`), /^SPEC-0[123] · /);
   assert.match(requiredString(dict, `packages.${tier}.totalLine`), escaped(total));
   assert.match(requiredString(dict, `packages.${tier}.paymentLine`), escaped(deposit));
+  assert.match(requiredString(dict, `packages.${tier}.ctaText`), escaped(deposit));
   requiredString(dict, `packages.${tier}.careLine`);
   requiredString(dict, `packages.${tier}.tagline`);
 }
@@ -64,8 +60,6 @@ test('SPEC dictionaries expose all customer-facing package pricing keys', () => 
       'packages.milestones.p4',
       'packages.milestonesNote',
       'packages.examplesLabel',
-      'packages.subscriptionLabel',
-      'packages.subscriptionNote',
       'packages.retainerLabel',
       'packages.retainerNote',
       'packages.guaranteeBadge',
@@ -137,10 +131,8 @@ test('SPEC dictionaries expose all customer-facing package pricing keys', () => 
       requiredString(dict, key);
     }
 
-    // v2 retired the per-tier percentage payment claim — process step 1 must
-    // carry no percentage at all (payment shapes differ per tier) and no
-    // "may increase" hedging survives anywhere in the ongoing strings.
-    assert.doesNotMatch(requiredString(dict, 'process.step1.desc'), /\d+\s?%/);
+    // v2 retired multiplier language wholesale — no "may increase" hedging
+    // survives anywhere in the ongoing strings.
     const ongoingItems = (dict['included.ongoing'] as unknown as string[]) ?? [];
     assert.ok(ongoingItems.length >= 4, 'included.ongoing must carry the flat-number list');
     for (const line of [

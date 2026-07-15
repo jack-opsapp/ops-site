@@ -17,7 +17,7 @@
  * multi-select (checkboxes + explicit CONTINUE, no auto-advance).
  */
 
-import { useEffect, useRef, useState } from 'react';
+import { useCallback, useEffect, useRef, useState } from 'react';
 import { AnimatePresence, motion, useReducedMotion } from 'framer-motion';
 import { theme } from '@/lib/theme';
 import type { Dictionary } from '@/i18n/types';
@@ -159,17 +159,23 @@ export default function SpecFitQuestionnaire({
   }, [open, onClose]);
 
   // Seed focus per step: the result heading on the result screen, else the
-  // first option control.
+  // first option control. Runs on open (below) AND after each step's enter
+  // animation completes (onAnimationComplete on the step wrapper) — the
+  // AnimatePresence mode="wait" exit unmounts the focused control, so a
+  // same-frame rAF would fire before the incoming step exists and keyboard
+  // focus would fall out of the dialog.
+  const seedFocus = useCallback(() => {
+    const target =
+      panelRef.current?.querySelector<HTMLElement>('[data-guide-focus]') ??
+      panelRef.current?.querySelector<HTMLElement>('[data-fit-option]');
+    target?.focus();
+  }, []);
+
   useEffect(() => {
     if (!open) return;
-    const id = requestAnimationFrame(() => {
-      const target =
-        panelRef.current?.querySelector<HTMLElement>('[data-guide-focus]') ??
-        panelRef.current?.querySelector<HTMLElement>('[data-fit-option]');
-      target?.focus();
-    });
+    const id = requestAnimationFrame(seedFocus);
     return () => cancelAnimationFrame(id);
-  }, [open, state.step]);
+  }, [open, seedFocus]);
 
   // ── Path machinery ────────────────────────────────────────────────────────
 
@@ -658,6 +664,7 @@ export default function SpecFitQuestionnaire({
                   animate={{ opacity: 1, x: 0 }}
                   exit={{ opacity: 0, x: -dir * slide }}
                   transition={{ duration: reduce ? 0.12 : 0.25, ease }}
+                  onAnimationComplete={seedFocus}
                 >
                   {renderStep()}
                 </motion.div>

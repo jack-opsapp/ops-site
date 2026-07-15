@@ -18,7 +18,7 @@ test('owner approval expiry: pending request past expires_at flips to expired + 
         buyer_user_id: 'user-buyer',
         account_holder_user_id: 'user-owner',
         linked_company_id: 'co-1',
-        tier: 'build',
+        tier: 'spec02',
         status: 'pending',
         expires_at: daysFromNow(now, -1), // expired yesterday
         is_test: false,
@@ -95,7 +95,7 @@ test('owner approval expiry: pending request not yet expired is left alone', asy
         buyer_user_id: 'user-buyer',
         account_holder_user_id: 'user-owner',
         linked_company_id: 'co-1',
-        tier: 'build',
+        tier: 'spec02',
         status: 'pending',
         expires_at: daysFromNow(now, +3), // expires in 3 days
         is_test: false,

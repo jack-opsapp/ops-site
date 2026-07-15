@@ -11,7 +11,9 @@ interface SpecHeroProps {
   heading: string;
   subtitle: string;
   ctaPackages: string;
-  ctaHowItWorks: string;
+  /** Secondary CTA — opens the 60-second tier guide (10 § 8.3). */
+  ctaGuide: string;
+  onOpenGuide: () => void;
   /** Phase 1: text-only founder presence line (video deferred — see 07_ROLLOUT.md open item 1). */
   founderEyebrow: string;
   founderLine: string;
@@ -26,7 +28,8 @@ export default function SpecHero({
   heading,
   subtitle,
   ctaPackages,
-  ctaHowItWorks,
+  ctaGuide,
+  onOpenGuide,
   founderEyebrow,
   founderLine,
 }: SpecHeroProps) {
@@ -92,10 +95,10 @@ export default function SpecHero({
                 {ctaPackages}
               </button>
               <button
-                onClick={() => scrollTo('process')}
+                onClick={onOpenGuide}
                 className="inline-flex items-center justify-center font-caption uppercase tracking-[0.15em] text-xs px-6 py-3 rounded-[5px] transition-all duration-200 cursor-pointer bg-transparent text-ops-text-primary border border-ops-border hover:border-ops-border-hover focus-visible:outline focus-visible:outline-[1.5px] focus-visible:outline-ops-accent focus-visible:outline-offset-2"
               >
-                {ctaHowItWorks}
+                {ctaGuide}
               </button>
             </motion.div>
 

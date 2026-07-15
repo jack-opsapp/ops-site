@@ -35,7 +35,7 @@ test('non-payment disable: 8d-overdue invoice flips entitlements to non_payment'
         customer_email: 'bob@example.com',
         buyer_user_id: 'u',
         linked_company_id: 'co',
-        tier: 'build',
+        tier: 'spec02',
         is_test: false,
       },
     ],
@@ -72,7 +72,7 @@ test('non-payment disable: 6d-overdue invoice does not fire (under 7d threshold)
       { id: 'ent-2', spec_project_id: 'proj-2', module_key: 'jobs', enabled: true, disabled_reason: null },
     ],
     spec_projects: [
-      { id: 'proj-2', customer_email: 'x@example.com', buyer_user_id: 'u', linked_company_id: 'co', tier: 'build', is_test: false },
+      { id: 'proj-2', customer_email: 'x@example.com', buyer_user_id: 'u', linked_company_id: 'co', tier: 'spec02', is_test: false },
     ],
     spec_email_outbox: [],
     notifications: [],
@@ -109,7 +109,7 @@ test('non-payment disable: idempotent — already-non_payment-disabled project d
       },
     ],
     spec_projects: [
-      { id: 'proj-3', customer_email: 'x@example.com', buyer_user_id: 'u', linked_company_id: 'co', tier: 'build', is_test: false },
+      { id: 'proj-3', customer_email: 'x@example.com', buyer_user_id: 'u', linked_company_id: 'co', tier: 'spec02', is_test: false },
     ],
     spec_email_outbox: [],
     notifications: [],
@@ -140,7 +140,7 @@ test('non-payment disable: project with no entitlement rows is skipped (pre-scop
     ],
     spec_module_entitlements: [],
     spec_projects: [
-      { id: 'proj-4', customer_email: 'x@example.com', buyer_user_id: 'u', linked_company_id: 'co', tier: 'build', is_test: false },
+      { id: 'proj-4', customer_email: 'x@example.com', buyer_user_id: 'u', linked_company_id: 'co', tier: 'spec02', is_test: false },
     ],
     spec_email_outbox: [],
     notifications: [],
