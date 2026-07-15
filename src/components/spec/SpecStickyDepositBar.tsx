@@ -143,8 +143,9 @@ export default function SpecStickyDepositBar({
     [rows, focalTier],
   );
 
+  // Human designation (SPEC-0N), never the raw slug; deposit from pricing.ts.
   const reserveLabel = reserveTemplate
-    .replace('{tier}', focalTier)
+    .replace('{tier}', copy.tierLabels[focalTier])
     .replace('{deposit}', formatCad(tierDepositCents(focalTier)));
 
   function handleReserve() {

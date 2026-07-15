@@ -7,39 +7,38 @@ import { trackSpecMarketingEvent } from '@/lib/marketing-analytics';
 import { specBillingAddressPath } from '@/lib/spec/deposit-entry';
 import type { SpecTier } from '@/lib/spec/pricing';
 import PackageCard, {
+  type PackageCheckpoint,
   type PackageExample,
-  type PackageMilestoneLabels,
+  type PackageWhiteLabelChip,
 } from './PackageCard';
 
 const ease = theme.animation.easing as [number, number, number, number];
 
 export interface PackageData {
   tier: SpecTier;
-  name: string;
+  designation: string;
   tagline: string;
-  startFrom: string;
-  headlineSub: string;
-  milestoneAmount: string;
-  subscriptionEstimate: string;
-  retainerAmount: string;
+  totalLine: string;
+  paymentLine: string;
+  careLine: string;
+  checkpoints: PackageCheckpoint[];
   features: string[];
   examples: PackageExample[];
   ctaText: string;
   recommended?: boolean;
+  /** SPEC-03 only — the quiet white-label chip. */
+  whiteLabel?: PackageWhiteLabelChip;
 }
 
 interface SpecPricingProps {
   sectionLabel: string;
   packages: PackageData[];
-  /** Shared labels reused across all three cards. */
-  milestoneLabels: PackageMilestoneLabels;
-  milestonesLabel: string;
-  milestonesNote: string;
+  checkpointsLabel: string;
+  checkpointsNote: string;
   examplesLabel: string;
-  subscriptionLabel: string;
-  subscriptionNote: string;
-  retainerLabel: string;
-  retainerNote: string;
+  careLabel: string;
+  careNote: string;
+  subscriptionFootnote: string;
   guaranteeBadge: string;
   recommendedBadge: string;
   detailsToggle: string;
@@ -50,7 +49,7 @@ interface SpecPricingProps {
   /** Copy + href used when depositsEnabled is false. */
   contactCtaText: string;
   contactCtaHref: string;
-  /** Questionnaire fit (null = none chosen). Drives card highlight + CTA primary. */
+  /** Guide fit (null = none chosen). Drives card highlight + CTA primary. */
   highlightedTier: SpecTier | null;
   /** "// YOUR FIT" tag + banner eyebrow. */
   yourFitLabel: string;
@@ -68,14 +67,12 @@ interface SpecPricingProps {
 export default function SpecPricing({
   sectionLabel,
   packages,
-  milestoneLabels,
-  milestonesLabel,
-  milestonesNote,
+  checkpointsLabel,
+  checkpointsNote,
   examplesLabel,
-  subscriptionLabel,
-  subscriptionNote,
-  retainerLabel,
-  retainerNote,
+  careLabel,
+  careNote,
+  subscriptionFootnote,
   guaranteeBadge,
   recommendedBadge,
   detailsToggle,
@@ -155,11 +152,12 @@ export default function SpecPricing({
           </div>
         )}
 
-        {/* Full-width 3-up tier comparison. The fit (or Build by default) is elevated. */}
+        {/* The ladder — wire it → run it → own it. Material weight ascends
+            left→right; the fit (or SPEC-02 by default) carries the accent CTA. */}
         <div className="grid grid-cols-1 md:grid-cols-3 gap-4 lg:gap-5 items-stretch">
           {packages.map((pkg, index) => {
             const isYourFit = highlightedTier === pkg.tier;
-            // One accent CTA on the page: the fit card if chosen, else Build.
+            // One accent CTA on the page: the fit card if chosen, else SPEC-02.
             const ctaPrimary = highlightedTier ? isYourFit : !!pkg.recommended;
             return (
               <motion.div
@@ -175,14 +173,12 @@ export default function SpecPricing({
                   isYourFit={isYourFit}
                   yourFitLabel={yourFitLabel}
                   ctaPrimary={ctaPrimary}
-                  milestoneLabels={milestoneLabels}
-                  milestonesLabel={milestonesLabel}
-                  milestonesNote={milestonesNote}
+                  checkpointsLabel={checkpointsLabel}
+                  checkpointsNote={checkpointsNote}
                   examplesLabel={examplesLabel}
-                  subscriptionLabel={subscriptionLabel}
-                  subscriptionNote={subscriptionNote}
-                  retainerLabel={retainerLabel}
-                  retainerNote={retainerNote}
+                  careLabel={careLabel}
+                  careNote={careNote}
+                  subscriptionFootnote={subscriptionFootnote}
                   guaranteeBadge={guaranteeBadge}
                   recommendedBadge={recommendedBadge}
                   detailsToggle={detailsToggle}

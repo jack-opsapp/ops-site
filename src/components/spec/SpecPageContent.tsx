@@ -16,7 +16,12 @@ import { SpecPageAnalytics } from './SpecPageAnalytics';
 import SpecPhoneWrapper from './phone-scene/SpecPhoneWrapper';
 import type { SpecPhase } from './phone-scene/constants';
 import type { SpecBoardSnapshot, SpecBoardTier } from '@/lib/spec/board';
-import type { SpecTier } from '@/lib/spec/pricing';
+import {
+  TIER_MILESTONE_SHAPE,
+  computeTierCheckpoints,
+  formatCad,
+  type SpecTier,
+} from '@/lib/spec/pricing';
 
 interface SpecPageContentProps {
   dict: Dictionary;
@@ -123,15 +128,31 @@ export function SpecPageContent({
     });
   }, []);
 
+  const checkpointLabels = {
+    p1: t(dict, 'packages.milestones.p1'),
+    p2: t(dict, 'packages.milestones.p2'),
+    p3: t(dict, 'packages.milestones.p3'),
+    p4: t(dict, 'packages.milestones.p4'),
+  } as const;
+
   const packages: PackageData[] = (['spec01', 'spec02', 'spec03'] as const).map((tier) => ({
     tier,
-    name: t(dict, `packages.${tier}.name`),
+    designation: t(dict, `packages.${tier}.designation`),
     tagline: t(dict, `packages.${tier}.tagline`),
-    startFrom: t(dict, `packages.${tier}.startFrom`),
-    headlineSub: t(dict, `packages.${tier}.headlineSub`),
-    milestoneAmount: t(dict, `packages.${tier}.milestoneAmount`),
-    subscriptionEstimate: t(dict, `packages.${tier}.subscriptionEstimate`),
-    retainerAmount: t(dict, `packages.${tier}.retainerAmount`),
+    totalLine: t(dict, `packages.${tier}.totalLine`),
+    paymentLine: t(dict, `packages.${tier}.paymentLine`),
+    careLine: t(dict, `packages.${tier}.careLine`),
+    // The real per-tier schedule from pricing.ts. On the floor shape the
+    // non-deposit amounts stay "—" — the total locks at scope sign-off.
+    checkpoints: computeTierCheckpoints(tier).map((checkpoint) => ({
+      key: checkpoint.key,
+      label: checkpointLabels[checkpoint.key],
+      amount:
+        TIER_MILESTONE_SHAPE[tier] === 'floor_quarters' && checkpoint.key !== 'p1'
+          ? '—'
+          : formatCad(checkpoint.cents),
+      isDeposit: checkpoint.key === 'p1',
+    })),
     features: (dict[`packages.${tier}.features`] as string[]) ?? [],
     examples: (dict[`packages.${tier}.examples`] as unknown as Array<{ trade: string; desc: string }>) ?? [],
     // When deposits are paused, blank the CTA label so the rendered
@@ -139,6 +160,14 @@ export function SpecPageContent({
     // agents — the visible UI shows "Talk to the founder" instead.
     ctaText: depositsEnabled ? t(dict, `packages.${tier}.ctaText`) : '',
     recommended: tier === 'spec02',
+    whiteLabel:
+      tier === 'spec03'
+        ? {
+            label: t(dict, 'whiteLabel.label'),
+            line: t(dict, 'whiteLabel.line'),
+            priceLine: t(dict, 'whiteLabel.priceLine'),
+          }
+        : undefined,
   }));
 
   const boardCopy: SpecOpsBoardCopy = {
@@ -191,9 +220,9 @@ export function SpecPageContent({
       {} as Record<SpecBoardTier, { nextIntake: string; delivery: string }>,
     ),
     tierLabels: {
-      spec01: t(dict, 'packages.spec01.name'),
-      spec02: t(dict, 'packages.spec02.name'),
-      spec03: t(dict, 'packages.spec03.name'),
+      spec01: t(dict, 'board.tierLabels.spec01'),
+      spec02: t(dict, 'board.tierLabels.spec02'),
+      spec03: t(dict, 'board.tierLabels.spec03'),
     },
   };
 
@@ -292,19 +321,12 @@ export function SpecPageContent({
       <SpecPricing
         sectionLabel={t(dict, 'packages.sectionLabel')}
         packages={packages}
-        milestoneLabels={{
-          p1: t(dict, 'packages.milestones.p1'),
-          p2: t(dict, 'packages.milestones.p2'),
-          p3: t(dict, 'packages.milestones.p3'),
-          p4: t(dict, 'packages.milestones.p4'),
-        }}
-        milestonesLabel={t(dict, 'packages.milestones.label')}
-        milestonesNote={t(dict, 'packages.milestonesNote')}
+        checkpointsLabel={t(dict, 'packages.milestones.label')}
+        checkpointsNote={t(dict, 'packages.milestonesNote')}
         examplesLabel={t(dict, 'packages.examplesLabel')}
-        subscriptionLabel={t(dict, 'packages.subscriptionLabel')}
-        subscriptionNote={t(dict, 'packages.subscriptionNote')}
-        retainerLabel={t(dict, 'packages.retainerLabel')}
-        retainerNote={t(dict, 'packages.retainerNote')}
+        careLabel={t(dict, 'packages.retainerLabel')}
+        careNote={t(dict, 'packages.retainerNote')}
+        subscriptionFootnote={t(dict, 'ongoing.subscriptionNote')}
         guaranteeBadge={t(dict, 'packages.guaranteeBadge')}
         recommendedBadge={t(dict, 'packages.recommendedBadge')}
         detailsToggle={t(dict, 'packages.detailsToggle')}
