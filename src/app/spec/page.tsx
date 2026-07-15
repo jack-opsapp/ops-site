@@ -26,6 +26,7 @@ import type { Metadata } from 'next';
 import { getLocale, getTDict, buildLocaleAlternates, buildLocaleUrl } from '@/i18n/server';
 import { SpecPageContent } from '@/components/spec/SpecPageContent';
 import { getSpecBoardSnapshot } from '@/lib/spec/board';
+import { filterDepositClaims } from '@/lib/spec/dict-filter';
 import { isValidTier, type SpecTier } from '@/lib/spec/pricing';
 
 export async function generateMetadata(): Promise<Metadata> {
@@ -65,19 +66,11 @@ export default async function SpecPage({ searchParams }: SpecPageProps) {
   const depositsEnabled = process.env.SPEC_LIVE_DEPOSITS_ENABLED === 'true';
 
   // Strip deposit-claim copy from the dict before it lands in the RSC
-  // hydration payload. Otherwise crawlers + AI agents see "Pay $750
+  // hydration payload. Otherwise crawlers + AI agents see "Pay $1,000
   // Deposit" in the page source even though the visible UI renders the
-  // "Talk to the founder" link.
-  const dict = depositsEnabled
-    ? rawDict
-    : Object.fromEntries(
-        Object.entries(rawDict).filter(
-          ([key]) =>
-            !(key.startsWith('packages.') && key.endsWith('.ctaText')) &&
-            !(key.startsWith('packages.') && key.endsWith('.deposit')) &&
-            !key.startsWith('confirmation.'),
-        ),
-      );
+  // "Talk to the founder" link. Scoped to package deposit claims only —
+  // see lib/spec/dict-filter.ts + its surviving-keys tests.
+  const dict = depositsEnabled ? rawDict : filterDepositClaims(rawDict);
 
   // Server-fetch the OPS BOARD snapshot. Always resolves — falls back to
   // a stale-empty payload that the client component renders as the
