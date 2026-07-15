@@ -1,0 +1,141 @@
+{
+  "generatedAt": "2026-07-15T06:56:27.056Z",
+  "tosVersionHash": "d17270e18eae02d1454a2707edc1e2d1a3d666ce6a2998daa8406a6bddf35d44",
+  "note": "Payloads captured at the stripe.checkout.sessions.create boundary from the production code path. Live test-mode acceptance is a deposit-flip gate (07_ROLLOUT § Phase 0) pending a test key.",
+  "sessions": [
+    {
+      "tier": "spec01",
+      "params": {
+        "mode": "payment",
+        "customer": "cus_capture_dummy",
+        "automatic_tax": {
+          "enabled": true
+        },
+        "billing_address_collection": "required",
+        "consent_collection": {
+          "terms_of_service": "required"
+        },
+        "phone_number_collection": {
+          "enabled": true
+        },
+        "custom_fields": [
+          {
+            "key": "gst_hst_number",
+            "label": {
+              "type": "custom",
+              "custom": "GST/HST number (optional)"
+            },
+            "type": "text",
+            "optional": true
+          }
+        ],
+        "customer_update": {
+          "address": "auto",
+          "name": "auto",
+          "shipping": "auto"
+        },
+        "line_items": [
+          {
+            "price_data": {
+              "currency": "cad",
+              "product_data": {
+                "name": "OPS SPEC-01 — WORKFLOWS — 50% Deposit",
+                "description": "Books your slot and funds discovery + scope sign-off. The other half is invoiced at the delivery walkthrough, net-15."
+              },
+              "unit_amount": 100000,
+              "tax_behavior": "exclusive"
+            },
+            "quantity": 1
+          }
+        ],
+        "metadata": {
+          "type": "spec_deposit",
+          "spec_project_id": "00000000-0000-0000-0000-0000000000a1",
+          "user_id": "00000000-0000-0000-0000-0000000000e1",
+          "company_id": "00000000-0000-0000-0000-0000000000c0",
+          "tier": "spec01",
+          "tos_version_hash": "d17270e18eae02d1454a2707edc1e2d1a3d666ce6a2998daa8406a6bddf35d44"
+        },
+        "payment_intent_data": {
+          "metadata": {
+            "type": "spec_deposit",
+            "spec_project_id": "00000000-0000-0000-0000-0000000000a1",
+            "user_id": "00000000-0000-0000-0000-0000000000e1",
+            "company_id": "00000000-0000-0000-0000-0000000000c0",
+            "tier": "spec01",
+            "tos_version_hash": "d17270e18eae02d1454a2707edc1e2d1a3d666ce6a2998daa8406a6bddf35d44"
+          }
+        },
+        "success_url": "https://opsapp.co/spec/confirmation?session_id={CHECKOUT_SESSION_ID}",
+        "cancel_url": "https://opsapp.co/spec"
+      }
+    },
+    {
+      "tier": "spec03",
+      "params": {
+        "mode": "payment",
+        "customer": "cus_capture_dummy",
+        "automatic_tax": {
+          "enabled": true
+        },
+        "billing_address_collection": "required",
+        "consent_collection": {
+          "terms_of_service": "required"
+        },
+        "phone_number_collection": {
+          "enabled": true
+        },
+        "custom_fields": [
+          {
+            "key": "gst_hst_number",
+            "label": {
+              "type": "custom",
+              "custom": "GST/HST number (optional)"
+            },
+            "type": "text",
+            "optional": true
+          }
+        ],
+        "customer_update": {
+          "address": "auto",
+          "name": "auto",
+          "shipping": "auto"
+        },
+        "line_items": [
+          {
+            "price_data": {
+              "currency": "cad",
+              "product_data": {
+                "name": "OPS SPEC-03 — PROPRIETARY — Deposit",
+                "description": "Fixed against the $25,000 floor. Your total locks at scope sign-off; the remainder is split across three checkpoints, invoiced net-15."
+              },
+              "unit_amount": 625000,
+              "tax_behavior": "exclusive"
+            },
+            "quantity": 1
+          }
+        ],
+        "metadata": {
+          "type": "spec_deposit",
+          "spec_project_id": "00000000-0000-0000-0000-0000000000a1",
+          "user_id": "00000000-0000-0000-0000-0000000000e1",
+          "company_id": "00000000-0000-0000-0000-0000000000c0",
+          "tier": "spec03",
+          "tos_version_hash": "d17270e18eae02d1454a2707edc1e2d1a3d666ce6a2998daa8406a6bddf35d44"
+        },
+        "payment_intent_data": {
+          "metadata": {
+            "type": "spec_deposit",
+            "spec_project_id": "00000000-0000-0000-0000-0000000000a1",
+            "user_id": "00000000-0000-0000-0000-0000000000e1",
+            "company_id": "00000000-0000-0000-0000-0000000000c0",
+            "tier": "spec03",
+            "tos_version_hash": "d17270e18eae02d1454a2707edc1e2d1a3d666ce6a2998daa8406a6bddf35d44"
+          }
+        },
+        "success_url": "https://opsapp.co/spec/confirmation?session_id={CHECKOUT_SESSION_ID}",
+        "cancel_url": "https://opsapp.co/spec"
+      }
+    }
+  ]
+}
