@@ -5,6 +5,7 @@ import type { Dictionary } from '@/i18n/types';
 import SpecHero from './SpecHero';
 import HowItWorks from './HowItWorks';
 import SpecPricing, { type PackageData } from './SpecPricing';
+import SpecWhiteLabel from './SpecWhiteLabel';
 import WhatsIncluded from './WhatsIncluded';
 import SpecFAQ from './SpecFAQ';
 import SpecBottomCTA from './SpecBottomCTA';
@@ -344,11 +345,20 @@ export function SpecPageContent({
         onOpenQuestionnaire={openQuestionnaire}
       />
 
+      {/* White-label strip — quiet, after the SPEC-03 card zone (10 § 8.6). */}
+      <SpecWhiteLabel
+        label={t(dict, 'whiteLabel.label')}
+        line={t(dict, 'whiteLabel.line')}
+        priceLine={t(dict, 'whiteLabel.priceLine')}
+        detail={t(dict, 'whiteLabel.detail')}
+      />
+
       <WhatsIncluded
         sectionLabel={t(dict, 'included.sectionLabel')}
         items={(dict['included.every'] as string[]) ?? []}
         ongoingLabel={t(dict, 'included.ongoingLabel')}
         ongoingItems={(dict['included.ongoing'] as string[]) ?? []}
+        ongoingFinePrint={[t(dict, 'ongoing.careStartNote'), t(dict, 'ongoing.overageNote')]}
       />
 
       <SpecGuarantees

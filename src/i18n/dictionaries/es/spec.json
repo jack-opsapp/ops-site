@@ -6,7 +6,6 @@
   "hero.ctaHowItWorks": "Cómo funciona",
   "hero.founderEyebrow": "// CONSTRUIDO POR OFICIOS",
   "hero.founderLine": "Escalé un negocio de decks y barandas antes de escribir OPS. SPEC empieza igual: problemas de campo primero, software después.",
-
   "process.sectionLabel": "CÓMO FUNCIONA",
   "process.step1.number": "01",
   "process.step1.title": "Elige tu nivel, reserva tu lugar",
@@ -20,7 +19,6 @@
   "process.step4.number": "04",
   "process.step4.title": "En vivo. Y sigue corriendo.",
   "process.step4.desc": "Recorrido de entrega, luego un periodo de soporte — 30, 60 o 90 días según el nivel. El trabajo alojado por nosotros lleva después un plan de cuidado mensual fijo. Sin porcentajes, sin sorpresas.",
-
   "board.sectionLabel": "OPS BOARD",
   "board.subEyebrow": "Capacidad actual de admisión SPEC",
   "board.liveLabel": "EN VIVO",
@@ -60,7 +58,6 @@
   "board.fallback.spec02.delivery": "3-5 SEMANAS",
   "board.fallback.spec03.nextIntake": "SIGUIENTE ESPACIO",
   "board.fallback.spec03.delivery": "6-10 SEMANAS",
-
   "packages.sectionLabel": "LA ESCALERA",
   "packages.spec01.name": "WORKFLOWS",
   "packages.spec01.designation": "SPEC-01 · WORKFLOWS",
@@ -81,15 +78,23 @@
     "30 días de soporte"
   ],
   "packages.spec01.examples": [
-    { "trade": "TECHADOR", "desc": "Las facturas de proveedores llegan a tu correo → registradas en tu libro mayor, archivadas por trabajo, marcadas para revisión" },
-    { "trade": "PLOMERO", "desc": "Adjuntos de correo → la carpeta de trabajo correcta, con el nombre correcto, sin archivar los viernes por la noche" },
-    { "trade": "JARDINERO", "desc": "Formulario de leads del sitio web → la lista de llamadas de mañana, con los detalles ya completos" }
+    {
+      "trade": "TECHADOR",
+      "desc": "Las facturas de proveedores llegan a tu correo → registradas en tu libro mayor, archivadas por trabajo, marcadas para revisión"
+    },
+    {
+      "trade": "PLOMERO",
+      "desc": "Adjuntos de correo → la carpeta de trabajo correcta, con el nombre correcto, sin archivar los viernes por la noche"
+    },
+    {
+      "trade": "JARDINERO",
+      "desc": "Formulario de leads del sitio web → la lista de llamadas de mañana, con los detalles ya completos"
+    }
   ],
   "packages.spec01.ongoing": "Sin mensualidad. Las automatizaciones son tuyas, corriendo en tus propias cuentas.",
   "packages.spec01.subscriptionEstimate": "+15% sobre la suscripción OPS base",
   "packages.spec01.retainerAmount": "$250/mes",
   "packages.spec01.ctaText": "Pagar $1,000 de Depósito",
-
   "packages.spec02.name": "SYSTEMS",
   "packages.spec02.designation": "SPEC-02 · SYSTEMS",
   "packages.spec02.tagline": "La columna vertebral de tu operación, manejada por nosotros",
@@ -110,14 +115,19 @@
     "60 días de soporte"
   ],
   "packages.spec02.examples": [
-    { "trade": "HVAC", "desc": "Trabajos, clientes y facturas en una sola columna vertebral — con un tablero que muestra el margen por trabajo" },
-    { "trade": "PINTOR", "desc": "Cinco años de historial de estimaciones depurado e importado — tableros de margen desde el día uno" }
+    {
+      "trade": "HVAC",
+      "desc": "Trabajos, clientes y facturas en una sola columna vertebral — con un tablero que muestra el margen por trabajo"
+    },
+    {
+      "trade": "PINTOR",
+      "desc": "Cinco años de historial de estimaciones depurado e importado — tableros de margen desde el día uno"
+    }
   ],
   "packages.spec02.ongoing": "$395/mes de cuidado después del periodo de soporte — monitoreo, correcciones, 2 horas de cambios incluidas. Alojamiento incluido cuando nosotros manejamos tu sistema.",
   "packages.spec02.subscriptionEstimate": "+30% sobre la suscripción OPS base",
   "packages.spec02.retainerAmount": "$395/mes",
   "packages.spec02.ctaText": "Pagar $1,875 de Depósito",
-
   "packages.spec03.name": "PROPRIETARY",
   "packages.spec03.designation": "SPEC-03 · PROPRIETARY",
   "packages.spec03.tagline": "Una app independiente, construida solo para ti",
@@ -137,15 +147,23 @@
     "90 días de soporte"
   ],
   "packages.spec03.examples": [
-    { "trade": "CONSTRUCTOR DE DECKS", "desc": "Deckset — dibuja el deck, cotiza los materiales, entrega al cliente un renderizado" },
-    { "trade": "TECHADOR", "desc": "Un estimador de medición de techos construido alrededor de tus precios, tus materiales, tus equipos" },
-    { "trade": "JARDINERÍA", "desc": "Planificador de rutas y jardines — equipos, camiones y zonas en un solo tablero" }
+    {
+      "trade": "CONSTRUCTOR DE DECKS",
+      "desc": "Deckset — dibuja el deck, cotiza los materiales, entrega al cliente un renderizado"
+    },
+    {
+      "trade": "TECHADOR",
+      "desc": "Un estimador de medición de techos construido alrededor de tus precios, tus materiales, tus equipos"
+    },
+    {
+      "trade": "JARDINERÍA",
+      "desc": "Planificador de rutas y jardines — equipos, camiones y zonas en un solo tablero"
+    }
   ],
   "packages.spec03.ongoing": "desde $750/mes de cuidado después del periodo de soporte — infraestructura, actualizaciones, soporte, cumplimiento de tiendas, 3 horas de cambios incluidas.",
   "packages.spec03.subscriptionEstimate": "+50% sobre la suscripción OPS base",
   "packages.spec03.retainerAmount": "$750/mes",
   "packages.spec03.ctaText": "Pagar $6,250 de Depósito",
-
   "packages.contactCta": "Habla con el fundador",
   "packages.recommendedBadge": "MÁS ELEGIDO",
   "packages.detailsToggle": "DETALLES",
@@ -162,24 +180,15 @@
   "packages.retainerLabel": "PLAN DE CUIDADO",
   "packages.retainerNote": "Mensualidad fija. Empieza cuando termina el periodo de soporte.",
   "packages.guaranteeBadge": "30 DÍAS PARA RETIRARTE",
-
   "whiteLabel.label": "// MARCA BLANCA",
   "whiteLabel.line": "Tu nombre al frente. Nosotros manejamos todo lo demás.",
   "whiteLabel.priceLine": "+$4,000 en la construcción · +$200/mes en el cuidado",
   "whiteLabel.detail": "Tu nombre, tu ícono, tu ficha en el App Store — publicada y operada por OPS de principio a fin. La línea de Vendedor de la tienda dice OPS; todo lo visible es tuyo. ¿Quieres la propiedad completa después? El App Transfer de Apple mueve la app a tu propia cuenta, con las reseñas intactas.",
-
-  "ongoing.sectionLabel": "LO QUE CUESTA MANTENERLO CORRIENDO",
-  "ongoing.intro": "Números fijos. Nada escala sobre tu suscripción, y nada cambia sin cotización.",
-  "ongoing.spec01.line": "Sin mensualidad. Las automatizaciones son tuyas, corriendo en tus propias cuentas.",
-  "ongoing.spec02.line": "$395/mes de cuidado — monitoreo, correcciones, 2 horas de cambios incluidas. Alojamiento incluido cuando nosotros manejamos tu sistema.",
-  "ongoing.spec03.line": "desde $750/mes de cuidado — infraestructura, actualizaciones, soporte, cumplimiento de tiendas, 3 horas de cambios incluidas.",
   "ongoing.overageNote": "Más allá de las horas incluidas: $200/hr, cotizado antes de empezar.",
   "ongoing.careStartNote": "El cuidado se factura cuando termina tu periodo de soporte — 30, 60 o 90 días después de la entrega.",
   "ongoing.subscriptionNote": "La suscripción OPS es su propio producto. Aplica solo si usas OPS — y empieza gratis.",
-
   "stickyBar.reserveTemplate": "Reserva tu lugar en {tier} — depósito de {deposit}",
   "stickyBar.ariaLabel": "Reserva tu lugar en SPEC",
-
   "questionnaire.entryPrompt": "¿No sabes cuál te queda?",
   "questionnaire.entryCta": "AYÚDAME A ELEGIR",
   "questionnaire.barCta": "Ayúdame a elegir",
@@ -208,7 +217,6 @@
   "questionnaire.rationale.spec01": "SPEC-01 te queda — tus herramientas conectadas entre sí, en vivo en días.",
   "questionnaire.rationale.spec02": "SPEC-02 te queda — una sola columna vertebral para tu operación, manejada por nosotros.",
   "questionnaire.rationale.spec03": "SPEC-03 te queda — una herramienta independiente construida solo para ti.",
-
   "included.sectionLabel": "QUÉ INCLUYE CADA NIVEL",
   "included.every": [
     "Un alcance por escrito que firmas antes de que empiece la construcción",
@@ -226,7 +234,6 @@
     "Horas de cambios más allá del plan: $200/hr, cotizadas antes de empezar",
     "Suscripción OPS: un producto aparte, solo si usas OPS — empieza gratis"
   ],
-
   "guarantees.sectionLabel": "RESPALDAMOS EL TRABAJO",
   "guarantees.col1.title": "30 días para retirarte",
   "guarantees.col1.body": "En todos los niveles. Una sola invocación, aviso por escrito, sin necesidad de probar defectos. Treinta días desde la entrega para decidir que no es lo correcto.",
@@ -237,7 +244,6 @@
   "guarantees.footerPrefix": "Términos completos:",
   "guarantees.footerLinkText": "TÉRMINOS SPEC",
   "guarantees.footerLinkHref": "/legal?page=spec-terms",
-
   "faq.sectionLabel": "PREGUNTAS",
   "faq.items": [
     {
@@ -297,13 +303,11 @@
       "answer": "No tomamos tu negocio de rehén. La falta de pago pausa el sistema después de un aviso, y la salida está definida en los términos: tus datos se exportan limpios, los activos de tu marca siguen siendo tuyos, y en las apps de marca blanca el camino del App Transfer siempre está abierto. Lo que no hacemos es operar infraestructura gratis."
     }
   ],
-
   "bottomCta.heading": "TE TOCA.",
   "bottomCta.subtitle": "Empieza con una conversación. Te diremos qué nivel es el tuyo — o que todavía no necesitas ninguno.",
   "bottomCta.ctaText": "Ver los paquetes",
   "bottomCta.defaultOpsText": "¿No estás listo para una construcción? OPS empieza gratis",
   "bottomCta.defaultOpsHref": "https://app.opsapp.co/setup?source=spec",
-
   "confirmation.heading": "Estás dentro.",
   "confirmation.subtitle": "Depósito recibido. Tu enlace de admisión está en camino — eso es lo siguiente que importa.",
   "confirmation.timeline.spec01": "Las construcciones SPEC-01 se entregan en 1-2 semanas.",

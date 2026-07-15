@@ -6,7 +6,6 @@
   "hero.ctaHowItWorks": "How it works",
   "hero.founderEyebrow": "// BUILT BY TRADES",
   "hero.founderLine": "I scaled a deck and railing business before writing OPS. SPEC starts the same way: field problems first, software second.",
-
   "process.sectionLabel": "HOW IT WORKS",
   "process.step1.number": "01",
   "process.step1.title": "Pick your tier, book your slot",
@@ -20,7 +19,6 @@
   "process.step4.number": "04",
   "process.step4.title": "Go live. Keep it running.",
   "process.step4.desc": "Delivery walkthrough, then a support window — 30, 60, or 90 days by tier. Hosted work carries a flat monthly care plan after that. No percentages, no surprises.",
-
   "board.sectionLabel": "OPS BOARD",
   "board.subEyebrow": "Current SPEC intake capacity",
   "board.liveLabel": "LIVE",
@@ -60,7 +58,6 @@
   "board.fallback.spec02.delivery": "3-5 WEEKS",
   "board.fallback.spec03.nextIntake": "NEXT OPEN SLOT",
   "board.fallback.spec03.delivery": "6-10 WEEKS",
-
   "packages.sectionLabel": "THE LADDER",
   "packages.spec01.name": "WORKFLOWS",
   "packages.spec01.designation": "SPEC-01 · WORKFLOWS",
@@ -81,15 +78,23 @@
     "30-day support window"
   ],
   "packages.spec01.examples": [
-    { "trade": "ROOFER", "desc": "Supplier invoices land in your inbox → logged in your master ledger, filed by job, flagged for review" },
-    { "trade": "PLUMBER", "desc": "Email attachments → the right job folder, named right, no Friday-night filing" },
-    { "trade": "LANDSCAPER", "desc": "Website lead form → tomorrow's call list, details already filled in" }
+    {
+      "trade": "ROOFER",
+      "desc": "Supplier invoices land in your inbox → logged in your master ledger, filed by job, flagged for review"
+    },
+    {
+      "trade": "PLUMBER",
+      "desc": "Email attachments → the right job folder, named right, no Friday-night filing"
+    },
+    {
+      "trade": "LANDSCAPER",
+      "desc": "Website lead form → tomorrow's call list, details already filled in"
+    }
   ],
   "packages.spec01.ongoing": "No monthly. The automations are yours, running in your own accounts.",
   "packages.spec01.subscriptionEstimate": "+15% on base OPS subscription",
   "packages.spec01.retainerAmount": "$250/mo",
   "packages.spec01.ctaText": "Pay $1,000 Deposit",
-
   "packages.spec02.name": "SYSTEMS",
   "packages.spec02.designation": "SPEC-02 · SYSTEMS",
   "packages.spec02.tagline": "Your operation's backbone, run for you",
@@ -110,14 +115,19 @@
     "60-day support window"
   ],
   "packages.spec02.examples": [
-    { "trade": "HVAC", "desc": "Jobs, clients, and invoices in one backbone — with an owner dashboard that shows margin per job" },
-    { "trade": "PAINTER", "desc": "Five years of estimate history cleaned and imported — margin dashboards from day one" }
+    {
+      "trade": "HVAC",
+      "desc": "Jobs, clients, and invoices in one backbone — with an owner dashboard that shows margin per job"
+    },
+    {
+      "trade": "PAINTER",
+      "desc": "Five years of estimate history cleaned and imported — margin dashboards from day one"
+    }
   ],
   "packages.spec02.ongoing": "$395/mo care after the support window — monitoring, fixes, 2 change-hours included. Hosting included when we run your backbone.",
   "packages.spec02.subscriptionEstimate": "+30% on base OPS subscription",
   "packages.spec02.retainerAmount": "$395/mo",
   "packages.spec02.ctaText": "Pay $1,875 Deposit",
-
   "packages.spec03.name": "PROPRIETARY",
   "packages.spec03.designation": "SPEC-03 · PROPRIETARY",
   "packages.spec03.tagline": "A standalone app, built only for you",
@@ -137,15 +147,23 @@
     "90-day support window"
   ],
   "packages.spec03.examples": [
-    { "trade": "DECK BUILDER", "desc": "Deckset — draw the deck, price the materials, hand the client a rendering" },
-    { "trade": "ROOFER", "desc": "A roof-measure estimator built around your pricing, your materials, your crews" },
-    { "trade": "LANDSCAPING", "desc": "Route and bed planner — crews, trucks, and beds on one board" }
+    {
+      "trade": "DECK BUILDER",
+      "desc": "Deckset — draw the deck, price the materials, hand the client a rendering"
+    },
+    {
+      "trade": "ROOFER",
+      "desc": "A roof-measure estimator built around your pricing, your materials, your crews"
+    },
+    {
+      "trade": "LANDSCAPING",
+      "desc": "Route and bed planner — crews, trucks, and beds on one board"
+    }
   ],
   "packages.spec03.ongoing": "from $750/mo care after the support window — infrastructure, updates, support, store compliance, 3 change-hours included.",
   "packages.spec03.subscriptionEstimate": "+50% on base OPS subscription",
   "packages.spec03.retainerAmount": "$750/mo",
   "packages.spec03.ctaText": "Pay $6,250 Deposit",
-
   "packages.contactCta": "Talk to the founder",
   "packages.recommendedBadge": "MOST CHOSEN",
   "packages.detailsToggle": "DETAILS",
@@ -162,24 +180,15 @@
   "packages.retainerLabel": "CARE PLAN",
   "packages.retainerNote": "Flat monthly. Starts when the support window ends.",
   "packages.guaranteeBadge": "30 DAYS TO WALK AWAY",
-
   "whiteLabel.label": "// WHITE LABEL",
   "whiteLabel.line": "Your name on it. We run everything behind it.",
   "whiteLabel.priceLine": "+$4,000 at build · +$200/mo on care",
   "whiteLabel.detail": "Your name, your icon, your App Store listing — published and operated by OPS end to end. The store's Seller line reads OPS; everything above the fold is you. Want full ownership later? Apple's App Transfer moves it to your account, reviews intact.",
-
-  "ongoing.sectionLabel": "WHAT IT COSTS TO KEEP RUNNING",
-  "ongoing.intro": "Flat numbers. Nothing scales off your subscription, and nothing changes without a quote.",
-  "ongoing.spec01.line": "No monthly. The automations are yours, running in your own accounts.",
-  "ongoing.spec02.line": "$395/mo care — monitoring, fixes, 2 change-hours included. Hosting included when we run your backbone.",
-  "ongoing.spec03.line": "from $750/mo care — infrastructure, updates, support, store compliance, 3 change-hours included.",
   "ongoing.overageNote": "Beyond the included hours: $200/hr, quoted before we start.",
   "ongoing.careStartNote": "Care billing starts when your support window ends — 30, 60, or 90 days after delivery.",
   "ongoing.subscriptionNote": "The OPS subscription is its own product. It applies only if you run OPS — and it starts free.",
-
   "stickyBar.reserveTemplate": "Reserve your {tier} slot — {deposit} deposit",
   "stickyBar.ariaLabel": "Reserve your SPEC slot",
-
   "questionnaire.entryPrompt": "Not sure which fits?",
   "questionnaire.entryCta": "HELP ME CHOOSE",
   "questionnaire.barCta": "Help me choose",
@@ -208,7 +217,6 @@
   "questionnaire.rationale.spec01": "SPEC-01 fits — your tools wired together, live in days.",
   "questionnaire.rationale.spec02": "SPEC-02 fits — one backbone for your whole operation, run for you.",
   "questionnaire.rationale.spec03": "SPEC-03 fits — a standalone tool built only for you.",
-
   "included.sectionLabel": "WHAT EVERY TIER INCLUDES",
   "included.every": [
     "A written scope you countersign before build starts",
@@ -226,7 +234,6 @@
     "Change-hours beyond the plan: $200/hr, quoted before we start",
     "OPS subscription: a separate product, only if you run OPS — starts free"
   ],
-
   "guarantees.sectionLabel": "STANDING BEHIND THE WORK",
   "guarantees.col1.title": "30 days to walk away",
   "guarantees.col1.body": "Every tier. One invocation, written notice, no defect proof required. Thirty days from delivery to decide it isn't right.",
@@ -237,7 +244,6 @@
   "guarantees.footerPrefix": "Full terms:",
   "guarantees.footerLinkText": "SPEC TERMS",
   "guarantees.footerLinkHref": "/legal?page=spec-terms",
-
   "faq.sectionLabel": "QUESTIONS",
   "faq.items": [
     {
@@ -297,13 +303,11 @@
       "answer": "We don't hold your business hostage. Non-payment pauses the system after notice, and off-boarding is defined in the terms: your data exports clean, your brand assets stay yours, and on white-label apps the App Transfer path is always open. What we don't do is keep operating infrastructure for free."
     }
   ],
-
   "bottomCta.heading": "YOUR MOVE.",
   "bottomCta.subtitle": "Start with a conversation. We'll tell you which tier is yours — or that you don't need one yet.",
   "bottomCta.ctaText": "See the packages",
   "bottomCta.defaultOpsText": "Not ready for a build? OPS starts free",
   "bottomCta.defaultOpsHref": "https://app.opsapp.co/setup?source=spec",
-
   "confirmation.heading": "You're in.",
   "confirmation.subtitle": "Deposit received. Your intake link is on the way — that's the next thing that matters.",
   "confirmation.timeline.spec01": "SPEC-01 builds deliver in 1-2 weeks.",

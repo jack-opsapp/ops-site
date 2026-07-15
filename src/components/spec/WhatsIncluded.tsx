@@ -11,6 +11,8 @@ interface WhatsIncludedProps {
   items: string[];
   ongoingLabel: string;
   ongoingItems: string[];
+  /** Fine print under the ongoing list — care-start timing + overage rule. */
+  ongoingFinePrint: string[];
 }
 
 export default function WhatsIncluded({
@@ -18,6 +20,7 @@ export default function WhatsIncluded({
   items,
   ongoingLabel,
   ongoingItems,
+  ongoingFinePrint,
 }: WhatsIncludedProps) {
   return (
     <section className="py-24 md:py-32 bg-ops-background">
@@ -61,6 +64,18 @@ export default function WhatsIncluded({
                 </div>
               ))}
             </div>
+            {ongoingFinePrint.length > 0 && (
+              <div className="mt-6 border-t border-white/[0.06] pt-4 flex flex-col gap-1.5">
+                {ongoingFinePrint.map((line) => (
+                  <p
+                    key={line}
+                    className="font-heading font-light text-xs text-ops-text-tertiary leading-relaxed"
+                  >
+                    {line}
+                  </p>
+                ))}
+              </div>
+            )}
           </motion.div>
         </div>
       </div>

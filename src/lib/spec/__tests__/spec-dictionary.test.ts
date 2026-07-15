@@ -122,17 +122,14 @@ test('SPEC dictionaries expose all customer-facing package pricing keys', () => 
       requiredString(dict, `board.fallback.${tier}.nextIntake`);
       requiredString(dict, `board.fallback.${tier}.delivery`);
       requiredString(dict, `board.tierLabels.${tier}`);
-      requiredString(dict, `ongoing.${tier}.line`);
     }
 
-    // v2 white-label strip + ongoing-costs keys (flat numbers only).
+    // v2 white-label strip + ongoing-costs fine print (flat numbers only).
     for (const key of [
       'whiteLabel.label',
       'whiteLabel.line',
       'whiteLabel.priceLine',
       'whiteLabel.detail',
-      'ongoing.sectionLabel',
-      'ongoing.intro',
       'ongoing.overageNote',
       'ongoing.careStartNote',
       'ongoing.subscriptionNote',
@@ -144,8 +141,14 @@ test('SPEC dictionaries expose all customer-facing package pricing keys', () => 
     // carry no percentage at all (payment shapes differ per tier) and no
     // "may increase" hedging survives anywhere in the ongoing strings.
     assert.doesNotMatch(requiredString(dict, 'process.step1.desc'), /\d+\s?%/);
-    for (const key of ['ongoing.intro', 'ongoing.overageNote', 'ongoing.subscriptionNote']) {
-      assert.doesNotMatch(requiredString(dict, key), /may increase|puede aumentar/i);
+    const ongoingItems = (dict['included.ongoing'] as unknown as string[]) ?? [];
+    assert.ok(ongoingItems.length >= 4, 'included.ongoing must carry the flat-number list');
+    for (const line of [
+      ...ongoingItems,
+      requiredString(dict, 'ongoing.overageNote'),
+      requiredString(dict, 'ongoing.subscriptionNote'),
+    ]) {
+      assert.doesNotMatch(line, /may increase|puede aumentar/i);
     }
   }
 });
