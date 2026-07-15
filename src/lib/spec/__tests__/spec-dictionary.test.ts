@@ -37,9 +37,15 @@ function assertTierCopy(dict: SpecDictionary, tier: SpecTier) {
   assert.match(requiredString(dict, `packages.${tier}.startFrom`), escaped(deposit));
   assert.match(requiredString(dict, `packages.${tier}.headlineSub`), escaped(total));
   assert.equal(requiredString(dict, `packages.${tier}.milestoneAmount`), deposit);
-  assert.match(requiredString(dict, `packages.${tier}.subscriptionEstimate`), /%/);
-  assert.match(requiredString(dict, `packages.${tier}.retainerAmount`), /^\$/);
   assert.match(requiredString(dict, `packages.${tier}.ctaText`), escaped(deposit));
+
+  // v2 schema (10_TIER_MODEL_V2 § 2): designation lockup, total, payment
+  // shape, and care line — the four numbers-facing strings every card renders.
+  assert.match(requiredString(dict, `packages.${tier}.designation`), /^SPEC-0[123] · /);
+  assert.match(requiredString(dict, `packages.${tier}.totalLine`), escaped(total));
+  assert.match(requiredString(dict, `packages.${tier}.paymentLine`), escaped(deposit));
+  requiredString(dict, `packages.${tier}.careLine`);
+  requiredString(dict, `packages.${tier}.tagline`);
 }
 
 test('SPEC dictionaries expose all customer-facing package pricing keys', () => {
@@ -115,9 +121,31 @@ test('SPEC dictionaries expose all customer-facing package pricing keys', () => 
     for (const tier of SPEC_TIERS) {
       requiredString(dict, `board.fallback.${tier}.nextIntake`);
       requiredString(dict, `board.fallback.${tier}.delivery`);
+      requiredString(dict, `board.tierLabels.${tier}`);
+      requiredString(dict, `ongoing.${tier}.line`);
     }
 
-    assert.doesNotMatch(requiredString(dict, 'process.step1.desc'), /50%/);
-    assert.match(requiredString(dict, 'process.step1.desc'), /25%/);
+    // v2 white-label strip + ongoing-costs keys (flat numbers only).
+    for (const key of [
+      'whiteLabel.label',
+      'whiteLabel.line',
+      'whiteLabel.priceLine',
+      'whiteLabel.detail',
+      'ongoing.sectionLabel',
+      'ongoing.intro',
+      'ongoing.overageNote',
+      'ongoing.careStartNote',
+      'ongoing.subscriptionNote',
+    ]) {
+      requiredString(dict, key);
+    }
+
+    // v2 retired the per-tier percentage payment claim — process step 1 must
+    // carry no percentage at all (payment shapes differ per tier) and no
+    // "may increase" hedging survives anywhere in the ongoing strings.
+    assert.doesNotMatch(requiredString(dict, 'process.step1.desc'), /\d+\s?%/);
+    for (const key of ['ongoing.intro', 'ongoing.overageNote', 'ongoing.subscriptionNote']) {
+      assert.doesNotMatch(requiredString(dict, key), /may increase|puede aumentar/i);
+    }
   }
 });

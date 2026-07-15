@@ -1,28 +1,28 @@
 {
-  "hero.eyebrow": "OPS A MEDIDA",
-  "hero.heading": "TU FLUJO DE TRABAJO. TUS MÓDULOS. TU OPS.",
-  "hero.subtitle": "Trabajamos contigo para construir módulos personalizados que se ajusten a cómo realmente manejas tu negocio. No una plantilla. No un parche. Software moldeado alrededor de tu operación, construido sobre la base de OPS.",
-  "hero.ctaPackages": "Ver Paquetes",
-  "hero.ctaHowItWorks": "Cómo Funciona",
+  "hero.eyebrow": "OPS SPEC",
+  "hero.heading": "CONSTRUIMOS LA MÁQUINA QUE MANEJA TU NEGOCIO.",
+  "hero.subtitle": "Conecta tu correo con tu libro mayor. Corre toda tu operación sobre una sola columna vertebral. Pon tu propia app en manos de tu equipo. Precios fijos, pagados por puntos de control — y 30 días para retirarte.",
+  "hero.ctaPackages": "Ver los paquetes",
+  "hero.ctaHowItWorks": "Cómo funciona",
   "hero.founderEyebrow": "// CONSTRUIDO POR OFICIOS",
   "hero.founderLine": "Escalé un negocio de decks y barandas antes de escribir OPS. SPEC empieza igual: problemas de campo primero, software después.",
 
   "process.sectionLabel": "CÓMO FUNCIONA",
   "process.step1.number": "01",
-  "process.step1.title": "Elige tu paquete, asegura tu lugar",
-  "process.step1.desc": "Elige Setup, Build o Enterprise. Paga el depósito P1 del 25% para reservar tu espacio. Aceptamos un número limitado de clientes SPEC para proteger la calidad.",
+  "process.step1.title": "Elige tu nivel, reserva tu lugar",
+  "process.step1.desc": "SPEC-01, SPEC-02 o SPEC-03. Tu depósito reserva el lugar — aceptamos un número limitado de proyectos a la vez para proteger el trabajo.",
   "process.step2.number": "02",
   "process.step2.title": "Cuéntanos cómo trabajas",
-  "process.step2.desc": "Completa una entrevista detallada sobre tus flujos de trabajo, puntos de dolor y cómo opera tu equipo día a día. Estudiamos los resultados antes de reunirnos.",
+  "process.step2.desc": "Una admisión guiada, adaptada a tu nivel — SPEC-01 pregunta qué llega a tu correo, SPEC-02 pregunta sobre qué registros opera tu negocio, SPEC-03 parte del producto que tienes en la cabeza. Lo estudiamos antes de reunirnos.",
   "process.step3.number": "03",
   "process.step3.title": "Nos reunimos. Construimos.",
-  "process.step3.desc": "Sesión de descubrimiento con tu análisis ya hecho. Luego construimos tus módulos personalizados directamente en OPS. Ves el progreso en tiempo real.",
+  "process.step3.desc": "Descubrimiento con tu análisis ya hecho. Luego un alcance por escrito que firmas — qué se construye, qué cuenta como aceptado. Nada pasa un punto de control sin tu firma.",
   "process.step4.number": "04",
-  "process.step4.title": "En vivo. Seguimos evolucionando.",
-  "process.step4.desc": "Lanza tu OPS personalizado con un periodo de soporte incluido. Después, un retenedor opcional mantiene tus módulos actualizados y evolucionando con tu negocio.",
+  "process.step4.title": "En vivo. Y sigue corriendo.",
+  "process.step4.desc": "Recorrido de entrega, luego un periodo de soporte — 30, 60 o 90 días según el nivel. El trabajo alojado por nosotros lleva después un plan de cuidado mensual fijo. Sin porcentajes, sin sorpresas.",
 
   "board.sectionLabel": "OPS BOARD",
-  "board.subEyebrow": "Capacidad actual de intake SPEC",
+  "board.subEyebrow": "Capacidad actual de admisión SPEC",
   "board.liveLabel": "EN VIVO",
   "board.staleLabel": "RESPALDO",
   "board.updatedPrefix": "ACTUALIZADO",
@@ -30,15 +30,15 @@
   "board.updatedMinAgo": "MIN",
   "board.updatedHrAgo": "HR",
   "board.updatedDaysAgo": "DÍAS",
-  "board.unavailableNote": "Board en vivo fuera de línea. Mostrando ventanas de intake estáticas.",
+  "board.unavailableNote": "Board en vivo fuera de línea. Mostrando ventanas de admisión estáticas.",
   "board.headers.tier": "NIVEL",
   "board.headers.availability": "DISPONIBILIDAD",
   "board.headers.waitlist": "ESPERA",
-  "board.headers.nextIntake": "SIGUIENTE INTAKE",
+  "board.headers.nextIntake": "SIGUIENTE ADMISIÓN",
   "board.headers.yourDelivery": "TU ENTREGA",
   "board.timeline.today": "HOY",
-  "board.timeline.discovery": "DISCOVERY",
-  "board.timeline.build": "BUILD",
+  "board.timeline.discovery": "DESCUBRIMIENTO",
+  "board.timeline.build": "CONSTRUCCIÓN",
   "board.timeline.delivery": "ENTREGA",
   "board.status.open": "ABIERTO",
   "board.status.limited": "LIMITADO",
@@ -51,105 +51,131 @@
   "board.nextStartPrefix": "EMPIEZA",
   "board.deliveryPrefix": "ENTREGA",
   "board.deliveryUnknown": "ENTREGA POR DEFINIR",
+  "board.tierLabels.spec01": "SPEC-01",
+  "board.tierLabels.spec02": "SPEC-02",
+  "board.tierLabels.spec03": "SPEC-03",
   "board.fallback.spec01.nextIntake": "SIGUIENTE ESPACIO",
   "board.fallback.spec01.delivery": "1-2 SEMANAS",
   "board.fallback.spec02.nextIntake": "SIGUIENTE ESPACIO",
-  "board.fallback.spec02.delivery": "2-3 SEMANAS",
+  "board.fallback.spec02.delivery": "3-5 SEMANAS",
   "board.fallback.spec03.nextIntake": "SIGUIENTE ESPACIO",
-  "board.fallback.spec03.delivery": "4-6 SEMANAS",
+  "board.fallback.spec03.delivery": "6-10 SEMANAS",
 
-  "packages.sectionLabel": "PAQUETES",
-  "packages.spec01.name": "SETUP",
-  "packages.spec01.tagline": "Configuramos OPS alrededor de tu flujo de trabajo",
+  "packages.sectionLabel": "LA ESCALERA",
+  "packages.spec01.name": "WORKFLOWS",
+  "packages.spec01.designation": "SPEC-01 · WORKFLOWS",
+  "packages.spec01.tagline": "Tus herramientas, conectadas entre sí",
   "packages.spec01.price": "$2,000",
-  "packages.spec01.deposit": "$1,000 depósito",
-  "packages.spec01.startFrom": "Empieza por $1,000",
-  "packages.spec01.headlineSub": "$2,000 total · 4 hitos",
+  "packages.spec01.deposit": "$1,000 de depósito",
+  "packages.spec01.startFrom": "$1,000 lo reserva",
+  "packages.spec01.headlineSub": "$2,000 fijo · 50/50",
+  "packages.spec01.totalLine": "$2,000 fijo",
+  "packages.spec01.paymentLine": "$1,000 lo reserva · $1,000 a la entrega",
+  "packages.spec01.careLine": "—",
   "packages.spec01.milestoneAmount": "$1,000",
   "packages.spec01.features": [
-    "2 sesiones de descubrimiento",
-    "Análisis de flujo de trabajo",
-    "Hasta 3 configuraciones personalizadas",
-    "Etapas de pipeline personalizadas",
-    "Campos personalizados en proyectos y clientes",
+    "Hasta 3 automatizaciones en producción, en tus propias cuentas",
+    "Correo → libro mayor. Adjuntos → carpetas de trabajo. Formulario → lista de llamadas.",
+    "Documentado y entregado, con un recorrido de capacitación",
+    "No requiere suscripción OPS — todo corre en tus herramientas",
     "30 días de soporte"
   ],
   "packages.spec01.examples": [
-    { "trade": "TECHADOR", "desc": "Etapas de pipeline personalizadas (Lead a Inspección a Cotización a Firmado a Completo), campos de tipo de techo, etiquetas de seguimiento de materiales" },
-    { "trade": "PLOMERO", "desc": "Pipeline dividido entre llamadas de servicio y renovaciones, ordenamiento por urgencia, campos de número de permiso y fecha de inspección" },
-    { "trade": "JARDINERO", "desc": "Categorías de clientes estacionales vs mantenimiento, plantillas de trabajo recurrente, campos de asignación de equipo por zona" }
+    { "trade": "TECHADOR", "desc": "Las facturas de proveedores llegan a tu correo → registradas en tu libro mayor, archivadas por trabajo, marcadas para revisión" },
+    { "trade": "PLOMERO", "desc": "Adjuntos de correo → la carpeta de trabajo correcta, con el nombre correcto, sin archivar los viernes por la noche" },
+    { "trade": "JARDINERO", "desc": "Formulario de leads del sitio web → la lista de llamadas de mañana, con los detalles ya completos" }
   ],
-  "packages.spec01.ongoing": "Estimado +15% sobre la suscripción OPS. Retenedor opcional $250/mes después del periodo de soporte.",
+  "packages.spec01.ongoing": "Sin mensualidad. Las automatizaciones son tuyas, corriendo en tus propias cuentas.",
   "packages.spec01.subscriptionEstimate": "+15% sobre la suscripción OPS base",
   "packages.spec01.retainerAmount": "$250/mes",
-  "packages.spec01.ctaText": "Pagar $1,000 Depósito",
+  "packages.spec01.ctaText": "Pagar $1,000 de Depósito",
 
-  "packages.spec02.name": "BUILD",
-  "packages.spec02.tagline": "Un módulo personalizado construido para tu oficio",
+  "packages.spec02.name": "SYSTEMS",
+  "packages.spec02.designation": "SPEC-02 · SYSTEMS",
+  "packages.spec02.tagline": "La columna vertebral de tu operación, manejada por nosotros",
   "packages.spec02.price": "$7,500",
-  "packages.spec02.deposit": "$1,875 depósito",
-  "packages.spec02.startFrom": "Empieza por $1,875",
-  "packages.spec02.headlineSub": "$7,500 total · 4 hitos",
+  "packages.spec02.deposit": "$1,875 de depósito",
+  "packages.spec02.startFrom": "$1,875 lo reserva",
+  "packages.spec02.headlineSub": "$7,500 fijo · 4 pagos",
+  "packages.spec02.totalLine": "$7,500 fijo",
+  "packages.spec02.paymentLine": "4 pagos de $1,875",
+  "packages.spec02.careLine": "$395/mes de cuidado · 2 horas de cambios incluidas",
   "packages.spec02.milestoneAmount": "$1,875",
   "packages.spec02.features": [
-    "Todo lo del Setup",
-    "1 módulo personalizado — nuevas funciones, vistas y lógica",
-    "Soporte iOS y web",
-    "Funciones inteligentes incluidas",
-    "Activado por empresa",
+    "Todo lo de SPEC-01",
+    "Una columna vertebral estructurada — trabajos, clientes y dinero en un solo sistema",
+    "Tableros que un dueño realmente lee",
+    "Tus registros existentes importados y depurados",
+    "Capacitación para ti y tu equipo",
     "60 días de soporte"
   ],
   "packages.spec02.examples": [
-    { "trade": "CONSTRUCTOR DE DECKS", "desc": "Herramienta de medición de decks — dibuja formas, calcula pies de tabla y materiales, genera listas vinculadas a estimaciones" },
-    { "trade": "HVAC", "desc": "Rastreador de ciclo de vida de equipos — registra unidades por número de serie, rastrea garantías, programa mantenimiento automático" },
-    { "trade": "ELECTRICISTA", "desc": "Módulo de permisos e inspecciones — rastrea permisos por trabajo, recordatorios automáticos, documentación fotográfica con firma de inspector" }
+    { "trade": "HVAC", "desc": "Trabajos, clientes y facturas en una sola columna vertebral — con un tablero que muestra el margen por trabajo" },
+    { "trade": "PINTOR", "desc": "Cinco años de historial de estimaciones depurado e importado — tableros de margen desde el día uno" }
   ],
-  "packages.spec02.ongoing": "Estimado +30% sobre la suscripción OPS. Retenedor opcional $450/mes después del periodo de soporte.",
+  "packages.spec02.ongoing": "$395/mes de cuidado después del periodo de soporte — monitoreo, correcciones, 2 horas de cambios incluidas. Alojamiento incluido cuando nosotros manejamos tu sistema.",
   "packages.spec02.subscriptionEstimate": "+30% sobre la suscripción OPS base",
-  "packages.spec02.retainerAmount": "$450/mes",
-  "packages.spec02.ctaText": "Pagar $1,875 Depósito",
+  "packages.spec02.retainerAmount": "$395/mes",
+  "packages.spec02.ctaText": "Pagar $1,875 de Depósito",
 
-  "packages.spec03.name": "ENTERPRISE",
-  "packages.spec03.tagline": "Toda tu operación, construida a medida sobre OPS",
-  "packages.spec03.price": "$25,000",
-  "packages.spec03.deposit": "$6,250 depósito",
-  "packages.spec03.startFrom": "Empieza por $6,250",
-  "packages.spec03.headlineSub": "$25,000 total · 4 hitos",
+  "packages.spec03.name": "PROPRIETARY",
+  "packages.spec03.designation": "SPEC-03 · PROPRIETARY",
+  "packages.spec03.tagline": "Una app independiente, construida solo para ti",
+  "packages.spec03.price": "desde $25,000",
+  "packages.spec03.deposit": "$6,250 de depósito",
+  "packages.spec03.startFrom": "$6,250 lo reserva",
+  "packages.spec03.headlineSub": "desde $25,000 · se fija al firmar el alcance",
+  "packages.spec03.totalLine": "desde $25,000 — se fija al firmar el alcance",
+  "packages.spec03.paymentLine": "$6,250 lo reserva · total fijado al firmar el alcance",
+  "packages.spec03.careLine": "desde $750/mes de cuidado · 3 horas de cambios incluidas",
   "packages.spec03.milestoneAmount": "$6,250",
   "packages.spec03.features": [
-    "Todo lo del Build",
-    "Múltiples módulos personalizados",
-    "Integraciones profundas con tus herramientas existentes",
-    "Migración de datos desde tus sistemas actuales",
-    "Cambios estructurales a la plataforma",
+    "Una herramienta de oficio independiente, en su propia base de datos",
+    "Diseñada, construida, publicada y operada por OPS",
+    "Se conecta a tu cuenta OPS — o corre totalmente independiente",
+    "Marca blanca disponible: tu nombre en el App Store",
     "90 días de soporte"
   ],
   "packages.spec03.examples": [
-    { "trade": "CONSTRUCTOR GENERAL", "desc": "Gestión de subcontratos, programación multi-oficio, herramienta de comparación de ofertas, integración QuickBooks, migración completa desde Buildertrend" },
-    { "trade": "GESTIÓN DE PROPIEDADES", "desc": "Portal de inquilinos, enrutamiento de órdenes de trabajo, despacho de proveedores, historial de mantenimiento por unidad, integración de arrendamiento" },
-    { "trade": "EMPRESA MULTI-OFICIO", "desc": "Módulos específicos por división, recursos compartidos entre divisiones, vista unificada de clientes, reportes de P&L por división" }
+    { "trade": "CONSTRUCTOR DE DECKS", "desc": "Deckset — dibuja el deck, cotiza los materiales, entrega al cliente un renderizado" },
+    { "trade": "TECHADOR", "desc": "Un estimador de medición de techos construido alrededor de tus precios, tus materiales, tus equipos" },
+    { "trade": "JARDINERÍA", "desc": "Planificador de rutas y jardines — equipos, camiones y zonas en un solo tablero" }
   ],
-  "packages.spec03.ongoing": "Estimado +50% sobre la suscripción OPS. Retenedor opcional $750/mes después del periodo de soporte.",
+  "packages.spec03.ongoing": "desde $750/mes de cuidado después del periodo de soporte — infraestructura, actualizaciones, soporte, cumplimiento de tiendas, 3 horas de cambios incluidas.",
   "packages.spec03.subscriptionEstimate": "+50% sobre la suscripción OPS base",
   "packages.spec03.retainerAmount": "$750/mes",
-  "packages.spec03.ctaText": "Pagar $6,250 Depósito",
+  "packages.spec03.ctaText": "Pagar $6,250 de Depósito",
 
   "packages.contactCta": "Habla con el fundador",
   "packages.recommendedBadge": "MÁS ELEGIDO",
   "packages.detailsToggle": "DETALLES",
   "packages.depositLedger": "RESERVA TU LUGAR · SE ACREDITA A TU PROYECTO",
-  "packages.milestones.label": "4 HITOS",
+  "packages.milestones.label": "PUNTOS DE CONTROL",
   "packages.milestones.p1": "Depósito",
   "packages.milestones.p2": "Alcance",
-  "packages.milestones.p3": "Demo",
+  "packages.milestones.p3": "Punto medio",
   "packages.milestones.p4": "Entrega",
-  "packages.milestonesNote": "Cada hito es el 25% del paquete. P1 reserva el espacio. P2, P3 y P4 se facturan cuando el trabajo pasa revisión.",
+  "packages.milestonesNote": "El dinero se mueve en puntos de control que tú firmas — nunca por delante del trabajo. Todo después del depósito se factura a 15 días.",
   "packages.examplesLabel": "EJEMPLOS DE CAMPO",
   "packages.subscriptionLabel": "SUSCRIPCIÓN OPS",
-  "packages.subscriptionNote": "El impacto final en la suscripción se fija durante discovery.",
-  "packages.retainerLabel": "RETENEDOR",
-  "packages.retainerNote": "Opcional después del periodo de soporte.",
-  "packages.guaranteeBadge": "REEMBOLSO GARANTIZADO 30 DÍAS",
+  "packages.subscriptionNote": "Un producto aparte — solo si usas OPS. Empieza gratis.",
+  "packages.retainerLabel": "PLAN DE CUIDADO",
+  "packages.retainerNote": "Mensualidad fija. Empieza cuando termina el periodo de soporte.",
+  "packages.guaranteeBadge": "30 DÍAS PARA RETIRARTE",
+
+  "whiteLabel.label": "// MARCA BLANCA",
+  "whiteLabel.line": "Tu nombre al frente. Nosotros manejamos todo lo demás.",
+  "whiteLabel.priceLine": "+$4,000 en la construcción · +$200/mes en el cuidado",
+  "whiteLabel.detail": "Tu nombre, tu ícono, tu ficha en el App Store — publicada y operada por OPS de principio a fin. La línea de Vendedor de la tienda dice OPS; todo lo visible es tuyo. ¿Quieres la propiedad completa después? El App Transfer de Apple mueve la app a tu propia cuenta, con las reseñas intactas.",
+
+  "ongoing.sectionLabel": "LO QUE CUESTA MANTENERLO CORRIENDO",
+  "ongoing.intro": "Números fijos. Nada escala sobre tu suscripción, y nada cambia sin cotización.",
+  "ongoing.spec01.line": "Sin mensualidad. Las automatizaciones son tuyas, corriendo en tus propias cuentas.",
+  "ongoing.spec02.line": "$395/mes de cuidado — monitoreo, correcciones, 2 horas de cambios incluidas. Alojamiento incluido cuando nosotros manejamos tu sistema.",
+  "ongoing.spec03.line": "desde $750/mes de cuidado — infraestructura, actualizaciones, soporte, cumplimiento de tiendas, 3 horas de cambios incluidas.",
+  "ongoing.overageNote": "Más allá de las horas incluidas: $200/hr, cotizado antes de empezar.",
+  "ongoing.careStartNote": "El cuidado se factura cuando termina tu periodo de soporte — 30, 60 o 90 días después de la entrega.",
+  "ongoing.subscriptionNote": "La suscripción OPS es su propio producto. Aplica solo si usas OPS — y empieza gratis.",
 
   "stickyBar.reserveTemplate": "Reserva tu lugar en {tier} — depósito de {deposit}",
   "stickyBar.ariaLabel": "Reserva tu lugar en SPEC",
@@ -179,34 +205,35 @@
   "questionnaire.q4.low": "Hasta $5,000",
   "questionnaire.q4.mid": "$5,000 - $12,000",
   "questionnaire.q4.high": "$12,000+",
-  "questionnaire.rationale.spec01": "Setup te queda — configuramos OPS según tu flujo, en vivo en días.",
-  "questionnaire.rationale.spec02": "Build te queda — un módulo a medida para tu oficio, en vivo en un par de semanas.",
-  "questionnaire.rationale.spec03": "Enterprise te queda — toda tu operación, construida a medida sobre OPS.",
+  "questionnaire.rationale.spec01": "SPEC-01 te queda — tus herramientas conectadas entre sí, en vivo en días.",
+  "questionnaire.rationale.spec02": "SPEC-02 te queda — una sola columna vertebral para tu operación, manejada por nosotros.",
+  "questionnaire.rationale.spec03": "SPEC-03 te queda — una herramienta independiente construida solo para ti.",
 
-  "included.sectionLabel": "QUÉ INCLUYE CADA PAQUETE",
+  "included.sectionLabel": "QUÉ INCLUYE CADA NIVEL",
   "included.every": [
-    "Sesiones de descubrimiento para entender tu flujo de trabajo",
-    "Entrevista de admisión y análisis de flujo de trabajo",
-    "Módulos personalizados en tu plataforma OPS activa",
-    "Soporte iOS y web",
-    "Periodo de soporte (30, 60 o 90 días según el paquete)",
-    "Todas las actualizaciones de la plataforma OPS"
+    "Un alcance por escrito que firmas antes de que empiece la construcción",
+    "Progreso que puedes ver — nada pasa un punto de control sin tu firma",
+    "Un recorrido de capacitación, grabado",
+    "Un periodo de soporte — 30, 60 o 90 días según el nivel",
+    "30 días para retirarte, en todos los niveles",
+    "Una cuenta OPS gratuita para aprobaciones y avisos — sin suscripción"
   ],
-  "included.ongoingLabel": "COSTOS CONTINUOS — SIN SORPRESAS",
+  "included.ongoingLabel": "COSTOS CONTINUOS — NÚMEROS FIJOS",
   "included.ongoing": [
-    "Suscripción OPS: $90-190/mes (puede aumentar si los módulos personalizados agregan costo de infraestructura)",
-    "Retenedor de mantenimiento: $250-750/mes (comienza después del periodo de soporte)",
-    "Solicitudes adicionales de funciones: cotizadas como nuevos proyectos",
-    "Horas excedentes del retenedor: $200-225/hr"
+    "SPEC-01: sin mensualidad — las automatizaciones son tuyas",
+    "SPEC-02: $395/mes de cuidado después del periodo de soporte — 2 horas de cambios incluidas",
+    "SPEC-03: desde $750/mes de cuidado después del periodo de soporte — 3 horas de cambios incluidas · marca blanca +$200/mes",
+    "Horas de cambios más allá del plan: $200/hr, cotizadas antes de empezar",
+    "Suscripción OPS: un producto aparte, solo si usas OPS — empieza gratis"
   ],
 
   "guarantees.sectionLabel": "RESPALDAMOS EL TRABAJO",
-  "guarantees.col1.title": "30 días para salir",
-  "guarantees.col1.body": "Si el build no es el ajuste correcto dentro de la Ventana de Garantía, puedes solicitar el Reembolso de Garantía bajo los términos SPEC.",
-  "guarantees.col2.title": "Pagas cuando el trabajo pasa revisión",
-  "guarantees.col2.body": "Cuatro hitos. P1 reserva el espacio. P2, P3 y P4 se facturan solo después de revisar la etapa anterior.",
-  "guarantees.col3.title": "Alcance antes de construir",
-  "guarantees.col3.body": "El Scope Document fija qué se construye, qué cuenta como aceptado y qué se convierte en change order.",
+  "guarantees.col1.title": "30 días para retirarte",
+  "guarantees.col1.body": "En todos los niveles. Una sola invocación, aviso por escrito, sin necesidad de probar defectos. Treinta días desde la entrega para decidir que no es lo correcto.",
+  "guarantees.col2.title": "Qué pasa si lo haces",
+  "guarantees.col2.body": "SPEC-01: tu dinero de vuelta — las automatizaciones viven en tus cuentas y ahí se quedan. Trabajo alojado por nosotros: lo apagamos y reembolsamos según el calendario de pagos. Días, no meses.",
+  "guarantees.col3.title": "Sin rehenes",
+  "guarantees.col3.body": "Tus datos se exportan limpios. Los activos de tu marca siguen siendo tuyos. La salida está escrita en los términos — es parte del trato, no una negociación.",
   "guarantees.footerPrefix": "Términos completos:",
   "guarantees.footerLinkText": "TÉRMINOS SPEC",
   "guarantees.footerLinkHref": "/legal?page=spec-terms",
@@ -214,48 +241,72 @@
   "faq.sectionLabel": "PREGUNTAS",
   "faq.items": [
     {
-      "question": "¿Qué pasa después de pagar el depósito?",
-      "answer": "Recibirás la entrevista de admisión dentro de 24 horas. Complétala a tu ritmo — cubre tus flujos de trabajo, puntos de dolor y cómo opera tu equipo. Revisamos los resultados y programamos tu sesión de descubrimiento."
+      "question": "¿Qué hace realmente cada nivel?",
+      "answer": "SPEC-01 · WORKFLOWS conecta las herramientas que ya usas — hasta 3 automatizaciones en producción en tus propias cuentas, $2,000 fijo. SPEC-02 · SYSTEMS le da a tu operación una sola columna vertebral — trabajos, clientes y dinero en un sistema, con tableros — $7,500 fijo. SPEC-03 · PROPRIETARY es una herramienta de oficio independiente, diseñada y operada por nosotros, con tu nombre al frente si lo quieres — desde $25,000, total fijado al firmar el alcance."
     },
     {
-      "question": "¿Cuánto tarda una construcción personalizada?",
-      "answer": "Paquetes Setup: 1-2 semanas. Paquetes Build: 2-3 semanas. Enterprise: 4-6 semanas. Construimos rápido porque el fundador hace el trabajo directamente, con herramientas modernas."
+      "question": "¿Necesito OPS para comprar esto?",
+      "answer": "No. SPEC-01 corre por completo en tus propias cuentas — tu correo, tus hojas de cálculo, tus herramientas. Creas una cuenta OPS gratuita para que las aprobaciones y avisos tengan dónde vivir; no se requiere suscripción. SPEC-02 necesita suscripción solo si tu sistema vive dentro de tu cuenta OPS. SPEC-03 corre en su propia base de datos de cualquier forma."
     },
     {
-      "question": "¿Qué es la entrevista de admisión?",
-      "answer": "Una entrevista guiada sobre tu negocio — tus flujos de trabajo, estructura de equipo, puntos de dolor, cómo fluyen los trabajos desde el lead hasta completar. Toma unos 30-45 minutos."
+      "question": "¿Cómo funcionan los pagos?",
+      "answer": "Según el nivel. SPEC-01 es 50/50 — $1,000 reserva tu lugar, $1,000 en el recorrido de entrega. SPEC-02 son cuatro pagos de $1,875: depósito, firma del alcance, revisión de punto medio, entrega. SPEC-03 abre con un depósito fijo de $6,250 contra el piso de $25,000; tu total se fija al firmar el alcance y el resto se divide entre los últimos tres puntos de control. Todo después del depósito se factura a 15 días."
     },
     {
-      "question": "¿Qué pasa si necesito cambios después del periodo de soporte?",
-      "answer": "El retenedor de mantenimiento cubre correcciones de errores, actualizaciones menores y mantener tus módulos compatibles con las actualizaciones de OPS. Solicitudes más grandes se cotizan como nuevos proyectos."
+      "question": "¿Qué es un plan de cuidado y por qué es obligatorio?",
+      "answer": "Cuando nosotros operamos tu sistema, alguien tiene que responder por él. Eso es el plan de cuidado: $395/mes en SPEC-02, desde $750/mes en SPEC-03 — monitoreo, correcciones, alojamiento donde lo manejamos nosotros, cumplimiento de tiendas en las apps, y horas de cambios incluidas (2 al mes en SYSTEMS, 3 en PROPRIETARY). El trabajo más allá de las horas incluidas es $200/hr, siempre cotizado antes de empezar. Se factura desde que termina tu periodo de soporte. Si tu sistema SPEC-02 vive en tu propia cuenta OPS, el cuidado es opcional después del periodo de soporte."
     },
     {
-      "question": "¿Necesito una suscripción OPS separada?",
-      "answer": "Sí. SPEC es un servicio de construcción — tu suscripción OPS es tu acceso continuo a la plataforma. Puede ser más alta que la estándar si tus módulos personalizados requieren infraestructura adicional."
+      "question": "¿Dónde vive mi sistema SPEC-02?",
+      "answer": "Donde el resultado sea mejor. Si usas OPS, lo construimos dentro de tu cuenta OPS y vive contigo. Si no, lo corremos independiente sobre infraestructura que operamos nosotros — el alojamiento está incluido en el plan de cuidado. Se decide en el descubrimiento, por escrito."
     },
     {
-      "question": "¿Puedo mejorar mi paquete después?",
-      "answer": "Sí. Empieza con Setup para configurar OPS para tu flujo de trabajo. Si quieres un módulo personalizado después, aplica la tarifa de Build (menos lo que ya pagaste por Setup). Igual para Enterprise."
+      "question": "¿Qué significa marca blanca en SPEC-03?",
+      "answer": "Tu nombre, tu ícono, tu ficha en el App Store — tus clientes ven tu empresa de principio a fin. +$4,000 en la construcción, +$200/mes en el cuidado. Una letra pequeña que decimos en voz alta: Apple ata el campo de Vendedor de la tienda a la cuenta de desarrollador, así que dice la entidad legal de OPS. Todo lo visible es tuyo. Y si algún día quieres la propiedad completa, el App Transfer de Apple mueve la app a tu propia cuenta — reseñas e instalaciones intactas — administrado por nosotros a horas facturables."
     },
     {
-      "question": "¿Qué pasa si no estoy seguro de qué paquete necesito?",
-      "answer": "Empieza con Setup. Es el menor compromiso y te diremos honestamente durante el descubrimiento si tus necesidades requieren Build o Enterprise. Sin presión, sin trucos de venta."
+      "question": "¿Quién es dueño del código?",
+      "answer": "Nosotros — tú tienes la licencia. Esta es la línea que importa: tu app es exclusiva para ti. Nunca la venderemos ni la transferiremos a otra empresa. El código de abajo es nuestro para reutilizar — patrones, componentes, incluso construir una herramienta distinta que haga un trabajo parecido para alguien más. Exclusivo para ti: tu instancia, tu marca, tu configuración, tus datos. No exclusivo: el código y el concepto."
     },
     {
-      "question": "¿Hay política de reembolso del depósito?",
-      "answer": "Si no hemos comenzado el trabajo, el depósito P1 es completamente reembolsable. Una vez que empieza discovery, cada hito cubre trabajo ya completado. P2, P3 y P4 se facturan cuando el build pasa revisión."
+      "question": "¿Cuál es la garantía?",
+      "answer": "Treinta días desde la entrega para retirarte — una sola invocación, aviso por escrito, sin necesidad de probar defectos. En SPEC-01 eso significa tu dinero de vuelta; las automatizaciones viven en tus cuentas y ahí se quedan. En el trabajo alojado por nosotros, apagamos el sistema y reembolsamos según el calendario de pagos. Las exclusiones son las obvias, escritas claramente en los términos."
+    },
+    {
+      "question": "¿Qué pasa al firmar el alcance?",
+      "answer": "Tu admisión se convierte en una orden de trabajo por escrito — qué se construye, qué cuenta como aceptado, qué se convierte en orden de cambio. La firmas antes de que empiece la construcción, en todos los niveles. En SPEC-03 también es donde se fija tu total: el piso de $25,000 se convierte en un número fijo, y de ahí no se mueve."
+    },
+    {
+      "question": "¿Y si quiero cambios a mitad de la construcción?",
+      "answer": "Las correcciones pequeñas de rumbo pasan dentro de la construcción. Cualquier cosa que cambie lo que promete el documento de alcance se convierte en una orden de cambio — cotizada por escrito antes de construirla. Después de la entrega, las horas de cambios de tu plan de cuidado llevan la evolución continua."
+    },
+    {
+      "question": "¿Qué tan rápido es esto, en serio?",
+      "answer": "SPEC-01: cerca de una semana de construcción después de unos días de descubrimiento. SPEC-02: de tres a cinco semanas de principio a fin. SPEC-03: se define al firmar el alcance — típicamente de seis a diez semanas. El board de arriba muestra las ventanas de admisión en vivo; aceptamos un número limitado de proyectos a la vez."
+    },
+    {
+      "question": "¿Puedo subir de nivel después?",
+      "answer": "Sí. Empieza donde estás. Si WORKFLOWS prueba el caso para una columna vertebral, o tu sistema prueba el caso para tu propia app, la conversación es corta — y donde el alcance se superpone, lo que ya pagaste se acredita a la construcción mayor."
+    },
+    {
+      "question": "¿Por qué no puedo comprar desde Quebec?",
+      "answer": "Las reglas de protección al consumidor de Quebec requieren contratos en francés y mecánicas de cancelación que aún no construimos. Antes que servir mal a Quebec, todavía no lo servimos. El filtro pasa antes de que se mueva cualquier dinero."
+    },
+    {
+      "question": "¿Qué pasa si dejo de pagar el cuidado?",
+      "answer": "No tomamos tu negocio de rehén. La falta de pago pausa el sistema después de un aviso, y la salida está definida en los términos: tus datos se exportan limpios, los activos de tu marca siguen siendo tuyos, y en las apps de marca blanca el camino del App Transfer siempre está abierto. Lo que no hacemos es operar infraestructura gratis."
     }
   ],
 
-  "bottomCta.heading": "¿LISTO PARA CONSTRUIR ALGO QUE SE AJUSTE?",
-  "bottomCta.subtitle": "Elige tu paquete. Paga el depósito P1. Nosotros nos encargamos del resto.",
-  "bottomCta.ctaText": "Ver Paquetes",
-  "bottomCta.defaultOpsText": "Usar OPS base",
+  "bottomCta.heading": "TE TOCA.",
+  "bottomCta.subtitle": "Empieza con una conversación. Te diremos qué nivel es el tuyo — o que todavía no necesitas ninguno.",
+  "bottomCta.ctaText": "Ver los paquetes",
+  "bottomCta.defaultOpsText": "¿No estás listo para una construcción? OPS empieza gratis",
   "bottomCta.defaultOpsHref": "https://app.opsapp.co/setup?source=spec",
 
   "confirmation.heading": "Estás dentro.",
   "confirmation.subtitle": "Depósito recibido. Tu enlace de admisión está en camino — eso es lo siguiente que importa.",
-  "confirmation.timeline.spec01": "Las construcciones Setup se entregan en 1-2 semanas.",
-  "confirmation.timeline.spec02": "Los paquetes Build se entregan en 2-3 semanas.",
-  "confirmation.timeline.spec03": "Las construcciones Enterprise se entregan en 4-6 semanas."
+  "confirmation.timeline.spec01": "Las construcciones SPEC-01 se entregan en 1-2 semanas.",
+  "confirmation.timeline.spec02": "Las construcciones SPEC-02 se entregan en 3-5 semanas.",
+  "confirmation.timeline.spec03": "La entrega de SPEC-03 se define al firmar el alcance — típicamente 6-10 semanas."
 }

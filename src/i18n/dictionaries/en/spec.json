@@ -1,25 +1,25 @@
 {
   "hero.eyebrow": "OPS SPEC",
-  "hero.heading": "YOUR WORKFLOW. YOUR MODULES. YOUR OPS.",
-  "hero.subtitle": "We work with you to build custom modules that fit the way you actually run your business. Not a template. Not a workaround. Software shaped around your operation, built on the OPS foundation.",
-  "hero.ctaPackages": "View Packages",
-  "hero.ctaHowItWorks": "How It Works",
+  "hero.heading": "WE BUILD THE MACHINE THAT RUNS YOUR BUSINESS.",
+  "hero.subtitle": "Wire your inbox into your ledger. Run your whole operation on one backbone. Put your own app in your crew's hands. Fixed prices, paid at checkpoints — and 30 days to walk away.",
+  "hero.ctaPackages": "See the packages",
+  "hero.ctaHowItWorks": "How it works",
   "hero.founderEyebrow": "// BUILT BY TRADES",
   "hero.founderLine": "I scaled a deck and railing business before writing OPS. SPEC starts the same way: field problems first, software second.",
 
   "process.sectionLabel": "HOW IT WORKS",
   "process.step1.number": "01",
-  "process.step1.title": "Pick your package, lock your spot",
-  "process.step1.desc": "Choose Setup, Build, or Enterprise. Pay the 25% P1 deposit to reserve your build slot. We take on a limited number of SPEC clients to protect quality.",
+  "process.step1.title": "Pick your tier, book your slot",
+  "process.step1.desc": "SPEC-01, SPEC-02, or SPEC-03. Your deposit books the slot — we take a limited number of engagements at a time to protect the work.",
   "process.step2.number": "02",
   "process.step2.title": "Tell us how you work",
-  "process.step2.desc": "Complete a detailed intake interview covering your workflows, pain points, and the way your crew actually operates day-to-day. We study the results before we ever meet.",
+  "process.step2.desc": "A guided intake, shaped to your tier — SPEC-01 asks what lands in your inbox, SPEC-02 asks what records you run on, SPEC-03 starts from the product in your head. We study it before we meet.",
   "process.step3.number": "03",
   "process.step3.title": "We meet. We build.",
-  "process.step3.desc": "Discovery session with your analysis already done. Then we build your custom modules directly into OPS. You see progress in real time.",
+  "process.step3.desc": "Discovery with your analysis already done. Then a written scope you countersign — what gets built, what counts as accepted. Nothing ships past a checkpoint without your sign-off.",
   "process.step4.number": "04",
-  "process.step4.title": "Go live. Keep evolving.",
-  "process.step4.desc": "Launch your custom OPS with a support window included. After that, an optional retainer keeps your modules updated and evolving as your business grows.",
+  "process.step4.title": "Go live. Keep it running.",
+  "process.step4.desc": "Delivery walkthrough, then a support window — 30, 60, or 90 days by tier. Hosted work carries a flat monthly care plan after that. No percentages, no surprises.",
 
   "board.sectionLabel": "OPS BOARD",
   "board.subEyebrow": "Current SPEC intake capacity",
@@ -51,85 +51,97 @@
   "board.nextStartPrefix": "STARTS",
   "board.deliveryPrefix": "DELIVERS",
   "board.deliveryUnknown": "DELIVERY TBD",
+  "board.tierLabels.spec01": "SPEC-01",
+  "board.tierLabels.spec02": "SPEC-02",
+  "board.tierLabels.spec03": "SPEC-03",
   "board.fallback.spec01.nextIntake": "NEXT OPEN SLOT",
   "board.fallback.spec01.delivery": "1-2 WEEKS",
   "board.fallback.spec02.nextIntake": "NEXT OPEN SLOT",
-  "board.fallback.spec02.delivery": "2-3 WEEKS",
+  "board.fallback.spec02.delivery": "3-5 WEEKS",
   "board.fallback.spec03.nextIntake": "NEXT OPEN SLOT",
-  "board.fallback.spec03.delivery": "4-6 WEEKS",
+  "board.fallback.spec03.delivery": "6-10 WEEKS",
 
-  "packages.sectionLabel": "PACKAGES",
-  "packages.spec01.name": "SETUP",
-  "packages.spec01.tagline": "We configure OPS around your workflow",
+  "packages.sectionLabel": "THE LADDER",
+  "packages.spec01.name": "WORKFLOWS",
+  "packages.spec01.designation": "SPEC-01 · WORKFLOWS",
+  "packages.spec01.tagline": "Your tools, wired together",
   "packages.spec01.price": "$2,000",
   "packages.spec01.deposit": "$1,000 deposit",
-  "packages.spec01.startFrom": "Get started for $1,000",
-  "packages.spec01.headlineSub": "$2,000 total · 4 milestones",
+  "packages.spec01.startFrom": "$1,000 books it",
+  "packages.spec01.headlineSub": "$2,000 fixed · 50/50",
+  "packages.spec01.totalLine": "$2,000 fixed",
+  "packages.spec01.paymentLine": "$1,000 books it · $1,000 at delivery",
+  "packages.spec01.careLine": "—",
   "packages.spec01.milestoneAmount": "$1,000",
   "packages.spec01.features": [
-    "2 discovery sessions",
-    "Workflow analysis",
-    "Up to 3 custom configurations",
-    "Custom pipeline stages",
-    "Custom fields on projects & clients",
+    "Up to 3 production automations in your own accounts",
+    "Inbox → ledger. Email → job folders. Form → call list.",
+    "Documented and handed over, with a training walkthrough",
+    "No OPS subscription required — it all runs in your tools",
     "30-day support window"
   ],
   "packages.spec01.examples": [
-    { "trade": "ROOFER", "desc": "Custom pipeline stages (Lead to Inspection to Quote to Signed to Complete), roof-type fields on projects, material tracking tags" },
-    { "trade": "PLUMBER", "desc": "Service call vs renovation pipeline split, urgency-based task sorting, permit number and inspection date fields" },
-    { "trade": "LANDSCAPER", "desc": "Seasonal vs maintenance client categories, recurring job templates, zone-based crew assignment fields" }
+    { "trade": "ROOFER", "desc": "Supplier invoices land in your inbox → logged in your master ledger, filed by job, flagged for review" },
+    { "trade": "PLUMBER", "desc": "Email attachments → the right job folder, named right, no Friday-night filing" },
+    { "trade": "LANDSCAPER", "desc": "Website lead form → tomorrow's call list, details already filled in" }
   ],
-  "packages.spec01.ongoing": "+15% OPS subscription estimate. $250/mo optional maintenance retainer after support window.",
+  "packages.spec01.ongoing": "No monthly. The automations are yours, running in your own accounts.",
   "packages.spec01.subscriptionEstimate": "+15% on base OPS subscription",
   "packages.spec01.retainerAmount": "$250/mo",
   "packages.spec01.ctaText": "Pay $1,000 Deposit",
 
-  "packages.spec02.name": "BUILD",
-  "packages.spec02.tagline": "A custom module built for your trade",
+  "packages.spec02.name": "SYSTEMS",
+  "packages.spec02.designation": "SPEC-02 · SYSTEMS",
+  "packages.spec02.tagline": "Your operation's backbone, run for you",
   "packages.spec02.price": "$7,500",
   "packages.spec02.deposit": "$1,875 deposit",
-  "packages.spec02.startFrom": "Get started for $1,875",
-  "packages.spec02.headlineSub": "$7,500 total · 4 milestones",
+  "packages.spec02.startFrom": "$1,875 books it",
+  "packages.spec02.headlineSub": "$7,500 fixed · 4 checkpoints",
+  "packages.spec02.totalLine": "$7,500 fixed",
+  "packages.spec02.paymentLine": "4 checkpoints of $1,875",
+  "packages.spec02.careLine": "$395/mo care · 2 change-hours included",
   "packages.spec02.milestoneAmount": "$1,875",
   "packages.spec02.features": [
-    "Everything in Setup",
-    "1 custom module — new features, new views, new logic",
-    "iOS and web support",
-    "Intelligent features included",
-    "Feature-flagged per company",
+    "Everything in SPEC-01",
+    "One structured backbone — jobs, clients, money in one system",
+    "Dashboards an owner actually reads",
+    "Your existing records imported and cleaned",
+    "Training for you and your crew",
     "60-day support window"
   ],
   "packages.spec02.examples": [
-    { "trade": "DECK BUILDER", "desc": "Deck measurement tool — draw deck shapes, calculate board feet and materials, generate material lists linked to project estimates" },
-    { "trade": "HVAC", "desc": "Equipment lifecycle tracker — log units by serial number, track warranty dates, auto-schedule maintenance, link service history to client records" },
-    { "trade": "ELECTRICIAN", "desc": "Permit and inspection module — track permits per job, auto-reminders for inspection dates, photo documentation with inspector sign-off" }
+    { "trade": "HVAC", "desc": "Jobs, clients, and invoices in one backbone — with an owner dashboard that shows margin per job" },
+    { "trade": "PAINTER", "desc": "Five years of estimate history cleaned and imported — margin dashboards from day one" }
   ],
-  "packages.spec02.ongoing": "+30% OPS subscription estimate. $450/mo optional maintenance retainer after support window.",
+  "packages.spec02.ongoing": "$395/mo care after the support window — monitoring, fixes, 2 change-hours included. Hosting included when we run your backbone.",
   "packages.spec02.subscriptionEstimate": "+30% on base OPS subscription",
-  "packages.spec02.retainerAmount": "$450/mo",
+  "packages.spec02.retainerAmount": "$395/mo",
   "packages.spec02.ctaText": "Pay $1,875 Deposit",
 
-  "packages.spec03.name": "ENTERPRISE",
-  "packages.spec03.tagline": "Your entire operation, custom-built on OPS",
-  "packages.spec03.price": "$25,000",
+  "packages.spec03.name": "PROPRIETARY",
+  "packages.spec03.designation": "SPEC-03 · PROPRIETARY",
+  "packages.spec03.tagline": "A standalone app, built only for you",
+  "packages.spec03.price": "from $25,000",
   "packages.spec03.deposit": "$6,250 deposit",
-  "packages.spec03.startFrom": "Get started for $6,250",
-  "packages.spec03.headlineSub": "$25,000 total · 4 milestones",
+  "packages.spec03.startFrom": "$6,250 books it",
+  "packages.spec03.headlineSub": "from $25,000 · locked at scope sign-off",
+  "packages.spec03.totalLine": "from $25,000 — locked at scope sign-off",
+  "packages.spec03.paymentLine": "$6,250 books it · total locked at scope sign-off",
+  "packages.spec03.careLine": "from $750/mo care · 3 change-hours included",
   "packages.spec03.milestoneAmount": "$6,250",
   "packages.spec03.features": [
-    "Everything in Build",
-    "Multiple custom modules",
-    "Deep integrations with your existing tools",
-    "Data migration from your current systems",
-    "Structural changes to core platform",
+    "A standalone trade tool on its own database",
+    "Designed, built, shipped, and operated by OPS",
+    "Connects to your OPS account — or runs fully independent",
+    "White label available: your name on the App Store",
     "90-day support window"
   ],
   "packages.spec03.examples": [
-    { "trade": "GENERAL BUILDER", "desc": "Subtrade management, multi-trade scheduling, bid comparison tool, QuickBooks integration, full migration from Buildertrend" },
-    { "trade": "PROPERTY MGMT", "desc": "Tenant portal, work order routing, vendor dispatch, unit-level maintenance history, lease integration, migration from AppFolio" },
-    { "trade": "MULTI-TRADE CO", "desc": "Trade-specific modules for each division, cross-division resource sharing, unified client view, division-level P&L reporting" }
+    { "trade": "DECK BUILDER", "desc": "Deckset — draw the deck, price the materials, hand the client a rendering" },
+    { "trade": "ROOFER", "desc": "A roof-measure estimator built around your pricing, your materials, your crews" },
+    { "trade": "LANDSCAPING", "desc": "Route and bed planner — crews, trucks, and beds on one board" }
   ],
-  "packages.spec03.ongoing": "+50% OPS subscription estimate. $750/mo optional maintenance retainer after support window.",
+  "packages.spec03.ongoing": "from $750/mo care after the support window — infrastructure, updates, support, store compliance, 3 change-hours included.",
   "packages.spec03.subscriptionEstimate": "+50% on base OPS subscription",
   "packages.spec03.retainerAmount": "$750/mo",
   "packages.spec03.ctaText": "Pay $6,250 Deposit",
@@ -137,19 +149,33 @@
   "packages.contactCta": "Talk to the founder",
   "packages.recommendedBadge": "MOST CHOSEN",
   "packages.detailsToggle": "DETAILS",
-  "packages.depositLedger": "RESERVES YOUR SLOT · CREDITED TO YOUR BUILD",
-  "packages.milestones.label": "4 MILESTONES",
+  "packages.depositLedger": "BOOKS YOUR SLOT · CREDITED TO YOUR BUILD",
+  "packages.milestones.label": "CHECKPOINTS",
   "packages.milestones.p1": "Deposit",
   "packages.milestones.p2": "Scope",
-  "packages.milestones.p3": "Demo",
+  "packages.milestones.p3": "Midpoint",
   "packages.milestones.p4": "Delivery",
-  "packages.milestonesNote": "Each milestone is 25% of the package. P1 reserves the slot. P2, P3, and P4 are invoiced as work clears review.",
+  "packages.milestonesNote": "Money moves at checkpoints you sign off on — never ahead of the work. Everything after the deposit is invoiced net-15.",
   "packages.examplesLabel": "FIELD EXAMPLES",
   "packages.subscriptionLabel": "OPS SUBSCRIPTION",
-  "packages.subscriptionNote": "Final subscription impact is locked during discovery.",
-  "packages.retainerLabel": "RETAINER",
-  "packages.retainerNote": "Optional after the support window.",
-  "packages.guaranteeBadge": "30-DAY GUARANTEE REFUND",
+  "packages.subscriptionNote": "A separate product — only if you run OPS. Starts free.",
+  "packages.retainerLabel": "CARE PLAN",
+  "packages.retainerNote": "Flat monthly. Starts when the support window ends.",
+  "packages.guaranteeBadge": "30 DAYS TO WALK AWAY",
+
+  "whiteLabel.label": "// WHITE LABEL",
+  "whiteLabel.line": "Your name on it. We run everything behind it.",
+  "whiteLabel.priceLine": "+$4,000 at build · +$200/mo on care",
+  "whiteLabel.detail": "Your name, your icon, your App Store listing — published and operated by OPS end to end. The store's Seller line reads OPS; everything above the fold is you. Want full ownership later? Apple's App Transfer moves it to your account, reviews intact.",
+
+  "ongoing.sectionLabel": "WHAT IT COSTS TO KEEP RUNNING",
+  "ongoing.intro": "Flat numbers. Nothing scales off your subscription, and nothing changes without a quote.",
+  "ongoing.spec01.line": "No monthly. The automations are yours, running in your own accounts.",
+  "ongoing.spec02.line": "$395/mo care — monitoring, fixes, 2 change-hours included. Hosting included when we run your backbone.",
+  "ongoing.spec03.line": "from $750/mo care — infrastructure, updates, support, store compliance, 3 change-hours included.",
+  "ongoing.overageNote": "Beyond the included hours: $200/hr, quoted before we start.",
+  "ongoing.careStartNote": "Care billing starts when your support window ends — 30, 60, or 90 days after delivery.",
+  "ongoing.subscriptionNote": "The OPS subscription is its own product. It applies only if you run OPS — and it starts free.",
 
   "stickyBar.reserveTemplate": "Reserve your {tier} slot — {deposit} deposit",
   "stickyBar.ariaLabel": "Reserve your SPEC slot",
@@ -179,34 +205,35 @@
   "questionnaire.q4.low": "Up to $5,000",
   "questionnaire.q4.mid": "$5,000 - $12,000",
   "questionnaire.q4.high": "$12,000+",
-  "questionnaire.rationale.spec01": "Setup fits — we configure OPS around your workflow, live in days.",
-  "questionnaire.rationale.spec02": "Build fits — one custom module for your trade, live in a couple weeks.",
-  "questionnaire.rationale.spec03": "Enterprise fits — your whole operation, custom-built on OPS.",
+  "questionnaire.rationale.spec01": "SPEC-01 fits — your tools wired together, live in days.",
+  "questionnaire.rationale.spec02": "SPEC-02 fits — one backbone for your whole operation, run for you.",
+  "questionnaire.rationale.spec03": "SPEC-03 fits — a standalone tool built only for you.",
 
-  "included.sectionLabel": "WHAT EVERY PACKAGE INCLUDES",
+  "included.sectionLabel": "WHAT EVERY TIER INCLUDES",
   "included.every": [
-    "Discovery sessions to understand your workflow",
-    "Intake interview and workflow analysis",
-    "Custom modules on your live OPS platform",
-    "iOS and web support",
-    "Support window (30, 60, or 90 days by tier)",
-    "All ongoing OPS platform updates"
+    "A written scope you countersign before build starts",
+    "Progress you can watch — nothing ships past a checkpoint without your sign-off",
+    "A training walkthrough, recorded",
+    "A support window — 30, 60, or 90 days by tier",
+    "30 days to walk away, on every tier",
+    "A free OPS account for approvals and updates — no subscription required"
   ],
-  "included.ongoingLabel": "ONGOING COSTS — NO SURPRISES",
+  "included.ongoingLabel": "ONGOING COSTS — FLAT NUMBERS",
   "included.ongoing": [
-    "OPS subscription: $90-190/mo (may increase if custom modules add infrastructure cost)",
-    "Maintenance retainer: $250-750/mo (starts after support window)",
-    "Additional feature requests: quoted as new projects",
-    "Overage hours beyond retainer: $200-225/hr"
+    "SPEC-01: no monthly — the automations are yours",
+    "SPEC-02: $395/mo care after the support window — 2 change-hours included",
+    "SPEC-03: from $750/mo care after the support window — 3 change-hours included · white label +$200/mo",
+    "Change-hours beyond the plan: $200/hr, quoted before we start",
+    "OPS subscription: a separate product, only if you run OPS — starts free"
   ],
 
   "guarantees.sectionLabel": "STANDING BEHIND THE WORK",
   "guarantees.col1.title": "30 days to walk away",
-  "guarantees.col1.body": "If the build is not the right fit inside the Guarantee Window, you can request the Guarantee Refund under the SPEC terms.",
-  "guarantees.col2.title": "Pay as work clears review",
-  "guarantees.col2.body": "Four milestones. P1 reserves the slot. P2, P3, and P4 are invoiced only after the previous stage is reviewed.",
-  "guarantees.col3.title": "Scope before build",
-  "guarantees.col3.body": "The Scope Document locks what gets built, what counts as accepted, and what becomes a change order.",
+  "guarantees.col1.body": "Every tier. One invocation, written notice, no defect proof required. Thirty days from delivery to decide it isn't right.",
+  "guarantees.col2.title": "What happens if you do",
+  "guarantees.col2.body": "SPEC-01: your money back — the automations live in your accounts and stay put. Hosted work: we switch it off and refund per the payment schedule. Days, not months.",
+  "guarantees.col3.title": "No hostages",
+  "guarantees.col3.body": "Your data exports clean. Your brand assets stay yours. Off-boarding is written into the terms — it's part of the deal, not a negotiation.",
   "guarantees.footerPrefix": "Full terms:",
   "guarantees.footerLinkText": "SPEC TERMS",
   "guarantees.footerLinkHref": "/legal?page=spec-terms",
@@ -214,48 +241,72 @@
   "faq.sectionLabel": "QUESTIONS",
   "faq.items": [
     {
-      "question": "What happens after I pay the deposit?",
-      "answer": "You get access to the intake interview within 24 hours. Complete it at your pace — it covers your workflows, pain points, and how your crew operates. We review the results and schedule your discovery session."
+      "question": "What do the three tiers actually do?",
+      "answer": "SPEC-01 · WORKFLOWS wires together the tools you already use — up to 3 production automations in your own accounts, $2,000 fixed. SPEC-02 · SYSTEMS gives your operation one backbone — jobs, clients, and money in one system, with dashboards — $7,500 fixed. SPEC-03 · PROPRIETARY is a standalone trade tool, designed and operated by us, with your name on it if you want it — from $25,000, total locked at scope sign-off."
     },
     {
-      "question": "How long does a custom build take?",
-      "answer": "Setup packages: 1-2 weeks. Build packages: 2-3 weeks. Enterprise: 4-6 weeks. We build fast because the founder does the work directly, with modern tooling."
+      "question": "Do I need OPS to buy this?",
+      "answer": "No. SPEC-01 runs entirely in your own accounts — your inbox, your spreadsheets, your tools. You create a free OPS account so approvals and updates have somewhere to live; no subscription required. SPEC-02 needs a subscription only if your backbone lives inside your OPS account. SPEC-03 runs on its own database either way."
     },
     {
-      "question": "What is the intake interview?",
-      "answer": "A guided interview about your business — your workflows, your team structure, your pain points, how jobs flow from lead to completion. Takes about 30-45 minutes. We use the results to show up to your discovery session already knowing your operation."
+      "question": "How do payments work?",
+      "answer": "By tier. SPEC-01 is 50/50 — $1,000 books your slot, $1,000 at the delivery walkthrough. SPEC-02 is four checkpoints of $1,875: deposit, scope sign-off, midpoint review, delivery. SPEC-03 opens with a fixed $6,250 deposit against the $25,000 floor; your total locks at scope sign-off and the remainder splits across the last three checkpoints. Everything after the deposit is invoiced net-15."
     },
     {
-      "question": "What if I need changes after the support window?",
-      "answer": "The maintenance retainer covers bug fixes, minor updates, and keeping your custom modules compatible with OPS platform updates. Bigger feature requests are quoted as new projects."
+      "question": "What's a care plan, and why is it required?",
+      "answer": "When we operate your system, someone has to be on the hook for it. That's the care plan: $395/mo on SPEC-02, from $750/mo on SPEC-03 — monitoring, fixes, hosting where we run it, store compliance on apps, and included change-hours (2 a month on SYSTEMS, 3 on PROPRIETARY). Work beyond the included hours is $200/hr, always quoted before we start. Billing begins when your support window ends. If your SPEC-02 backbone lives in your own OPS account, care is optional after the support window."
     },
     {
-      "question": "Do I need a separate OPS subscription?",
-      "answer": "Yes. SPEC is a build service — your OPS subscription is your ongoing access to the platform. It may be higher than standard if your custom modules require additional infrastructure."
+      "question": "Where does my SPEC-02 backbone live?",
+      "answer": "Wherever the outcome is best. If you run OPS, we build it into your OPS account and it lives with you. If you don't, we run it standalone on infrastructure we operate — hosting is included in the care plan. Decided in discovery, in writing."
     },
     {
-      "question": "Can I upgrade my package later?",
-      "answer": "Yes. Start with Setup to configure OPS for your workflow. If you want a custom module built later, the Build package fee applies (minus what you already paid for Setup). Same for Enterprise."
+      "question": "What does white label mean on SPEC-03?",
+      "answer": "Your name, your icon, your App Store listing — your clients see your company end to end. +$4,000 at build, +$200/mo on care. One line of fine print we'll say out loud: Apple binds the store's Seller field to the developer account, so it reads OPS's legal entity. Everything above the fold is you. And if you ever want full ownership, Apple's App Transfer moves the app to your own account — reviews and installs intact — administered by us at billable hours."
     },
     {
-      "question": "What if I am not sure which package I need?",
-      "answer": "Start with Setup. It is the lowest commitment and we will tell you honestly during discovery if your needs require Build or Enterprise. No pressure, no upsell games."
+      "question": "Who owns the code?",
+      "answer": "We do — you hold the license. Here's the line that matters: your app is exclusive to you. We will never sell it or transfer it to another company. The code underneath is ours to reuse — patterns, components, even building a different tool that does a similar job for someone else. Exclusive to you: your instance, your brand, your configuration, your data. Not exclusive: the code and the concept."
     },
     {
-      "question": "Is there a refund policy on the deposit?",
-      "answer": "If we have not started work, the P1 deposit is fully refundable. Once discovery begins, each milestone covers work already completed. P2, P3, and P4 are invoiced as the build clears review."
+      "question": "What's the guarantee?",
+      "answer": "Thirty days from delivery to walk away — one invocation, written notice, no defect proof required. On SPEC-01 that means your money back; the automations live in your accounts and stay put. On hosted work we disable the system and refund per the payment schedule. The exclusions are the obvious ones, written plainly in the terms."
+    },
+    {
+      "question": "What happens at scope sign-off?",
+      "answer": "Your intake becomes a written work order — what gets built, what counts as accepted, what becomes a change order. You countersign it before build starts, on every tier. On SPEC-03 it's also where your total locks: the $25,000 floor becomes a fixed number, and it doesn't move after that."
+    },
+    {
+      "question": "What if I want changes mid-build?",
+      "answer": "Small course corrections happen inside the build. Anything that changes what the scope document promises becomes a change order — priced in writing before we build it. After delivery, the change-hours on your care plan carry the ongoing evolution."
+    },
+    {
+      "question": "How fast is this, really?",
+      "answer": "SPEC-01: about a week of build after a few days of discovery. SPEC-02: three to five weeks end to end. SPEC-03: scoped at sign-off — typically six to ten weeks. The board above shows live intake windows; we take a limited number of engagements at a time."
+    },
+    {
+      "question": "Can I move up a tier later?",
+      "answer": "Yes. Start where you are. If WORKFLOWS proves the case for a backbone, or your backbone proves the case for your own app, the conversation is short — and where scope overlaps, what you've already paid is credited toward the bigger build."
+    },
+    {
+      "question": "Why can't I buy from Quebec?",
+      "answer": "Quebec's consumer-protection rules require French-language contracts and cancellation mechanics we haven't built yet. Rather than serve Quebec badly, we don't serve it yet. The screening happens before any money moves."
+    },
+    {
+      "question": "What happens if I stop paying for care?",
+      "answer": "We don't hold your business hostage. Non-payment pauses the system after notice, and off-boarding is defined in the terms: your data exports clean, your brand assets stay yours, and on white-label apps the App Transfer path is always open. What we don't do is keep operating infrastructure for free."
     }
   ],
 
-  "bottomCta.heading": "READY TO BUILD SOMETHING THAT FITS?",
-  "bottomCta.subtitle": "Pick your package. Pay the P1 deposit. We handle the rest.",
-  "bottomCta.ctaText": "View Packages",
-  "bottomCta.defaultOpsText": "Use default OPS",
+  "bottomCta.heading": "YOUR MOVE.",
+  "bottomCta.subtitle": "Start with a conversation. We'll tell you which tier is yours — or that you don't need one yet.",
+  "bottomCta.ctaText": "See the packages",
+  "bottomCta.defaultOpsText": "Not ready for a build? OPS starts free",
   "bottomCta.defaultOpsHref": "https://app.opsapp.co/setup?source=spec",
 
   "confirmation.heading": "You're in.",
   "confirmation.subtitle": "Deposit received. Your intake link is on the way — that's the next thing that matters.",
-  "confirmation.timeline.spec01": "Setup builds ship in 1-2 weeks.",
-  "confirmation.timeline.spec02": "Build packages ship in 2-3 weeks.",
-  "confirmation.timeline.spec03": "Enterprise builds ship in 4-6 weeks."
+  "confirmation.timeline.spec01": "SPEC-01 builds deliver in 1-2 weeks.",
+  "confirmation.timeline.spec02": "SPEC-02 builds deliver in 3-5 weeks.",
+  "confirmation.timeline.spec03": "SPEC-03 delivery is scoped at sign-off — typically 6-10 weeks."
 }
