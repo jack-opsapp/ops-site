@@ -1,12 +1,13 @@
 /**
- * SPEC — Custom build packages, pricing, OPS BOARD, Stripe deposit checkout.
+ * SPEC — the tier ladder, OPS BOARD, tier guide, Stripe deposit checkout.
  *
  * Route: /spec (and /es/spec).
  *
  * Sticky scroll-driven 3D phone scene that morphs through five phases
- * (home → packages → analysis → building → custom). Three deposit
- * packages (Setup, Build, Enterprise) hit Stripe Checkout at
- * /api/spec/create-checkout-session.
+ * (home → packages → analysis → building → custom). Three escalating
+ * tiers (SPEC-01 WORKFLOWS / SPEC-02 SYSTEMS / SPEC-03 PROPRIETARY,
+ * 10_TIER_MODEL_V2) hit Stripe Checkout at /api/spec/create-checkout-session
+ * when deposits are enabled.
  *
  * Phase 1 additions:
  *   - OPS BOARD section between HowItWorks and Pricing
@@ -36,8 +37,8 @@ export async function generateMetadata(): Promise<Metadata> {
       ? 'OPS SPEC — Software Personalizado Para Tu Oficio'
       : 'OPS SPEC — Custom Software For Your Trade',
     description: locale === 'es'
-      ? 'Construimos módulos personalizados para tu negocio sobre la plataforma OPS. Paquetes desde $3,000, pagados en 4 hitos. Construido por los oficios, para los oficios.'
-      : 'We build custom modules for your business on the OPS platform. Packages from $3,000, paid in 4 milestones. Built by trades, for trades.',
+      ? 'Tres construcciones de precio fijo para los oficios: tus herramientas conectadas ($2,000), una columna vertebral para tu operación ($7,500), o tu propia app independiente (desde $25,000). Pagos por puntos de control. 30 días para retirarte.'
+      : 'Three fixed-price builds for the trades: your tools wired together ($2,000), one backbone for your operation ($7,500), or your own standalone app (from $25,000). Paid at checkpoints. 30 days to walk away.',
     openGraph: {
       url: buildLocaleUrl('/spec', locale),
     },
@@ -89,32 +90,35 @@ export default async function SpecPage({ searchParams }: SpecPageProps) {
         '@type': 'Product',
         name: 'OPS SPEC',
         description:
-          'Custom modules built on the OPS platform — Setup, Build, and Enterprise packages. Built by trades, for trades. Paid in 4 milestones with a 30-day Guarantee Refund.',
+          'Fixed-price builds for the trades — SPEC-01 WORKFLOWS wires your tools together, SPEC-02 SYSTEMS runs your operation on one backbone, SPEC-03 PROPRIETARY is a standalone app built for one company. Paid at checkpoints, 30 days to walk away.',
         brand: { '@type': 'Brand', name: 'OPS' },
         url: 'https://opsapp.co/spec',
         offers: [
           {
             '@type': 'Offer',
-            name: 'SPEC — Setup',
-            price: '750',
+            name: 'OPS SPEC-01 — WORKFLOWS',
+            price: '1000',
             priceCurrency: 'CAD',
-            description: '$750 P1 deposit on a $3,000 Setup package, paid in 4 milestones.',
+            description:
+              '$1,000 deposit books the slot on a $2,000 fixed engagement — up to 3 production automations in your own accounts, 50/50 payment.',
             availability: 'https://schema.org/InStock',
           },
           {
             '@type': 'Offer',
-            name: 'SPEC — Build',
-            price: '2125',
+            name: 'OPS SPEC-02 — SYSTEMS',
+            price: '1875',
             priceCurrency: 'CAD',
-            description: '$2,125 P1 deposit on a $8,500 Build package, paid in 4 milestones.',
+            description:
+              '$1,875 deposit books the slot on a $7,500 fixed engagement — one structured backbone for jobs, clients, and money, paid across 4 checkpoints. $395/mo care plan after the support window.',
             availability: 'https://schema.org/InStock',
           },
           {
             '@type': 'Offer',
-            name: 'SPEC — Enterprise',
-            price: '4500',
+            name: 'OPS SPEC-03 — PROPRIETARY',
+            price: '6250',
             priceCurrency: 'CAD',
-            description: '$4,500 P1 deposit on a $18,000 Enterprise package, paid in 4 milestones.',
+            description:
+              '$6,250 deposit, fixed against the $25,000 floor, on a standalone trade tool built for one company. Total locks at scope sign-off. Care plan from $750/mo after the support window.',
             availability: 'https://schema.org/InStock',
           },
         ],
@@ -124,7 +128,7 @@ export default async function SpecPage({ searchParams }: SpecPageProps) {
         '@type': 'Service',
         name: 'OPS SPEC',
         description:
-          'Custom modules built on the OPS platform — Setup, Build, and Enterprise packages. Built by trades, for trades. Contact the founder to scope an engagement.',
+          'Fixed-price builds for the trades — SPEC-01 WORKFLOWS wires your tools together, SPEC-02 SYSTEMS runs your operation on one backbone, SPEC-03 PROPRIETARY is a standalone app built for one company. Built by trades, for trades. Talk to the founder to scope an engagement.',
         provider: { '@type': 'Organization', name: 'OPS', url: 'https://opsapp.co' },
         url: 'https://opsapp.co/spec',
         areaServed: { '@type': 'Country', name: 'Canada' },
