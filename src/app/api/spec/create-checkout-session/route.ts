@@ -46,6 +46,7 @@ import {
 import {
   isValidTier,
   tierDepositCents,
+  tierTotalCents,
   SPEC_TIER_DISPLAY_NAMES,
   type SpecTier,
 } from '@/lib/spec/pricing';
@@ -443,7 +444,9 @@ async function handlePathB(args: PathBArgs): Promise<NextResponse> {
     );
   }
 
-  const totalCents = tierDepositCents(tier) * 4;
+  // spec03's published total is the FLOOR — the real total locks at scope
+  // sign-off, after approval. The approval row records the floor.
+  const totalCents = tierTotalCents(tier);
   const depositCents = tierDepositCents(tier);
 
   // Generate plaintext + hash. The plaintext is only ever transmitted in the

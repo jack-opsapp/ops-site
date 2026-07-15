@@ -199,7 +199,7 @@ export async function POST(
 
   const ip = getRequestIp(req);
   const userAgent = req.headers.get('user-agent') ?? null;
-  const tier: SpecTier = isValidTier(row.tier) ? row.tier : 'build';
+  const tier: SpecTier = isValidTier(row.tier) ? row.tier : 'spec02';
   const tierDisplay = SPEC_TIER_DISPLAY_NAMES[tier];
 
   if (action === 'approve') {

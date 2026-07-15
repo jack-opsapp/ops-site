@@ -36,8 +36,11 @@ import { getSupabaseAdmin } from '@/lib/supabase-admin';
 import { hashApprovalToken } from '@/lib/spec/token-hash';
 import {
   SPEC_TIER_DISPLAY_NAMES,
+  TIER_MILESTONE_SHAPE,
+  computeTierCheckpoints,
   formatTierCents,
   isValidTier,
+  type CheckpointKey,
   type SpecTier,
 } from '@/lib/spec/pricing';
 import { OwnerApprovalForm } from '@/components/spec/OwnerApprovalForm';
@@ -146,13 +149,35 @@ export default async function OwnerApprovalPage({ params }: PageProps) {
   }
 
   // ── Render Approve / Decline UI ────────────────────────────────────────
-  const tier: SpecTier = isValidTier(approval.tier) ? approval.tier : 'build';
+  const tier: SpecTier = isValidTier(approval.tier) ? approval.tier : 'spec02';
   const { buyerLabel, buyerEmail, companyName } = await loadBuyerAndCompany(
     approval.buyer_user_id,
     approval.linked_company_id,
   );
 
-  const milestoneCents = approval.approved_deposit_cents;
+  // Per-tier payment schedule (10_TIER_MODEL_V2 § 2). spec03 renders against
+  // the published floor — the real total locks at scope sign-off.
+  const shape = TIER_MILESTONE_SHAPE[tier];
+  const checkpoints = computeTierCheckpoints(tier);
+  const checkpointLabels: Record<CheckpointKey, string> = {
+    p1: 'P1 · Deposit · today',
+    p2: 'P2 · Scope sign-off',
+    p3: 'P3 · Midpoint review',
+    p4: 'P4 · Delivery walkthrough',
+  };
+  const costKicker =
+    shape === 'half_half'
+      ? '// COST · 50/50 PAYMENT'
+      : shape === 'quarters'
+        ? '// COST · 4 CHECKPOINTS'
+        : '// COST · DEPOSIT AGAINST THE FLOOR';
+  const totalLabel = shape === 'floor_quarters' ? 'Total (floor)' : 'Total';
+  const scheduleNote =
+    shape === 'half_half'
+      ? 'P1 is charged at checkout. The balance is invoiced at the delivery walkthrough, net-15. Scope sign-off carries no payment. Card stays on file.'
+      : shape === 'quarters'
+        ? 'P1 is charged at checkout. P2 — P4 fire as Stripe Invoices after each acceptance event. Card stays on file for the checkpoint schedule.'
+        : 'P1 is charged at checkout, fixed against the floor. The total locks at scope sign-off; P2 — P4 split the locked remainder as Stripe Invoices. Amounts shown are at the floor.';
 
   return (
     <main className="min-h-screen bg-ops-background text-ops-text-primary py-16 sm:py-24 px-6">
@@ -185,19 +210,25 @@ export default async function OwnerApprovalPage({ params }: PageProps) {
         {/* Cost breakdown */}
         <section className="mt-12 border border-ops-border rounded-[10px] bg-ops-surface p-6">
           <p className="font-caption text-[10px] uppercase tracking-[0.18em] text-ops-text-mute mb-5">
-            {'// COST · 4-MILESTONE PAYMENT'}
+            {costKicker}
           </p>
           <div className="space-y-3">
-            <CostRow label="Total" value={formatTierCents(approval.approved_total_cents)} accent />
+            <CostRow
+              label={totalLabel}
+              value={formatTierCents(approval.approved_total_cents)}
+              accent
+            />
             <div className="h-px bg-ops-border my-2" />
-            <CostRow label="P1 · Deposit · today" value={formatTierCents(milestoneCents)} />
-            <CostRow label="P2 · Scope sign-off" value={formatTierCents(milestoneCents)} />
-            <CostRow label="P3 · Midpoint demo" value={formatTierCents(milestoneCents)} />
-            <CostRow label="P4 · Delivery walkthrough" value={formatTierCents(milestoneCents)} />
+            {checkpoints.map((checkpoint) => (
+              <CostRow
+                key={checkpoint.key}
+                label={checkpointLabels[checkpoint.key]}
+                value={formatTierCents(checkpoint.cents)}
+              />
+            ))}
           </div>
           <p className="font-heading font-light text-xs text-ops-text-tertiary mt-5 leading-relaxed">
-            P1 is charged at checkout. P2 — P4 fire as Stripe Invoices after each acceptance
-            event. Card stays on file for the milestone schedule.
+            {scheduleNote}
           </p>
         </section>
 

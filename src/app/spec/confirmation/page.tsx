@@ -47,7 +47,7 @@ interface PageProps {
   searchParams: Promise<{ session_id?: string }>;
 }
 
-const VALID_TIERS = new Set(['setup', 'build', 'enterprise']);
+const VALID_TIERS = new Set(['spec01', 'spec02', 'spec03']);
 
 function readTier(metadata: Stripe.Metadata | null | undefined): string | null {
   if (!metadata) return null;

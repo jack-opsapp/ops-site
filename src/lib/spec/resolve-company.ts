@@ -16,7 +16,8 @@
 
 import { getSupabaseAdmin } from '@/lib/supabase-admin';
 
-export type SpecTier = 'setup' | 'build' | 'enterprise';
+export type { SpecTier } from './pricing';
+import type { SpecTier } from './pricing';
 
 export type ResolveResult =
   | {

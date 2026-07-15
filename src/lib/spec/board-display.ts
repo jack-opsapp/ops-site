@@ -35,9 +35,9 @@ export const TIER_DURATIONS: Record<
   SpecBoardTier,
   { discovery: [number, number]; build: [number, number] }
 > = {
-  setup: { discovery: [3, 5], build: [7, 14] },
-  build: { discovery: [5, 7], build: [14, 21] },
-  enterprise: { discovery: [7, 14], build: [28, 42] },
+  spec01: { discovery: [2, 4], build: [3, 7] },
+  spec02: { discovery: [5, 10], build: [15, 25] },
+  spec03: { discovery: [10, 15], build: [30, 60] },
 };
 
 /** Section copy keys — pulled from spec.json so en/es swap cleanly. */

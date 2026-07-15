@@ -107,12 +107,12 @@ export default function SpecOpsBoard({ initialSnapshot, copy }: SpecOpsBoardProp
     [snapshot, copy],
   );
 
-  // Default selected row: BUILD (per spec § 3) unless not present.
+  // Default selected row: SPEC-02 (the recommended tier) unless not present.
   const [selectedTier, setSelectedTier] = useState<SpecBoardTier>(() => {
-    const buildRow = rows.find((r) => r.tier === 'build' && r.isAcceptingBookings);
-    if (buildRow) return 'build';
+    const recommendedRow = rows.find((r) => r.tier === 'spec02' && r.isAcceptingBookings);
+    if (recommendedRow) return 'spec02';
     const firstOpen = rows.find((r) => r.isAcceptingBookings);
-    return firstOpen?.tier ?? 'setup';
+    return firstOpen?.tier ?? 'spec01';
   });
 
   const isLive = !snapshot.is_stale && snapshot.refreshed_at !== null;

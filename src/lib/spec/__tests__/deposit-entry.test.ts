@@ -7,7 +7,7 @@ import { specBillingAddressPath } from '../deposit-entry';
 // (app/spec/billing-address/page.tsx reads ?tier=). If the route moves, this
 // fails loudly rather than silently dead-ending the deposit flow.
 test('specBillingAddressPath targets the billing-address entry per tier', () => {
-  assert.equal(specBillingAddressPath('setup'), '/spec/billing-address?tier=setup');
-  assert.equal(specBillingAddressPath('build'), '/spec/billing-address?tier=build');
-  assert.equal(specBillingAddressPath('enterprise'), '/spec/billing-address?tier=enterprise');
+  assert.equal(specBillingAddressPath('spec01'), '/spec/billing-address?tier=spec01');
+  assert.equal(specBillingAddressPath('spec02'), '/spec/billing-address?tier=spec02');
+  assert.equal(specBillingAddressPath('spec03'), '/spec/billing-address?tier=spec03');
 });

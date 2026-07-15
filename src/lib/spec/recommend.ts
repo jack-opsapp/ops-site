@@ -37,47 +37,47 @@ export interface FitAnswers {
 }
 
 /** Ordered tiers, lowest → highest commitment. */
-const TIER_ORDER: readonly SpecTier[] = ['setup', 'build', 'enterprise'];
+const TIER_ORDER: readonly SpecTier[] = ['spec01', 'spec02', 'spec03'];
 
 type Score = Record<SpecTier, number>;
 
-const ZERO: Score = { setup: 0, build: 0, enterprise: 0 };
+const ZERO: Score = { spec01: 0, spec02: 0, spec03: 0 };
 
 /**
  * Need-signal point tables. Scope is weighted 2× timeline/crew because it
  * is the clearest read on how much custom work the engagement requires.
  */
 const SCOPE_POINTS: Record<FitScope, Score> = {
-  configure: { setup: 2, build: 0, enterprise: 0 },
-  one_module: { setup: 0, build: 2, enterprise: 0 },
-  rebuild: { setup: 0, build: 0, enterprise: 2 },
+  configure: { spec01: 2, spec02: 0, spec03: 0 },
+  one_module: { spec01: 0, spec02: 2, spec03: 0 },
+  rebuild: { spec01: 0, spec02: 0, spec03: 2 },
 };
 
 const TIMELINE_POINTS: Record<FitTimeline, Score> = {
-  rush: { setup: 1, build: 0, enterprise: 0 }, // fastest → setup
-  few_weeks: { setup: 0, build: 1, enterprise: 0 },
-  no_rush: { setup: 0, build: 0, enterprise: 1 }, // longest runway → enterprise
+  rush: { spec01: 1, spec02: 0, spec03: 0 }, // fastest → setup
+  few_weeks: { spec01: 0, spec02: 1, spec03: 0 },
+  no_rush: { spec01: 0, spec02: 0, spec03: 1 }, // longest runway → enterprise
 };
 
 const TEAM_POINTS: Record<FitTeam, Score> = {
-  solo: { setup: 1, build: 0, enterprise: 0 },
-  small: { setup: 0, build: 1, enterprise: 0 },
-  large: { setup: 0, build: 0, enterprise: 1 },
+  solo: { spec01: 1, spec02: 0, spec03: 0 },
+  small: { spec01: 0, spec02: 1, spec03: 0 },
+  large: { spec01: 0, spec02: 0, spec03: 1 },
 };
 
 /** Highest tier each budget band can afford — the recommendation ceiling. */
 const BUDGET_CEILING: Record<FitBudget, SpecTier> = {
-  low: 'setup', // up to ~$5k → only Setup ($3k) fits
-  mid: 'build', // $5-12k → Build ($8.5k) fits, Enterprise ($18k) does not
-  high: 'enterprise', // $12k+ → any tier
+  low: 'spec01', // up to ~$5k → only Setup ($3k) fits
+  mid: 'spec02', // $5-12k → Build ($8.5k) fits, Enterprise ($18k) does not
+  high: 'spec03', // $12k+ → any tier
 };
 
 function add(into: Score, points: Score | undefined): Score {
   if (!points) return into;
   return {
-    setup: into.setup + points.setup,
-    build: into.build + points.build,
-    enterprise: into.enterprise + points.enterprise,
+    spec01: into.spec01 + points.spec01,
+    spec02: into.spec02 + points.spec02,
+    spec03: into.spec03 + points.spec03,
   };
 }
 
@@ -86,11 +86,11 @@ function add(into: Score, points: Score | undefined): Score {
  * it is tied for the lead, otherwise the more conservative tied tier.
  */
 function pickNeed(score: Score): SpecTier {
-  const max = Math.max(score.setup, score.build, score.enterprise);
+  const max = Math.max(score.spec01, score.spec02, score.spec03);
   const tied = TIER_ORDER.filter((t) => score[t] === max);
-  if (tied.includes('build')) return 'build';
-  if (tied.includes('setup')) return 'setup';
-  return 'enterprise';
+  if (tied.includes('spec02')) return 'spec02';
+  if (tied.includes('spec01')) return 'spec01';
+  return 'spec03';
 }
 
 /** Clamp a tier so it never exceeds the ceiling (by commitment order). */

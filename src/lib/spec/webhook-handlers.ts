@@ -111,15 +111,15 @@ function formatAmountCents(cents: number, currency = 'CAD'): string {
   return `$${formatted} ${currency.toUpperCase()}`;
 }
 
-/** Capitalize tier for the SendGrid template ("setup" → "Setup"). */
-function tierDisplayLabel(tier: SpecTier): 'Setup' | 'Build' | 'Enterprise' {
+/** Short-form designation for the SendGrid template ("spec01" → "SPEC-01"). */
+function tierDisplayLabel(tier: SpecTier): 'SPEC-01' | 'SPEC-02' | 'SPEC-03' {
   switch (tier) {
-    case 'setup':
-      return 'Setup';
-    case 'build':
-      return 'Build';
-    case 'enterprise':
-      return 'Enterprise';
+    case 'spec01':
+      return 'SPEC-01';
+    case 'spec02':
+      return 'SPEC-02';
+    case 'spec03':
+      return 'SPEC-03';
   }
 }
 
@@ -786,7 +786,7 @@ export async function handleSpecChargeDisputeCreated(
     .eq('id', specProjectId)
     .maybeSingle();
   const tierRaw = (projectRow?.tier ?? '') as string;
-  const tier: SpecTier = isValidTier(tierRaw) ? tierRaw : 'build';
+  const tier: SpecTier = isValidTier(tierRaw) ? tierRaw : 'spec02';
   const customerEmail =
     typeof projectRow?.customer_email === 'string' ? projectRow.customer_email : '';
   const linkedCompanyId =

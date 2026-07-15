@@ -51,22 +51,22 @@
   "board.nextStartPrefix": "EMPIEZA",
   "board.deliveryPrefix": "ENTREGA",
   "board.deliveryUnknown": "ENTREGA POR DEFINIR",
-  "board.fallback.setup.nextIntake": "SIGUIENTE ESPACIO",
-  "board.fallback.setup.delivery": "1-2 SEMANAS",
-  "board.fallback.build.nextIntake": "SIGUIENTE ESPACIO",
-  "board.fallback.build.delivery": "2-3 SEMANAS",
-  "board.fallback.enterprise.nextIntake": "SIGUIENTE ESPACIO",
-  "board.fallback.enterprise.delivery": "4-6 SEMANAS",
+  "board.fallback.spec01.nextIntake": "SIGUIENTE ESPACIO",
+  "board.fallback.spec01.delivery": "1-2 SEMANAS",
+  "board.fallback.spec02.nextIntake": "SIGUIENTE ESPACIO",
+  "board.fallback.spec02.delivery": "2-3 SEMANAS",
+  "board.fallback.spec03.nextIntake": "SIGUIENTE ESPACIO",
+  "board.fallback.spec03.delivery": "4-6 SEMANAS",
 
   "packages.sectionLabel": "PAQUETES",
-  "packages.setup.name": "SETUP",
-  "packages.setup.tagline": "Configuramos OPS alrededor de tu flujo de trabajo",
-  "packages.setup.price": "$3,000",
-  "packages.setup.deposit": "$750 depósito",
-  "packages.setup.startFrom": "Empieza por $750",
-  "packages.setup.headlineSub": "$3,000 total · 4 hitos",
-  "packages.setup.milestoneAmount": "$750",
-  "packages.setup.features": [
+  "packages.spec01.name": "SETUP",
+  "packages.spec01.tagline": "Configuramos OPS alrededor de tu flujo de trabajo",
+  "packages.spec01.price": "$2,000",
+  "packages.spec01.deposit": "$1,000 depósito",
+  "packages.spec01.startFrom": "Empieza por $1,000",
+  "packages.spec01.headlineSub": "$2,000 total · 4 hitos",
+  "packages.spec01.milestoneAmount": "$1,000",
+  "packages.spec01.features": [
     "2 sesiones de descubrimiento",
     "Análisis de flujo de trabajo",
     "Hasta 3 configuraciones personalizadas",
@@ -74,24 +74,24 @@
     "Campos personalizados en proyectos y clientes",
     "30 días de soporte"
   ],
-  "packages.setup.examples": [
+  "packages.spec01.examples": [
     { "trade": "TECHADOR", "desc": "Etapas de pipeline personalizadas (Lead a Inspección a Cotización a Firmado a Completo), campos de tipo de techo, etiquetas de seguimiento de materiales" },
     { "trade": "PLOMERO", "desc": "Pipeline dividido entre llamadas de servicio y renovaciones, ordenamiento por urgencia, campos de número de permiso y fecha de inspección" },
     { "trade": "JARDINERO", "desc": "Categorías de clientes estacionales vs mantenimiento, plantillas de trabajo recurrente, campos de asignación de equipo por zona" }
   ],
-  "packages.setup.ongoing": "Estimado +15% sobre la suscripción OPS. Retenedor opcional $250/mes después del periodo de soporte.",
-  "packages.setup.subscriptionEstimate": "+15% sobre la suscripción OPS base",
-  "packages.setup.retainerAmount": "$250/mes",
-  "packages.setup.ctaText": "Pagar $750 Depósito",
+  "packages.spec01.ongoing": "Estimado +15% sobre la suscripción OPS. Retenedor opcional $250/mes después del periodo de soporte.",
+  "packages.spec01.subscriptionEstimate": "+15% sobre la suscripción OPS base",
+  "packages.spec01.retainerAmount": "$250/mes",
+  "packages.spec01.ctaText": "Pagar $1,000 Depósito",
 
-  "packages.build.name": "BUILD",
-  "packages.build.tagline": "Un módulo personalizado construido para tu oficio",
-  "packages.build.price": "$8,500",
-  "packages.build.deposit": "$2,125 depósito",
-  "packages.build.startFrom": "Empieza por $2,125",
-  "packages.build.headlineSub": "$8,500 total · 4 hitos",
-  "packages.build.milestoneAmount": "$2,125",
-  "packages.build.features": [
+  "packages.spec02.name": "BUILD",
+  "packages.spec02.tagline": "Un módulo personalizado construido para tu oficio",
+  "packages.spec02.price": "$7,500",
+  "packages.spec02.deposit": "$1,875 depósito",
+  "packages.spec02.startFrom": "Empieza por $1,875",
+  "packages.spec02.headlineSub": "$7,500 total · 4 hitos",
+  "packages.spec02.milestoneAmount": "$1,875",
+  "packages.spec02.features": [
     "Todo lo del Setup",
     "1 módulo personalizado — nuevas funciones, vistas y lógica",
     "Soporte iOS y web",
@@ -99,24 +99,24 @@
     "Activado por empresa",
     "60 días de soporte"
   ],
-  "packages.build.examples": [
+  "packages.spec02.examples": [
     { "trade": "CONSTRUCTOR DE DECKS", "desc": "Herramienta de medición de decks — dibuja formas, calcula pies de tabla y materiales, genera listas vinculadas a estimaciones" },
     { "trade": "HVAC", "desc": "Rastreador de ciclo de vida de equipos — registra unidades por número de serie, rastrea garantías, programa mantenimiento automático" },
     { "trade": "ELECTRICISTA", "desc": "Módulo de permisos e inspecciones — rastrea permisos por trabajo, recordatorios automáticos, documentación fotográfica con firma de inspector" }
   ],
-  "packages.build.ongoing": "Estimado +30% sobre la suscripción OPS. Retenedor opcional $450/mes después del periodo de soporte.",
-  "packages.build.subscriptionEstimate": "+30% sobre la suscripción OPS base",
-  "packages.build.retainerAmount": "$450/mes",
-  "packages.build.ctaText": "Pagar $2,125 Depósito",
+  "packages.spec02.ongoing": "Estimado +30% sobre la suscripción OPS. Retenedor opcional $450/mes después del periodo de soporte.",
+  "packages.spec02.subscriptionEstimate": "+30% sobre la suscripción OPS base",
+  "packages.spec02.retainerAmount": "$450/mes",
+  "packages.spec02.ctaText": "Pagar $1,875 Depósito",
 
-  "packages.enterprise.name": "ENTERPRISE",
-  "packages.enterprise.tagline": "Toda tu operación, construida a medida sobre OPS",
-  "packages.enterprise.price": "$18,000",
-  "packages.enterprise.deposit": "$4,500 depósito",
-  "packages.enterprise.startFrom": "Empieza por $4,500",
-  "packages.enterprise.headlineSub": "$18,000 total · 4 hitos",
-  "packages.enterprise.milestoneAmount": "$4,500",
-  "packages.enterprise.features": [
+  "packages.spec03.name": "ENTERPRISE",
+  "packages.spec03.tagline": "Toda tu operación, construida a medida sobre OPS",
+  "packages.spec03.price": "$25,000",
+  "packages.spec03.deposit": "$6,250 depósito",
+  "packages.spec03.startFrom": "Empieza por $6,250",
+  "packages.spec03.headlineSub": "$25,000 total · 4 hitos",
+  "packages.spec03.milestoneAmount": "$6,250",
+  "packages.spec03.features": [
     "Todo lo del Build",
     "Múltiples módulos personalizados",
     "Integraciones profundas con tus herramientas existentes",
@@ -124,15 +124,15 @@
     "Cambios estructurales a la plataforma",
     "90 días de soporte"
   ],
-  "packages.enterprise.examples": [
+  "packages.spec03.examples": [
     { "trade": "CONSTRUCTOR GENERAL", "desc": "Gestión de subcontratos, programación multi-oficio, herramienta de comparación de ofertas, integración QuickBooks, migración completa desde Buildertrend" },
     { "trade": "GESTIÓN DE PROPIEDADES", "desc": "Portal de inquilinos, enrutamiento de órdenes de trabajo, despacho de proveedores, historial de mantenimiento por unidad, integración de arrendamiento" },
     { "trade": "EMPRESA MULTI-OFICIO", "desc": "Módulos específicos por división, recursos compartidos entre divisiones, vista unificada de clientes, reportes de P&L por división" }
   ],
-  "packages.enterprise.ongoing": "Estimado +50% sobre la suscripción OPS. Retenedor opcional $750/mes después del periodo de soporte.",
-  "packages.enterprise.subscriptionEstimate": "+50% sobre la suscripción OPS base",
-  "packages.enterprise.retainerAmount": "$750/mes",
-  "packages.enterprise.ctaText": "Pagar $4,500 Depósito",
+  "packages.spec03.ongoing": "Estimado +50% sobre la suscripción OPS. Retenedor opcional $750/mes después del periodo de soporte.",
+  "packages.spec03.subscriptionEstimate": "+50% sobre la suscripción OPS base",
+  "packages.spec03.retainerAmount": "$750/mes",
+  "packages.spec03.ctaText": "Pagar $6,250 Depósito",
 
   "packages.contactCta": "Habla con el fundador",
   "packages.recommendedBadge": "MÁS ELEGIDO",
@@ -179,9 +179,9 @@
   "questionnaire.q4.low": "Hasta $5,000",
   "questionnaire.q4.mid": "$5,000 - $12,000",
   "questionnaire.q4.high": "$12,000+",
-  "questionnaire.rationale.setup": "Setup te queda — configuramos OPS según tu flujo, en vivo en días.",
-  "questionnaire.rationale.build": "Build te queda — un módulo a medida para tu oficio, en vivo en un par de semanas.",
-  "questionnaire.rationale.enterprise": "Enterprise te queda — toda tu operación, construida a medida sobre OPS.",
+  "questionnaire.rationale.spec01": "Setup te queda — configuramos OPS según tu flujo, en vivo en días.",
+  "questionnaire.rationale.spec02": "Build te queda — un módulo a medida para tu oficio, en vivo en un par de semanas.",
+  "questionnaire.rationale.spec03": "Enterprise te queda — toda tu operación, construida a medida sobre OPS.",
 
   "included.sectionLabel": "QUÉ INCLUYE CADA PAQUETE",
   "included.every": [
@@ -255,7 +255,7 @@
 
   "confirmation.heading": "Estás dentro.",
   "confirmation.subtitle": "Depósito recibido. Tu enlace de admisión está en camino — eso es lo siguiente que importa.",
-  "confirmation.timeline.setup": "Las construcciones Setup se entregan en 1-2 semanas.",
-  "confirmation.timeline.build": "Los paquetes Build se entregan en 2-3 semanas.",
-  "confirmation.timeline.enterprise": "Las construcciones Enterprise se entregan en 4-6 semanas."
+  "confirmation.timeline.spec01": "Las construcciones Setup se entregan en 1-2 semanas.",
+  "confirmation.timeline.spec02": "Los paquetes Build se entregan en 2-3 semanas.",
+  "confirmation.timeline.spec03": "Las construcciones Enterprise se entregan en 4-6 semanas."
 }

@@ -51,22 +51,22 @@
   "board.nextStartPrefix": "STARTS",
   "board.deliveryPrefix": "DELIVERS",
   "board.deliveryUnknown": "DELIVERY TBD",
-  "board.fallback.setup.nextIntake": "NEXT OPEN SLOT",
-  "board.fallback.setup.delivery": "1-2 WEEKS",
-  "board.fallback.build.nextIntake": "NEXT OPEN SLOT",
-  "board.fallback.build.delivery": "2-3 WEEKS",
-  "board.fallback.enterprise.nextIntake": "NEXT OPEN SLOT",
-  "board.fallback.enterprise.delivery": "4-6 WEEKS",
+  "board.fallback.spec01.nextIntake": "NEXT OPEN SLOT",
+  "board.fallback.spec01.delivery": "1-2 WEEKS",
+  "board.fallback.spec02.nextIntake": "NEXT OPEN SLOT",
+  "board.fallback.spec02.delivery": "2-3 WEEKS",
+  "board.fallback.spec03.nextIntake": "NEXT OPEN SLOT",
+  "board.fallback.spec03.delivery": "4-6 WEEKS",
 
   "packages.sectionLabel": "PACKAGES",
-  "packages.setup.name": "SETUP",
-  "packages.setup.tagline": "We configure OPS around your workflow",
-  "packages.setup.price": "$3,000",
-  "packages.setup.deposit": "$750 deposit",
-  "packages.setup.startFrom": "Get started for $750",
-  "packages.setup.headlineSub": "$3,000 total · 4 milestones",
-  "packages.setup.milestoneAmount": "$750",
-  "packages.setup.features": [
+  "packages.spec01.name": "SETUP",
+  "packages.spec01.tagline": "We configure OPS around your workflow",
+  "packages.spec01.price": "$2,000",
+  "packages.spec01.deposit": "$1,000 deposit",
+  "packages.spec01.startFrom": "Get started for $1,000",
+  "packages.spec01.headlineSub": "$2,000 total · 4 milestones",
+  "packages.spec01.milestoneAmount": "$1,000",
+  "packages.spec01.features": [
     "2 discovery sessions",
     "Workflow analysis",
     "Up to 3 custom configurations",
@@ -74,24 +74,24 @@
     "Custom fields on projects & clients",
     "30-day support window"
   ],
-  "packages.setup.examples": [
+  "packages.spec01.examples": [
     { "trade": "ROOFER", "desc": "Custom pipeline stages (Lead to Inspection to Quote to Signed to Complete), roof-type fields on projects, material tracking tags" },
     { "trade": "PLUMBER", "desc": "Service call vs renovation pipeline split, urgency-based task sorting, permit number and inspection date fields" },
     { "trade": "LANDSCAPER", "desc": "Seasonal vs maintenance client categories, recurring job templates, zone-based crew assignment fields" }
   ],
-  "packages.setup.ongoing": "+15% OPS subscription estimate. $250/mo optional maintenance retainer after support window.",
-  "packages.setup.subscriptionEstimate": "+15% on base OPS subscription",
-  "packages.setup.retainerAmount": "$250/mo",
-  "packages.setup.ctaText": "Pay $750 Deposit",
+  "packages.spec01.ongoing": "+15% OPS subscription estimate. $250/mo optional maintenance retainer after support window.",
+  "packages.spec01.subscriptionEstimate": "+15% on base OPS subscription",
+  "packages.spec01.retainerAmount": "$250/mo",
+  "packages.spec01.ctaText": "Pay $1,000 Deposit",
 
-  "packages.build.name": "BUILD",
-  "packages.build.tagline": "A custom module built for your trade",
-  "packages.build.price": "$8,500",
-  "packages.build.deposit": "$2,125 deposit",
-  "packages.build.startFrom": "Get started for $2,125",
-  "packages.build.headlineSub": "$8,500 total · 4 milestones",
-  "packages.build.milestoneAmount": "$2,125",
-  "packages.build.features": [
+  "packages.spec02.name": "BUILD",
+  "packages.spec02.tagline": "A custom module built for your trade",
+  "packages.spec02.price": "$7,500",
+  "packages.spec02.deposit": "$1,875 deposit",
+  "packages.spec02.startFrom": "Get started for $1,875",
+  "packages.spec02.headlineSub": "$7,500 total · 4 milestones",
+  "packages.spec02.milestoneAmount": "$1,875",
+  "packages.spec02.features": [
     "Everything in Setup",
     "1 custom module — new features, new views, new logic",
     "iOS and web support",
@@ -99,24 +99,24 @@
     "Feature-flagged per company",
     "60-day support window"
   ],
-  "packages.build.examples": [
+  "packages.spec02.examples": [
     { "trade": "DECK BUILDER", "desc": "Deck measurement tool — draw deck shapes, calculate board feet and materials, generate material lists linked to project estimates" },
     { "trade": "HVAC", "desc": "Equipment lifecycle tracker — log units by serial number, track warranty dates, auto-schedule maintenance, link service history to client records" },
     { "trade": "ELECTRICIAN", "desc": "Permit and inspection module — track permits per job, auto-reminders for inspection dates, photo documentation with inspector sign-off" }
   ],
-  "packages.build.ongoing": "+30% OPS subscription estimate. $450/mo optional maintenance retainer after support window.",
-  "packages.build.subscriptionEstimate": "+30% on base OPS subscription",
-  "packages.build.retainerAmount": "$450/mo",
-  "packages.build.ctaText": "Pay $2,125 Deposit",
+  "packages.spec02.ongoing": "+30% OPS subscription estimate. $450/mo optional maintenance retainer after support window.",
+  "packages.spec02.subscriptionEstimate": "+30% on base OPS subscription",
+  "packages.spec02.retainerAmount": "$450/mo",
+  "packages.spec02.ctaText": "Pay $1,875 Deposit",
 
-  "packages.enterprise.name": "ENTERPRISE",
-  "packages.enterprise.tagline": "Your entire operation, custom-built on OPS",
-  "packages.enterprise.price": "$18,000",
-  "packages.enterprise.deposit": "$4,500 deposit",
-  "packages.enterprise.startFrom": "Get started for $4,500",
-  "packages.enterprise.headlineSub": "$18,000 total · 4 milestones",
-  "packages.enterprise.milestoneAmount": "$4,500",
-  "packages.enterprise.features": [
+  "packages.spec03.name": "ENTERPRISE",
+  "packages.spec03.tagline": "Your entire operation, custom-built on OPS",
+  "packages.spec03.price": "$25,000",
+  "packages.spec03.deposit": "$6,250 deposit",
+  "packages.spec03.startFrom": "Get started for $6,250",
+  "packages.spec03.headlineSub": "$25,000 total · 4 milestones",
+  "packages.spec03.milestoneAmount": "$6,250",
+  "packages.spec03.features": [
     "Everything in Build",
     "Multiple custom modules",
     "Deep integrations with your existing tools",
@@ -124,15 +124,15 @@
     "Structural changes to core platform",
     "90-day support window"
   ],
-  "packages.enterprise.examples": [
+  "packages.spec03.examples": [
     { "trade": "GENERAL BUILDER", "desc": "Subtrade management, multi-trade scheduling, bid comparison tool, QuickBooks integration, full migration from Buildertrend" },
     { "trade": "PROPERTY MGMT", "desc": "Tenant portal, work order routing, vendor dispatch, unit-level maintenance history, lease integration, migration from AppFolio" },
     { "trade": "MULTI-TRADE CO", "desc": "Trade-specific modules for each division, cross-division resource sharing, unified client view, division-level P&L reporting" }
   ],
-  "packages.enterprise.ongoing": "+50% OPS subscription estimate. $750/mo optional maintenance retainer after support window.",
-  "packages.enterprise.subscriptionEstimate": "+50% on base OPS subscription",
-  "packages.enterprise.retainerAmount": "$750/mo",
-  "packages.enterprise.ctaText": "Pay $4,500 Deposit",
+  "packages.spec03.ongoing": "+50% OPS subscription estimate. $750/mo optional maintenance retainer after support window.",
+  "packages.spec03.subscriptionEstimate": "+50% on base OPS subscription",
+  "packages.spec03.retainerAmount": "$750/mo",
+  "packages.spec03.ctaText": "Pay $6,250 Deposit",
 
   "packages.contactCta": "Talk to the founder",
   "packages.recommendedBadge": "MOST CHOSEN",
@@ -179,9 +179,9 @@
   "questionnaire.q4.low": "Up to $5,000",
   "questionnaire.q4.mid": "$5,000 - $12,000",
   "questionnaire.q4.high": "$12,000+",
-  "questionnaire.rationale.setup": "Setup fits — we configure OPS around your workflow, live in days.",
-  "questionnaire.rationale.build": "Build fits — one custom module for your trade, live in a couple weeks.",
-  "questionnaire.rationale.enterprise": "Enterprise fits — your whole operation, custom-built on OPS.",
+  "questionnaire.rationale.spec01": "Setup fits — we configure OPS around your workflow, live in days.",
+  "questionnaire.rationale.spec02": "Build fits — one custom module for your trade, live in a couple weeks.",
+  "questionnaire.rationale.spec03": "Enterprise fits — your whole operation, custom-built on OPS.",
 
   "included.sectionLabel": "WHAT EVERY PACKAGE INCLUDES",
   "included.every": [
@@ -255,7 +255,7 @@
 
   "confirmation.heading": "You're in.",
   "confirmation.subtitle": "Deposit received. Your intake link is on the way — that's the next thing that matters.",
-  "confirmation.timeline.setup": "Setup builds ship in 1-2 weeks.",
-  "confirmation.timeline.build": "Build packages ship in 2-3 weeks.",
-  "confirmation.timeline.enterprise": "Enterprise builds ship in 4-6 weeks."
+  "confirmation.timeline.spec01": "Setup builds ship in 1-2 weeks.",
+  "confirmation.timeline.spec02": "Build packages ship in 2-3 weeks.",
+  "confirmation.timeline.spec03": "Enterprise builds ship in 4-6 weeks."
 }

@@ -14,7 +14,7 @@ import PackageCard, {
 const ease = theme.animation.easing as [number, number, number, number];
 
 export interface PackageData {
-  tier: 'setup' | 'build' | 'enterprise';
+  tier: SpecTier;
   name: string;
   tagline: string;
   startFrom: string;
@@ -51,7 +51,7 @@ interface SpecPricingProps {
   contactCtaText: string;
   contactCtaHref: string;
   /** Questionnaire fit (null = none chosen). Drives card highlight + CTA primary. */
-  highlightedTier: 'setup' | 'build' | 'enterprise' | null;
+  highlightedTier: SpecTier | null;
   /** "// YOUR FIT" tag + banner eyebrow. */
   yourFitLabel: string;
   /** One-line rationale for the highlighted tier ('' when none). */

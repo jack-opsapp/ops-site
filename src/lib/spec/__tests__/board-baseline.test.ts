@@ -19,11 +19,11 @@ test('baseline is a FALLBACK snapshot, never marked live', () => {
 test('baseline is not a dead all-OPEN / 0-waitlist grid', () => {
   const snap = buildBaselineSnapshot(new Date(Date.UTC(2026, 5, 9)));
   const byTier = Object.fromEntries(snap.tiers.map((t) => [t.tier, t]));
-  assert.equal(byTier.setup.availability, 'OPEN');
-  assert.equal(byTier.build.availability, 'LIMITED');
-  assert.equal(byTier.enterprise.availability, 'WAITLIST');
-  assert.equal(byTier.build.waitlist_bucket, '1-2');
-  assert.equal(byTier.enterprise.waitlist_bucket, '3+');
+  assert.equal(byTier.spec01.availability, 'OPEN');
+  assert.equal(byTier.spec02.availability, 'LIMITED');
+  assert.equal(byTier.spec03.availability, 'WAITLIST');
+  assert.equal(byTier.spec02.waitlist_bucket, '1-2');
+  assert.equal(byTier.spec03.waitlist_bucket, '3+');
   for (const row of snap.tiers) assert.equal(row.is_accepting_bookings, true);
 });
 

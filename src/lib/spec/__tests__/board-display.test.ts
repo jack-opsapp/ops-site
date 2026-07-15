@@ -37,11 +37,11 @@ const copy: SpecOpsBoardCopy = {
   deliveryPrefix: 'DELIVERS',
   deliveryUnknown: 'DELIVERY TBD',
   fallback: {
-    setup: { nextIntake: 'NEXT OPEN SLOT', delivery: '1-2 WEEKS' },
-    build: { nextIntake: 'NEXT OPEN SLOT', delivery: '2-3 WEEKS' },
-    enterprise: { nextIntake: 'NEXT OPEN SLOT', delivery: '4-6 WEEKS' },
+    spec01: { nextIntake: 'NEXT OPEN SLOT', delivery: '1-2 WEEKS' },
+    spec02: { nextIntake: 'NEXT OPEN SLOT', delivery: '2-3 WEEKS' },
+    spec03: { nextIntake: 'NEXT OPEN SLOT', delivery: '4-6 WEEKS' },
   },
-  tierLabels: { setup: 'SETUP', build: 'BUILD', enterprise: 'ENTERPRISE' },
+  tierLabels: { spec01: 'SPEC-01', spec02: 'SPEC-02', spec03: 'SPEC-03' },
 };
 
 test('parseIsoYearWeek resolves the ISO-8601 Monday', () => {
@@ -68,7 +68,7 @@ test('selectDisplayRows projects dated windows for a populated snapshot', () => 
   const snapshot: SpecBoardSnapshot = {
     tiers: [
       {
-        tier: 'build',
+        tier: 'spec02',
         availability: 'LIMITED',
         waitlist_bucket: '1-2',
         next_start_week: '2026-02', // Monday 2026-01-05
@@ -76,7 +76,7 @@ test('selectDisplayRows projects dated windows for a populated snapshot', () => 
         public_note: null,
       },
       {
-        tier: 'setup',
+        tier: 'spec01',
         availability: 'OPEN',
         waitlist_bucket: '0',
         next_start_week: null,
@@ -89,16 +89,16 @@ test('selectDisplayRows projects dated windows for a populated snapshot', () => 
   };
 
   const rows = selectDisplayRows(snapshot, copy);
-  const build = rows.find((r) => r.tier === 'build')!;
-  const setup = rows.find((r) => r.tier === 'setup')!;
-  const enterprise = rows.find((r) => r.tier === 'enterprise')!;
+  const build = rows.find((r) => r.tier === 'spec02')!;
+  const setup = rows.find((r) => r.tier === 'spec01')!;
+  const enterprise = rows.find((r) => r.tier === 'spec03')!;
 
-  // Build: LIMITED, dated next-intake + a projected delivery window.
-  // discovery [5,7] + build [14,21] → +19d (JAN 24) to +28d (FEB 02).
+  // SPEC-02: LIMITED, dated next-intake + a projected delivery window.
+  // discovery [5,10] + build [15,25] → +20d (JAN 25) to +35d (FEB 09).
   assert.equal(build.availability, 'LIMITED');
   assert.equal(build.waitlistText, '1-2 WAITING');
   assert.equal(build.nextIntakeText, 'STARTS JAN 05');
-  assert.equal(build.deliveryText, 'JAN 24 — FEB 02');
+  assert.equal(build.deliveryText, 'JAN 25 — FEB 09');
   assert.deepEqual(build.startMonday, new Date(Date.UTC(2026, 0, 5)));
 
   // Setup: not accepting → CLOSED with the public note + unknown delivery.

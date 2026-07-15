@@ -24,7 +24,7 @@ import { getSupabaseAdmin } from '@/lib/supabase-admin';
 
 export interface IntakeProjectRow {
   id: string;
-  tier: 'setup' | 'build' | 'enterprise';
+  tier: 'spec01' | 'spec02' | 'spec03';
   status: string;
   buyer_user_id: string;
   account_holder_user_id: string | null;

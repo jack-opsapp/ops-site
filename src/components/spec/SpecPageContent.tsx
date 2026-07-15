@@ -92,7 +92,15 @@ export function SpecPageContent({
 
   const handleTierSelect = useCallback((tier: string | null) => {
     setPhonePhase('custom');
-    setPhoneTier(tier);
+    // The phone scene (another team's surface — read-only here) keys its
+    // tier-reactive screens on the v1 slugs. Bridge v2 → v1 at the mount so
+    // its visuals keep working without touching phone-scene internals.
+    const PHONE_SCENE_TIER: Record<string, string> = {
+      spec01: 'setup',
+      spec02: 'build',
+      spec03: 'enterprise',
+    };
+    setPhoneTier(tier ? (PHONE_SCENE_TIER[tier] ?? tier) : null);
   }, []);
 
   const openQuestionnaire = useCallback(() => setQuestionnaireOpen(true), []);
@@ -115,7 +123,7 @@ export function SpecPageContent({
     });
   }, []);
 
-  const packages: PackageData[] = (['setup', 'build', 'enterprise'] as const).map((tier) => ({
+  const packages: PackageData[] = (['spec01', 'spec02', 'spec03'] as const).map((tier) => ({
     tier,
     name: t(dict, `packages.${tier}.name`),
     tagline: t(dict, `packages.${tier}.tagline`),
@@ -130,7 +138,7 @@ export function SpecPageContent({
     // HTML doesn't leak "Pay $X Deposit" claims to crawlers and AI
     // agents — the visible UI shows "Talk to the founder" instead.
     ctaText: depositsEnabled ? t(dict, `packages.${tier}.ctaText`) : '',
-    recommended: tier === 'build',
+    recommended: tier === 'spec02',
   }));
 
   const boardCopy: SpecOpsBoardCopy = {
@@ -172,7 +180,7 @@ export function SpecPageContent({
     nextStartPrefix: t(dict, 'board.nextStartPrefix'),
     deliveryPrefix: t(dict, 'board.deliveryPrefix'),
     deliveryUnknown: t(dict, 'board.deliveryUnknown'),
-    fallback: (['setup', 'build', 'enterprise'] as const).reduce(
+    fallback: (['spec01', 'spec02', 'spec03'] as const).reduce(
       (acc, tier) => {
         acc[tier] = {
           nextIntake: t(dict, `board.fallback.${tier}.nextIntake`),
@@ -183,9 +191,9 @@ export function SpecPageContent({
       {} as Record<SpecBoardTier, { nextIntake: string; delivery: string }>,
     ),
     tierLabels: {
-      setup: t(dict, 'packages.setup.name'),
-      build: t(dict, 'packages.build.name'),
-      enterprise: t(dict, 'packages.enterprise.name'),
+      spec01: t(dict, 'packages.spec01.name'),
+      spec02: t(dict, 'packages.spec02.name'),
+      spec03: t(dict, 'packages.spec03.name'),
     },
   };
 
@@ -354,10 +362,10 @@ export function SpecPageContent({
       />
 
       {/* Persistent deposit CTA — reveals after the hero scrolls out. Focal
-          tier defaults to build; the questionnaire repoints it. */}
+          tier defaults to SPEC-02 (recommended); the guide repoints it. */}
       <SpecStickyDepositBar
         depositsEnabled={depositsEnabled}
-        focalTier={fit ?? 'build'}
+        focalTier={fit ?? 'spec02'}
         boardSnapshot={boardSnapshot}
         copy={boardCopy}
         reserveTemplate={t(dict, 'stickyBar.reserveTemplate')}

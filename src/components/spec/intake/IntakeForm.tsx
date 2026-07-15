@@ -49,7 +49,7 @@ import {
 
 interface IntakeFormProps {
   token: string;
-  tier: 'setup' | 'build' | 'enterprise';
+  tier: 'spec01' | 'spec02' | 'spec03';
   companyName: string;
   buyerEmail: string;
   initialResponses: IntakeResponsesShape;
@@ -125,9 +125,9 @@ type SaveState =
 // ─── Defaults ────────────────────────────────────────────────────────────────
 
 const TIER_DISPLAY: Record<IntakeFormProps['tier'], string> = {
-  setup: 'SETUP',
-  build: 'BUILD',
-  enterprise: 'ENTERPRISE',
+  spec01: 'SPEC-01',
+  spec02: 'SPEC-02',
+  spec03: 'SPEC-03',
 };
 
 type ToolNotesField =

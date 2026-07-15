@@ -36,7 +36,7 @@ export interface PackageMilestoneLabels {
 }
 
 export interface PackageCardProps {
-  tier: 'setup' | 'build' | 'enterprise';
+  tier: 'spec01' | 'spec02' | 'spec03';
   name: string;
   tagline: string;
   /** Pre-formatted P1 headline e.g. "Get started for $750". */

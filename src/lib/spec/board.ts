@@ -35,7 +35,7 @@
 import { createClient } from '@supabase/supabase-js';
 import { buildBaselineSnapshot } from './board-baseline';
 
-export const SPEC_BOARD_TIERS = ['setup', 'build', 'enterprise'] as const;
+export const SPEC_BOARD_TIERS = ['spec01', 'spec02', 'spec03'] as const;
 export type SpecBoardTier = (typeof SPEC_BOARD_TIERS)[number];
 
 export type SpecBoardAvailability = 'OPEN' | 'LIMITED' | 'WAITLIST' | 'CLOSED';

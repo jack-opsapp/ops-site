@@ -42,12 +42,12 @@ interface BaselineTier {
  * capacity; production overrides them per-tier through the live snapshot.
  */
 export const SPEC_BOARD_BASELINE: readonly BaselineTier[] = [
-  // Setup is light-touch + highest throughput → open, intake next Monday.
-  { tier: 'setup', availability: 'OPEN', waitlist_bucket: '0', startOffsetWeeks: 0 },
-  // Build is the recommended tier + carries the most demand → limited, short queue.
-  { tier: 'build', availability: 'LIMITED', waitlist_bucket: '1-2', startOffsetWeeks: 2 },
-  // Enterprise is founder-bandwidth bound → waitlist, intake a few weeks out.
-  { tier: 'enterprise', availability: 'WAITLIST', waitlist_bucket: '3+', startOffsetWeeks: 5 },
+  // SPEC-01 is light-touch + highest throughput → open, intake next Monday.
+  { tier: 'spec01', availability: 'OPEN', waitlist_bucket: '0', startOffsetWeeks: 0 },
+  // SPEC-02 is the recommended tier + carries the most demand → limited, short queue.
+  { tier: 'spec02', availability: 'LIMITED', waitlist_bucket: '1-2', startOffsetWeeks: 2 },
+  // SPEC-03 is founder-bandwidth bound → waitlist, intake a few weeks out.
+  { tier: 'spec03', availability: 'WAITLIST', waitlist_bucket: '3+', startOffsetWeeks: 5 },
 ];
 
 /**

@@ -107,7 +107,7 @@ export default async function AwaitingApprovalPage() {
     redirect('/spec');
   }
 
-  const tier: SpecTier = isValidTier(pending.tier) ? pending.tier : 'build';
+  const tier: SpecTier = isValidTier(pending.tier) ? pending.tier : 'spec02';
   const ownerLabel =
     pending.account_holder_first_name?.trim() ||
     (pending.account_holder_email ? pending.account_holder_email.split('@')[0] : null) ||

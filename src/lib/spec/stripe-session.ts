@@ -29,6 +29,29 @@ import {
   type OpsAttribution,
 } from './attribution';
 
+/**
+ * Per-tier deposit line copy for the Stripe checkout page (10_TIER_MODEL_V2 § 2).
+ * Payment shapes differ per tier, so the deposit line has to say what this
+ * payment is and when the rest lands.
+ */
+const DEPOSIT_LINE_COPY: Record<SpecTier, { name: string; description: string }> = {
+  spec01: {
+    name: '50% Deposit',
+    description:
+      'Books your slot and funds discovery + scope sign-off. The other half is invoiced at the delivery walkthrough, net-15.',
+  },
+  spec02: {
+    name: '25% Deposit (P1 of 4)',
+    description:
+      'P1 funds discovery + scope work. P2 fires at scope sign-off, P3 at the midpoint review, P4 at the delivery walkthrough — each invoiced net-15.',
+  },
+  spec03: {
+    name: 'Deposit',
+    description:
+      'Fixed against the $25,000 floor. Your total locks at scope sign-off; the remainder is split across three checkpoints, invoiced net-15.',
+  },
+};
+
 export interface CreateSpecStripeSessionArgs {
   tier: SpecTier;
   /** Buyer's email — the customer email Stripe will send the receipt to. */
@@ -168,9 +191,8 @@ export async function createSpecStripeCheckoutSession(
           price_data: {
             currency: 'cad',
             product_data: {
-              name: `${SPEC_TIER_DISPLAY_NAMES[tier]} — 25% Deposit (P1 of 4)`,
-              description:
-                'P1 deposit funds discovery + scope work. P2 fires at scope sign-off, P3 at midpoint demo, P4 at delivery walkthrough.',
+              name: `${SPEC_TIER_DISPLAY_NAMES[tier]} — ${DEPOSIT_LINE_COPY[tier].name}`,
+              description: DEPOSIT_LINE_COPY[tier].description,
             },
             unit_amount: depositCents,
             tax_behavior: 'exclusive',
