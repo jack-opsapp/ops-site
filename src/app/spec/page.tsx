@@ -26,6 +26,7 @@ import type { Metadata } from 'next';
 import { getLocale, getTDict, buildLocaleAlternates, buildLocaleUrl } from '@/i18n/server';
 import { SpecPageContent } from '@/components/spec/SpecPageContent';
 import { getSpecBoardSnapshot } from '@/lib/spec/board';
+import { isValidTier, type SpecTier } from '@/lib/spec/pricing';
 
 export async function generateMetadata(): Promise<Metadata> {
   const locale = await getLocale();
@@ -34,8 +35,8 @@ export async function generateMetadata(): Promise<Metadata> {
       ? 'OPS SPEC — Software Personalizado Para Tu Oficio'
       : 'OPS SPEC — Custom Software For Your Trade',
     description: locale === 'es'
-      ? 'Construimos modulos personalizados para tu negocio sobre la plataforma OPS. Paquetes desde $3,000, pagados en 4 hitos. Construido por un contratista, para contratistas.'
-      : 'We build custom modules for your business on the OPS platform. Packages from $3,000, paid in 4 milestones. Built by a contractor, for contractors.',
+      ? 'Construimos módulos personalizados para tu negocio sobre la plataforma OPS. Paquetes desde $3,000, pagados en 4 hitos. Construido por los oficios, para los oficios.'
+      : 'We build custom modules for your business on the OPS platform. Packages from $3,000, paid in 4 milestones. Built by trades, for trades.',
     openGraph: {
       url: buildLocaleUrl('/spec', locale),
     },
@@ -48,8 +49,16 @@ interface FAQItem {
   answer: string;
 }
 
-export default async function SpecPage() {
+interface SpecPageProps {
+  searchParams: Promise<{ fit?: string }>;
+}
+
+export default async function SpecPage({ searchParams }: SpecPageProps) {
   const rawDict = await getTDict('spec');
+  // Shareable questionnaire result — /spec?fit=<tier> pre-highlights that tier
+  // server-side (no hydration flash for a co-owner opening the link).
+  const fitParam = (await searchParams)?.fit;
+  const initialFit: SpecTier | null = isValidTier(fitParam) ? fitParam : null;
   // Phase 0 safety — until SPEC_LIVE_DEPOSITS_ENABLED flips to 'true',
   // Pay Deposit buttons render as "Talk to the founder" links pointing
   // at the contact form. The Stripe route returns 503 on the API side.
@@ -64,8 +73,8 @@ export default async function SpecPage() {
     : Object.fromEntries(
         Object.entries(rawDict).filter(
           ([key]) =>
-            !key.endsWith('.ctaText') &&
-            !key.endsWith('.deposit') &&
+            !(key.startsWith('packages.') && key.endsWith('.ctaText')) &&
+            !(key.startsWith('packages.') && key.endsWith('.deposit')) &&
             !key.startsWith('confirmation.'),
         ),
       );
@@ -87,7 +96,7 @@ export default async function SpecPage() {
         '@type': 'Product',
         name: 'OPS SPEC',
         description:
-          'Custom modules built on the OPS platform — Setup, Build, and Enterprise packages. Built by a contractor, for contractors. Paid in 4 milestones with a 30-day Guarantee Refund.',
+          'Custom modules built on the OPS platform — Setup, Build, and Enterprise packages. Built by trades, for trades. Paid in 4 milestones with a 30-day Guarantee Refund.',
         brand: { '@type': 'Brand', name: 'OPS' },
         url: 'https://opsapp.co/spec',
         offers: [
@@ -122,7 +131,7 @@ export default async function SpecPage() {
         '@type': 'Service',
         name: 'OPS SPEC',
         description:
-          'Custom modules built on the OPS platform — Setup, Build, and Enterprise packages. Built by a contractor, for contractors. Contact the founder to scope an engagement.',
+          'Custom modules built on the OPS platform — Setup, Build, and Enterprise packages. Built by trades, for trades. Contact the founder to scope an engagement.',
         provider: { '@type': 'Organization', name: 'OPS', url: 'https://opsapp.co' },
         url: 'https://opsapp.co/spec',
         areaServed: { '@type': 'Country', name: 'Canada' },
@@ -178,6 +187,7 @@ export default async function SpecPage() {
         dict={dict}
         depositsEnabled={depositsEnabled}
         boardSnapshot={boardSnapshot}
+        initialFit={initialFit}
       />
     </>
   );

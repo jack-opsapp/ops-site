@@ -33,7 +33,7 @@ export default function WhatsIncluded({
             <div className="flex flex-col gap-3">
               {items.map((item) => (
                 <div key={item} className="flex gap-3 items-start">
-                  <svg className="w-3.5 h-3.5 mt-0.5 text-ops-accent flex-shrink-0" fill="none" viewBox="0 0 16 16" stroke="currentColor" strokeWidth="1.5">
+                  <svg className="w-3.5 h-3.5 mt-0.5 text-ops-text-tertiary flex-shrink-0" fill="none" viewBox="0 0 16 16" stroke="currentColor" strokeWidth="1.5">
                     <path d="M3 8.5l3.5 3.5L13 4.5" strokeLinecap="round" strokeLinejoin="round" />
                   </svg>
                   <span className="font-heading font-light text-sm text-ops-text-secondary leading-relaxed">
@@ -54,7 +54,7 @@ export default function WhatsIncluded({
             <div className="flex flex-col gap-3">
               {ongoingItems.map((item) => (
                 <div key={item} className="flex gap-3 items-start">
-                  <span className="text-ops-accent text-xs mt-0.5 flex-shrink-0">&#9670;</span>
+                  <span className="text-ops-text-tertiary text-xs mt-0.5 flex-shrink-0">&#9670;</span>
                   <span className="font-heading font-light text-sm text-ops-text-secondary leading-relaxed">
                     {item}
                   </span>

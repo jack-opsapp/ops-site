@@ -18,6 +18,27 @@
  *
  * Server-side validation + spec_projects insert + Path A/B branching happen
  * in /api/spec/create-checkout-session.
+ *
+ * TRACKED FOLLOW-UP — ES i18n for the buyer flow (deferred):
+ *   This page is the entry point to the SPEC paid buyer flow
+ *   (billing-address → checkout → owner-approval → intake → confirmation).
+ *   That entire flow is hardcoded English: its `metadata`, the
+ *   BillingAddressForm / IntakeForm / OwnerApprovalForm copy, and the
+ *   confirmation page do NOT read the locale dictionary, and these routes
+ *   are deliberately excluded from TRANSLATED_PATHS (src/middleware.ts),
+ *   so /es/spec/billing-address 308-redirects to the English URL.
+ *
+ *   This is intentionally safe while deposits are PAUSED (Phase 0): the
+ *   `SPEC_LIVE_DEPOSITS_ENABLED` gate below sends every buyer — EN and ES
+ *   alike — to the Spanish-aware /resources#contact CTA, so no ES user can
+ *   reach an English checkout. The buyer flow is unreachable dead path.
+ *
+ *   WHEN SPEC_LIVE_DEPOSITS_ENABLED flips to 'true', this becomes a real
+ *   gap: ES users would land in an English-only checkout. Before enabling
+ *   live ES deposits, localize this flow — add these routes to
+ *   TRANSLATED_PATHS, move all buyer-flow copy into the es/en dictionaries,
+ *   and localize the Stripe Checkout `locale`. Until then, do NOT translate
+ *   it speculatively (~600 lines of currently-dead path).
  */
 
 import { redirect } from 'next/navigation';
@@ -57,7 +78,9 @@ export default async function BillingAddressPage({ searchParams }: PageProps) {
   const tier = tierParam satisfies SpecTier;
 
   // Phase 0 safety net — page is reachable only when the marketing CTA wires
-  // it up post-Phase-0, but redirect defensively anyway.
+  // it up post-Phase-0, but redirect defensively anyway. NOTE: flipping this
+  // gate on also exposes the English-only buyer flow to ES users — localize
+  // it first (see the ES i18n tracked follow-up in the file docblock above).
   const depositsEnabled = process.env.SPEC_LIVE_DEPOSITS_ENABLED === 'true';
   if (!depositsEnabled) {
     redirect('/resources#contact');

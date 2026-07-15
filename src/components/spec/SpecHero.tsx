@@ -87,13 +87,13 @@ export default function SpecHero({
             >
               <button
                 onClick={() => scrollTo('packages')}
-                className="inline-flex items-center justify-center font-caption uppercase tracking-[0.15em] text-xs px-6 py-3 rounded-[3px] transition-all duration-200 cursor-pointer bg-ops-accent text-white hover:bg-ops-accent/90 active:bg-ops-accent/80"
+                className="inline-flex items-center justify-center font-caption uppercase tracking-[0.15em] text-xs px-6 py-3 rounded-[5px] transition-all duration-200 cursor-pointer bg-ops-accent text-ops-background hover:bg-ops-accent/90 active:bg-ops-accent/80 focus-visible:outline focus-visible:outline-[1.5px] focus-visible:outline-ops-accent focus-visible:outline-offset-2"
               >
                 {ctaPackages}
               </button>
               <button
                 onClick={() => scrollTo('process')}
-                className="inline-flex items-center justify-center font-caption uppercase tracking-[0.15em] text-xs px-6 py-3 rounded-[3px] transition-all duration-200 cursor-pointer bg-transparent text-ops-text-primary border border-ops-border hover:border-ops-border-hover"
+                className="inline-flex items-center justify-center font-caption uppercase tracking-[0.15em] text-xs px-6 py-3 rounded-[5px] transition-all duration-200 cursor-pointer bg-transparent text-ops-text-primary border border-ops-border hover:border-ops-border-hover focus-visible:outline focus-visible:outline-[1.5px] focus-visible:outline-ops-accent focus-visible:outline-offset-2"
               >
                 {ctaHowItWorks}
               </button>

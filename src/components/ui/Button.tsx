@@ -23,7 +23,7 @@ export default function Button({
   external = false,
 }: ButtonProps) {
   const base =
-    'inline-flex items-center justify-center font-caption uppercase tracking-[0.15em] text-xs px-6 py-3 rounded-[3px] transition-all duration-200 cursor-pointer';
+    'inline-flex items-center justify-center font-caption uppercase tracking-[0.15em] text-xs px-6 py-3 rounded-[5px] transition-all duration-200 cursor-pointer';
 
   const variants = {
     solid:

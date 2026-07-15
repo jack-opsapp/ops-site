@@ -1,127 +1,26 @@
-'use client';
-
 /**
- * SPEC Screens — Dev Preview
- * Lightweight: DPR 1, renders on mount. No site chrome needed.
- * Visit: /spec/screens-dev
+ * SPEC Screens — Dev Preview (Server Shell)
+ *
+ * Route: /spec/screens-dev
+ *
+ * Internal dev tool for previewing the Canvas 2D SPEC phone-scene screens
+ * at progress=1. Noindex — also blocked in robots.ts. A client component
+ * cannot export `metadata`, so this server shell owns the noindex robots
+ * tag and renders the interactive client preview.
  */
 
-import { useEffect, useRef, useState } from 'react';
-import { CANVAS_WIDTH, CANVAS_HEIGHT } from '@/components/spec/phone-scene/constants';
-import type { SpecPhase } from '@/components/spec/phone-scene/constants';
-import type { SpecScreenDrawFn } from '@/components/spec/phone-scene/screens/types';
+import type { Metadata } from 'next';
+import SpecScreensDevClient from './SpecScreensDevClient';
 
-import { drawSpecHome } from '@/components/spec/phone-scene/screens/spec-home';
-import { drawSpecPackages } from '@/components/spec/phone-scene/screens/spec-packages';
-import { drawSpecAnalysis } from '@/components/spec/phone-scene/screens/spec-analysis';
-import { drawSpecBuilding } from '@/components/spec/phone-scene/screens/spec-building';
-import { drawSpecCustom } from '@/components/spec/phone-scene/screens/spec-custom';
-
-const ASPECT = CANVAS_WIDTH / CANVAS_HEIGHT;
-
-const SCREEN_MAP: Record<SpecPhase, SpecScreenDrawFn> = {
-  home: drawSpecHome,
-  packages: drawSpecPackages,
-  analysis: drawSpecAnalysis,
-  building: drawSpecBuilding,
-  custom: drawSpecCustom,
+export const metadata: Metadata = {
+  title: 'SPEC Screens — Dev',
+  description: 'Internal dev preview for SPEC phone-scene canvases.',
+  robots: {
+    index: false,
+    follow: false,
+  },
 };
 
-type Tier = 'setup' | 'build' | 'enterprise';
-
-interface ScreenDef {
-  phase: SpecPhase;
-  tier?: Tier | null;
-  label: string;
-}
-
-const ALL_SCREENS: ScreenDef[] = [
-  { phase: 'home', label: 'Home (base OPS)' },
-  { phase: 'packages', label: 'Packages (no selection)' },
-  { phase: 'packages', tier: 'build', label: 'Packages (build selected)' },
-  { phase: 'analysis', label: 'Analysis' },
-  { phase: 'building', label: 'Building' },
-  { phase: 'custom', tier: 'setup', label: 'Custom — Setup' },
-  { phase: 'custom', tier: 'build', label: 'Custom — Build (Deck Builder)' },
-  { phase: 'custom', tier: 'enterprise', label: 'Custom — Enterprise' },
-];
-
-function renderScreen(drawFn: SpecScreenDrawFn, tier: Tier | null | undefined, targetWidth: number): HTMLCanvasElement {
-  const canvas = document.createElement('canvas');
-  canvas.width = CANVAS_WIDTH;
-  canvas.height = CANVAS_HEIGHT;
-  const ctx = canvas.getContext('2d')!;
-
-  ctx.fillStyle = '#0A0A0A';
-  ctx.fillRect(0, 0, CANVAS_WIDTH, CANVAS_HEIGHT);
-
-  try {
-    drawFn({ ctx, width: CANVAS_WIDTH, height: CANVAS_HEIGHT, progress: 1, tier: tier ?? undefined });
-  } catch (e) {
-    console.error('Draw error:', e);
-    ctx.fillStyle = 'red';
-    ctx.font = '24px monospace';
-    ctx.fillText(String(e), 20, 40);
-  }
-
-  canvas.style.width = `${targetWidth}px`;
-  canvas.style.height = `${targetWidth / ASPECT}px`;
-  return canvas;
-}
-
-function ScreenCard({ screen, width }: { screen: ScreenDef; width: number }) {
-  const ref = useRef<HTMLDivElement>(null);
-
-  useEffect(() => {
-    const container = ref.current;
-    if (!container) return;
-    const drawFn = SCREEN_MAP[screen.phase];
-    const canvas = renderScreen(drawFn, screen.tier, width);
-    canvas.style.borderRadius = '6px';
-    canvas.style.display = 'block';
-    while (container.firstChild) container.removeChild(container.firstChild);
-    container.appendChild(canvas);
-  }, [screen, width]);
-
-  return (
-    <div style={{ display: 'inline-flex', flexDirection: 'column', gap: 6, verticalAlign: 'top' }}>
-      <div style={{ display: 'flex', alignItems: 'baseline', gap: 8 }}>
-        <span style={{ color: 'rgba(255,255,255,0.7)', fontSize: 13, fontFamily: 'monospace', fontWeight: 600 }}>
-          {screen.phase}
-        </span>
-        {screen.tier && (
-          <span style={{ color: '#597794', fontSize: 11, fontFamily: 'monospace', padding: '2px 6px', borderRadius: 3, border: '1px solid rgba(89,119,148,0.3)', background: 'rgba(89,119,148,0.1)' }}>
-            {screen.tier}
-          </span>
-        )}
-      </div>
-      <div ref={ref} style={{ width, height: width / ASPECT, borderRadius: 6, overflow: 'hidden', border: '1px solid rgba(255,255,255,0.1)' }} />
-      <span style={{ color: 'rgba(255,255,255,0.35)', fontSize: 11, fontFamily: 'monospace' }}>{screen.label}</span>
-    </div>
-  );
-}
-
 export default function SpecScreensDevPage() {
-  const [cardWidth, setCardWidth] = useState(300);
-
-  return (
-    <div style={{ minHeight: '100vh', background: '#0A0A0A', padding: 32, fontFamily: 'monospace' }}>
-      <h1 style={{ color: 'rgba(255,255,255,0.8)', fontSize: 18, margin: '0 0 4px' }}>
-        SPEC Screens — Dev Preview
-      </h1>
-      <p style={{ color: 'rgba(255,255,255,0.4)', fontSize: 12, margin: '0 0 12px' }}>
-        Canvas 2D at progress=1. {CANVAS_WIDTH}&times;{CANVAS_HEIGHT}. No 3D.
-      </p>
-      <div style={{ display: 'flex', alignItems: 'center', gap: 10, marginBottom: 24 }}>
-        <span style={{ color: 'rgba(255,255,255,0.35)', fontSize: 11 }}>size:</span>
-        <input type="range" min={180} max={500} value={cardWidth} onChange={(e) => setCardWidth(Number(e.target.value))} style={{ width: 160, accentColor: '#597794' }} />
-        <span style={{ color: 'rgba(255,255,255,0.35)', fontSize: 11 }}>{cardWidth}px</span>
-      </div>
-      <div style={{ display: 'flex', flexWrap: 'wrap', gap: 24 }}>
-        {ALL_SCREENS.map((s, i) => (
-          <ScreenCard key={`${s.phase}-${s.tier ?? 'x'}-${i}`} screen={s} width={cardWidth} />
-        ))}
-      </div>
-    </div>
-  );
+  return <SpecScreensDevClient />;
 }

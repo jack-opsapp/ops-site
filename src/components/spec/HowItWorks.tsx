@@ -84,12 +84,12 @@ export default function HowItWorks({
                     p-6 rounded-[3px] transition-all duration-300 cursor-pointer
                     border-l-2
                     ${isActive
-                      ? 'border-l-ops-accent bg-ops-surface-elevated/50 opacity-100'
+                      ? 'border-l-white/40 bg-ops-surface-elevated/50 opacity-100'
                       : 'border-l-transparent opacity-50 hover:opacity-70'
                     }
                   `}
                 >
-                  <span className="font-caption text-ops-accent text-xs tracking-[0.15em]">
+                  <span className="font-caption text-ops-text-tertiary text-xs tracking-[0.15em]">
                     {step.number}
                   </span>
                   <h3 className="font-heading font-semibold text-lg text-ops-text-primary mt-2">

@@ -2,6 +2,7 @@
 
 import { motion } from 'framer-motion';
 import { theme } from '@/lib/theme';
+import { trackSpecMarketingEvent } from '@/lib/marketing-analytics';
 
 const ease = theme.animation.easing as [number, number, number, number];
 
@@ -9,6 +10,8 @@ interface SpecBottomCTAProps {
   heading: string;
   subtitle: string;
   ctaText: string;
+  defaultOpsText: string;
+  defaultOpsHref: string;
 }
 
 function scrollTo(id: string) {
@@ -19,6 +22,8 @@ export default function SpecBottomCTA({
   heading,
   subtitle,
   ctaText,
+  defaultOpsText,
+  defaultOpsHref,
 }: SpecBottomCTAProps) {
   return (
     <section className="py-24 md:py-32 bg-ops-background">
@@ -49,10 +54,19 @@ export default function SpecBottomCTA({
         >
           <button
             onClick={() => scrollTo('packages')}
-            className="mt-8 inline-flex items-center justify-center font-caption uppercase tracking-[0.15em] text-xs px-8 py-3.5 rounded-[3px] transition-all duration-200 cursor-pointer bg-ops-accent text-white hover:bg-ops-accent/90"
+            className="mt-8 inline-flex items-center justify-center font-caption uppercase tracking-[0.15em] text-xs px-8 py-3.5 rounded-[5px] transition-all duration-200 cursor-pointer bg-ops-accent text-ops-background hover:bg-ops-accent/90 focus-visible:outline focus-visible:outline-[1.5px] focus-visible:outline-ops-accent focus-visible:outline-offset-2"
           >
             {ctaText}
           </button>
+          <a
+            href={defaultOpsHref}
+            onClick={() => trackSpecMarketingEvent('spec_default_ops_cta_click', {
+              destination: 'default_ops',
+            })}
+            className="ml-3 mt-8 inline-flex items-center justify-center rounded-[5px] border border-ops-border px-8 py-3.5 font-caption text-xs uppercase tracking-[0.15em] text-ops-text-primary transition-all duration-200 hover:border-ops-border-hover focus-visible:outline focus-visible:outline-[1.5px] focus-visible:outline-ops-accent focus-visible:outline-offset-2"
+          >
+            {defaultOpsText}
+          </a>
         </motion.div>
       </div>
     </section>

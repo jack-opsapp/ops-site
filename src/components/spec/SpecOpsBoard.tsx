@@ -25,8 +25,11 @@
  * Edge cases:
  *   • Tier WAITLIST → row in amber + "Join waitlist" CTA
  *   • Tier closed (is_accepting_bookings = false) → "CLOSED — RESUMES [public_note]"
- *   • Snapshot unavailable / is_stale → static fallback from dictionary,
- *     "LIVE" indicator hidden, timestamp shifts to amber
+ *   • Snapshot derivation lives in lib/spec/board-display (selectDisplayRows),
+ *     shared with the sticky deposit bar. A populated snapshot — live, stale,
+ *     or the seeded operator baseline — renders its rows; only a zero-tier
+ *     snapshot falls back to the dictionary defaults. The is_stale flag drives
+ *     the LIVE/FALLBACK badge + amber timestamp, not whether rows are shown.
  *   • refreshed_at > 72h → amber timestamp + "UPDATED [N] DAYS AGO"
  *   • All-tiers-OPEN → hides any future "WAITLIST" UI
  *
@@ -37,199 +40,27 @@ import { useEffect, useMemo, useRef, useState } from 'react';
 import { motion, useReducedMotion } from 'framer-motion';
 import { theme } from '@/lib/theme';
 import { SectionLabel } from '@/components/ui';
-import type {
-  SpecBoardSnapshot,
-  SpecBoardTier,
-  SpecBoardTierRow,
-} from '@/lib/spec/board';
-import { SPEC_BOARD_TIERS } from '@/lib/spec/board';
+import type { SpecBoardSnapshot, SpecBoardTier } from '@/lib/spec/board';
+import {
+  TIER_DURATIONS,
+  type DisplayRow,
+  type SpecOpsBoardCopy,
+  selectDisplayRows,
+  availabilityTone,
+} from '@/lib/spec/board-display';
+import { computeTimelineWindows } from '@/lib/spec/timeline';
+
+// The snapshot → display-row derivation moved to lib/spec/board-display so
+// the sticky deposit bar can reuse the exact same logic. Re-export the copy
+// shape so existing consumers (SpecPageContent) keep their import path.
+export type { SpecOpsBoardCopy } from '@/lib/spec/board-display';
 
 const ease = theme.animation.easing as [number, number, number, number];
-
-/**
- * Per-tier duration window (days). Mirrors `public.spec_capacity` seed
- * in 02_DATA_MODEL.md. Used to compute the delivery date strip when a
- * row is selected. Defensive defaults — if the snapshot lacks
- * `next_start_week`, the helper falls back to a relative window.
- */
-const TIER_DURATIONS: Record<SpecBoardTier, {
-  discovery: [number, number];
-  build: [number, number];
-}> = {
-  setup: { discovery: [3, 5], build: [7, 14] },
-  build: { discovery: [5, 7], build: [14, 21] },
-  enterprise: { discovery: [7, 14], build: [28, 42] },
-};
-
-/** Section copy keys — pulled from spec.json so en/es swap cleanly. */
-export interface SpecOpsBoardCopy {
-  sectionLabel: string;
-  subEyebrow: string;
-  liveLabel: string;
-  staleLabel: string;
-  updatedPrefix: string;
-  updatedJustNow: string;
-  updatedMinAgo: string;
-  updatedHrAgo: string;
-  updatedDaysAgo: string;
-  unavailableNote: string;
-  headers: {
-    tier: string;
-    availability: string;
-    waitlist: string;
-    nextIntake: string;
-    yourDelivery: string;
-  };
-  timeline: {
-    today: string;
-    discovery: string;
-    build: string;
-    delivery: string;
-  };
-  status: {
-    open: string;
-    limited: string;
-    waitlist: string;
-    closed: string;
-  };
-  waitlist: {
-    zero: string;
-    range: string;
-    many: string;
-  };
-  closedPrefix: string;
-  nextStartPrefix: string;
-  deliveryPrefix: string;
-  deliveryUnknown: string;
-  fallback: Record<
-    SpecBoardTier,
-    { nextIntake: string; delivery: string }
-  >;
-  /** Per-tier display label (SETUP / BUILD / ENTERPRISE). */
-  tierLabels: Record<SpecBoardTier, string>;
-}
 
 interface SpecOpsBoardProps {
   /** Server-rendered snapshot. May be empty + stale on Supabase outage. */
   initialSnapshot: SpecBoardSnapshot;
   copy: SpecOpsBoardCopy;
-}
-
-interface DisplayRow {
-  tier: SpecBoardTier;
-  label: string;
-  availability: 'OPEN' | 'LIMITED' | 'WAITLIST' | 'CLOSED';
-  waitlistText: string;
-  nextIntakeText: string;
-  deliveryText: string;
-  isAcceptingBookings: boolean;
-  publicNote: string | null;
-}
-
-/** Static fallback rows used when the snapshot is unavailable. */
-function buildFallbackRows(copy: SpecOpsBoardCopy): DisplayRow[] {
-  return SPEC_BOARD_TIERS.map((tier) => ({
-    tier,
-    label: copy.tierLabels[tier],
-    availability: 'OPEN' as const,
-    waitlistText: copy.waitlist.zero,
-    nextIntakeText: copy.fallback[tier].nextIntake,
-    deliveryText: copy.fallback[tier].delivery,
-    isAcceptingBookings: true,
-    publicNote: null,
-  }));
-}
-
-/** Parse ISO year-week like "2026-23" into the Monday of that week. */
-function parseIsoYearWeek(yearWeek: string): Date | null {
-  const match = /^(\d{4})-?W?-?(\d{1,2})$/.exec(yearWeek);
-  if (!match) return null;
-  const year = Number(match[1]);
-  const week = Number(match[2]);
-  if (!Number.isFinite(year) || !Number.isFinite(week) || week < 1 || week > 53) return null;
-  // ISO 8601: week 1 is the week containing the first Thursday.
-  // Jan 4 always falls in week 1, so we work from there.
-  const jan4 = new Date(Date.UTC(year, 0, 4));
-  const jan4Day = jan4.getUTCDay() || 7; // 1..7 (Mon..Sun)
-  const week1Monday = new Date(jan4);
-  week1Monday.setUTCDate(jan4.getUTCDate() - (jan4Day - 1));
-  const target = new Date(week1Monday);
-  target.setUTCDate(week1Monday.getUTCDate() + (week - 1) * 7);
-  return target;
-}
-
-const SHORT_MONTH = ['JAN', 'FEB', 'MAR', 'APR', 'MAY', 'JUN', 'JUL', 'AUG', 'SEP', 'OCT', 'NOV', 'DEC'];
-
-function formatShortDate(d: Date): string {
-  return `${SHORT_MONTH[d.getUTCMonth()]} ${String(d.getUTCDate()).padStart(2, '0')}`;
-}
-
-function buildLiveRows(
-  snapshot: SpecBoardSnapshot,
-  copy: SpecOpsBoardCopy,
-): DisplayRow[] {
-  // Index snapshot rows by tier for fast lookup. Tiers missing from the
-  // snapshot fall back to OPEN / dictionary defaults.
-  const byTier = new Map<SpecBoardTier, SpecBoardTierRow>();
-  for (const row of snapshot.tiers) byTier.set(row.tier, row);
-
-  return SPEC_BOARD_TIERS.map((tier) => {
-    const row = byTier.get(tier);
-    const fallbackText = copy.fallback[tier];
-    if (!row) {
-      return {
-        tier,
-        label: copy.tierLabels[tier],
-        availability: 'OPEN' as const,
-        waitlistText: copy.waitlist.zero,
-        nextIntakeText: fallbackText.nextIntake,
-        deliveryText: fallbackText.delivery,
-        isAcceptingBookings: true,
-        publicNote: null,
-      };
-    }
-
-    const isClosed = !row.is_accepting_bookings;
-    const availability = isClosed ? 'CLOSED' : row.availability;
-
-    const waitlistText =
-      row.waitlist_bucket === '0'
-        ? copy.waitlist.zero
-        : row.waitlist_bucket === '1-2'
-          ? copy.waitlist.range
-          : copy.waitlist.many;
-
-    let nextIntakeText = fallbackText.nextIntake;
-    let deliveryText = fallbackText.delivery;
-    if (!isClosed && row.next_start_week) {
-      const startMonday = parseIsoYearWeek(row.next_start_week);
-      if (startMonday) {
-        nextIntakeText = `${copy.nextStartPrefix} ${formatShortDate(startMonday)}`;
-        const { discovery, build } = TIER_DURATIONS[tier];
-        const deliveryMin = new Date(startMonday);
-        deliveryMin.setUTCDate(startMonday.getUTCDate() + discovery[0] + build[0]);
-        const deliveryMax = new Date(startMonday);
-        deliveryMax.setUTCDate(startMonday.getUTCDate() + discovery[1] + build[1]);
-        deliveryText = `${formatShortDate(deliveryMin)} — ${formatShortDate(deliveryMax)}`;
-      }
-    } else if (isClosed) {
-      nextIntakeText = row.public_note
-        ? `${copy.closedPrefix} ${row.public_note.toUpperCase()}`
-        : copy.closedPrefix;
-      deliveryText = copy.deliveryUnknown;
-    }
-
-    return {
-      tier,
-      label: copy.tierLabels[tier],
-      availability,
-      waitlistText,
-      nextIntakeText,
-      deliveryText,
-      isAcceptingBookings: !isClosed,
-      publicNote: row.public_note,
-    };
-  });
 }
 
 function buildUpdatedLabel(refreshedAt: string | null, copy: SpecOpsBoardCopy): string {
@@ -250,20 +81,10 @@ function availabilityToneClass(
   isSelected: boolean,
   isDimmed: boolean,
 ): string {
-  // The status text gets the earth-tone semantic colour. Olive for OPEN,
-  // tan for LIMITED, amber/tan for WAITLIST, rose for CLOSED.
-  // Dimming overrides for unselected rows once a row is active.
+  // Earth-tone semantic colour (shared with the sticky deposit bar via
+  // board-display). Dimming overrides for unselected rows once active.
   if (isDimmed && !isSelected) return 'text-ops-text-mute';
-  switch (availability) {
-    case 'OPEN':
-      return 'text-ops-olive';
-    case 'LIMITED':
-      return 'text-ops-tan';
-    case 'WAITLIST':
-      return 'text-ops-tan';
-    case 'CLOSED':
-      return 'text-ops-rose';
-  }
+  return availabilityTone(availability);
 }
 
 export default function SpecOpsBoard({ initialSnapshot, copy }: SpecOpsBoardProps) {
@@ -281,12 +102,10 @@ export default function SpecOpsBoard({ initialSnapshot, copy }: SpecOpsBoardProp
   // work can poll /api/spec/board if Phase 2 wants sub-5min freshness.
   const snapshot = initialSnapshot;
 
-  const rows = useMemo<DisplayRow[]>(() => {
-    if (snapshot.is_stale || snapshot.tiers.length === 0) {
-      return buildFallbackRows(copy);
-    }
-    return buildLiveRows(snapshot, copy);
-  }, [snapshot, copy]);
+  const rows = useMemo<DisplayRow[]>(
+    () => selectDisplayRows(snapshot, copy),
+    [snapshot, copy],
+  );
 
   // Default selected row: BUILD (per spec § 3) unless not present.
   const [selectedTier, setSelectedTier] = useState<SpecBoardTier>(() => {
@@ -424,14 +243,14 @@ export default function SpecOpsBoard({ initialSnapshot, copy }: SpecOpsBoardProp
                     relative grid grid-cols-[1.2fr_1fr_0.8fr_1.4fr_1.6fr] gap-4 py-5 border-b border-white/[0.04]
                     text-left transition-colors duration-200 cursor-pointer
                     ${row.isAcceptingBookings ? 'hover:bg-white/[0.02]' : 'cursor-not-allowed'}
-                    ${isSelected ? 'bg-ops-accent/[0.04]' : ''}
+                    ${isSelected ? 'bg-white/[0.03]' : ''}
                   `}
                 >
                   {/* Selection left rail */}
                   <span
                     aria-hidden="true"
                     className={`absolute left-0 top-1 bottom-1 w-[2px] transition-all duration-200 ${
-                      isSelected ? 'bg-ops-accent opacity-100' : 'bg-transparent opacity-0'
+                      isSelected ? 'bg-white/50 opacity-100' : 'bg-transparent opacity-0'
                     }`}
                   />
                   {/* TIER */}
@@ -487,7 +306,7 @@ export default function SpecOpsBoard({ initialSnapshot, copy }: SpecOpsBoardProp
                 className={`
                   relative w-full text-left p-5 rounded-[3px] border transition-colors duration-200
                   ${isSelected
-                    ? 'border-ops-accent/40 bg-ops-accent/[0.04]'
+                    ? 'border-white/[0.20] bg-white/[0.03]'
                     : 'border-white/[0.08] hover:border-white/[0.15]'}
                   ${row.isAcceptingBookings ? 'cursor-pointer' : 'cursor-not-allowed opacity-60'}
                 `}
@@ -524,9 +343,6 @@ export default function SpecOpsBoard({ initialSnapshot, copy }: SpecOpsBoardProp
           className="mt-12"
           aria-label="Engagement timeline"
         >
-          <p className="font-mono text-[10px] uppercase tracking-[0.18em] text-ops-text-mute mb-4">
-            {copy.timeline.today} / {copy.timeline.discovery} / {copy.timeline.build} / {copy.timeline.delivery}
-          </p>
           <SpecBoardTimeline
             selectedRow={selectedRow}
             copy={copy}
@@ -552,60 +368,122 @@ interface SpecBoardTimelineProps {
  * surface the delivery window beneath the DELIVERY marker.
  */
 function SpecBoardTimeline({ selectedRow, copy, hasEntered, reduceMotion }: SpecBoardTimelineProps) {
-  // Fixed marker positions along the timeline (0..1).
-  // TODAY=0, DISCOVERY=0.18, BUILD=0.5, DELIVERY=0.92.
-  // These are visual proportions, not literal time scales — the actual
-  // dates come from copy + the selected row.
-  const markers = [
-    { key: 'today', x: 0, label: copy.timeline.today, sub: null as string | null },
-    { key: 'discovery', x: 0.18, label: copy.timeline.discovery, sub: selectedRow.nextIntakeText },
-    { key: 'build', x: 0.5, label: copy.timeline.build, sub: null },
-    { key: 'delivery', x: 0.92, label: copy.timeline.delivery, sub: selectedRow.deliveryText },
-  ] as const;
+  const { discovery, build } = TIER_DURATIONS[selectedRow.tier];
+
+  // Real date windows projected forward from today + the selected tier's
+  // durations. `new Date()` is read at render; the date spans carry
+  // suppressHydrationWarning so an SSR/CSR midnight-boundary difference
+  // reconciles to the client's day rather than throwing a hydration mismatch.
+  const phases = useMemo(
+    () =>
+      computeTimelineWindows({
+        today: new Date(),
+        start: selectedRow.startMonday,
+        discovery,
+        build,
+        labels: copy.timeline,
+        unavailable: !selectedRow.isAcceptingBookings,
+      }),
+    [selectedRow, discovery, build, copy.timeline],
+  );
+
+  // Visual x-positions (0..1). Proportions, not a literal time scale —
+  // discovery sits near the start, build spans the middle, delivery anchors
+  // the right edge.
+  const X = [0, 0.22, 0.58, 1] as const;
 
   return (
     <div className="relative w-full">
-      {/* Track — a horizontal hairline */}
-      <motion.div
-        initial={reduceMotion ? false : { scaleX: 0, transformOrigin: 'left' }}
-        animate={hasEntered ? { scaleX: 1 } : { scaleX: 0 }}
-        transition={{ duration: 0.6, delay: 0.7, ease }}
-        className="absolute left-0 right-0 top-3 h-px bg-white/[0.12]"
+      {/* Ticked measurement substrate — minor ticks hanging below the rail,
+          faded at both ends. Reads as an aerospace tape, not a stepper. */}
+      <div
         aria-hidden="true"
+        className="absolute left-0 right-0 top-2 h-2"
+        style={{
+          backgroundImage:
+            'linear-gradient(90deg, rgba(255,255,255,0.12) 0 1px, transparent 1px)',
+          backgroundRepeat: 'repeat-x',
+          backgroundSize: '11px 8px',
+          backgroundPosition: '0 top',
+          maskImage: 'linear-gradient(90deg, transparent, #000 5%, #000 95%, transparent)',
+          WebkitMaskImage: 'linear-gradient(90deg, transparent, #000 5%, #000 95%, transparent)',
+        }}
       />
-      {/* Markers */}
-      <ul className="relative grid grid-cols-1 gap-0 h-24" role="list">
-        {markers.map((marker, index) => (
-          <li
-            key={marker.key}
-            className="absolute top-0 -translate-x-1/2 flex flex-col items-center text-center"
-            style={{ left: `${marker.x * 100}%` }}
-          >
-            <motion.span
-              initial={reduceMotion ? false : { opacity: 0, scale: 0.4 }}
-              animate={hasEntered ? { opacity: 1, scale: 1 } : { opacity: 0, scale: 0.4 }}
-              transition={{ duration: 0.35, delay: 0.9 + index * 0.08, ease }}
-              className={`block w-2.5 h-2.5 rounded-full ${
-                marker.key === 'today' ? 'bg-ops-accent' : 'bg-white/40'
-              }`}
-              aria-hidden="true"
-            />
-            <span className="mt-3 font-mono text-[10px] uppercase tracking-[0.15em] text-ops-text-tertiary [font-variant-numeric:tabular-nums_slashed-zero] whitespace-nowrap">
-              {marker.label}
-            </span>
-            {marker.sub && (
-              <motion.span
-                key={`${marker.key}-${marker.sub}`}
-                initial={reduceMotion ? false : { opacity: 0, y: 4 }}
-                animate={{ opacity: 1, y: 0 }}
-                transition={{ duration: 0.35, ease }}
-                className="mt-1 font-mono text-[10px] text-ops-text-mute [font-variant-numeric:tabular-nums_slashed-zero] whitespace-nowrap max-w-[160px] truncate"
+      {/* Base rail hairline */}
+      <div aria-hidden="true" className="absolute left-0 right-0 top-2 h-px bg-white/[0.12]" />
+      {/* Rail draw-in — the one entrance. The rail builds itself left→right. */}
+      <motion.div
+        aria-hidden="true"
+        initial={reduceMotion ? false : { scaleX: 0 }}
+        animate={hasEntered ? { scaleX: 1 } : { scaleX: 0 }}
+        transition={{ duration: reduceMotion ? 0 : 0.8, delay: reduceMotion ? 0 : 0.6, ease }}
+        style={{ transformOrigin: 'left' }}
+        className="absolute left-0 right-0 top-2 h-px bg-white/[0.22]"
+      />
+      {/* "Next: discovery" accent segment — TODAY → DISCOVERY, the imminent step. */}
+      <motion.div
+        aria-hidden="true"
+        initial={reduceMotion ? false : { scaleX: 0 }}
+        animate={hasEntered ? { scaleX: 1 } : { scaleX: 0 }}
+        transition={{ duration: reduceMotion ? 0 : 0.5, delay: reduceMotion ? 0 : 1.05, ease }}
+        style={{ transformOrigin: 'left', width: `${X[1] * 100}%` }}
+        className="absolute left-0 top-2 h-px bg-ops-accent"
+      />
+
+      {/* Nodes + monospaced date windows */}
+      <ul className="relative h-[92px]" role="list">
+        {phases.map((phase, i) => {
+          const isToday = phase.key === 'today';
+          const isLast = i === phases.length - 1;
+          const colAlign = isToday
+            ? 'items-start text-left'
+            : isLast
+              ? 'items-end text-right'
+              : 'items-center text-center';
+          const shift = isToday ? 'translate-x-0' : isLast ? '-translate-x-full' : '-translate-x-1/2';
+          return (
+            <li
+              key={phase.key}
+              className={`absolute top-0 flex flex-col ${colAlign} ${shift}`}
+              style={{ left: `${X[i] * 100}%` }}
+            >
+              {/* Node box (16px) centered on the rail at top-2 (8px). */}
+              <span className="relative flex h-4 w-4 items-center justify-center" aria-hidden="true">
+                {isToday && !reduceMotion && (
+                  // Single pulsing halo — the page's ONLY infinite animation.
+                  <motion.span
+                    className="absolute h-2.5 w-2.5 rounded-[2px] ring-1 ring-ops-accent"
+                    animate={{ scale: [1, 1.8], opacity: [0.5, 0] }}
+                    transition={{ duration: 2.0, repeat: Infinity, ease }}
+                  />
+                )}
+                <motion.span
+                  initial={reduceMotion ? false : { scale: 0.4, opacity: 0 }}
+                  animate={hasEntered ? { scale: 1, opacity: 1 } : { scale: 0.4, opacity: 0 }}
+                  transition={{ duration: reduceMotion ? 0 : 0.35, delay: reduceMotion ? 0 : 0.95 + i * 0.1, ease }}
+                  className={
+                    isToday
+                      ? 'block h-2.5 w-2.5 rounded-[2px] bg-ops-accent'
+                      : 'block h-2.5 w-2.5 rounded-[2px] border border-white/30 bg-ops-background'
+                  }
+                />
+              </span>
+              {/* Phase label */}
+              <span className="mt-3 font-mono text-[10px] uppercase tracking-[0.16em] text-ops-text-tertiary [font-variant-numeric:tabular-nums_slashed-zero] whitespace-nowrap">
+                {phase.label}
+              </span>
+              {/* Date window — real, projected forward from today */}
+              <span
+                suppressHydrationWarning
+                className={`mt-1.5 font-mono text-[11px] [font-variant-numeric:tabular-nums_slashed-zero] whitespace-nowrap ${
+                  isToday ? 'text-ops-text-secondary' : 'text-ops-text-mute'
+                }`}
               >
-                {marker.sub}
-              </motion.span>
-            )}
-          </li>
-        ))}
+                {phase.range}
+              </span>
+            </li>
+          );
+        })}
       </ul>
     </div>
   );

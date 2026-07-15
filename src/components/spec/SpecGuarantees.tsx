@@ -72,7 +72,7 @@ export default function SpecGuarantees({
               {/* Column number marker */}
               <span
                 aria-hidden="true"
-                className="absolute -top-px left-0 h-px w-12 bg-ops-accent"
+                className="absolute -top-px left-0 h-px w-12 bg-white/[0.25]"
               />
               <p className="font-mono text-[10px] uppercase tracking-[0.18em] text-ops-text-mute mb-4 [font-variant-numeric:tabular-nums_slashed-zero]">
                 0{index + 1}
