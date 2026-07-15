@@ -12,7 +12,7 @@ import SpecBottomCTA from './SpecBottomCTA';
 import SpecOpsBoard, { type SpecOpsBoardCopy } from './SpecOpsBoard';
 import SpecGuarantees from './SpecGuarantees';
 import SpecStickyDepositBar from './SpecStickyDepositBar';
-import SpecFitQuestionnaire, { type FitQuestionnaireCopy } from './SpecFitQuestionnaire';
+import SpecFitQuestionnaire from './SpecFitQuestionnaire';
 import { SpecPageAnalytics } from './SpecPageAnalytics';
 import SpecPhoneWrapper from './phone-scene/SpecPhoneWrapper';
 import type { SpecPhase } from './phone-scene/constants';
@@ -23,6 +23,7 @@ import {
   formatCad,
   type SpecTier,
 } from '@/lib/spec/pricing';
+import type { GuideResult } from '@/lib/spec/recommend';
 
 interface SpecPageContentProps {
   dict: Dictionary;
@@ -111,22 +112,32 @@ export function SpecPageContent({
 
   const openQuestionnaire = useCallback(() => setQuestionnaireOpen(true), []);
 
-  const handleFitComplete = useCallback((tier: SpecTier) => {
-    setFit(tier);
-    setQuestionnaireOpen(false);
-    // Persist the result to a shareable URL param (a co-owner opening
-    // /spec?fit=<tier> lands on the same highlight). replaceState keeps the
-    // back button clean.
+  // Fires the moment the guide computes a result (the modal stays open on
+  // its result screen). Applies the card highlight + sticky focal tier for
+  // spec01/spec02 fits and persists the shareable ?fit= param — a co-owner
+  // opening /spec?fit=<tier> lands on the same highlight. OPS results write
+  // ?fit=ops (no card is recommended — the free floor is the answer);
+  // founder-conversation results carry no deep link.
+  const handleGuideResult = useCallback((result: GuideResult) => {
+    setFit(result.fitTier);
     const url = new URL(window.location.href);
-    url.searchParams.set('fit', tier);
+    if (result.fitTier) {
+      url.searchParams.set('fit', result.fitTier);
+    } else if (result.headline === 'ops') {
+      url.searchParams.set('fit', 'ops');
+    } else {
+      url.searchParams.delete('fit');
+    }
     window.history.replaceState({}, '', url);
-    // Resolve by scrolling to the packages — reduced-motion aware.
-    const prefersReduced = window.matchMedia?.('(prefers-reduced-motion: reduce)').matches;
-    requestAnimationFrame(() => {
-      document
-        .getElementById('packages')
-        ?.scrollIntoView({ behavior: prefersReduced ? 'auto' : 'smooth', block: 'start' });
-    });
+    if (result.fitTier) {
+      // Pre-scroll the ladder behind the modal so closing lands on the card.
+      const prefersReduced = window.matchMedia?.('(prefers-reduced-motion: reduce)').matches;
+      requestAnimationFrame(() => {
+        document
+          .getElementById('packages')
+          ?.scrollIntoView({ behavior: prefersReduced ? 'auto' : 'smooth', block: 'start' });
+      });
+    }
   }, []);
 
   const checkpointLabels = {
@@ -225,51 +236,6 @@ export function SpecPageContent({
       spec02: t(dict, 'board.tierLabels.spec02'),
       spec03: t(dict, 'board.tierLabels.spec03'),
     },
-  };
-
-  const fitQuestionnaireCopy: FitQuestionnaireCopy = {
-    eyebrow: t(dict, 'questionnaire.eyebrow'),
-    title: t(dict, 'questionnaire.title'),
-    back: t(dict, 'questionnaire.back'),
-    close: t(dict, 'questionnaire.close'),
-    questions: [
-      {
-        key: 'scope',
-        question: t(dict, 'questionnaire.q1.question'),
-        options: [
-          { value: 'configure', label: t(dict, 'questionnaire.q1.configure') },
-          { value: 'one_module', label: t(dict, 'questionnaire.q1.one_module') },
-          { value: 'rebuild', label: t(dict, 'questionnaire.q1.rebuild') },
-        ],
-      },
-      {
-        key: 'timeline',
-        question: t(dict, 'questionnaire.q2.question'),
-        options: [
-          { value: 'rush', label: t(dict, 'questionnaire.q2.rush') },
-          { value: 'few_weeks', label: t(dict, 'questionnaire.q2.few_weeks') },
-          { value: 'no_rush', label: t(dict, 'questionnaire.q2.no_rush') },
-        ],
-      },
-      {
-        key: 'team',
-        question: t(dict, 'questionnaire.q3.question'),
-        options: [
-          { value: 'solo', label: t(dict, 'questionnaire.q3.solo') },
-          { value: 'small', label: t(dict, 'questionnaire.q3.small') },
-          { value: 'large', label: t(dict, 'questionnaire.q3.large') },
-        ],
-      },
-      {
-        key: 'budget',
-        question: t(dict, 'questionnaire.q4.question'),
-        options: [
-          { value: 'low', label: t(dict, 'questionnaire.q4.low') },
-          { value: 'mid', label: t(dict, 'questionnaire.q4.mid') },
-          { value: 'high', label: t(dict, 'questionnaire.q4.high') },
-        ],
-      },
-    ],
   };
 
   return (
@@ -411,9 +377,9 @@ export function SpecPageContent({
 
       <SpecFitQuestionnaire
         open={questionnaireOpen}
-        copy={fitQuestionnaireCopy}
+        dict={dict}
         onClose={() => setQuestionnaireOpen(false)}
-        onComplete={handleFitComplete}
+        onResult={handleGuideResult}
       />
     </main>
   );
