@@ -16,7 +16,11 @@
  * scroll as the hero's bottom passes (no time-based easing). Under
  * prefers-reduced-motion it simply docks (snaps in/out, no slide/fade) at
  * the same threshold — an equivalent reduced variant, not a disabled one.
- * No infinite/ambient motion.
+ * No infinite/ambient motion. That preference feeds the scroll transforms
+ * rather than switching the style shape, so the MotionValue binding is
+ * identical on server and client — the two can never desync on hydration, and
+ * the reduced variant holds even when the preference resolves true only after
+ * mount (which the SSR-safe local hook ./useReducedMotion does).
  *
  * Flag-safe: when depositsEnabled is false the single action becomes the
  * "Talk to the founder" contact link; when true it routes to the canonical
@@ -27,10 +31,10 @@ import { useEffect, useMemo, useRef, useState } from 'react';
 import {
   motion,
   useMotionValueEvent,
-  useReducedMotion,
   useScroll,
   useTransform,
 } from 'framer-motion';
+import { useReducedMotion } from './useReducedMotion';
 import type { SpecBoardSnapshot } from '@/lib/spec/board';
 import {
   availabilityLabel,
@@ -85,7 +89,7 @@ export default function SpecStickyDepositBar({
   onHelpMeChoose,
   helpMeChooseLabel,
 }: SpecStickyDepositBarProps) {
-  const reduceMotion = useReducedMotion() ?? false;
+  const reduceMotion = useReducedMotion();
   const { scrollY } = useScroll();
 
   // Reveal threshold = the hero's bottom edge in document space. Held in a
@@ -94,6 +98,15 @@ export default function SpecStickyDepositBar({
   // hidden until measured (no first-paint flash).
   const thresholdRef = useRef<number>(100_000);
   const [revealed, setRevealed] = useState(false);
+
+  // Latest reduced-motion preference, mirrored into a ref so the scroll
+  // transforms below read it each tick without ever swapping the style shape
+  // (a MotionValue↔plain-value swap would leave framer's binding stale).
+  // Written from an effect, never during render.
+  const reduceMotionRef = useRef(false);
+  useEffect(() => {
+    reduceMotionRef.current = reduceMotion;
+  }, [reduceMotion]);
 
   // Measure the reveal threshold (hero bottom in document space) on mount,
   // on resize, and once more after a frame + after load so font/image-driven
@@ -119,15 +132,26 @@ export default function SpecStickyDepositBar({
     };
   }, [revealAfterRef]);
 
-  // Function-form transforms read thresholdRef each frame, so a late
-  // measurement (fonts, images) is picked up without a stale input range.
+  // Function-form transforms read thresholdRef (and the reduced-motion ref)
+  // each frame, so a late measurement (fonts, images) is picked up without a
+  // stale input range. Under reduced motion the SAME thresholds drive a snap:
+  // y pins to 0 (no slide) and opacity flips 0→1 at the band midpoint — the
+  // identical cutoff `revealed` uses (progress > 0.5 ⇔ v > threshold − TRAVEL/2)
+  // — so opacity, aria-hidden, and pointer-events all flip together. The
+  // preference is read through a ref, not branched into the style shape, so
+  // these MotionValues stay permanently bound: swapping a style key between a
+  // MotionValue and a plain value leaves framer's binding stale (observed live —
+  // opacity pinned at its last motion-applied value, the bar never docking).
   const y = useTransform(scrollY, (v) => {
+    if (reduceMotionRef.current) return 0;
     const start = thresholdRef.current - TRAVEL;
     return (1 - clamp01((v - start) / TRAVEL)) * TRAVEL;
   });
   const opacity = useTransform(scrollY, (v) => {
     const start = thresholdRef.current - TRAVEL;
-    return clamp01((v - start) / TRAVEL);
+    const progress = clamp01((v - start) / TRAVEL);
+    if (reduceMotionRef.current) return progress > 0.5 ? 1 : 0;
+    return progress;
   });
 
   // `revealed` gates pointer-events + aria-hidden for both motion paths, and
@@ -164,11 +188,10 @@ export default function SpecStickyDepositBar({
     <motion.aside
       aria-label={ariaLabel}
       aria-hidden={!revealed}
-      style={
-        reduceMotion
-          ? { opacity: revealed ? 1 : 0, pointerEvents: revealed ? 'auto' : 'none' }
-          : { y, opacity, pointerEvents: revealed ? 'auto' : 'none' }
-      }
+      // The style shape is constant — across SSR/hydration AND across
+      // preference flips; reduced-motion behavior lives inside the scroll
+      // transforms above, not in a branch here.
+      style={{ y, opacity, pointerEvents: revealed ? 'auto' : 'none' }}
       className="fixed inset-x-0 bottom-0 z-40 border-t border-ops-border bg-ops-glass-dense backdrop-blur-md"
     >
       <div className="mx-auto flex max-w-[1320px] flex-col gap-3 px-6 py-3 sm:flex-row sm:items-center sm:justify-between sm:gap-4 sm:px-10 md:px-16 lg:px-24">

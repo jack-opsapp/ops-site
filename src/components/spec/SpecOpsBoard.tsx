@@ -20,7 +20,12 @@
  *   • Ambient: LIVE indicator dot 2s soft pulse (CSS keyframe).
  *     The ONLY ambient motion on the page.
  *   • Single easing curve: cubic-bezier(0.22, 1, 0.36, 1). No spring.
- *   • Reduced-motion: instant final state, single 200ms fade, no pulse.
+ *   • Reduced-motion: SSR and the first client render always emit the
+ *     motion-initial markup, so hydration matches byte-for-byte. One commit
+ *     after mount the preference takes effect and the section settles with a
+ *     single 200ms fade and zero transform motion (no slides, draws, or pops).
+ *     The LIVE-dot pulse is disabled purely by the global reduced-motion CSS
+ *     rule in globals.css, never by the component.
  *
  * Edge cases:
  *   • Tier WAITLIST → row in amber + "Join waitlist" CTA
@@ -37,7 +42,8 @@
  */
 
 import { useEffect, useMemo, useRef, useState } from 'react';
-import { motion, useReducedMotion } from 'framer-motion';
+import { motion } from 'framer-motion';
+import { useReducedMotion } from './useReducedMotion';
 import { theme } from '@/lib/theme';
 import { SectionLabel } from '@/components/ui';
 import type { SpecBoardSnapshot, SpecBoardTier } from '@/lib/spec/board';
@@ -88,11 +94,13 @@ function availabilityToneClass(
 }
 
 export default function SpecOpsBoard({ initialSnapshot, copy }: SpecOpsBoardProps) {
-  const reduceMotion = useReducedMotion() ?? false;
+  const reduceMotion = useReducedMotion();
   const sectionRef = useRef<HTMLElement>(null);
-  // Reduced-motion users always render in the final state immediately;
-  // everyone else waits for the IntersectionObserver to flip
-  // `hasObserved` to true once 30% of the section is in view.
+  // Reduced-motion users skip the observer wait: `reduceMotion` is false on
+  // the first render (see ./useReducedMotion) and flips true one commit after
+  // mount, which settles the section without transform motion. Everyone else
+  // waits for the IntersectionObserver to flip `hasObserved` to true once 30%
+  // of the section is in view.
   const [hasObserved, setHasObserved] = useState(false);
   const hasEntered = reduceMotion || hasObserved;
 
@@ -124,9 +132,10 @@ export default function SpecOpsBoard({ initialSnapshot, copy }: SpecOpsBoardProp
   // waitlist" badge row that might be appended separately.)
 
   useEffect(() => {
-    // Reduced-motion path bypasses the observer entirely — hasEntered
-    // is already derived from `reduceMotion` above. Skipping the effect
-    // body avoids setState-in-effect.
+    // On a reduced-motion client this effect first runs with reduceMotion
+    // still false (the observer attaches), then re-runs once the hook flips
+    // true — the early return then leaves the observer disconnected, and
+    // hasEntered stays true via `reduceMotion` from there on.
     if (reduceMotion) return;
     const el = sectionRef.current;
     if (!el) return;
@@ -158,7 +167,11 @@ export default function SpecOpsBoard({ initialSnapshot, copy }: SpecOpsBoardProp
       {/* Section header + LIVE indicator */}
       <header className="max-w-[1320px] mx-auto px-6 sm:px-10 md:px-16 lg:px-24">
         <motion.div
-          initial={reduceMotion ? false : { opacity: 0 }}
+          // `initial` is read only at mount, where reduceMotion is false by
+          // the hook's contract (see ./useReducedMotion), so this markup is
+          // constant across SSR and hydration. Reduced motion is honored
+          // through the transitions below, not by swapping the initial.
+          initial={{ opacity: 0 }}
           animate={hasEntered ? { opacity: 1 } : { opacity: 0 }}
           transition={{ duration: 0.2, ease }}
           className="flex items-baseline justify-between gap-4 flex-wrap"
@@ -171,7 +184,10 @@ export default function SpecOpsBoard({ initialSnapshot, copy }: SpecOpsBoardProp
             {isLive && (
               <span className="flex items-center gap-1.5 text-ops-olive">
                 <span
-                  className={`inline-block w-1.5 h-1.5 rounded-full bg-ops-olive ${reduceMotion ? '' : 'animate-spec-pulse'}`}
+                  // Class is constant for SSR consistency; the global
+                  // prefers-reduced-motion rule in globals.css is the single
+                  // control that disables this pulse.
+                  className="inline-block w-1.5 h-1.5 rounded-full bg-ops-olive animate-spec-pulse"
                   aria-hidden="true"
                 />
                 {copy.liveLabel}
@@ -181,7 +197,13 @@ export default function SpecOpsBoard({ initialSnapshot, copy }: SpecOpsBoardProp
               <span className="text-ops-tan">{copy.staleLabel}</span>
             )}
             <span className="text-ops-text-mute" aria-hidden="true">·</span>
-            <span className={snapshot.is_stale ? 'text-ops-tan' : 'text-ops-text-tertiary'}>
+            <span
+              // buildUpdatedLabel reads Date.now(), so a minute boundary
+              // crossed between SSR and hydration changes the text; suppress
+              // and reconcile to the client, same as the timeline date spans.
+              suppressHydrationWarning
+              className={snapshot.is_stale ? 'text-ops-tan' : 'text-ops-text-tertiary'}
+            >
               {copy.updatedPrefix} {updatedLabel}
             </span>
           </div>
@@ -189,9 +211,9 @@ export default function SpecOpsBoard({ initialSnapshot, copy }: SpecOpsBoardProp
 
         {snapshot.is_stale && (
           <motion.p
-            initial={reduceMotion ? false : { opacity: 0 }}
+            initial={{ opacity: 0 }}
             animate={hasEntered ? { opacity: 1 } : { opacity: 0 }}
-            transition={{ duration: 0.2, ease, delay: 0.08 }}
+            transition={{ duration: 0.2, ease, delay: reduceMotion ? 0 : 0.08 }}
             className="mt-3 font-mono text-[10px] uppercase tracking-[0.12em] text-ops-text-mute"
           >
             {copy.unavailableNote}
@@ -200,9 +222,9 @@ export default function SpecOpsBoard({ initialSnapshot, copy }: SpecOpsBoardProp
 
         {/* Sub-eyebrow */}
         <motion.p
-          initial={reduceMotion ? false : { opacity: 0 }}
+          initial={{ opacity: 0 }}
           animate={hasEntered ? { opacity: 1 } : { opacity: 0 }}
-          transition={{ duration: 0.2, ease, delay: 0.12 }}
+          transition={{ duration: 0.2, ease, delay: reduceMotion ? 0 : 0.12 }}
           className="mt-10 font-mono text-[11px] uppercase tracking-[0.18em] text-ops-text-tertiary"
         >
           {copy.subEyebrow}
@@ -230,12 +252,16 @@ export default function SpecOpsBoard({ initialSnapshot, copy }: SpecOpsBoardProp
                   key={row.tier}
                   type="button"
                   onClick={() => row.isAcceptingBookings && setSelectedTier(row.tier)}
-                  initial={reduceMotion ? false : { opacity: 0, y: 8 }}
+                  initial={{ opacity: 0, y: 8 }}
                   animate={hasEntered ? { opacity: isDimmed && !isSelected ? 0.4 : 1, y: 0 } : { opacity: 0, y: 8 }}
-                  transition={{
-                    opacity: { duration: 0.4, delay: 0.2 + index * 0.08, ease },
-                    y: { duration: 0.4, delay: 0.2 + index * 0.08, ease },
-                  }}
+                  transition={
+                    reduceMotion
+                      ? { opacity: { duration: 0.2, ease }, y: { duration: 0 } }
+                      : {
+                          opacity: { duration: 0.4, delay: 0.2 + index * 0.08, ease },
+                          y: { duration: 0.4, delay: 0.2 + index * 0.08, ease },
+                        }
+                  }
                   disabled={!row.isAcceptingBookings}
                   aria-pressed={isSelected}
                   aria-label={`${row.label} — ${row.availability}`}
@@ -297,9 +323,13 @@ export default function SpecOpsBoard({ initialSnapshot, copy }: SpecOpsBoardProp
                 key={row.tier}
                 type="button"
                 onClick={() => row.isAcceptingBookings && setSelectedTier(row.tier)}
-                initial={reduceMotion ? false : { opacity: 0, y: 8 }}
+                initial={{ opacity: 0, y: 8 }}
                 animate={hasEntered ? { opacity: 1, y: 0 } : { opacity: 0, y: 8 }}
-                transition={{ duration: 0.4, delay: 0.2 + index * 0.08, ease }}
+                transition={
+                  reduceMotion
+                    ? { opacity: { duration: 0.2, ease }, y: { duration: 0 } }
+                    : { duration: 0.4, delay: 0.2 + index * 0.08, ease }
+                }
                 disabled={!row.isAcceptingBookings}
                 aria-pressed={isSelected}
                 aria-label={`${row.label} — ${row.availability}`}
@@ -337,9 +367,9 @@ export default function SpecOpsBoard({ initialSnapshot, copy }: SpecOpsBoardProp
 
         {/* Timeline strip — bottom of section */}
         <motion.div
-          initial={reduceMotion ? false : { opacity: 0 }}
+          initial={{ opacity: 0 }}
           animate={hasEntered ? { opacity: 1 } : { opacity: 0 }}
-          transition={{ duration: 0.4, delay: 0.6, ease }}
+          transition={{ duration: reduceMotion ? 0.2 : 0.4, delay: reduceMotion ? 0 : 0.6, ease }}
           className="mt-12"
           aria-label="Engagement timeline"
         >
@@ -414,7 +444,7 @@ function SpecBoardTimeline({ selectedRow, copy, hasEntered, reduceMotion }: Spec
       {/* Rail draw-in — the one entrance. The rail builds itself left→right. */}
       <motion.div
         aria-hidden="true"
-        initial={reduceMotion ? false : { scaleX: 0 }}
+        initial={{ scaleX: 0 }}
         animate={hasEntered ? { scaleX: 1 } : { scaleX: 0 }}
         transition={{ duration: reduceMotion ? 0 : 0.8, delay: reduceMotion ? 0 : 0.6, ease }}
         style={{ transformOrigin: 'left' }}
@@ -423,7 +453,7 @@ function SpecBoardTimeline({ selectedRow, copy, hasEntered, reduceMotion }: Spec
       {/* "Next: discovery" accent segment — TODAY → DISCOVERY, the imminent step. */}
       <motion.div
         aria-hidden="true"
-        initial={reduceMotion ? false : { scaleX: 0 }}
+        initial={{ scaleX: 0 }}
         animate={hasEntered ? { scaleX: 1 } : { scaleX: 0 }}
         transition={{ duration: reduceMotion ? 0 : 0.5, delay: reduceMotion ? 0 : 1.05, ease }}
         style={{ transformOrigin: 'left', width: `${X[1] * 100}%` }}
@@ -451,6 +481,12 @@ function SpecBoardTimeline({ selectedRow, copy, hasEntered, reduceMotion }: Spec
               <span className="relative flex h-4 w-4 items-center justify-center" aria-hidden="true">
                 {isToday && !reduceMotion && (
                   // Single pulsing halo — the page's ONLY infinite animation.
+                  // The first render always includes it on both server and
+                  // client (reduceMotion is false at mount), so hydration
+                  // matches; for reduced-motion users it unmounts one commit
+                  // after mount. This JS-driven infinite loop is the one case
+                  // the global reduced-motion CSS rule can't reach, so the
+                  // branch has to stay.
                   <motion.span
                     className="absolute h-2.5 w-2.5 rounded-[2px] ring-1 ring-ops-accent"
                     animate={{ scale: [1, 1.8], opacity: [0.5, 0] }}
@@ -458,7 +494,7 @@ function SpecBoardTimeline({ selectedRow, copy, hasEntered, reduceMotion }: Spec
                   />
                 )}
                 <motion.span
-                  initial={reduceMotion ? false : { scale: 0.4, opacity: 0 }}
+                  initial={{ scale: 0.4, opacity: 0 }}
                   animate={hasEntered ? { scale: 1, opacity: 1 } : { scale: 0.4, opacity: 0 }}
                   transition={{ duration: reduceMotion ? 0 : 0.35, delay: reduceMotion ? 0 : 0.95 + i * 0.1, ease }}
                   className={

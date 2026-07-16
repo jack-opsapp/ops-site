@@ -157,8 +157,9 @@ body {
  * SPEC OPS BOARD — ambient LIVE indicator pulse.
  * 2s soft opacity cycle. The ONLY ambient motion on /spec per
  * 04_CUSTOMER_UX.md § 3. Disabled by the global reduce-motion rule
- * above; the SpecOpsBoard component also strips the class when the
- * useReducedMotion() hook returns true.
+ * above — now the single mechanism that neutralizes the pulse. The
+ * SpecOpsBoard component no longer strips the class: it must render
+ * constant markup so the server and client HTML match on hydration.
  */
 @keyframes spec-pulse {
   0%, 100% { opacity: 1; }
