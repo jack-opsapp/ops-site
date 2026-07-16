@@ -1,12 +1,15 @@
 'use client';
 
 /**
- * SpecMilestoneTimeline — 4-milestone visualization for /spec/confirmation.
+ * SpecMilestoneTimeline — per-tier checkpoint visualization for
+ * /spec/confirmation.
  *
- * Renders a horizontal steel-blue rail with 4 markers (P1 Deposit → P2 Scope
- * → P3 Midpoint → P4 Delivery). Each milestone shows label, amount, and a
- * status chip ("paid" / "current" / "next" / "upcoming"). Animation follows
- * the bible's OPS BOARD choreography (per animation-architect +
+ * Renders a horizontal steel-blue rail with one marker per checkpoint in the
+ * tier's journey (Tier Model v2 shapes — spec01 runs 3 stops, spec02/03 run
+ * 4; see lib/spec/confirmation-schedule.ts). Each stop shows an ordinal +
+ * status line, label, amount, and detail. Completed payment stops read PAID;
+ * spec01's evidence-only scope stop reads SIGNED. Animation follows the
+ * bible's OPS BOARD choreography (per animation-architect +
  * data-visualization skills): rail strokes left-to-right, markers pop
  * sequentially. Single easing curve, no spring, reduced-motion-aware.
  *
@@ -22,48 +25,41 @@
  * sides, so hydration matches byte-for-byte.
  *
  * Bible: 04_CUSTOMER_UX.md § /spec/confirmation, § OPS BOARD animation
- *        choreography (the same pattern applied to a 4-stop linear timeline).
+ *        choreography (the same pattern applied to a linear checkpoint rail).
  */
 
 import { motion } from 'framer-motion';
 import { useResolvedReducedMotion } from './useReducedMotion';
 import { theme } from '@/lib/theme';
+import {
+  stopStatusLabel,
+  type ScheduleStop,
+} from '@/lib/spec/confirmation-schedule';
 
 const ease = theme.animation.easing as [number, number, number, number];
 
-export type MilestoneStatus = 'paid' | 'current' | 'next' | 'upcoming';
-
-export interface Milestone {
-  key: 'p1' | 'p2' | 'p3' | 'p4';
-  label: string;
-  detail: string;
-  amountLabel: string | null;
-  status: MilestoneStatus;
-}
-
 interface Props {
-  milestones: Milestone[];
+  milestones: ScheduleStop[];
+  /**
+   * Per-tier delivery-window line rendered under the rail
+   * (dictionary `confirmation.timeline.<tier>`). Null hides it.
+   */
+  deliveryNote?: string | null;
 }
 
-const STATUS_LABEL: Record<MilestoneStatus, string> = {
-  paid: 'PAID',
-  current: 'CURRENT',
-  next: 'NEXT',
-  upcoming: 'UPCOMING',
-};
-
-export function SpecMilestoneTimeline({ milestones }: Props) {
+export function SpecMilestoneTimeline({ milestones, deliveryNote }: Props) {
   const { reduceMotion, resolved } = useResolvedReducedMotion();
 
-  // Index of the milestone currently active. Drives rail fill width.
-  const currentIndex = Math.max(
-    0,
-    milestones.findIndex((m) => m.status === 'current' || m.status === 'paid')
-  );
+  // Rail fill runs through every completed stop and touches the CURRENT
+  // marker (markers sit at column starts, ≈ i/n across the rail). Derived
+  // from the LAST active stop — the first-match variant would pin the fill
+  // to the always-complete deposit forever.
+  let activeIndex = 0;
+  milestones.forEach((m, i) => {
+    if (m.status !== 'upcoming') activeIndex = i;
+  });
   const fillFraction =
-    milestones.length === 0
-      ? 0
-      : Math.min(1, (currentIndex + 1) / milestones.length - 0.5 / milestones.length);
+    milestones.length === 0 ? 0 : activeIndex / milestones.length;
 
   return (
     <section
@@ -74,7 +70,7 @@ export function SpecMilestoneTimeline({ milestones }: Props) {
         id="spec-milestones-heading"
         className="font-mono text-[10px] uppercase tracking-[0.2em] text-ops-text-mute mb-5"
       >
-        {"// MILESTONES"}
+        {"// CHECKPOINTS"}
       </h2>
 
       <div className="relative">
@@ -82,7 +78,7 @@ export function SpecMilestoneTimeline({ milestones }: Props) {
         <div
           aria-hidden
           className="absolute left-0 right-0 top-[10px] h-px"
-          style={{ background: 'rgba(255, 255, 255, 0.10)' }}
+          style={{ background: 'var(--color-ops-border)' }}
         />
 
         {/* Active rail — strokes left-to-right once the preference resolves;
@@ -97,7 +93,11 @@ export function SpecMilestoneTimeline({ milestones }: Props) {
           }
         />
 
-        <ol className="relative grid grid-cols-4 gap-3">
+        <ol
+          className={`relative grid gap-3 ${
+            milestones.length === 3 ? 'grid-cols-3' : 'grid-cols-4'
+          }`}
+        >
           {milestones.map((m, i) => (
             <MilestoneNode
               key={m.key}
@@ -110,6 +110,12 @@ export function SpecMilestoneTimeline({ milestones }: Props) {
           ))}
         </ol>
       </div>
+
+      {deliveryNote && (
+        <p className="mt-6 font-mohave font-light text-[12px] leading-relaxed text-ops-text-secondary">
+          {deliveryNote}
+        </p>
+      )}
     </section>
   );
 }
@@ -121,14 +127,14 @@ function MilestoneNode({
   resolved,
   total,
 }: {
-  milestone: Milestone;
+  milestone: ScheduleStop;
   index: number;
   reduceMotion: boolean;
   resolved: boolean;
   total: number;
 }) {
   const isActive =
-    milestone.status === 'paid' || milestone.status === 'current';
+    milestone.status === 'complete' || milestone.status === 'current';
 
   // Each marker pops in sequence after the stroke finishes (matches bible
   // OPS BOARD choreography). Only times the full-motion variant — the reduced
@@ -148,7 +154,7 @@ function MilestoneNode({
         }
         className="relative w-[18px] h-[18px] flex items-center justify-center"
         style={{
-          background: '#000',
+          background: 'var(--color-ops-background)',
           border: `1.5px solid ${
             isActive ? 'var(--color-ops-accent, #6F94B0)' : 'rgba(255,255,255,0.18)'
           }`,
@@ -156,7 +162,7 @@ function MilestoneNode({
           marginLeft: '-2px',
         }}
       >
-        {milestone.status === 'paid' && (
+        {milestone.status === 'complete' && (
           <span
             className="block w-[6px] h-[6px] bg-ops-accent"
             style={{ borderRadius: '1px' }}
@@ -189,7 +195,7 @@ function MilestoneNode({
 
       <div className="mt-3 flex flex-col gap-1">
         <span className="font-mono text-[10px] uppercase tracking-[0.18em] text-ops-text-mute">
-          {milestone.key.toUpperCase()} :: {STATUS_LABEL[milestone.status]}
+          {milestone.ordinalLabel} :: {stopStatusLabel(milestone)}
         </span>
         <span
           className={`font-cakemono font-light text-[14px] uppercase tracking-[0.06em] ${

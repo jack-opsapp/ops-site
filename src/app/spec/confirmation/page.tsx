@@ -124,7 +124,7 @@ async function resolveSession(
       const { data } = await db
         .from('spec_projects')
         .select(
-          'id, tier, status, walkthrough_completed_at, intake_token_issued_at, intake_completed_at, scope_doc_signed_at, midpoint_accepted_at, deposit_paid_at, customer_name'
+          'id, tier, status, walkthrough_completed_at, intake_token_issued_at, intake_completed_at, scope_doc_signed_at, midpoint_accepted_at, deposit_paid_at, customer_name, locked_total_cents'
         )
         .eq('id', projectIdFromMetadata)
         .maybeSingle();

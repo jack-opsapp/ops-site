@@ -11,8 +11,15 @@
  *   2. `session.isPaid=false` — payment still processing (race with the
  *      Stripe webhook). Friendly "refresh in a few seconds" state.
  *   3. `session.isPaid=true` — full confirmation: tier + amount, founder
- *      welcome block, 4-milestone timeline, intake CTA, discovery CTA,
- *      30-day Guarantee reminder, Stripe receipt link.
+ *      welcome block, per-tier checkpoint rail (Tier Model v2 shapes via
+ *      lib/spec/confirmation-schedule — spec01 50/50, spec02 quarters,
+ *      spec03 floor-locked), intake CTA, discovery CTA, 30-day Guarantee
+ *      reminder, Stripe receipt link.
+ *
+ * Tier metadata carries v2 slugs (spec01/02/03) only. Display names come
+ * from the dictionary designations (bible 10_TIER_MODEL_V2 § 6: display
+ * names live in dictionaries) with the canonical pricing constants as
+ * fallback — no tier copy or amount is defined locally in this file.
  *
  * Animation choreography mirrors the bible OPS BOARD pattern (per
  * animation-architect + data-visualization skills): subtle entrance fades,
@@ -30,7 +37,8 @@
  * visitors settle via a single 200ms opacity fade with the y-transform
  * snapped (duration 0) and no stagger.
  *
- * Bible: 04_CUSTOMER_UX.md § /spec/confirmation, 07_ROLLOUT.md § 8.
+ * Bible: 04_CUSTOMER_UX.md § /spec/confirmation, 07_ROLLOUT.md § 8,
+ *        10_TIER_MODEL_V2.md § 2/§ 5.
  */
 
 import { motion } from 'framer-motion';
@@ -38,24 +46,23 @@ import { useResolvedReducedMotion } from './useReducedMotion';
 import Link from 'next/link';
 import { theme } from '@/lib/theme';
 import type { Dictionary } from '@/i18n/types';
+import { formatCad, isValidTier, SPEC_TIER_DISPLAY_NAMES } from '@/lib/spec/pricing';
 import {
-  SpecMilestoneTimeline,
-  type Milestone,
-  type MilestoneStatus,
-} from './SpecMilestoneTimeline';
+  buildConfirmationSchedule,
+  confirmationTotalDisplay,
+} from '@/lib/spec/confirmation-schedule';
+import { SpecMilestoneTimeline } from './SpecMilestoneTimeline';
 
 const ease = theme.animation.easing as [number, number, number, number];
 
-const TIER_TOTAL_CENTS: Record<string, number> = {
-  setup: 300000,
-  build: 850000,
-  enterprise: 1800000,
-};
-
-const TIER_DISPLAY: Record<string, string> = {
-  setup: 'Setup',
-  build: 'Build',
-  enterprise: 'Enterprise',
+/**
+ * English fallbacks for the per-tier delivery-window lines — mirror
+ * `confirmation.timeline.<tier>` in the EN dictionary.
+ */
+const DELIVERY_NOTE_FALLBACK: Record<string, string> = {
+  spec01: 'SPEC-01 builds deliver in 1-2 weeks.',
+  spec02: 'SPEC-02 builds deliver in 3-5 weeks.',
+  spec03: 'SPEC-03 delivery is scoped at sign-off — typically 6-10 weeks.',
 };
 
 export interface ConfirmationSession {
@@ -82,6 +89,8 @@ export interface ConfirmationProject {
   midpoint_accepted_at: string | null;
   deposit_paid_at: string | null;
   customer_name: string | null;
+  /** spec03 total once locked at scope sign-off (10_TIER_MODEL_V2 § 2). */
+  locked_total_cents: number | null;
 }
 
 interface Props {
@@ -106,82 +115,6 @@ interface Props {
 function t(dict: Dictionary, key: string, fallback: string): string {
   const value = dict[key];
   return typeof value === 'string' && value.trim().length > 0 ? value : fallback;
-}
-
-function formatCAD(cents: number | null): string {
-  if (cents === null || cents === undefined) return '—';
-  return `$${(cents / 100).toLocaleString('en-CA', {
-    maximumFractionDigits: 0,
-  })}`;
-}
-
-function buildMilestones(args: {
-  tier: string | null;
-  project: ConfirmationProject | null;
-}): Milestone[] {
-  const tier = args.tier;
-  const milestoneCents =
-    tier && TIER_TOTAL_CENTS[tier] ? TIER_TOTAL_CENTS[tier] / 4 : null;
-  const amountLabel = milestoneCents ? formatCAD(milestoneCents) : null;
-
-  const project = args.project;
-  // Determine where in the four-stop pipeline we are. Default to "P1 paid,
-  // P2 next" when no project row is available (Phase 0 fallback / pre-Stage-C.1).
-  const statuses: Record<Milestone['key'], MilestoneStatus> = {
-    p1: 'paid',
-    p2: 'next',
-    p3: 'upcoming',
-    p4: 'upcoming',
-  };
-
-  if (project?.scope_doc_signed_at) {
-    statuses.p2 = 'paid';
-    statuses.p3 = 'next';
-  }
-  if (project?.midpoint_accepted_at) {
-    statuses.p3 = 'paid';
-    statuses.p4 = 'next';
-  }
-  if (project?.walkthrough_completed_at) {
-    statuses.p4 = 'paid';
-  }
-
-  // Promote the next-in-line to "current" so the rail highlights one stop.
-  const nextKey = (['p1', 'p2', 'p3', 'p4'] as const).find(
-    (k) => statuses[k] === 'next'
-  );
-  if (nextKey) statuses[nextKey] = 'current';
-
-  return [
-    {
-      key: 'p1',
-      label: 'Deposit',
-      detail: 'Funds discovery.',
-      amountLabel,
-      status: statuses.p1,
-    },
-    {
-      key: 'p2',
-      label: 'Scope sign-off',
-      detail: 'Funds build kickoff.',
-      amountLabel,
-      status: statuses.p2,
-    },
-    {
-      key: 'p3',
-      label: 'Midpoint demo',
-      detail: 'Bills when work clears review.',
-      amountLabel,
-      status: statuses.p3,
-    },
-    {
-      key: 'p4',
-      label: 'Delivery walkthrough',
-      detail: 'Starts your 30-day Guarantee.',
-      amountLabel,
-      status: statuses.p4,
-    },
-  ];
 }
 
 function resolveIntakeHref(args: {
@@ -219,8 +152,18 @@ export default function SpecConfirmation({
   }
 
   const tier = session.tier ?? project?.tier ?? null;
-  const tierDisplay = tier && TIER_DISPLAY[tier] ? TIER_DISPLAY[tier] : tier ?? '—';
-  const milestones = buildMilestones({ tier, project });
+  const tierDisplay = isValidTier(tier)
+    ? t(dict, `packages.${tier}.designation`, SPEC_TIER_DISPLAY_NAMES[tier])
+    : '—';
+  const total = confirmationTotalDisplay({
+    tier,
+    project,
+    fullPriceCents: session.fullPriceCents,
+  });
+  const milestones = buildConfirmationSchedule({ tier, project });
+  const deliveryNote = isValidTier(tier)
+    ? t(dict, `confirmation.timeline.${tier}`, DELIVERY_NOTE_FALLBACK[tier])
+    : null;
   const intakeHref = resolveIntakeHref({ session, project });
   const calendlyUrl = discoveryUrl ?? null;
 
@@ -277,24 +220,24 @@ export default function SpecConfirmation({
           <div className="grid grid-cols-1 sm:grid-cols-3 gap-4 sm:gap-6">
             <SessionCell
               label="Package"
-              value={`${tierDisplay} Package`}
+              value={tierDisplay}
               valueClassName="font-cakemono font-light uppercase tracking-[0.04em]"
             />
             <SessionCell
               label="Paid"
-              value={`${formatCAD(session.amountTotal)} ${session.currency}`}
+              value={
+                session.amountTotal === null
+                  ? '—'
+                  : `${formatCad(session.amountTotal)} ${session.currency}`
+              }
               valueClassName="font-mono tabular-nums"
             />
             <SessionCell
               label="Total"
               value={
-                session.fullPriceCents
-                  ? `${formatCAD(session.fullPriceCents)} ${session.currency}`
-                  : tier && TIER_TOTAL_CENTS[tier]
-                    ? `${formatCAD(TIER_TOTAL_CENTS[tier])} ${session.currency}`
-                    : '—'
+                total.value === '—' ? '—' : `${total.value} ${session.currency}`
               }
-              hint="across 4 milestones"
+              hint={total.hint ?? undefined}
               valueClassName="font-mono tabular-nums"
             />
           </div>
@@ -329,9 +272,9 @@ export default function SpecConfirmation({
           </div>
         </motion.section>
 
-        {/* Milestone timeline */}
+        {/* Checkpoint rail */}
         <motion.div {...fade(0.36)}>
-          <SpecMilestoneTimeline milestones={milestones} />
+          <SpecMilestoneTimeline milestones={milestones} deliveryNote={deliveryNote} />
         </motion.div>
 
         {/* CTAs */}
