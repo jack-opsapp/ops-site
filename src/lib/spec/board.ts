@@ -175,7 +175,7 @@ export async function getSpecBoardSnapshot(): Promise<SpecBoardSnapshot> {
     return { tiers: [], refreshed_at: refreshedAt, is_stale: true };
   }
 
-  // Stable tier order: setup, build, enterprise.
+  // Stable tier order: spec01, spec02, spec03.
   tiers.sort((a, b) => SPEC_BOARD_TIERS.indexOf(a.tier) - SPEC_BOARD_TIERS.indexOf(b.tier));
 
   return {

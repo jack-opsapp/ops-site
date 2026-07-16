@@ -81,7 +81,7 @@ export interface SpecOpsBoardCopy {
   deliveryPrefix: string;
   deliveryUnknown: string;
   fallback: Record<SpecBoardTier, { nextIntake: string; delivery: string }>;
-  /** Per-tier display label (SETUP / BUILD / ENTERPRISE). */
+  /** Per-tier display label (SPEC-01 / SPEC-02 / SPEC-03). */
   tierLabels: Record<SpecBoardTier, string>;
 }
 

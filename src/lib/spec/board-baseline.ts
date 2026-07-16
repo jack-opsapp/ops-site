@@ -9,8 +9,9 @@
  *
  * This module is that floor: an explicit, reviewable **operator baseline** —
  * NOT synthetic client-side randomness. The availability + waitlist buckets are
- * fixed editorial policy (a founder-run, slot-limited build service: Setup runs
- * open, Build runs limited with a short queue, Enterprise runs by waitlist).
+ * fixed editorial policy (a founder-run, slot-limited build service: SPEC-01
+ * runs open, SPEC-02 runs limited with a short queue, SPEC-03 runs by
+ * waitlist).
  * Only the calendar advances: each tier's next-intake Monday rolls forward from
  * "today" so the dates never decay into the past, while the buckets stay put
  * until an operator changes them (here, or in production via the admin tool).
