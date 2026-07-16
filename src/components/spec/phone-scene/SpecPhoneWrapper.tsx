@@ -12,7 +12,7 @@
 
 import { useRef, useState, useEffect } from 'react';
 import dynamic from 'next/dynamic';
-import type { SpecPhase } from './constants';
+import type { SpecPhase, SpecTierId } from './constants';
 
 const SpecPhoneScene = dynamic(() => import('./SpecPhoneScene'), {
   ssr: false,
@@ -25,7 +25,7 @@ const SpecPhoneScene = dynamic(() => import('./SpecPhoneScene'), {
 
 interface SpecPhoneWrapperProps {
   phase: SpecPhase;
-  tier: string | null;
+  tier: SpecTierId | null;
   isInHero: boolean;
 }
 

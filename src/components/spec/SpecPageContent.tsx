@@ -14,7 +14,7 @@ import SpecStickyDepositBar from './SpecStickyDepositBar';
 import SpecFitQuestionnaire from './SpecFitQuestionnaire';
 import { SpecPageAnalytics } from './SpecPageAnalytics';
 import SpecPhoneWrapper from './phone-scene/SpecPhoneWrapper';
-import type { SpecPhase } from './phone-scene/constants';
+import { isSpecTierId, type SpecPhase, type SpecTierId } from './phone-scene/constants';
 import type { SpecBoardSnapshot, SpecBoardTier } from '@/lib/spec/board';
 import {
   TIER_MILESTONE_SHAPE,
@@ -51,7 +51,7 @@ export function SpecPageContent({
   initialFit,
 }: SpecPageContentProps) {
   const [phonePhase, setPhonePhase] = useState<SpecPhase>('home');
-  const [phoneTier, setPhoneTier] = useState<string | null>(null);
+  const [phoneTier, setPhoneTier] = useState<SpecTierId | null>(null);
   const [isInHero, setIsInHero] = useState(true);
   const [fit, setFit] = useState<SpecTier | null>(initialFit);
   const [questionnaireOpen, setQuestionnaireOpen] = useState(false);
@@ -75,7 +75,11 @@ export function SpecPageContent({
     return () => observer.disconnect();
   }, []);
 
-  // Phone scrolls up and out of view when user passes pricing
+  // The phone rides out with the hero (its scope) — v2 sections below are
+  // full-width, so there is no side lane past the fold. The phase state
+  // still tracks the zones and persists, so returning to the hero shows the
+  // screen for wherever the visitor explored (a DETAILS click runs that
+  // tier's app up here).
   useEffect(() => {
     const handleScroll = () => {
       const scope = phoneScopeRef.current;
@@ -96,7 +100,8 @@ export function SpecPageContent({
   // Phase choreography — the phone scene morphs as the page's zones cross
   // the viewport's center band (same vocabulary the retired process section
   // used, re-bound to the v2 section order). Tier selects override to
-  // 'custom'; leaving every zone falls back to 'home'.
+  // 'custom'. Deliberately no reset on zone exit: the last phase persists,
+  // which is what lets the hero phone mirror the visitor's journey.
   useEffect(() => {
     const zoneEls: Array<[SpecPhase, HTMLDivElement | null]> = [
       ['packages', ladderZoneRef.current],
@@ -123,15 +128,9 @@ export function SpecPageContent({
 
   const handleTierSelect = useCallback((tier: string | null) => {
     setPhonePhase('custom');
-    // The phone scene (another team's surface — read-only here) keys its
-    // tier-reactive screens on the v1 slugs. Bridge v2 → v1 at the mount so
-    // its visuals keep working without touching phone-scene internals.
-    const PHONE_SCENE_TIER: Record<string, string> = {
-      spec01: 'setup',
-      spec02: 'build',
-      spec03: 'enterprise',
-    };
-    setPhoneTier(tier ? (PHONE_SCENE_TIER[tier] ?? tier) : null);
+    // The scene speaks v2 natively (spec01/spec02/spec03); anything else
+    // falls back to the scene's default tier story.
+    setPhoneTier(isSpecTierId(tier) ? tier : null);
   }, []);
 
   const openQuestionnaire = useCallback(() => setQuestionnaireOpen(true), []);
