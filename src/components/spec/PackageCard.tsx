@@ -141,10 +141,12 @@ export default function PackageCard({
   const [showDetails, setShowDetails] = useState(false);
 
   function toggleDetails() {
-    setShowDetails((v) => {
-      if (!v) onSelect?.(tier);
-      return !v;
-    });
+    // Notify outside the updater — updaters must stay pure (calling the
+    // parent's setState from inside one is a cross-component render update,
+    // and React 19 flags it the moment a phone-scene consumer listens).
+    const opening = !showDetails;
+    setShowDetails(opening);
+    if (opening) onSelect?.(tier);
   }
 
   return (
