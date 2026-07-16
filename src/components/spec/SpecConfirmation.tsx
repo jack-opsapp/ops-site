@@ -19,10 +19,22 @@
  * timeline strokes left-to-right, markers pop sequentially, no spring,
  * single easing curve, reduced-motion-aware.
  *
+ * Reduced-motion / hydration contract: this route is force-dynamic SSR, so
+ * the server and the client's first render must emit byte-identical markup.
+ * The preference is read through the SSR-safe ./useReducedMotion hooks (false
+ * on the server AND the first client render — framer's own useReducedMotion
+ * reads matchMedia during hydration and desyncs the trees). Entrances hold
+ * until the preference is `resolved` one commit after mount, because framer
+ * only reads `transition` when an animate target changes — a mount-fired
+ * entrance would otherwise keep its full-motion timing. Reduced-motion
+ * visitors settle via a single 200ms opacity fade with the y-transform
+ * snapped (duration 0) and no stagger.
+ *
  * Bible: 04_CUSTOMER_UX.md § /spec/confirmation, 07_ROLLOUT.md § 8.
  */
 
-import { motion, useReducedMotion } from 'framer-motion';
+import { motion } from 'framer-motion';
+import { useResolvedReducedMotion } from './useReducedMotion';
 import Link from 'next/link';
 import { theme } from '@/lib/theme';
 import type { Dictionary } from '@/i18n/types';
@@ -192,7 +204,7 @@ export default function SpecConfirmation({
   founderVideoUrl,
   discoveryUrl,
 }: Props) {
-  const prefersReducedMotion = useReducedMotion() ?? false;
+  const { reduceMotion, resolved } = useResolvedReducedMotion();
 
   if (!sessionIdProvided) {
     return <PendingState reason="missing_session_id" />;
@@ -212,12 +224,17 @@ export default function SpecConfirmation({
   const intakeHref = resolveIntakeHref({ session, project });
   const calendlyUrl = discoveryUrl ?? null;
 
-  // Fade-in stagger for the major sections. One curve, no spring.
+  // Fade-in stagger for the major sections. One curve, no spring. `initial`
+  // is unconditional so SSR and the client's first render match; the animate
+  // target holds at the initial values until the reduced-motion preference is
+  // resolved one commit after mount, so the entrance is only ever scheduled
+  // with the correct variant (see the header + ./useReducedMotion). Reduced
+  // motion: one shared 200ms fade, y snapped, no stagger.
   const fade = (delay: number) => ({
-    initial: prefersReducedMotion ? { opacity: 1, y: 0 } : { opacity: 0, y: 16 },
-    animate: { opacity: 1, y: 0 },
-    transition: prefersReducedMotion
-      ? { duration: 0 }
+    initial: { opacity: 0, y: 16 },
+    animate: resolved ? { opacity: 1, y: 0 } : { opacity: 0, y: 16 },
+    transition: reduceMotion
+      ? { opacity: { duration: 0.2, ease }, y: { duration: 0 } }
       : { duration: 0.5, delay, ease },
   });
 

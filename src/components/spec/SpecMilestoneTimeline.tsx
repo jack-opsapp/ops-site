@@ -10,11 +10,23 @@
  * data-visualization skills): rail strokes left-to-right, markers pop
  * sequentially. Single easing curve, no spring, reduced-motion-aware.
  *
+ * Reduced-motion / hydration contract (matches SpecConfirmation): SSR and the
+ * client's first render always emit the motion-initial markup via the
+ * SSR-safe ./useReducedMotion hooks, and every entrance holds until the
+ * preference is `resolved` one commit after mount so it is scheduled with the
+ * correct variant. Reduced motion: rail + marker transforms snap (duration 0),
+ * markers share a single 200ms opacity fade, and the CURRENT dot's pulse — a
+ * JS-driven infinite loop the global reduced-motion CSS rule can't reach — is
+ * swapped for a static twin one commit after mount (the SpecOpsBoard halo
+ * pattern). The first render always includes the pulsing variant on both
+ * sides, so hydration matches byte-for-byte.
+ *
  * Bible: 04_CUSTOMER_UX.md § /spec/confirmation, § OPS BOARD animation
  *        choreography (the same pattern applied to a 4-stop linear timeline).
  */
 
-import { motion, useReducedMotion } from 'framer-motion';
+import { motion } from 'framer-motion';
+import { useResolvedReducedMotion } from './useReducedMotion';
 import { theme } from '@/lib/theme';
 
 const ease = theme.animation.easing as [number, number, number, number];
@@ -41,7 +53,7 @@ const STATUS_LABEL: Record<MilestoneStatus, string> = {
 };
 
 export function SpecMilestoneTimeline({ milestones }: Props) {
-  const prefersReducedMotion = useReducedMotion() ?? false;
+  const { reduceMotion, resolved } = useResolvedReducedMotion();
 
   // Index of the milestone currently active. Drives rail fill width.
   const currentIndex = Math.max(
@@ -73,17 +85,16 @@ export function SpecMilestoneTimeline({ milestones }: Props) {
           style={{ background: 'rgba(255, 255, 255, 0.10)' }}
         />
 
-        {/* Active rail — strokes left-to-right on mount */}
+        {/* Active rail — strokes left-to-right once the preference resolves;
+            under reduced motion it snaps to the fill instantly. */}
         <motion.div
           aria-hidden
           className="absolute left-0 top-[10px] h-px bg-ops-accent"
           initial={{ width: 0 }}
-          animate={{ width: `${fillFraction * 100}%` }}
-          transition={{
-            duration: prefersReducedMotion ? 0 : 0.9,
-            delay: prefersReducedMotion ? 0 : 0.2,
-            ease,
-          }}
+          animate={resolved ? { width: `${fillFraction * 100}%` } : { width: 0 }}
+          transition={
+            reduceMotion ? { duration: 0 } : { duration: 0.9, delay: 0.2, ease }
+          }
         />
 
         <ol className="relative grid grid-cols-4 gap-3">
@@ -92,7 +103,8 @@ export function SpecMilestoneTimeline({ milestones }: Props) {
               key={m.key}
               milestone={m}
               index={i}
-              prefersReducedMotion={prefersReducedMotion}
+              reduceMotion={reduceMotion}
+              resolved={resolved}
               total={milestones.length}
             />
           ))}
@@ -105,34 +117,35 @@ export function SpecMilestoneTimeline({ milestones }: Props) {
 function MilestoneNode({
   milestone,
   index,
-  prefersReducedMotion,
+  reduceMotion,
+  resolved,
   total,
 }: {
   milestone: Milestone;
   index: number;
-  prefersReducedMotion: boolean;
+  reduceMotion: boolean;
+  resolved: boolean;
   total: number;
 }) {
   const isActive =
     milestone.status === 'paid' || milestone.status === 'current';
 
   // Each marker pops in sequence after the stroke finishes (matches bible
-  // OPS BOARD choreography). Reduced-motion: instant final state.
-  const popDelay = prefersReducedMotion
-    ? 0
-    : 0.2 + (0.9 * (index / Math.max(total - 1, 1)));
+  // OPS BOARD choreography). Only times the full-motion variant — the reduced
+  // transition below drops the delay and snaps the scale.
+  const popDelay = 0.2 + 0.9 * (index / Math.max(total - 1, 1));
 
   return (
     <li className="relative flex flex-col items-start">
       <motion.div
         aria-hidden
         initial={{ scale: 0, opacity: 0 }}
-        animate={{ scale: 1, opacity: 1 }}
-        transition={{
-          duration: prefersReducedMotion ? 0 : 0.3,
-          delay: popDelay,
-          ease,
-        }}
+        animate={resolved ? { scale: 1, opacity: 1 } : { scale: 0, opacity: 0 }}
+        transition={
+          reduceMotion
+            ? { opacity: { duration: 0.2, ease }, scale: { duration: 0 } }
+            : { duration: 0.3, delay: popDelay, ease }
+        }
         className="relative w-[18px] h-[18px] flex items-center justify-center"
         style={{
           background: '#000',
@@ -149,22 +162,29 @@ function MilestoneNode({
             style={{ borderRadius: '1px' }}
           />
         )}
-        {milestone.status === 'current' && (
-          <motion.span
-            className="block w-[6px] h-[6px] bg-ops-accent"
-            style={{ borderRadius: '1px' }}
-            animate={
-              prefersReducedMotion
-                ? undefined
-                : { opacity: [1, 0.55, 1] }
-            }
-            transition={
-              prefersReducedMotion
-                ? undefined
-                : { duration: 2.2, repeat: Infinity, ease: 'linear' }
-            }
-          />
-        )}
+        {milestone.status === 'current' &&
+          (reduceMotion ? (
+            // Static twin of the pulsing dot, swapped in one commit after
+            // mount for reduced-motion visitors (reduceMotion is false on the
+            // first render by the hook's contract, so hydration always sees
+            // the pulsing variant below). Unmount-and-replace keeps every
+            // prop shape constant — no animate/transition key ever changes
+            // meaning on a live element.
+            <span
+              className="block w-[6px] h-[6px] bg-ops-accent"
+              style={{ borderRadius: '1px' }}
+            />
+          ) : (
+            // Pulsing fill — the page's only infinite animation. JS-driven,
+            // so the global reduced-motion CSS rule can't neutralize it; the
+            // branch above retires it post-mount instead.
+            <motion.span
+              className="block w-[6px] h-[6px] bg-ops-accent"
+              style={{ borderRadius: '1px' }}
+              animate={{ opacity: [1, 0.55, 1] }}
+              transition={{ duration: 2.2, repeat: Infinity, ease: 'linear' }}
+            />
+          ))}
       </motion.div>
 
       <div className="mt-3 flex flex-col gap-1">
