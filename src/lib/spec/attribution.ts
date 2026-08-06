@@ -128,20 +128,31 @@ export function maybeBuildFirstTouchPayload(
 /**
  * Write the cookie onto a response. Caller controls when to call this
  * (typically only in middleware on first visit).
+ *
+ * Scoped to `.opsapp.co` in production (Unified Attribution P2). ops-site
+ * serves `opsapp.co` but the app serves `app.opsapp.co`, and a host-only
+ * cookie is never sent across that boundary — so signup attribution saw
+ * nothing at all. The dotted domain is what makes the handoff work; the app
+ * reads this same cookie when a company is created.
+ *
+ * The domain is omitted outside production because a dotted opsapp.co domain
+ * is rejected by the browser on localhost.
  */
 export function writeAttributionCookie(
   response: NextResponse,
   payload: OpsAttribution,
 ): void {
+  const isProduction = process.env.NODE_ENV === 'production';
   const value = encodeURIComponent(JSON.stringify(payload));
   response.cookies.set({
     name: ATTRIBUTION_COOKIE_NAME,
     value,
+    domain: isProduction ? '.opsapp.co' : undefined,
     maxAge: ATTRIBUTION_MAX_AGE_SECONDS,
     sameSite: 'lax',
     path: '/',
     httpOnly: false, // readable from client too so analytics scripts can dedupe
-    secure: process.env.NODE_ENV === 'production',
+    secure: isProduction,
   });
 }
 
