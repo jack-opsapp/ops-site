@@ -19,6 +19,10 @@ test('rejects missing and executable measurement ID text', () => {
 
 test('serializes the measurement ID instead of interpolating executable text', () => {
   const script = buildGoogleAnalyticsConfigScript('G-TEST123');
+  assert.match(script, /gtag\('consent', 'default', \{/);
+  assert.match(script, /'ad_storage': 'denied'/);
+  assert.match(script, /'ad_user_data': 'denied'/);
+  assert.match(script, /'ad_personalization': 'denied'/);
   assert.match(script, /gtag\('config', "G-TEST123", \{/);
   assert.match(
     script,

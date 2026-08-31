@@ -19,6 +19,12 @@ export function buildGoogleAnalyticsConfigScript(measurementId: string): string 
           window.dataLayer = window.dataLayer || [];
           function gtag(){dataLayer.push(arguments);}
           gtag('js', new Date());
+          gtag('consent', 'default', {
+            'ad_storage': 'denied',
+            'ad_user_data': 'denied',
+            'ad_personalization': 'denied',
+            'analytics_storage': 'granted'
+          });
           gtag('config', ${JSON.stringify(measurementId)}, {
             page_location: window.location.origin + window.location.pathname,
             page_path: window.location.pathname
