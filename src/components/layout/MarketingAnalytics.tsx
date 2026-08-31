@@ -2,6 +2,7 @@
 
 import { useEffect } from 'react';
 import { sanitizeMarketingUrl, trackMarketingEvent } from '@/lib/marketing-analytics';
+import { captureFirstTouchOnClient } from '@/lib/analytics/first-touch';
 
 const SCROLL_THRESHOLDS = [25, 50, 75, 90] as const;
 
@@ -23,6 +24,12 @@ function getLinkContext(anchor: HTMLAnchorElement): string {
 }
 
 export default function MarketingAnalytics() {
+  useEffect(() => {
+    // Middleware is the primary writer. This covers any render path that
+    // reaches the client without traversing it while preserving first touch.
+    captureFirstTouchOnClient();
+  }, []);
+
   useEffect(() => {
     const handleClick = (event: MouseEvent) => {
       const target = event.target;

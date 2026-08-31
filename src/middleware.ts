@@ -37,10 +37,12 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { COOKIE_NAME, COOKIE_MAX_AGE } from '@/i18n/config';
 import {
-  maybeBuildFirstTouchPayload,
-  readAttributionFromRequest,
-  writeAttributionCookie,
-} from '@/lib/spec/attribution';
+  FIRST_TOUCH_COOKIE_NAME,
+  FIRST_TOUCH_MAX_AGE_SECONDS,
+  LEGACY_ATTRIBUTION_COOKIE_NAME,
+  resolveFirstTouch,
+  serializeFirstTouchPayload,
+} from '@/lib/analytics/first-touch';
 
 // Mirror of TRANSLATED_PATHS in src/i18n/server.ts — kept here as a
 // constant rather than imported because middleware runs in the Edge
@@ -61,12 +63,33 @@ function isTranslated(pathname: string): boolean {
   return TRANSLATED_PATHS.has(pathname);
 }
 
-function withAttributionCookie(request: NextRequest, response: NextResponse): NextResponse {
-  const payload = maybeBuildFirstTouchPayload(
-    request.nextUrl,
-    readAttributionFromRequest(request),
-  );
-  if (payload) writeAttributionCookie(response, payload);
+function attachFirstTouch(
+  request: NextRequest,
+  response: NextResponse,
+): NextResponse {
+  const decision = resolveFirstTouch({
+    canonicalValue: request.cookies.get(FIRST_TOUCH_COOKIE_NAME)?.value,
+    legacyValue: request.cookies.get(LEGACY_ATTRIBUTION_COOKIE_NAME)?.value,
+    url: request.nextUrl.toString(),
+    referrer: request.headers.get('referer') ?? '',
+    capturedAt: new Date().toISOString(),
+    anonymousId: crypto.randomUUID(),
+  });
+  if (!decision.shouldWrite || !decision.payload) return response;
+
+  const isOpsProductionHost =
+    request.nextUrl.hostname === 'opsapp.co' ||
+    request.nextUrl.hostname.endsWith('.opsapp.co');
+  response.cookies.set({
+    name: FIRST_TOUCH_COOKIE_NAME,
+    value: serializeFirstTouchPayload(decision.payload),
+    path: '/',
+    domain: isOpsProductionHost ? '.opsapp.co' : undefined,
+    maxAge: FIRST_TOUCH_MAX_AGE_SECONDS,
+    sameSite: 'lax',
+    secure: request.nextUrl.protocol === 'https:',
+    httpOnly: false,
+  });
   return response;
 }
 
@@ -82,7 +105,7 @@ export function middleware(request: NextRequest) {
     if (!isTranslated(internalPath)) {
       const url = request.nextUrl.clone();
       url.pathname = internalPath;
-      return withAttributionCookie(request, NextResponse.redirect(url, 308));
+      return attachFirstTouch(request, NextResponse.redirect(url, 308));
     }
 
     // Translated route: rewrite internally with the locale header + cookie sync.
@@ -101,7 +124,7 @@ export function middleware(request: NextRequest) {
       maxAge: COOKIE_MAX_AGE,
       sameSite: 'lax',
     });
-    return withAttributionCookie(request, response);
+    return attachFirstTouch(request, response);
   }
 
   // --- Unprefixed URL with cookie=es ---
@@ -110,14 +133,14 @@ export function middleware(request: NextRequest) {
   if (cookieLocale === 'es' && isTranslated(pathname)) {
     const url = request.nextUrl.clone();
     url.pathname = pathname === '/' ? '/es' : `/es${pathname}`;
-    return withAttributionCookie(request, NextResponse.redirect(url, 308));
+    return attachFirstTouch(request, NextResponse.redirect(url, 308));
   }
 
   // --- Default: English ---
   const requestHeaders = new Headers(request.headers);
   requestHeaders.set('x-locale', 'en');
   requestHeaders.set('x-pathname', pathname);
-  return withAttributionCookie(
+  return attachFirstTouch(
     request,
     NextResponse.next({ request: { headers: requestHeaders } }),
   );

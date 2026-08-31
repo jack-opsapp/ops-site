@@ -3,9 +3,9 @@
  *
  * Source: ops-software-bible/SPEC/04_CUSTOMER_UX.md § UTM + ad-click persistence.
  *
- * Model: first-touch. On first visit to ops-site, `ops_attribution` is set
- * with the UTM/ad-click params + landing_url + first_touch_at. Subsequent
- * visits do NOT overwrite. 30-day Max-Age. SameSite=Lax.
+ * Model: first-touch. The shared `__ops_first_touch` cookie is set on
+ * `.opsapp.co` with the allowlisted campaign fields and canonical landing
+ * path. Subsequent visits do NOT overwrite. 30-day Max-Age. SameSite=Lax.
  *
  * Read at /api/spec/create-checkout-session time to:
  *  - Merge into Stripe metadata
@@ -14,9 +14,16 @@
  */
 
 import type { NextRequest, NextResponse } from 'next/server';
+import {
+  FIRST_TOUCH_COOKIE_NAME,
+  serializeFirstTouchPayload,
+  FIRST_TOUCH_MAX_AGE_SECONDS,
+  LEGACY_ATTRIBUTION_COOKIE_NAME,
+  parseFirstTouchValue,
+} from '@/lib/analytics/first-touch';
 
-export const ATTRIBUTION_COOKIE_NAME = 'ops_attribution';
-export const ATTRIBUTION_MAX_AGE_SECONDS = 30 * 24 * 60 * 60; // 30 days
+export const ATTRIBUTION_COOKIE_NAME = FIRST_TOUCH_COOKIE_NAME;
+export const ATTRIBUTION_MAX_AGE_SECONDS = FIRST_TOUCH_MAX_AGE_SECONDS;
 
 export interface OpsAttribution {
   utm_source?: string | null;
@@ -40,10 +47,29 @@ const CLICK_ID_KEYS = ['gclid', 'fbclid'] as const;
 export function readAttributionCookie(
   cookies: { get: (name: string) => { value: string } | undefined },
 ): OpsAttribution {
-  const raw = cookies.get(ATTRIBUTION_COOKIE_NAME)?.value;
-  if (!raw) return {};
+  const canonical = cookies.get(ATTRIBUTION_COOKIE_NAME)?.value;
+  if (canonical) {
+    const parsed = parseFirstTouchValue(canonical);
+    if (parsed) {
+      return {
+        utm_source: parsed.utm_source,
+        utm_medium: parsed.utm_medium,
+        utm_campaign: parsed.utm_campaign,
+        utm_content: parsed.utm_content,
+        utm_term: parsed.utm_term,
+        gclid: parsed.gclid,
+        fbclid: parsed.fbclid,
+        landing_url: parsed.landing_path,
+        first_touch_at: parsed.captured_at,
+      };
+    }
+  }
+
+  // Read-only rollout bridge for cookies issued before the shared payload.
+  const legacy = cookies.get(LEGACY_ATTRIBUTION_COOKIE_NAME)?.value;
+  if (!legacy) return {};
   try {
-    const decoded = decodeURIComponent(raw);
+    const decoded = decodeURIComponent(legacy);
     const parsed = JSON.parse(decoded) as OpsAttribution;
     return sanitize(parsed);
   } catch {
@@ -97,7 +123,7 @@ export function maybeBuildFirstTouchPayload(
   if (existing.first_touch_at) return null;
 
   const captured: OpsAttribution = {
-    landing_url: url.pathname + (url.search || ''),
+    landing_url: url.pathname,
     first_touch_at: new Date().toISOString(),
   };
 
@@ -142,17 +168,21 @@ export function writeAttributionCookie(
   response: NextResponse,
   payload: OpsAttribution,
 ): void {
-  const isProduction = process.env.NODE_ENV === 'production';
-  const value = encodeURIComponent(JSON.stringify(payload));
+  const anonymousId = crypto.randomUUID();
+  const canonical = parseFirstTouchValue(
+    encodeURIComponent(JSON.stringify(payload)),
+    { legacyAnonymousId: anonymousId },
+  );
+  if (!canonical) return;
   response.cookies.set({
     name: ATTRIBUTION_COOKIE_NAME,
-    value,
-    domain: isProduction ? '.opsapp.co' : undefined,
+    value: serializeFirstTouchPayload(canonical),
     maxAge: ATTRIBUTION_MAX_AGE_SECONDS,
     sameSite: 'lax',
     path: '/',
+    domain: process.env.NODE_ENV === 'production' ? '.opsapp.co' : undefined,
     httpOnly: false, // readable from client too so analytics scripts can dedupe
-    secure: isProduction,
+    secure: process.env.NODE_ENV === 'production',
   });
 }
 
