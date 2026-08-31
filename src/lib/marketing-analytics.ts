@@ -13,7 +13,6 @@ const SPEC_RAW_EVENTS = new Set([
   'pay_deposit_click',
   'spec_default_ops_cta_click',
 ]);
-
 declare global {
   interface Window {
     gtag?: (...args: unknown[]) => void;
@@ -93,10 +92,15 @@ export function trackMarketingEvent(
 ): void {
   if (typeof window === 'undefined') return;
 
+  const outboundUrl = typeof properties.link_url === 'string'
+    ? sanitizeOutboundUrl(properties.link_url)
+    : undefined;
+
   const payload = buildMarketingProperties({
     page_path: sanitizeMarketingPath(window.location.pathname),
     ...buildSafeSearchProperties(window.location.search),
     ...properties,
+    link_url: outboundUrl,
   });
 
   try {
@@ -152,4 +156,13 @@ function enqueueSpecRawEvent(
   }).catch(() => {
     // Client-side analytics must never interrupt the customer flow.
   });
+}
+
+function sanitizeOutboundUrl(value: string): string | undefined {
+  try {
+    const url = new URL(value);
+    return `${url.origin}${sanitizeMarketingPath(url.pathname)}`;
+  } catch {
+    return undefined;
+  }
 }
