@@ -16,6 +16,11 @@ const GA_ID = getConfiguredMeasurementId(
   process.env.NODE_ENV,
 );
 
+const PRODUCTION_ANALYTICS_HOSTNAMES = [
+  'opsapp.co',
+  'www.opsapp.co',
+] as const;
+
 export default function GoogleAnalytics() {
   if (!GA_ID) return null;
 
@@ -26,7 +31,10 @@ export default function GoogleAnalytics() {
         strategy="afterInteractive"
       />
       <Script id="google-analytics" strategy="afterInteractive">
-        {buildGoogleAnalyticsConfigScript(GA_ID)}
+        {buildGoogleAnalyticsConfigScript(
+          GA_ID,
+          PRODUCTION_ANALYTICS_HOSTNAMES,
+        )}
       </Script>
     </>
   );
