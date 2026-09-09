@@ -39,6 +39,47 @@ test('captures only allowlisted campaign fields and a canonical landing path', (
   assert.doesNotMatch(JSON.stringify(touch), /operator|private|email|q=/);
 });
 
+test('captures gbraid and wbraid as Google click ids alongside gclid', () => {
+  const touch = buildFirstTouchPayload({
+    url: 'https://opsapp.co/plans?gbraid=brand-1&wbraid=web-1',
+    referrer: '',
+    capturedAt: NOW,
+    anonymousId: ANONYMOUS_ID,
+  });
+
+  assert.deepEqual(touch, {
+    version: 1,
+    anonymous_id: ANONYMOUS_ID,
+    captured_at: NOW,
+    landing_path: '/plans',
+    gbraid: 'brand-1',
+    wbraid: 'web-1',
+  });
+  assert.deepEqual(parseFirstTouchValue(encodeFirstTouchPayload(touch!)), touch);
+});
+
+test('keeps gbraid and wbraid right behind gclid when bounding an oversized payload', () => {
+  const touch = buildFirstTouchPayload({
+    url:
+      'https://opsapp.co/plans?' +
+      ['utm_source', 'utm_medium', 'utm_campaign', 'utm_content', 'utm_term']
+        .map((key) => `${key}=${key.slice(4, 5).repeat(300)}`)
+        .join('&') +
+      `&gclid=${'g'.repeat(600)}&gbraid=${'b'.repeat(600)}&wbraid=${'w'.repeat(600)}&fbclid=${'f'.repeat(600)}`,
+    referrer: `https://${'r'.repeat(240)}.example.com/`,
+    capturedAt: NOW,
+    anonymousId: ANONYMOUS_ID,
+  });
+  assert.ok(touch);
+  assert.ok(encodeURIComponent(JSON.stringify(touch)).length > FIRST_TOUCH_MAX_ENCODED_BYTES);
+  const encoded = encodeFirstTouchPayload(touch);
+  assert.ok(encoded.length <= FIRST_TOUCH_MAX_ENCODED_BYTES);
+  const parsed = parseFirstTouchValue(encoded);
+  assert.equal(parsed?.gclid, 'g'.repeat(256));
+  assert.equal(parsed?.gbraid, 'b'.repeat(256));
+  assert.equal(parsed?.wbraid, 'w'.repeat(256));
+});
+
 test('excludes OPS subdomains from referral classification', () => {
   const touch = buildFirstTouchPayload({
     url: 'https://opsapp.co/',

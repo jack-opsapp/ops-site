@@ -20,6 +20,7 @@ import {
   ATTRIBUTION_COOKIE_NAME,
   ATTRIBUTION_MAX_AGE_SECONDS,
   maybeBuildFirstTouchPayload,
+  readAttributionCookie,
   writeAttributionCookie,
   type OpsAttribution,
 } from '../spec/attribution';
@@ -72,7 +73,7 @@ describe('writeAttributionCookie — domain scope', () => {
     setNodeEnv('production');
     const res = fakeResponse();
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    writeAttributionCookie(res as any, { first_touch_at: '2026-08-06T00:00:00.000Z' });
+    writeAttributionCookie(res as any, { landing_url: '/plans', first_touch_at: '2026-08-06T00:00:00.000Z' });
     assert.equal(res.calls[0].domain, '.opsapp.co');
   });
 
@@ -81,7 +82,7 @@ describe('writeAttributionCookie — domain scope', () => {
     setNodeEnv('development');
     const res = fakeResponse();
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    writeAttributionCookie(res as any, { first_touch_at: '2026-08-06T00:00:00.000Z' });
+    writeAttributionCookie(res as any, { landing_url: '/plans', first_touch_at: '2026-08-06T00:00:00.000Z' });
     assert.equal(res.calls[0].domain, undefined);
   });
 
@@ -89,7 +90,7 @@ describe('writeAttributionCookie — domain scope', () => {
     setNodeEnv('production');
     const res = fakeResponse();
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    writeAttributionCookie(res as any, { utm_source: 'google' });
+    writeAttributionCookie(res as any, { utm_source: 'google', landing_url: '/', first_touch_at: '2026-08-06T00:00:00.000Z' });
     const c = res.calls[0];
     assert.equal(c.name, ATTRIBUTION_COOKIE_NAME);
     assert.equal(c.maxAge, ATTRIBUTION_MAX_AGE_SECONDS);
@@ -101,13 +102,34 @@ describe('writeAttributionCookie — domain scope', () => {
     assert.equal(c.secure, true);
   });
 
-  it('round-trips the payload as URI-encoded JSON', () => {
+  it('writes the canonical versioned payload as JSON', () => {
+    // The shared `__ops_first_touch` shape: versioned, identified, with a
+    // canonical landing path — the same JSON app.opsapp.co parses.
     setNodeEnv('production');
     const res = fakeResponse();
-    const payload: OpsAttribution = { utm_source: 'google', gclid: 'Cj0KCQ' };
+    const payload: OpsAttribution = {
+      utm_source: 'google',
+      gclid: 'Cj0KCQ',
+      landing_url: '/plans',
+      first_touch_at: '2026-08-06T00:00:00.000Z',
+    };
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
     writeAttributionCookie(res as any, payload);
-    assert.deepEqual(JSON.parse(decodeURIComponent(res.calls[0].value)), payload);
+    const written = JSON.parse(res.calls[0].value);
+    assert.equal(written.version, 1);
+    assert.match(written.anonymous_id, /^[0-9a-f-]{36}$/i);
+    assert.equal(written.captured_at, '2026-08-06T00:00:00.000Z');
+    assert.equal(written.landing_path, '/plans');
+    assert.equal(written.utm_source, 'google');
+    assert.equal(written.gclid, 'Cj0KCQ');
+  });
+
+  it('writes nothing when the payload has no landing path to anchor a first touch', () => {
+    setNodeEnv('production');
+    const res = fakeResponse();
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    writeAttributionCookie(res as any, { first_touch_at: '2026-08-06T00:00:00.000Z' });
+    assert.equal(res.calls.length, 0);
   });
 });
 
@@ -123,7 +145,8 @@ describe('maybeBuildFirstTouchPayload — first touch wins', () => {
     assert.equal(p!.utm_source, 'google');
     assert.equal(p!.utm_medium, 'cpc');
     assert.equal(p!.gclid, 'Cj0KCQ');
-    assert.equal(p!.landing_url, '/plans?utm_source=google&utm_medium=cpc&gclid=Cj0KCQ');
+    // Path only: the query string (and anything private in it) never lands in the cookie.
+    assert.equal(p!.landing_url, '/plans');
     assert.ok(p!.first_touch_at);
   });
 
@@ -145,5 +168,38 @@ describe('maybeBuildFirstTouchPayload — first touch wins', () => {
     assert.ok(p);
     assert.equal(p!.landing_url, '/');
     assert.equal(p!.utm_source, undefined);
+  });
+});
+
+// ─── Google click id variants ────────────────────────────────────────────────
+
+describe('gbraid / wbraid — all three writers agree', () => {
+  it('captures gbraid and wbraid from the landing URL', () => {
+    const payload = maybeBuildFirstTouchPayload(
+      new URL('https://opsapp.co/plans?gbraid=brand-1&wbraid=web-1'),
+      {},
+    );
+    assert.equal(payload?.gbraid, 'brand-1');
+    assert.equal(payload?.wbraid, 'web-1');
+    assert.equal(payload?.gclid, undefined);
+  });
+
+  it('round-trips gbraid and wbraid through the written cookie', () => {
+    setNodeEnv('production');
+    const res = fakeResponse();
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    writeAttributionCookie(res as any, {
+      gbraid: 'brand-1',
+      wbraid: 'web-1',
+      landing_url: '/plans',
+      first_touch_at: '2026-09-01T00:00:00.000Z',
+    });
+    const written = res.calls[0];
+    const read = readAttributionCookie({
+      get: (name: string) => (name === written.name ? { value: written.value } : undefined),
+    });
+    assert.equal(read.gbraid, 'brand-1');
+    assert.equal(read.wbraid, 'web-1');
+    assert.equal(read.landing_url, '/plans');
   });
 });
