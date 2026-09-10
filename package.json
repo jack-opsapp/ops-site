@@ -7,7 +7,7 @@
     "build": "next build",
     "start": "next start",
     "lint": "eslint",
-    "test": "tsx --test src/lib/__tests__/*.test.ts src/lib/spec/__tests__/*.test.ts src/lib/spec/cron/__tests__/*.test.ts",
+    "test": "tsx --test src/lib/__tests__/*.test.ts src/lib/analytics/__tests__/*.test.ts src/lib/spec/__tests__/*.test.ts src/lib/spec/cron/__tests__/*.test.ts",
     "test:spec-cron": "tsx --test src/lib/spec/cron/__tests__/*.test.ts"
   },
   "dependencies": {

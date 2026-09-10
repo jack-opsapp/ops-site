@@ -32,13 +32,15 @@ export interface OpsAttribution {
   utm_content?: string | null;
   utm_term?: string | null;
   gclid?: string | null;
+  gbraid?: string | null;
+  wbraid?: string | null;
   fbclid?: string | null;
   landing_url?: string | null;
   first_touch_at?: string | null;
 }
 
 const UTM_KEYS = ['utm_source', 'utm_medium', 'utm_campaign', 'utm_content', 'utm_term'] as const;
-const CLICK_ID_KEYS = ['gclid', 'fbclid'] as const;
+const CLICK_ID_KEYS = ['gclid', 'gbraid', 'wbraid', 'fbclid'] as const;
 
 /**
  * Read the first-touch cookie from a Next.js request (server-side).
@@ -58,6 +60,8 @@ export function readAttributionCookie(
         utm_content: parsed.utm_content,
         utm_term: parsed.utm_term,
         gclid: parsed.gclid,
+        gbraid: parsed.gbraid,
+        wbraid: parsed.wbraid,
         fbclid: parsed.fbclid,
         landing_url: parsed.landing_path,
         first_touch_at: parsed.captured_at,
