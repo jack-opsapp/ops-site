@@ -12,8 +12,8 @@ export async function generateMetadata(): Promise<Metadata> {
   return {
     title: locale === 'es' ? 'Nuestra Historia' : 'About OPS',
     description: locale === 'es'
-      ? 'OPS fue creado por un contratista que escaló de $0 a $1.6M en 4 años. Probó Jobber, ServiceTitan, Housecall Pro. Construyó el suyo.'
-      : 'Built by a contractor who scaled from $0 to $1.6M in 4 years. Tried Jobber, ServiceTitan, Housecall Pro. Crew refused to use them. So he built OPS.',
+      ? 'OPS fue creado por un dueño-operador que escaló de $0 a $1.6M en 4 años. Probó Jobber, ServiceTitan, Housecall Pro. Construyó el suyo.'
+      : 'Built by an owner-operator who scaled from $0 to $1.6M in 4 years. Tried Jobber, ServiceTitan, Housecall Pro. Crew refused to use them. So he built OPS.',
     openGraph: {
       url: buildLocaleUrl('/company', locale),
     },
@@ -36,7 +36,7 @@ export default async function CompanyPage() {
     '@type': 'AboutPage',
     url: 'https://opsapp.co/company',
     name: 'About OPS',
-    description: 'Built by a contractor who scaled from $0 to $1.6M in 4 years. Tried Jobber, ServiceTitan, Housecall Pro. Crew refused to use them. So he built OPS.',
+    description: 'Built by an owner-operator who scaled from $0 to $1.6M in 4 years. Tried Jobber, ServiceTitan, Housecall Pro. Crew refused to use them. So he built OPS.',
     mainEntity: {
       '@type': 'Organization',
       name: 'OPS',
