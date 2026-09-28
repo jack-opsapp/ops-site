@@ -1,5 +1,6 @@
 import type { NextConfig } from "next";
 import { seoRedirects } from "./src/lib/seo-redirects";
+import { legacyMetadataImageRewrites } from "./src/lib/seo/legacy-metadata-rewrites";
 
 const nextConfig: NextConfig = {
   experimental: {
@@ -26,6 +27,9 @@ const nextConfig: NextConfig = {
   },
   async redirects() {
     return seoRedirects;
+  },
+  async rewrites() {
+    return legacyMetadataImageRewrites;
   },
 };
 
