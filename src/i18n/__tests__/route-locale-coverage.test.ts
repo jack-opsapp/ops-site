@@ -50,6 +50,14 @@ describe('every route declares its locale', () => {
   }
 });
 
+describe('the global 404', () => {
+  it('renders in English', () => {
+    const source = readFileSync(join(APP, 'global-not-found.tsx'), 'utf8');
+    assert.match(source, /setRequestLocale\('en'\)/);
+    assert.match(source, /<SiteDocument locale="en">/);
+  });
+});
+
 describe('Spanish routes match TRANSLATED_PATHS', () => {
   it('has exactly one /es page per translated path', () => {
     const spanishRoot = join(APP, '(es)', 'es');

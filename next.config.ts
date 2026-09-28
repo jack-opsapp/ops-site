@@ -2,6 +2,12 @@ import type { NextConfig } from "next";
 import { seoRedirects } from "./src/lib/seo-redirects";
 
 const nextConfig: NextConfig = {
+  experimental: {
+    // Two root layouts (src/app/(en), src/app/(es)) leave no app-wide
+    // not-found boundary; src/app/global-not-found.tsx renders the full 404
+    // for unmatched URLs.
+    globalNotFound: true,
+  },
   images: {
     remotePatterns: [
       {
