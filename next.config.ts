@@ -3,6 +3,11 @@ import { seoRedirects } from "./src/lib/seo-redirects";
 import { legacyMetadataImageRewrites } from "./src/lib/seo/legacy-metadata-rewrites";
 
 const nextConfig: NextConfig = {
+  env: {
+    // sitemap.xml lastmod for pages without their own timestamp: this
+    // deploy's build time, stable across ISR regenerations.
+    OPS_SITE_BUILD_TIME: new Date().toISOString(),
+  },
   experimental: {
     // Two root layouts (src/app/(en), src/app/(es)) leave no app-wide
     // not-found boundary; src/app/global-not-found.tsx renders the full 404
