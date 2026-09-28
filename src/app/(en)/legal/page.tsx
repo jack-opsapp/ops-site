@@ -1,0 +1,82 @@
+/**
+ * Legal page — /legal
+ *
+ * Server component that reads `?page=` search param to select
+ * the active legal document (terms | privacy | eula).
+ * Light theme page with white background and dark text.
+ */
+
+import type { Metadata } from 'next';
+import { Suspense } from 'react';
+import { SectionLabel } from '@/components/ui';
+import LegalTabs from '@/components/legal/LegalTabs';
+import LegalContent from '@/components/legal/LegalContent';
+import { legalDocuments } from '@/lib/legal-content';
+import { setRequestLocale, getTDict, buildLocaleUrl } from '@/i18n/server';
+
+export async function generateMetadata(): Promise<Metadata> {
+  return {
+    title: 'Legal',
+    description: 'OPS Terms of Service, Privacy Policy, End User License Agreement, and Data Processing Agreement.',
+    openGraph: {
+      url: buildLocaleUrl('/legal', 'en'),
+    },
+    // Legal docs are English-only; both locales canonicalize to the
+    // English URL (no Spanish translation exists).
+    alternates: {
+      canonical: 'https://opsapp.co/legal',
+    },
+    robots: {
+      index: true,
+      follow: true,
+    },
+  };
+}
+
+const VALID_TABS = ['terms', 'spec-terms', 'privacy', 'eula', 'dpa'] as const;
+
+export default async function LegalPage({
+  searchParams,
+}: {
+  searchParams: Promise<{ page?: string }>;
+}) {
+  setRequestLocale('en');
+  const params = await searchParams;
+  const rawTab = params.page ?? 'terms';
+  const activeTab = VALID_TABS.includes(rawTab as (typeof VALID_TABS)[number])
+    ? rawTab
+    : 'terms';
+
+  const activeDocument = legalDocuments[activeTab];
+  const dict = await getTDict('legal');
+  const t = (key: string) => {
+    const value = dict[key];
+    return typeof value === 'string' ? value : key;
+  };
+
+  const englishOnlyNotice = t('englishOnlyNotice');
+
+  return (
+    <div className="bg-ops-background-light text-ops-text-dark min-h-screen">
+      <div className="max-w-[900px] mx-auto px-6 pt-32 py-16 mb-16">
+        <SectionLabel label={t('sectionLabel')} className="text-ops-text-secondary" />
+
+        <h1 className="font-heading font-bold uppercase leading-[0.95] tracking-tight text-ops-text-dark text-3xl md:text-4xl mt-4 mb-2">
+          {activeDocument?.title ?? 'Legal'}
+        </h1>
+
+        <Suspense fallback={null}>
+          <LegalTabs activeTab={activeTab} legalDict={dict} />
+        </Suspense>
+
+        {englishOnlyNotice && (
+          <p className="font-body text-sm text-ops-text-secondary italic mt-4 mb-2">
+            {englishOnlyNotice}
+          </p>
+        )}
+
+        <LegalContent document={activeDocument} />
+      </div>
+    </div>
+  );
+}

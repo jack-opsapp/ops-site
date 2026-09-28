@@ -1,0 +1,16 @@
+request                                      before (opsapp.co)                             after (local build)                            same
+/es                                          200  lang=es ops-lang=es set                   200  lang=es ops-lang=es set                   yes
+/es/platform                                 200  lang=es ops-lang=es set                   200  lang=es ops-lang=es set                   yes
+/es/spec?fit=ops                             200  lang=es ops-lang=es set                   200  lang=es ops-lang=es set                   yes
+/es/journal                                  308 /journal lang=None                         308 /journal lang=None                         yes
+/es/industries                               308 /industries lang=None                      308 /industries lang=None                      yes
+/es/platform/sub                             308 /platform/sub lang=None                    308 /platform/sub lang=None                    yes
+/es/es/platform                              308 /es/platform lang=None                     308 /es/platform lang=None                     yes
+/es/journal/this-post-does-not-exist         308 /journal/this-post-does-not-exist lang=None 308 /journal/this-post-does-not-exist lang=None yes
+/ cookie:ops-lang=es                         308 /es lang=None                              308 /es lang=None                              yes
+/platform cookie:ops-lang=es                 308 /es/platform lang=None                     308 /es/platform lang=None                     yes
+/plans?utm_source=x cookie:ops-lang=es       308 /es/plans?utm_source=x lang=None           308 /es/plans?utm_source=x lang=None           yes
+/journal cookie:ops-lang=es                  200  lang=en                                   200  lang=en                                   yes
+/tools/leadership cookie:ops-lang=es         200  lang=en                                   200  lang=en                                   yes
+/es/platform cookie:ops-lang=en              200  lang=es ops-lang=es set                   200  lang=es ops-lang=es set                   yes
+/platform cookie:ops-lang=en                 200  lang=en                                   200  lang=en                                   yes

@@ -3,16 +3,15 @@
  * compare pages.
  *
  * Server component. Pulls live posts matching the provided slug list
- * directly from Supabase and renders them in the curator-supplied
- * order. Renders nothing when no slugs match (acceptable per audit:
- * quality > coverage).
+ * (getLivePostsBySlugs, src/lib/blog.ts) and renders them in the
+ * curator-supplied order. Renders nothing when no slugs match
+ * (acceptable per audit: quality > coverage).
  */
 
 import Link from 'next/link';
 import Image from 'next/image';
 import { SectionLabel } from '@/components/ui';
-import { getSupabaseAdmin } from '@/lib/supabase-admin';
-import type { BlogPostWithCategory } from '@/lib/blog';
+import { getLivePostsBySlugs } from '@/lib/blog';
 
 interface RelatedJournalPostsProps {
   slugs: string[];
@@ -22,42 +21,6 @@ interface RelatedJournalPostsProps {
   sectionLabel?: string;
 }
 
-/**
- * Fetch live posts by slug list. Inline here (rather than in
- * `src/lib/blog.ts`) because the journal cluster is being worked in
- * a parallel session; keeping this self-contained avoids commingling.
- */
-async function getPostsBySlugs(slugs: string[]): Promise<BlogPostWithCategory[]> {
-  if (slugs.length === 0) return [];
-
-  let client;
-  try {
-    client = getSupabaseAdmin();
-  } catch {
-    return [];
-  }
-
-  const { data, error } = await client
-    .from('blog_posts')
-    .select('*, blog_categories!category_id(name, slug)')
-    .eq('is_live', true)
-    .in('slug', slugs);
-
-  if (error) {
-    console.error('[RelatedJournalPosts] query error:', error.message);
-    return [];
-  }
-
-  const bySlug = new Map<string, BlogPostWithCategory>();
-  for (const post of (data ?? []) as BlogPostWithCategory[]) {
-    bySlug.set(post.slug, post);
-  }
-
-  return slugs
-    .map((slug) => bySlug.get(slug))
-    .filter((p): p is BlogPostWithCategory => p !== undefined);
-}
-
 export default async function RelatedJournalPosts({
   slugs,
   heading = 'READ THE FIELD NOTES',
@@ -65,7 +28,7 @@ export default async function RelatedJournalPosts({
 }: RelatedJournalPostsProps) {
   if (!slugs || slugs.length === 0) return null;
 
-  const posts = (await getPostsBySlugs(slugs)).slice(0, 5);
+  const posts = (await getLivePostsBySlugs(slugs)).slice(0, 5);
   if (posts.length === 0) return null;
 
   const gridCols =

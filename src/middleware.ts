@@ -2,15 +2,18 @@
  * Locale routing middleware.
  *
  * URL structure:
- *   - English (default): /foo
- *   - Spanish:           /es/foo   — only for routes with fully-translated
- *                                    Spanish content (see TRANSLATED_PATHS
- *                                    in src/i18n/server.ts)
+ *   - English (default): /foo      → src/app/(en)/foo
+ *   - Spanish:           /es/foo   → src/app/(es)/es/foo — only for routes
+ *                                    with fully-translated Spanish content
+ *                                    (TRANSLATED_PATHS in src/i18n/routes.ts)
  *
- * Flow:
+ * Every URL is served by the route file at that same path; the middleware
+ * never rewrites and never passes the locale to rendering. Pages know their
+ * locale from their route group, so they render statically.
+ *
+ * Flow (rules in resolveLocaleRoute, src/i18n/routes.ts):
  *   1. /es/<translated path>
- *        → rewrite internally to /<path>
- *        → set x-locale=es header
+ *        → serve it
  *        → sync ops-lang cookie to 'es'
  *
  *   2. /es/<UNtranslated path>
@@ -27,15 +30,14 @@
  *          doesn't exist there.
  *
  *   5. Everything else
- *        → pass through with x-locale=en
+ *        → pass through (English)
  *
- * Server components read `x-locale` via headers() in getLocale(). Pages
- * that read getLocale() opt into dynamic rendering; translated Spanish
- * pages cache via ISR after first hit.
+ * Every response also carries first-touch attribution (attachFirstTouch).
  */
 
 import { NextRequest, NextResponse } from 'next/server';
 import { COOKIE_NAME, COOKIE_MAX_AGE } from '@/i18n/config';
+import { resolveLocaleRoute } from '@/i18n/routes';
 import {
   FIRST_TOUCH_COOKIE_NAME,
   FIRST_TOUCH_MAX_AGE_SECONDS,
@@ -43,25 +45,6 @@ import {
   resolveFirstTouch,
   serializeFirstTouchPayload,
 } from '@/lib/analytics/first-touch';
-
-// Mirror of TRANSLATED_PATHS in src/i18n/server.ts — kept here as a
-// constant rather than imported because middleware runs in the Edge
-// runtime and importing from server.ts could pull in headers()/cookies()
-// transitively, which middleware can't use.
-const TRANSLATED_PATHS = new Set<string>([
-  '/',
-  '/platform',
-  '/plans',
-  '/spec',
-  '/company',
-  '/resources',
-  '/tools',
-  '/shop',
-]);
-
-function isTranslated(pathname: string): boolean {
-  return TRANSLATED_PATHS.has(pathname);
-}
 
 function attachFirstTouch(
   request: NextRequest,
@@ -94,56 +77,26 @@ function attachFirstTouch(
 }
 
 export function middleware(request: NextRequest) {
-  const { pathname } = request.nextUrl;
+  const decision = resolveLocaleRoute(
+    request.nextUrl.pathname,
+    request.cookies.get(COOKIE_NAME)?.value,
+  );
 
-  // --- Spanish-prefixed URL ---
-  if (pathname === '/es' || pathname.startsWith('/es/')) {
-    const internalPath = pathname === '/es' ? '/' : pathname.slice(3);
-
-    // Untranslated route: /es/<path> doesn't really serve Spanish — redirect
-    // to the English URL rather than rendering English content under a /es URL.
-    if (!isTranslated(internalPath)) {
-      const url = request.nextUrl.clone();
-      url.pathname = internalPath;
-      return attachFirstTouch(request, NextResponse.redirect(url, 308));
-    }
-
-    // Translated route: rewrite internally with the locale header + cookie sync.
+  if (decision.kind === 'redirect') {
     const url = request.nextUrl.clone();
-    url.pathname = internalPath;
+    url.pathname = decision.pathname;
+    return attachFirstTouch(request, NextResponse.redirect(url, 308));
+  }
 
-    const requestHeaders = new Headers(request.headers);
-    requestHeaders.set('x-locale', 'es');
-    requestHeaders.set('x-pathname', pathname);
-
-    const response = NextResponse.rewrite(url, {
-      request: { headers: requestHeaders },
-    });
+  const response = NextResponse.next();
+  if (decision.kind === 'spanish') {
     response.cookies.set(COOKIE_NAME, 'es', {
       path: '/',
       maxAge: COOKIE_MAX_AGE,
       sameSite: 'lax',
     });
-    return attachFirstTouch(request, response);
   }
-
-  // --- Unprefixed URL with cookie=es ---
-  // Only redirect to /es when the route actually has a Spanish version.
-  const cookieLocale = request.cookies.get(COOKIE_NAME)?.value;
-  if (cookieLocale === 'es' && isTranslated(pathname)) {
-    const url = request.nextUrl.clone();
-    url.pathname = pathname === '/' ? '/es' : `/es${pathname}`;
-    return attachFirstTouch(request, NextResponse.redirect(url, 308));
-  }
-
-  // --- Default: English ---
-  const requestHeaders = new Headers(request.headers);
-  requestHeaders.set('x-locale', 'en');
-  requestHeaders.set('x-pathname', pathname);
-  return attachFirstTouch(
-    request,
-    NextResponse.next({ request: { headers: requestHeaders } }),
-  );
+  return attachFirstTouch(request, response);
 }
 
 export const config = {

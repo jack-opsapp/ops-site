@@ -1,0 +1,86 @@
+Route (app)                                                      Revalidate  Expire
+┌ ○ /                                                                    5m      1y
+├ ○ /_not-found                                                          5m      1y
+├ ƒ /api/bug-report
+├ ƒ /api/bug-report/screenshot
+├ ƒ /api/contact
+├ ƒ /api/cron/spec-nudges
+├ ƒ /api/early-access
+├ ƒ /api/indexnow
+├ ƒ /api/newsletter
+├ ƒ /api/revalidate/journal
+├ ƒ /api/shop/confirm-order
+├ ƒ /api/shop/create-payment-intent
+├ ƒ /api/shop/webhook
+├ ƒ /api/spec/board
+├ ƒ /api/spec/checkout-session
+├ ƒ /api/spec/conversion-event
+├ ƒ /api/spec/create-checkout-session
+├ ƒ /api/spec/intake/autosave
+├ ƒ /api/spec/intake/submit
+├ ƒ /api/spec/intake/upload
+├ ƒ /api/spec/owner-approval/[token]
+├ ƒ /api/tailored/checkout-session
+├ ƒ /api/tailored/create-checkout-session
+├ ○ /apple-icon.png
+├ ○ /company                                                             5m      1y
+├ ○ /compare                                                             5m      1y
+├ ● /compare/[slug]                                                      5m      1y
+│ ├ /compare/servicetitan                                                5m      1y
+│ ├ /compare/jobber                                                      5m      1y
+│ ├ /compare/housecall-pro                                               5m      1y
+│ └ [+5 more paths]
+├ ƒ /compare/[slug]/opengraph-image-1okiq5
+├ ○ /es                                                                  5m      1y
+├ ○ /es/company                                                          5m      1y
+├ ○ /es/plans                                                            5m      1y
+├ ○ /es/platform                                                         5m      1y
+├ ○ /es/resources                                                        5m      1y
+├ ○ /es/shop                                                             5m      1y
+├ ƒ /es/spec
+├ ○ /es/tools                                                            5m      1y
+├ ○ /icon.png
+├ ○ /industries                                                          5m      1y
+├ ● /industries/[slug]                                                   5m      1y
+│ ├ /industries/landscaping                                              5m      1y
+│ ├ /industries/auto-detailing                                           5m      1y
+│ ├ /industries/railings                                                 5m      1y
+│ └ [+46 more paths]
+├ ƒ /industries/[slug]/opengraph-image-1s72ac
+├ ○ /journal                                                             5m      1y
+├ ● /journal/[slug]                                                      5m      1y
+│ ├ /journal/claude-defense-contract-deadline-september-29-2026          5m      1y
+│ ├ /journal/subs-or-w-2s-know-the-new-rules                             5m      1y
+│ ├ /journal/tactical-redundancy-no-single-point-of-failure              5m      1y
+│ └ [+81 more paths]
+├ ƒ /legal
+├ ○ /plans                                                               5m      1y
+├ ○ /platform                                                            5m      1y
+├ ○ /platform/screens-dev                                                5m      1y
+├ ○ /resources                                                           5m      1y
+├ ○ /robots.txt
+├ ○ /shop                                                                5m      1y
+├ ƒ /shop/checkout
+├ ƒ /shop/confirmation
+├ ○ /sitemap.xml
+├ ƒ /spec
+├ ƒ /spec/awaiting-approval
+├ ƒ /spec/billing-address
+├ ƒ /spec/checkout/[buyer_checkout_token]
+├ ƒ /spec/confirmation
+├ ƒ /spec/intake/[token]
+├ ƒ /spec/owner-approval/[approval_token]
+├ ○ /spec/screens-dev                                                    5m      1y
+├ ○ /tools                                                               5m      1y
+├ ○ /tools/leadership                                                    5m      1y
+├ ○ /tools/leadership/assess                                             5m      1y
+├ ○ /tools/leadership/demo                                               5m      1y
+└ ƒ /tools/leadership/results/[token]
+
+
+ƒ Proxy (Middleware)
+
+○  (Static)   prerendered as static content
+●  (SSG)      prerendered as static HTML (uses generateStaticParams)
+ƒ  (Dynamic)  server-rendered on demand
+

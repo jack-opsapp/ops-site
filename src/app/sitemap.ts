@@ -1,8 +1,8 @@
 import type { MetadataRoute } from 'next';
-import { getAllLiveSlugs } from '@/lib/blog';
+import { getLiveSitemapPosts } from '@/lib/blog';
 import { getAllIndustrySlugs } from '@/lib/industries';
 import { getAllComparisonSlugs } from '@/lib/comparisons';
-import { hasSpanishContent } from '@/i18n/server';
+import { hasSpanishContent } from '@/i18n/routes';
 
 const BASE_URL = 'https://opsapp.co';
 
@@ -62,8 +62,11 @@ function buildLocaleEntries(
 }
 
 export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
-  // Reflect the build/revalidate time so crawlers see fresh lastmod values.
-  const lastUpdated = new Date();
+  // Pages without their own timestamp carry the deploy's build time
+  // (OPS_SITE_BUILD_TIME, set in next.config.ts), which stays put when the
+  // journal revalidation endpoint regenerates this sitemap after a post
+  // changes. Articles carry their own last change.
+  const lastUpdated = new Date(process.env.OPS_SITE_BUILD_TIME ?? Date.now());
 
   const staticPaths: Array<{
     path: string;
@@ -102,10 +105,10 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
     { url: `${BASE_URL}/legal`, lastModified: lastUpdated, changeFrequency: 'yearly', priority: 0.3 },
   ];
 
-  const blogSlugs = await getAllLiveSlugs();
-  const blogPages = blogSlugs.flatMap((item) =>
-    buildLocaleEntries(`/journal/${item.slug}`, {
-      lastModified: new Date(),
+  const blogPosts = await getLiveSitemapPosts();
+  const blogPages = blogPosts.flatMap((post) =>
+    buildLocaleEntries(`/journal/${post.slug}`, {
+      lastModified: new Date(post.updated_at || post.published_at || lastUpdated),
       changeFrequency: 'weekly',
       priority: 0.7,
     }),
