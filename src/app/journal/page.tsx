@@ -18,8 +18,8 @@ export async function generateMetadata(): Promise<Metadata> {
   return {
     title: locale === 'es' ? 'Journal — Blog de OPS' : 'Journal — OPS Blog',
     description: locale === 'es'
-      ? 'Conversación directa sobre cómo manejar un negocio de oficios. Costos de trabajo, manejo de equipos, vender tu empresa, y lecciones del campo. Escrito por contratistas, no consultores.'
-      : 'Straight talk on running a trades business. Job costing, crew management, selling your company, and lessons from the field. Written by contractors, not consultants.',
+      ? 'Conversación directa sobre cómo manejar un negocio de oficios. Costos de trabajo, manejo de equipos, vender tu empresa, y lecciones del campo. Escrito por profesionales del oficio, no consultores.'
+      : 'Straight talk on running a trades business. Job costing, crew management, selling your company, and lessons from the field. Written by tradesmen, not consultants.',
     openGraph: {
       url: buildLocaleUrl('/journal', locale),
     },
