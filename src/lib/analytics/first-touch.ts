@@ -1,3 +1,5 @@
+import { randomUUID } from '@/lib/random-uuid';
+
 export const FIRST_TOUCH_COOKIE_NAME = '__ops_first_touch';
 export const LEGACY_ATTRIBUTION_COOKIE_NAME = 'ops_attribution';
 export const FIRST_TOUCH_VERSION = 1 as const;
@@ -289,25 +291,31 @@ export function captureFirstTouchOnClient(): FirstTouchPayload | null {
   if (typeof window === 'undefined' || typeof document === 'undefined') {
     return null;
   }
-  const decision = resolveFirstTouch({
-    canonicalValue: browserCookieValue(FIRST_TOUCH_COOKIE_NAME),
-    legacyValue: browserCookieValue(LEGACY_ATTRIBUTION_COOKIE_NAME),
-    url: window.location.href,
-    referrer: document.referrer,
-    capturedAt: new Date().toISOString(),
-    anonymousId: crypto.randomUUID(),
-  });
-  if (!decision.shouldWrite || !decision.payload) return decision.payload;
+  // Runs inside a React effect on every page. A throw here unmounts the whole
+  // tree, so any failure (no random source, cookies blocked) skips capture.
+  try {
+    const decision = resolveFirstTouch({
+      canonicalValue: browserCookieValue(FIRST_TOUCH_COOKIE_NAME),
+      legacyValue: browserCookieValue(LEGACY_ATTRIBUTION_COOKIE_NAME),
+      url: window.location.href,
+      referrer: document.referrer,
+      capturedAt: new Date().toISOString(),
+      anonymousId: randomUUID(),
+    });
+    if (!decision.shouldWrite || !decision.payload) return decision.payload;
 
-  const isOpsProductionHost =
-    window.location.hostname === 'opsapp.co' ||
-    window.location.hostname.endsWith('.opsapp.co');
-  const domain = isOpsProductionHost ? '; Domain=.opsapp.co' : '';
-  const secure = window.location.protocol === 'https:' ? '; Secure' : '';
-  document.cookie =
-    `${FIRST_TOUCH_COOKIE_NAME}=${encodeFirstTouchPayload(decision.payload)}` +
-    `; Path=/; Max-Age=${FIRST_TOUCH_MAX_AGE_SECONDS}; SameSite=Lax` +
-    domain +
-    secure;
-  return decision.payload;
+    const isOpsProductionHost =
+      window.location.hostname === 'opsapp.co' ||
+      window.location.hostname.endsWith('.opsapp.co');
+    const domain = isOpsProductionHost ? '; Domain=.opsapp.co' : '';
+    const secure = window.location.protocol === 'https:' ? '; Secure' : '';
+    document.cookie =
+      `${FIRST_TOUCH_COOKIE_NAME}=${encodeFirstTouchPayload(decision.payload)}` +
+      `; Path=/; Max-Age=${FIRST_TOUCH_MAX_AGE_SECONDS}; SameSite=Lax` +
+      domain +
+      secure;
+    return decision.payload;
+  } catch {
+    return null;
+  }
 }
