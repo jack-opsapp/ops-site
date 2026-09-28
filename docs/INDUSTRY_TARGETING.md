@@ -29,7 +29,7 @@ Every competitor has these. OPS needs them for credibility, but wins by speaking
 | 5 | **Landscaping & Lawn Care** | `/industries/landscaping` | 11% of FSM users, few dedicated tools with good SEO | DONE |
 | 6 | **Pest Control** | `/industries/pest-control` | Growing industry, fragmented software landscape | DONE |
 | 7 | **Painting** | `/industries/painting` | Some basic tools exist, none dominant | DONE |
-| 8 | **General Contracting** | `/industries/general-contracting` | Broad catch-all, high search volume | DONE |
+| 8 | **General Contracting** | `/industries/general-contracting` | Broad catch-all, high search volume | RETIRED 2026-09-28: OPS sells to the subtrades, not the GCs who hire them. 301 → `/industries`. Do not rebuild. |
 | 9 | **Cleaning & Janitorial** | `/industries/cleaning` | "Digital sophistication non-existent" — massive opportunity | DONE |
 | 10 | **Property Maintenance** | `/industries/property-maintenance` | 10% of FSM users, recurring revenue model | DONE |
 
