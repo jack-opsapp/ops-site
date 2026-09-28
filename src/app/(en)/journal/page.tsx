@@ -16,7 +16,7 @@ import { setRequestLocale, buildLocaleAlternates, buildLocaleUrl } from '@/i18n/
 export async function generateMetadata(): Promise<Metadata> {
   return {
     title: 'Journal — OPS Blog',
-    description: 'Straight talk on running a trades business. Job costing, crew management, selling your company, and lessons from the field. Written by contractors, not consultants.',
+    description: 'Straight talk on running a trades business. Job costing, crew management, selling your company, and lessons from the field. Written by tradesmen, not consultants.',
     openGraph: {
       url: buildLocaleUrl('/journal', 'en'),
     },

@@ -18,7 +18,7 @@ import { setRequestLocale, buildLocaleAlternates, buildLocaleUrl } from '@/i18n/
 
 export async function generateMetadata(): Promise<Metadata> {
   return {
-    title: 'Leadership Assessment for Contractors',
+    title: 'Leadership Assessment for the Trades',
     description: 'Discover your leadership archetype. AI-powered assessment built for trades business owners and crew leads. Understand your strengths, blind spots, and growth path. Free — takes 10 minutes.',
     openGraph: {
       url: buildLocaleUrl('/tools/leadership', 'en'),

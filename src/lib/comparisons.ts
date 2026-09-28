@@ -151,7 +151,7 @@ export const comparisons: ComparisonData[] = [
               'Marketing Pro, Phones Pro, and Pricebook Pro add $500\u2013$2,000/month on top of your base subscription',
               'No free trial, no month-to-month option \u2014 must commit to a 12-month minimum before testing',
             ],
-            forLine: 'For: Small and mid-size contractors (2\u201320 techs) who can\u2019t justify $30K\u2013$100K/year for scheduling software',
+            forLine: 'For: Business owners running 2\u201320 techs who can\u2019t justify $30K\u2013$100K/year for scheduling software',
           },
           {
             title: '6 months before your team can use it',
@@ -161,7 +161,7 @@ export const comparisons: ComparisonData[] = [
               'One BBB complaint: paid for a full year without ever being onboarded',
               'Third-party implementation consultants charge thousands more just to help you get running',
             ],
-            forLine: 'For: Busy contractors who need software working this week, not this quarter',
+            forLine: 'For: Busy owner-operators who need software working this week, not this quarter',
           },
           {
             title: 'Built for the back office, not the job site',
@@ -192,7 +192,7 @@ export const comparisons: ComparisonData[] = [
           },
           {
             title: 'No contracts. No exit fees. No data hostage.',
-            copy: "ServiceTitan's BBB file documents early termination fees of $15,000, $23,000, $39,000, and $46,000. Contractors report needing lawyers to retrieve their own customer records after cancellation. OPS does not lock you in. No 12-month minimum. No auto-renewal traps. Your data is yours \u2014 always. A company confident in its product does not need a contract to keep you.",
+            copy: "ServiceTitan's BBB file documents early termination fees of $15,000, $23,000, $39,000, and $46,000. Business owners report needing lawyers to retrieve their own customer records after cancellation. OPS does not lock you in. No 12-month minimum. No auto-renewal traps. Your data is yours \u2014 always. A company confident in its product does not need a contract to keep you.",
             painPointRef: 0,
           },
         ],
@@ -218,14 +218,14 @@ export const comparisons: ComparisonData[] = [
           },
           {
             question: 'Can I cancel ServiceTitan? What are the early termination fees?',
-            answer: 'ServiceTitan requires a minimum 12-month contract with auto-renewal. To cancel, you must provide written notice 30\u201360 days before your renewal date \u2014 miss that window and you are locked in for another full year. Early termination fees have been documented as high as $39,375, with additional documented cases of $15,000, $23,842, and $46,170. After cancellation, you get 60 days of limited access to export data, and multiple contractors report needing legal assistance to retrieve their own business records. OPS has no long-term contracts. Cancel anytime. Your data is always yours.',
+            answer: 'ServiceTitan requires a minimum 12-month contract with auto-renewal. To cancel, you must provide written notice 30\u201360 days before your renewal date \u2014 miss that window and you are locked in for another full year. Early termination fees have been documented as high as $39,375, with additional documented cases of $15,000, $23,842, and $46,170. After cancellation, you get 60 days of limited access to export data, and multiple owners report needing legal assistance to retrieve their own business records. OPS has no long-term contracts. Cancel anytime. Your data is always yours.',
           },
           {
             question: 'How long does it take to set up ServiceTitan?',
             answer: "ServiceTitan's official implementation timeline is 12\u201316 weeks. User-reported timelines range from 2 to 12+ months. You pay monthly subscription fees during the entire implementation period. One BBB complaint documents a company that paid for a full year without ever being fully onboarded. Third-party implementation consultants charge additional thousands to help you actually get running. OPS requires no implementation \u2014 download the app, create your account, and start managing jobs the same day.",
           },
           {
-            question: 'What is the best ServiceTitan alternative for trade contractors?',
+            question: 'What is the best ServiceTitan alternative for the trades?',
             answer: "The best alternative depends on your team size and needs. For large operations wanting similar depth with more transparent pricing, Jobber or Housecall Pro are options. For small-to-mid-size crews of 2\u201320 people who need something their field workers will actually use, OPS is purpose-built: free to start with a 30-day trial, then $90\u2013$190/month flat. No contracts, no per-tech pricing. Mobile-first design with full offline capability, built-in turn-by-turn navigation to job sites, estimates and invoicing, pipeline/CRM, a client portal where customers approve estimates and pay invoices, and photo annotations for marking up job site images. The most common complaint about ServiceTitan is that teams pay enterprise prices for a tool their field workers are afraid to use. OPS solves this by making the field experience the product, not an afterthought.",
           },
         ],
@@ -306,7 +306,7 @@ export const comparisons: ComparisonData[] = [
               'Every user beyond your tier limit costs $29/month \u2014 a 12-person team runs $407/month minimum',
               'Add-ons pile up: Marketing Suite ($79/mo), AI Receptionist ($99/mo), plus payment processing fees on top of everything',
             ],
-            forLine: 'For: Growing contractors with 5\u201315 crew members who keep hitting upgrade walls',
+            forLine: 'For: Growing crews of 5\u201315 who keep hitting upgrade walls',
           },
           {
             title: 'Your crew can\u2019t use it in the field',
@@ -326,7 +326,7 @@ export const comparisons: ComparisonData[] = [
               'No double-booking prevention \u2014 schedule two crews for the same slot with zero warnings',
               'No blackout dates \u2014 create a fake job to block time and customers can still book right through it online',
             ],
-            forLine: 'For: Contractors who\u2019ve double-booked a crew or showed up at the wrong job because the calendar was behind',
+            forLine: 'For: Business owners who\u2019ve double-booked a crew or showed up at the wrong job because the calendar was behind',
           },
         ],
         solutions: [
@@ -365,11 +365,11 @@ export const comparisons: ComparisonData[] = [
         faq: [
           {
             question: 'Is there a free Jobber alternative?',
-            answer: "OPS is free to start with no credit card required. Unlike Jobber's 14-day trial that requires payment info, OPS lets you download and start using the app immediately. Jobber's cheapest plan is $39/month but it is missing GPS tracking, QuickBooks sync, two-way texting, and automated reminders \u2014 features most contractors need from day one. You will likely need the $199/month Grow plan for real field operations. OPS gives every user the full feature set from day one.",
+            answer: "OPS is free to start with no credit card required. Unlike Jobber's 14-day trial that requires payment info, OPS lets you download and start using the app immediately. Jobber's cheapest plan is $39/month but it is missing GPS tracking, QuickBooks sync, two-way texting, and automated reminders \u2014 features most business owners need from day one. You will likely need the $199/month Grow plan for real field operations. OPS gives every user the full feature set from day one.",
           },
           {
             question: 'Why is Jobber so expensive for my team size?',
-            answer: "Jobber charges $29/month per additional user beyond your tier limit. A 10-person crew on Grow Teams pays $349/month. Add two more workers and it jumps to $407/month. Stack on marketing tools ($79/month) and you are approaching $500/month before transaction fees. Per-user pricing is the primary reason contractors switch away from Jobber. OPS does not penalize you for growing your team \u2014 the trades have thin margins, and your software should not eat them.",
+            answer: "Jobber charges $29/month per additional user beyond your tier limit. A 10-person crew on Grow Teams pays $349/month. Add two more workers and it jumps to $407/month. Stack on marketing tools ($79/month) and you are approaching $500/month before transaction fees. Per-user pricing is the primary reason business owners switch away from Jobber. OPS does not penalize you for growing your team \u2014 the trades have thin margins, and your software should not eat them.",
           },
           {
             question: 'Does Jobber work offline?',
@@ -381,7 +381,7 @@ export const comparisons: ComparisonData[] = [
           },
           {
             question: 'Can I switch from Jobber to OPS?',
-            answer: "Yes. OPS is designed for contractors migrating from other platforms. Import your clients, set up your crew, and start scheduling. One reviewer who switched away from Jobber after 5 years said their only complaint about switching was that they didn\u2019t do it sooner. The transition is straightforward because OPS was built to be intuitive from the first job you schedule \u2014 no training period, no onboarding calls.",
+            answer: "Yes. OPS is designed for business owners migrating from other platforms. Import your clients, set up your crew, and start scheduling. One reviewer who switched away from Jobber after 5 years said their only complaint about switching was that they didn\u2019t do it sooner. The transition is straightforward because OPS was built to be intuitive from the first job you schedule \u2014 no training period, no onboarding calls.",
           },
         ],
         cta: {
@@ -411,7 +411,7 @@ export const comparisons: ComparisonData[] = [
     content: {
       en: {
         meta: {
-          title: 'Housecall Pro Alternative for Contractors | OPS',
+          title: 'Housecall Pro Alternative for Trade Crews | OPS',
           description: 'AI chatbots instead of support. $59/mo that becomes $300+. An app that crashes in the field. OPS is the alternative your crew has been waiting for.',
           keywords: [
             'housecall pro alternative',
@@ -432,7 +432,7 @@ export const comparisons: ComparisonData[] = [
           subtext: "Housecall Pro gutted its support in 2025. The phone number is buried. The chatbot can\u2019t fix your payment processing at 2pm on a Tuesday. Your crew\u2019s app crashes in the field and no one picks up. There\u2019s a better way.",
         },
         verdict: {
-          summary: 'OPS is a free-to-start, mobile-first field service app with human support for every user, full offline capability, and transparent pricing with no add-on maze. Unlike Housecall Pro, OPS does not gate support behind plan tiers, does not require a phone call to cancel, and does not charge extra for features most contractors consider essential.',
+          summary: 'OPS is a free-to-start, mobile-first field service app with human support for every user, full offline capability, and transparent pricing with no add-on maze. Unlike Housecall Pro, OPS does not gate support behind plan tiers, does not require a phone call to cancel, and does not charge extra for features most business owners consider essential.',
           switchReasons: [
             'Human support for every user vs. AI chatbot gatekeeping with buried phone number',
             'Full offline mode vs. view-only cached jobs',
@@ -461,7 +461,7 @@ export const comparisons: ComparisonData[] = [
               'A Denver electrician lost a $2,100 job waiting 3 hours for a payment processing callback',
               'One user spent 8 hours across multiple chats and calls trying to cancel \u2014 eventually reported their card as stolen to escape',
             ],
-            forLine: 'For: Contractors whose revenue depends on their software working during business hours',
+            forLine: 'For: Owner-operators whose revenue depends on their software working during business hours',
           },
           {
             title: 'The $59/month plan that actually costs $300+',
@@ -471,7 +471,7 @@ export const comparisons: ComparisonData[] = [
               'Payment processing fees run 2.59%\u20134.49% per transaction \u2014 Instapay adds another 1% on top',
               'Jump from Basic ($79/mo) to Essentials ($189/mo) costs $1,320/year more just to add a second user',
             ],
-            forLine: 'For: Contractors who signed up for $59/month and are now paying $200\u2013$400+ with add-ons and forced upgrades',
+            forLine: 'For: Business owners who signed up for $59/month and are now paying $200\u2013$400+ with add-ons and forced upgrades',
           },
           {
             title: 'Your crew\u2019s app crashes in front of customers',
@@ -520,7 +520,7 @@ export const comparisons: ComparisonData[] = [
         faq: [
           {
             question: 'Is Housecall Pro\u2019s customer support really that bad?',
-            answer: "Starting in early 2025, Housecall Pro shifted to an AI-first support model. The phone number (1-877-944-9010) exists but is intentionally buried \u2014 not on the homepage, not in the app help section, not in most help articles. You go through an AI chatbot screening before you can request a human. Response times for callback can stretch to 2\u20134 hours. On lower-tier plans, support quality is explicitly degraded \u2014 reliable human support effectively requires the Essentials plan or higher. One contractor lost a $2,100 job waiting 3 hours for a payment processing fix. OPS gives every user the same support \u2014 no chatbot gatekeeping, no tiered access.",
+            answer: "Starting in early 2025, Housecall Pro shifted to an AI-first support model. The phone number (1-877-944-9010) exists but is intentionally buried \u2014 not on the homepage, not in the app help section, not in most help articles. You go through an AI chatbot screening before you can request a human. Response times for callback can stretch to 2\u20134 hours. On lower-tier plans, support quality is explicitly degraded \u2014 reliable human support effectively requires the Essentials plan or higher. One business owner lost a $2,100 job waiting 3 hours for a payment processing fix. OPS gives every user the same support \u2014 no chatbot gatekeeping, no tiered access.",
           },
           {
             question: 'How much does Housecall Pro actually cost?',
@@ -535,8 +535,8 @@ export const comparisons: ComparisonData[] = [
             answer: "You cannot cancel Housecall Pro online or through the app. You must contact support through the Blue Bubble chat widget, then wait 1\u20133 business days for the billing team to call you. The company explicitly states they \u201Ccannot fully process your cancellation until a team member has spoken with the account owner over the phone.\u201D Multiple BBB complaints describe agents who fought to prevent cancellation. Continued billing after cancellation has been reported repeatedly. One user spent 8 hours trying to cancel and eventually reported their debit card as stolen to stop charges. OPS has no contracts and no cancellation process \u2014 stop paying and you\u2019re done.",
           },
           {
-            question: 'Why are contractors leaving Housecall Pro in 2025 and 2026?',
-            answer: "Three converging issues drove the exodus. First, customer support was gutted \u2014 AI chatbot-only for most users starting early 2025, with human help gated behind higher-tier plans. Second, costs keep climbing \u2014 add-ons, processing fees, and forced tier upgrades mean the real price is 3\u20135x the advertised rate. Third, reliability degraded \u2014 features break without warning, the Android app is rated 3.3/5 on Google Play, and offline capability is effectively nonexistent. Contractors whose businesses depend on this software discovered they can\u2019t reach anyone when things go wrong.",
+            question: 'Why are business owners leaving Housecall Pro in 2025 and 2026?',
+            answer: "Three converging issues drove the exodus. First, customer support was gutted \u2014 AI chatbot-only for most users starting early 2025, with human help gated behind higher-tier plans. Second, costs keep climbing \u2014 add-ons, processing fees, and forced tier upgrades mean the real price is 3\u20135x the advertised rate. Third, reliability degraded \u2014 features break without warning, the Android app is rated 3.3/5 on Google Play, and offline capability is effectively nonexistent. Owners whose businesses depend on this software discovered they can\u2019t reach anyone when things go wrong.",
           },
         ],
         cta: {
@@ -587,7 +587,7 @@ export const comparisons: ComparisonData[] = [
           subtext: "You got the BuildOps quote and your stomach dropped. $36,000/year for a 10-person crew. No free trial. Commercial only. Eight weeks before anyone touches it. There\u2019s field service software that doesn\u2019t require a second mortgage.",
         },
         verdict: {
-          summary: 'OPS is a free-to-start field service app that works for commercial and residential contractors of any size. Unlike BuildOps, it requires no sales call, no implementation period, and no annual contract. Your crew downloads the app and manages jobs the same day \u2014 at a fraction of the cost.',
+          summary: 'OPS is a free-to-start field service app that works for commercial and residential crews of any size. Unlike BuildOps, it requires no sales call, no implementation period, and no annual contract. Your crew downloads the app and manages jobs the same day \u2014 at a fraction of the cost.',
           switchReasons: [
             'Free 30-day trial, then $90\u2013$190/month flat vs. ~$299/user/month billed annually',
             'Set up in minutes vs. 8-week target (reported up to 12+ months)',
@@ -603,7 +603,7 @@ export const comparisons: ComparisonData[] = [
             'Service agreement and submittal management for enterprise operations',
           ],
           bestFor: {
-            ops: 'Small-to-mid-size contractors (2\u201330 people) doing commercial, residential, or mixed work who need an affordable, intuitive field app they can start using today.',
+            ops: 'Small-to-mid-size crews (2\u201330 people) doing commercial, residential, or mixed work who need an affordable, intuitive field app they can start using today.',
             competitor: 'Large commercial-only operations with 50+ employees, dedicated office staff, and the budget and bandwidth for months of implementation and $97K+/year in software costs.',
           },
         },
@@ -616,7 +616,7 @@ export const comparisons: ComparisonData[] = [
               'Implementation fees add $1,000\u2013$5,000 for small businesses, tens of thousands for enterprise',
               'No free trial, no free plan \u2014 46% of FSM competitors offer free trials, BuildOps does not',
             ],
-            forLine: 'For: Small and mid-size commercial contractors who got a BuildOps quote and can\u2019t justify $36K\u2013$72K/year',
+            forLine: 'For: Small and mid-size commercial subtrades who got a BuildOps quote and can\u2019t justify $36K\u2013$72K/year',
           },
           {
             title: 'Implementation that takes months',
@@ -626,7 +626,7 @@ export const comparisons: ComparisonData[] = [
               'Requires weeks or months of training sessions before your crew can use it productively',
               'QuickBooks sync exports items multiple times, creating duplicate records in your accounting',
             ],
-            forLine: 'For: Contractors who need software working this week, not after 8 weeks of training',
+            forLine: 'For: Owner-operators who need software working this week, not after 8 weeks of training',
           },
           {
             title: 'Built for enterprise. You are not enterprise.',
@@ -636,7 +636,7 @@ export const comparisons: ComparisonData[] = [
               'Average BuildOps customer pays ~$97,000 per year \u2014 that is not small-business money',
               'Features like submittal management and engineer-stamp tracking are pure overhead for a crew of 8',
             ],
-            forLine: 'For: Small commercial contractors and mixed residential/commercial crews told BuildOps was \u201Cthe answer\u201D',
+            forLine: 'For: Small commercial subtrades and mixed residential/commercial crews told BuildOps was \u201Cthe answer\u201D',
           },
         ],
         solutions: [
@@ -674,8 +674,8 @@ export const comparisons: ComparisonData[] = [
         },
         faq: [
           {
-            question: 'Is BuildOps worth it for a small contractor?',
-            answer: "BuildOps is designed for medium-to-large commercial contractors with dedicated office staff and complex multi-phase projects. Their average customer pays approximately $97,000 per year. At ~$299/user/month, a 10-person crew would spend $35,880/year before implementation fees. For small contractors under 20 employees, the enterprise features are overhead \u2014 you\u2019re paying for submittal management, service agreement automation, and multi-phase project tracking when you need scheduling, dispatching, and job tracking. OPS is free to start and built specifically for field crews of any size.",
+            question: 'Is BuildOps worth it for a small crew?',
+            answer: "BuildOps is designed for medium-to-large commercial contractors with dedicated office staff and complex multi-phase projects. Their average customer pays approximately $97,000 per year. At ~$299/user/month, a 10-person crew would spend $35,880/year before implementation fees. For small crews under 20 employees, the enterprise features are overhead \u2014 you\u2019re paying for submittal management, service agreement automation, and multi-phase project tracking when you need scheduling, dispatching, and job tracking. OPS is free to start and built specifically for field crews of any size.",
           },
           {
             question: 'Does BuildOps have a free trial?',
@@ -687,7 +687,7 @@ export const comparisons: ComparisonData[] = [
           },
           {
             question: 'Can I use BuildOps for residential work?',
-            answer: "No. BuildOps is built exclusively for commercial contractors and does not support residential service workflows. Their own materials direct residential contractors to look elsewhere. If your company handles any residential jobs \u2014 or does both commercial and residential work \u2014 you will need a separate system for that portion of your business. OPS supports commercial, residential, new construction, and service calls in a single platform with no restrictions on job type.",
+            answer: "No. BuildOps is built exclusively for commercial contractors and does not support residential service workflows. Their own materials direct residential crews to look elsewhere. If your company handles any residential jobs \u2014 or does both commercial and residential work \u2014 you will need a separate system for that portion of your business. OPS supports commercial, residential, new construction, and service calls in a single platform with no restrictions on job type.",
           },
           {
             question: 'What does BuildOps actually cost?',
@@ -771,7 +771,7 @@ export const comparisons: ComparisonData[] = [
               'One reviewer: "Marketing makes the software seem top-tier but doesn\u2019t disclose you need add-ons for basic functionality like calling, texting, and emailing. I spent over $1,000 in add-ons."',
               'All customers since November 2023 are locked into annual contracts with 60-day cancellation notice. Multiple users report unexpected price increases after the first year.',
             ],
-            forLine: 'For contractors tired of being surprised by their software bill every month.',
+            forLine: 'For business owners tired of being surprised by their software bill every month.',
           },
           {
             title: 'OFFLINE MODE THAT\nDOESN\u2019T ACTUALLY WORK OFFLINE.',
@@ -791,7 +791,7 @@ export const comparisons: ComparisonData[] = [
               'Moving between estimates, jobs, and invoices "still feels a bit disjointed, with information between these categories needing engineering work to avoid constantly copying and pasting."',
               'After experiencing integration failures, one user tried to cancel: "They tried to deny my request for a refund of engage when I was canceling."',
             ],
-            forLine: 'For contractors who need their field software and accounting software to actually talk to each other.',
+            forLine: 'For owners who need their field software and accounting software to actually talk to each other.',
           },
         ],
         solutions: [
@@ -837,7 +837,7 @@ export const comparisons: ComparisonData[] = [
             answer: "FieldPulse advertises offline mode, but user reviews consistently report it fails in low-connectivity environments. Technicians working in basements, rural areas, and inside commercial buildings report being unable to access the system at all without cell service. One reviewer stated: \u201CIt is supposed to be offline compatible. But it is not. If I have no service I am not getting into the system at all.\u201D OPS was built offline-first \u2014 full editing, photo capture, and job updates work without any signal.",
           },
           {
-            question: 'Is FieldPulse good for small contractors?',
+            question: 'Is FieldPulse good for small crews?',
             answer: "FieldPulse targets small to mid-size service businesses (2\u201315 technicians) and its feature set is comprehensive. However, the hidden pricing, annual contract requirements, and add-on cost structure make it expensive for small teams. A 5-person crew with vehicles could pay $600\u2013$800+/month. If you need a mobile-first platform with transparent pricing and no sales call required, OPS is free to start at $90\u2013$190/month after the trial.",
           },
           {
@@ -937,7 +937,7 @@ export const comparisons: ComparisonData[] = [
               'Contract lock-in: 3\u20135 year terms with 8% per annum automatic increases. The alternative? A threat of 12% annual increases.',
               'Users report Simpro does not assist with data migration despite charging for onboarding. Subscription costs double over time.',
             ],
-            forLine: 'For contractors who cannot afford 60 days of downtime and thousands in onboarding fees before the software even works.',
+            forLine: 'For business owners who cannot afford 60 days of downtime and thousands in onboarding fees before the software even works.',
           },
           {
             title: 'YOUR CREW WILL\nNEVER LEARN THIS SOFTWARE.',
@@ -985,8 +985,8 @@ export const comparisons: ComparisonData[] = [
         },
         faq: [
           {
-            question: 'Is Simpro worth it for a small contractor?',
-            answer: "Simpro is designed as comprehensive business management software covering quoting, scheduling, job costing, inventory, invoicing, and asset management. That depth is valuable for mid-sized operations with dedicated admin staff. But for small contractors under 15 employees, the 60-day implementation, mandatory onboarding fees of several thousand dollars, and 3\u20135 year contract lock-ins with 8% annual increases make it a risky investment. Users report that \u201Clearning the software was hard for a lot of our employees\u201D and that training is an \u201Congoing challenge.\u201D OPS is $90\u2013$190/month flat with a 30-day free trial and no contracts.",
+            question: 'Is Simpro worth it for a small crew?',
+            answer: "Simpro is designed as comprehensive business management software covering quoting, scheduling, job costing, inventory, invoicing, and asset management. That depth is valuable for mid-sized operations with dedicated admin staff. But for small crews under 15 employees, the 60-day implementation, mandatory onboarding fees of several thousand dollars, and 3\u20135 year contract lock-ins with 8% annual increases make it a risky investment. Users report that \u201Clearning the software was hard for a lot of our employees\u201D and that training is an \u201Congoing challenge.\u201D OPS is $90\u2013$190/month flat with a 30-day free trial and no contracts.",
           },
           {
             question: 'Does Simpro have a free trial?',
@@ -1082,7 +1082,7 @@ export const comparisons: ComparisonData[] = [
               '"There are so many steps for even the simplest of tasks, and it should not take 10\u201320 minutes to create one work order."',
               'When updates ship, they introduce new bugs: "The volume of issues has intensified due to all the so-called new updates."',
             ],
-            forLine: 'For HVAC, plumbing, and electrical contractors whose office staff wastes hours fighting a legacy interface.',
+            forLine: 'For HVAC, plumbing, and electrical business owners whose office staff wastes hours fighting a legacy interface.',
           },
           {
             title: '$125 PER TECH PER MONTH\nFOR SOFTWARE THAT CRASHES.',
@@ -1092,7 +1092,7 @@ export const comparisons: ComparisonData[] = [
               'Payment processing is locked to Clearent (same parent company, Xplor). Users report being promised 2.7% but charged 3.4%. On $500K in annual card transactions, that\u2019s a $3,500 difference.',
               'No free trial. No way to test before committing. "Everything is an additional charge and the training you pay for is not the greatest."',
             ],
-            forLine: 'For contractors paying $10,000\u2013$30,000/year and wondering why their $125/month mobile app has 1.8 stars.',
+            forLine: 'For owners paying $10,000\u2013$30,000/year and wondering why their $125/month mobile app has 1.8 stars.',
           },
           {
             title: 'YOUR TECHS\nHATE USING IT.',
@@ -1102,7 +1102,7 @@ export const comparisons: ComparisonData[] = [
               '"Employees using the app have said they will quit if it\u2019s not gone soon." This is not a software complaint \u2014 it is a retention crisis.',
               'FieldEdge has released multiple separate app versions (FE 2.0 Beta, FieldEdge 3) rather than fixing the core product.',
             ],
-            forLine: 'For contractors whose techs are losing quotes, crashing mid-job, and threatening to walk.',
+            forLine: 'For owner-operators whose techs are losing quotes, crashing mid-job, and threatening to walk.',
           },
         ],
         solutions: [
@@ -1140,8 +1140,8 @@ export const comparisons: ComparisonData[] = [
         },
         faq: [
           {
-            question: 'Is FieldEdge worth it for a small contractor?',
-            answer: "FieldEdge charges $100\u2013$125/user/month plus $500\u2013$2,000 in setup fees and requires 5 weeks of mandatory onboarding. A 10-person crew pays approximately $14,100/year before add-ons. The mobile app has 1.8 stars on the App Store and 2.0 on Google Play. For small contractors who need software that works on day one, OPS is free to start with a 30-day trial, published pricing at $90\u2013$190/month flat, and a mobile-first design that does not require weeks of training.",
+            question: 'Is FieldEdge worth it for a small crew?',
+            answer: "FieldEdge charges $100\u2013$125/user/month plus $500\u2013$2,000 in setup fees and requires 5 weeks of mandatory onboarding. A 10-person crew pays approximately $14,100/year before add-ons. The mobile app has 1.8 stars on the App Store and 2.0 on Google Play. For small crews who need software that works on day one, OPS is free to start with a 30-day trial, published pricing at $90\u2013$190/month flat, and a mobile-first design that does not require weeks of training.",
           },
           {
             question: 'Does FieldEdge have a free trial?',
@@ -1237,7 +1237,7 @@ export const comparisons: ComparisonData[] = [
               'The estimate platform is "pretty basic" because no single estimating workflow can serve roofers, electricians, and ISP technicians equally.',
               'Custom reporting must be requested through the Zuper team \u2014 because generic report templates do not fit any specific trade\u2019s KPIs.',
             ],
-            forLine: 'For trade contractors who tried the "all-in-one for everyone" pitch and realized it means built for no one.',
+            forLine: 'For tradesmen who tried the "all-in-one for everyone" pitch and realized it means built for no one.',
           },
           {
             title: 'THE MOBILE APP\nYOUR CREW WILL HATE.',
@@ -1257,13 +1257,13 @@ export const comparisons: ComparisonData[] = [
               'Support only responds during non-US hours: "I can never get in touch with their support team during normal US based business hours. They only reply overnight."',
               'One user reported working with Zuper for almost a year with unresolved issues \u2014 "a huge waste of time and money."',
             ],
-            forLine: 'For contractors who cannot afford 12 weeks of setup and cannot wait until India wakes up for support.',
+            forLine: 'For business owners who cannot afford 12 weeks of setup and cannot wait until India wakes up for support.',
           },
         ],
         solutions: [
           {
             title: 'Built for your trade, not every trade.',
-            copy: "Zuper markets to HVAC, plumbing, electrical, roofing, solar, pool, landscaping, cleaning, manufacturing, ISPs, and more \u2014 all with the same generic platform. A roofer, a pool tech, and an HVAC installer all get the same screens. OPS is built for trade contractors. Every workflow, every interaction is designed for crews who work with their hands. Built-in turn-by-turn navigation to job sites. Estimates and invoicing designed for how trades actually quote work. A pipeline/CRM that tracks leads through to closed jobs. No 12-week configuration project to make generic software fit your trade.",
+            copy: "Zuper markets to HVAC, plumbing, electrical, roofing, solar, pool, landscaping, cleaning, manufacturing, ISPs, and more \u2014 all with the same generic platform. A roofer, a pool tech, and an HVAC installer all get the same screens. OPS is built for the trades. Every workflow, every interaction is designed for crews who work with their hands. Built-in turn-by-turn navigation to job sites. Estimates and invoicing designed for how trades actually quote work. A pipeline/CRM that tracks leads through to closed jobs. No 12-week configuration project to make generic software fit your trade.",
             painPointRef: 0,
           },
           {
@@ -1295,7 +1295,7 @@ export const comparisons: ComparisonData[] = [
         },
         faq: [
           {
-            question: 'Is Zuper good for small contractors?',
+            question: 'Is Zuper good for small crews?',
             answer: "Zuper is designed for mid-market and enterprise field service organizations. While they accept smaller customers, the 12-week implementation timeline, hidden pricing, and steep learning curve make it a poor fit for small crews that need software working this week. The platform requires extensive customization to fit any specific trade, and custom reporting must be requested through the Zuper team. OPS is $90\u2013$190/month flat with a 30-day free trial and works out of the box for trade crews of any size.",
           },
           {
@@ -1312,7 +1312,7 @@ export const comparisons: ComparisonData[] = [
           },
           {
             question: 'Is Zuper built for my specific trade?',
-            answer: "No. Zuper is a generic, horizontal FSM platform that markets to every industry \u2014 HVAC, plumbing, electrical, roofing, solar, pool, landscaping, cleaning, manufacturing, ISPs, and more. No trade gets purpose-built workflows. You get the same screens whether you are a roofer or an ISP technician. The 12-week implementation exists because the platform must be heavily customized to fit any specific workflow. OPS is built for trade contractors with workflows designed for how crews actually work in the field.",
+            answer: "No. Zuper is a generic, horizontal FSM platform that markets to every industry \u2014 HVAC, plumbing, electrical, roofing, solar, pool, landscaping, cleaning, manufacturing, ISPs, and more. No trade gets purpose-built workflows. You get the same screens whether you are a roofer or an ISP technician. The 12-week implementation exists because the platform must be heavily customized to fit any specific workflow. OPS is built for the trades, with workflows designed for how crews actually work in the field.",
           },
         ],
         cta: {
