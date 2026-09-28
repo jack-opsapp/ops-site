@@ -14,7 +14,7 @@
 
 **Facts the implementer must not rediscover:**
 - Implicit cache tags use the unnormalized route, so a typed `revalidatePath` pattern must include the group: `revalidatePath('/(en)/journal/[slug]', 'page')`. Concrete paths (`'/journal'`, `'/es'`) are group-agnostic. (Source: `node_modules/next/dist/server/lib/implicit-tags.js`.)
-- `experimental.globalNotFound` is still experimental in 16.1.6 → unmatched URLs go through `(en)/[...missing]/page.tsx` → `notFound()`.
+- `experimental.globalNotFound` is still experimental in 16.1.6. A catch-all `(en)/[...missing]` → `notFound()` renders Next's client-side error shell, so unmatched URLs use `src/app/global-not-found.tsx` with the flag on (changed during execution; see the spec § 404s).
 - Next merges metadata shallowly per top-level key; a page's `openGraph` replaces the layout's.
 - Builds: ONE local production build after implementation (Supabase keys exported from `ops-web/.env.local`, never printed); rebuild only if a defect is found. Vercel Preview env has no Supabase keys.
 
@@ -86,7 +86,8 @@ Tests pin the exact title/description strings for both locales and the `routeMet
 
 Create:
 - `src/app/(en)/layout.tsx` — `export const revalidate = 300; export const metadata = siteMetadata('en');` default renders `setRequestLocale('en')` then `<SiteDocument locale="en">`.
-- `src/app/(en)/[...missing]/page.tsx` — `setRequestLocale('en'); notFound();`.
+- `src/app/global-not-found.tsx` — `setRequestLocale('en')`, renders `<SiteDocument locale="en"><NotFoundContent /></SiteDocument>`; `experimental.globalNotFound: true` in `next.config.ts`.
+- `src/lib/seo/legacy-metadata-rewrites.ts` + `next.config.ts` `rewrites()` — old `/industries|compare/<slug>/opengraph-image` URLs → the suffixed routes (added during execution after the parity diff).
 - `src/app/(es)/es/layout.tsx` — same with `'es'`.
 - `src/app/(es)/es/not-found.tsx`, `error.tsx` — render the same content as the English ones via shared `src/components/shared/NotFoundContent.tsx` and `ErrorContent.tsx` (the English files switch to those too).
 

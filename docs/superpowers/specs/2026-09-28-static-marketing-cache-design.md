@@ -43,12 +43,12 @@ B removes the whole request-header channel instead of re-plumbing it.
 src/app/
   (en)/layout.tsx            root layout, lang="en", revalidate 300
   (en)/not-found.tsx, error.tsx
-  (en)/[...missing]/page.tsx unmatched URLs → notFound() inside the English shell
   (en)/<every existing route, same URL>
   (es)/es/layout.tsx         root layout, lang="es", revalidate 300
   (es)/es/not-found.tsx, error.tsx
   (es)/es/{page,platform,plans,spec,company,resources,tools,shop}
   _pages/<route>.tsx         shared page body + metadata for the eight translated routes
+  global-not-found.tsx       full English 404 for unmatched URLs (experimental.globalNotFound)
   api/**, sitemap.ts, robots.ts, favicon.ico, icon.png, apple-icon.png, globals.css (unchanged)
 ```
 
@@ -66,7 +66,14 @@ Next merges metadata shallowly per key. Today the root layout derives `openGraph
 - Root layout metadata keeps every site-level field (`metadataBase`, title default/template, description, `openGraph` type/locale/siteName/images, `twitter`, `icons`) and drops only the path-derived `openGraph.url` and `alternates`.
 - Pages that already set `openGraph` and `alternates` are unchanged.
 - Pages that relied on inheriting them (checkout, confirmation, SPEC flow and token pages, leadership assess/demo/results, screens-dev pages) declare them explicitly through `routeMetadata(path, locale)`, which returns exactly what the layout produced for that path: `openGraph = site Open Graph + url`, `alternates = buildLocaleAlternates(path, locale)`.
-- 404 responses: today the layout stamps a canonical and `og:url` pointing at the missing URL. A static 404 cannot know that URL, so 404s lose that self-canonical. A canonical on a 404 has no indexing effect; this is the only intended metadata difference.
+- 404 responses: today the layout stamps a canonical and `og:url` pointing at the missing URL. A static 404 cannot know that URL, so 404s lose that self-canonical. A canonical on a 404 has no indexing effect.
+- Open Graph images: file-based metadata images under a route group get a hash suffix (`/industries/<slug>/opengraph-image-1s72ac`, compare `-1okiq5`), so `og:image` on the 57 industry and compare pages changes address; the image bytes are identical. Rewrites (`src/lib/seo/legacy-metadata-rewrites.ts`) keep the old addresses serving for cached link previews, and a test derives the suffixes from Next's normalizer.
+
+These two are the only intended metadata differences.
+
+## 404s
+
+Unmatched URLs render `src/app/global-not-found.tsx` (the English site shell, prerendered once; `experimental.globalNotFound`, still experimental in Next 16.1). A catch-all route calling `notFound()` was tried first: Next answers it with its client-rendered error shell (`<html id="__next_error__">`), so crawlers and no-JS visitors would lose the full 404 page they get today. `notFound()` inside a page still renders its group's `not-found.tsx`, as it does in production today.
 
 ## Freshness
 
@@ -92,7 +99,7 @@ Configuration: one new secret, same value in ops-site (Production + Preview) and
 ## Verification
 
 1. `next build` route table: journal index and articles, industries, compare, platform, plans, company, resources, tools, leadership, shop, home and all eight `/es` routes are `○`/`●` with a 5-minute revalidate; only the request-bound routes above remain `ƒ`.
-2. SEO parity harness (`scripts/seo-parity/`): extracts status, `lang`, title, description, robots, canonical, hreflang, OG, Twitter and parsed JSON-LD for every sitemap URL plus the non-sitemap routes and 404s; before = production, after = local production build on the same database; diff must be empty except the documented 404 self-canonical.
+2. SEO parity harness (one-off, session scratchpad; results in `docs/artifacts/2026-09-28-static-marketing-cache/`): extracts status, `lang`, title, description, robots, canonical, hreflang, OG, Twitter and parsed JSON-LD for every sitemap URL plus the non-sitemap routes and 404s; before = production, after = local production build on the same database; diff must be empty except the two documented differences.
 3. Middleware behaviour matrix (redirects, cookie writes) before vs after.
 4. Response headers: local `next start` (`x-nextjs-cache` HIT/STALE, `s-maxage`) and a Vercel preview deployment (`x-vercel-cache` HIT on repeat, public cache-control).
 5. Revalidation endpoint: 500/401/400/200 paths; after a 200, a journal page re-renders.
