@@ -2,7 +2,7 @@ import type { MetadataRoute } from 'next';
 import { getAllLiveSlugs } from '@/lib/blog';
 import { getAllIndustrySlugs } from '@/lib/industries';
 import { getAllComparisonSlugs } from '@/lib/comparisons';
-import { hasSpanishContent } from '@/i18n/server';
+import { hasSpanishContent } from '@/i18n/routes';
 
 const BASE_URL = 'https://opsapp.co';
 
