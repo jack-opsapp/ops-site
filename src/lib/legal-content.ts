@@ -22,7 +22,7 @@ export interface LegalDocument {
 export const legalDocuments: Record<string, LegalDocument> = {
   terms: {
     title: 'Terms of Service',
-    lastUpdated: '2026-02-18',
+    lastUpdated: '2026-09-28',
     effectiveDate: '2025-01-17',
     version: 'v1.0',
     sections: [
@@ -36,7 +36,7 @@ export const legalDocuments: Record<string, LegalDocument> = {
         id: 'the-service',
         title: '2. The Service',
         content:
-          'OPS is job management software for specialized trade businesses — including but not limited to window cleaning, landscaping, electrical contractors, plumbing, mobile detailing, and cleaning services. The Service includes:\n\n- iOS and Android apps — Field-optimized job scheduling, task tracking, crew assignment, GPS navigation to job sites, and offline-first photo documentation\n- Web application — Dashboard, pipeline/CRM, estimates, invoices, client portal, project management\n- Client Portal — A branded, client-facing portal for estimate approval, invoice payment, and project visibility\n\nThe Service is intended for use by businesses and their employees, not individual consumers.',
+          'OPS is job management software for specialized trade businesses — including but not limited to window cleaning, landscaping, electrical, plumbing, mobile detailing, and cleaning services. The Service includes:\n\n- iOS and Android apps — Field-optimized job scheduling, task tracking, crew assignment, GPS navigation to job sites, and offline-first photo documentation\n- Web application — Dashboard, pipeline/CRM, estimates, invoices, client portal, project management\n- Client Portal — A branded, client-facing portal for estimate approval, invoice payment, and project visibility\n\nThe Service is intended for use by businesses and their employees, not individual consumers.',
       },
       {
         id: 'accounts-and-users',
