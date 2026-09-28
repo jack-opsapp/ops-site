@@ -1,6 +1,6 @@
 Route (app)                                                      Revalidate  Expire
 ┌ ○ /                                                                    5m      1y
-├ ○ /_not-found
+├ ○ /_not-found                                                          5m      1y
 ├ ƒ /api/bug-report
 ├ ƒ /api/bug-report/screenshot
 ├ ƒ /api/contact

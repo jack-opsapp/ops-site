@@ -14,6 +14,10 @@ import NotFoundContent from '@/components/shared/NotFoundContent';
 import { setRequestLocale } from '@/i18n/server';
 import { siteMetadata } from '@/lib/seo/site-metadata';
 
+// Same refresh window as the root layouts: the navigation's store-live
+// flag is read while rendering.
+export const revalidate = 300;
+
 export const metadata: Metadata = siteMetadata('en');
 
 export default function GlobalNotFound() {
