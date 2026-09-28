@@ -41,6 +41,10 @@ export const seoRedirects: Redirect[] = [
   { source: '/tailored', destination: '/spec', statusCode: 301 },
   { source: '/tailored/:path*', destination: '/spec/:path*', statusCode: 301 },
 
+  // ── Retired industry pages ──────────────────────────────────────────
+  // OPS sells to the subtrades, not the general contractors who hire them.
+  { source: '/industries/general-contracting', destination: '/industries', statusCode: 301 },
+
   // ── Legal ───────────────────────────────────────────────────────────
   { source: '/privacy', destination: '/legal?page=privacy', statusCode: 301 },
   { source: '/terms', destination: '/legal?page=terms', statusCode: 301 },

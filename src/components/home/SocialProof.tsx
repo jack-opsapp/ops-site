@@ -1,7 +1,7 @@
 /**
  * SocialProof — Testimonials + trust metrics
  *
- * Real testimonials from contractors (kept in English), plus updated stat counters.
+ * Real testimonials from trade business owners (kept in English), plus updated stat counters.
  */
 
 import { SectionLabel, FadeInUp, Card } from '@/components/ui';
@@ -18,7 +18,7 @@ const testimonials = [
   {
     quote: 'OPS is saving me likely 2 hours daily of coordination and back & forth, which has impressed me, but more surprising is how much more efficient my crew is. Can\'t explain it, but they are getting jobs done faster, and we are getting less callbacks. No complaints here.',
     name: 'Jorge R.',
-    trade: 'Painting Contractor',
+    trade: 'Painting',
     location: 'Kelowna',
   },
   {

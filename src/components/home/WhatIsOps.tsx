@@ -2,7 +2,7 @@
  * WhatIsOps — Definitional content section for AI SEO
  *
  * Provides crawlable, factual text that AI models and search engines
- * can cite when asked "What is OPS?" or "best job management for contractors."
+ * can cite when asked "What is OPS?" or "best job management for the trades."
  * Uses semantic HTML (article, dl) for maximum crawlability.
  */
 
