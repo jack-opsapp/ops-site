@@ -78,7 +78,8 @@ Unmatched URLs render `src/app/global-not-found.tsx` (the English site shell, pr
 ## Freshness
 
 - Both root layouts export `revalidate = 300`, so every static route (including ones with no page-level revalidate: industries, compare, platform, plans, company, resources, tools, leadership) re-renders at most every 5 minutes. This keeps the nav's store-live flag and the related-journal rails on industries/compare as fresh as the pages that already set 300.
-- `sitemap.xml` stays build-static and is additionally refreshed by the journal revalidation endpoint (today it only changes on deploy).
+- `sitemap.xml` stays build-static and is additionally refreshed by the journal revalidation endpoint (today it only changes on deploy). Its `lastmod` must not move for unchanged pages when that happens: pages carry the deploy's build time (`OPS_SITE_BUILD_TIME`, set in `next.config.ts`) and each article its own `updated_at`.
+- Error policy for data read while rendering a cached page: a query that fails against a configured database throws, so ISR keeps serving the last good page (and a build fails loudly); an unconfigured database (local builds, Vercel Preview) yields empty results. Swallowing errors, as `src/lib/blog.ts` did, would cache a 404 article, an empty journal or a sitemap without articles for the whole window. The navigation's store-live flag keeps its graceful fallback because it also renders on per-request pages (`/legal`, `/spec`, checkout), where throwing would turn a database blip into an error page.
 
 ## Journal revalidation endpoint
 
