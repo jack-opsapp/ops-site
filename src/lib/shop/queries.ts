@@ -18,9 +18,11 @@ import type {
 
 /**
  * Returns the Supabase admin client, or null if env vars aren't set.
- * Mirrors the fallback pattern in src/lib/blog.ts so callers that run on
- * every request (e.g. PageLayout via isStoreLive) don't 500 in local dev
- * when SUPABASE_SERVICE_ROLE_KEY is absent.
+ * Mirrors the fallback pattern in src/lib/blog.ts so callers that render
+ * pages (PageLayout via isStoreLive, the statically prerendered /shop
+ * catalog) degrade to an empty store where Supabase is not configured —
+ * local builds and Vercel Preview — instead of failing the build. Query
+ * errors against a configured database still throw.
  */
 function tryGetClient() {
   try {
@@ -33,7 +35,8 @@ function tryGetClient() {
 
 /** Fetch all active categories, sorted */
 export async function getCategories(): Promise<ShopCategory[]> {
-  const supabase = getSupabaseAdmin();
+  const supabase = tryGetClient();
+  if (!supabase) return [];
   const { data, error } = await supabase
     .from('shop_categories')
     .select('*')
@@ -45,7 +48,8 @@ export async function getCategories(): Promise<ShopCategory[]> {
 
 /** Fetch all active, non-archived products with their category */
 export async function getProducts(): Promise<(ShopProduct & { category: ShopCategory })[]> {
-  const supabase = getSupabaseAdmin();
+  const supabase = tryGetClient();
+  if (!supabase) return [];
   const { data, error } = await supabase
     .from('shop_products')
     .select('*, category:shop_categories(*)')
@@ -126,7 +130,8 @@ export async function getAllProductsWithDetails(): Promise<ShopProductWithDetail
 
 /** Fetch the featured product (most recently updated where is_featured = true) */
 export async function getFeaturedProduct(): Promise<ShopProductWithDetails | null> {
-  const supabase = getSupabaseAdmin();
+  const supabase = tryGetClient();
+  if (!supabase) return null;
   const { data, error } = await supabase
     .from('shop_products')
     .select('id')
