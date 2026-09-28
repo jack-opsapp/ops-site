@@ -124,7 +124,7 @@ export const industries: IndustryData[] = [
       en: {
         meta: {
           title: 'Landscaping Crew & Job Management App | OPS',
-          description: 'Run your landscaping crews without the chaos. Scheduling, job tracking, and crew communication — built for landscape contractors.',
+          description: 'Run your landscaping crews without the chaos. Scheduling, job tracking, and crew communication — built for landscaping companies.',
           keywords: [
             'landscaping business software',
             'lawn care crew scheduling app',
@@ -162,7 +162,7 @@ export const industries: IndustryData[] = [
               'Mulch and materials get used with zero accountability',
               "End of week you're reconstructing hours from memory",
             ],
-            forLine: 'For: Landscape contractors managing maintenance routes and install crews simultaneously',
+            forLine: 'For: Landscape business owners managing maintenance routes and install crews simultaneously',
           },
           {
             title: "Spring slams you every year — and you're never ready",
@@ -391,8 +391,8 @@ export const industries: IndustryData[] = [
     content: {
       en: {
         meta: {
-          title: 'Railing Contractor Software | OPS',
-          description: 'Run your railing business from measure to install. Schedule jobs, track custom fabrication, and invoice faster with OPS — built for railing contractors.',
+          title: 'Railing Business Software | OPS',
+          description: 'Run your railing business from measure to install. Schedule jobs, track custom fabrication, and invoice faster with OPS — built for railing companies.',
           keywords: [
             'railing contractor software',
             'railing installation scheduling app',
@@ -407,7 +407,7 @@ export const industries: IndustryData[] = [
           ],
         },
         hero: {
-          sectionLabel: 'For Railing Contractors',
+          sectionLabel: 'For Railing Companies',
           headline: 'MEASURE. FABRICATE.\nINSTALL. REPEAT.',
           subtext: "Every railing job is one-of-a-kind. Measure errors cost you powder coating runs. Fabrication lead times blow up your install schedule. Inspectors reject work that was never tracked against code. OPS keeps every job — aluminum, wrought iron, glass, cable — moving through the pipeline without something falling through the cracks.",
         },
@@ -430,7 +430,7 @@ export const industries: IndustryData[] = [
               "Install crews show up to sites where the materials aren't ready, or materials arrive before the deck framing is done",
               'Double-booking crews happens when jobs are tracked in texts and a personal calendar',
             ],
-            forLine: 'For: Railing contractors juggling multiple active jobs at different pipeline stages',
+            forLine: 'For: Railing business owners juggling multiple active jobs at different pipeline stages',
           },
           {
             title: 'Code compliance is invisible until the inspector shows up',
@@ -440,7 +440,7 @@ export const industries: IndustryData[] = [
               "Commercial jobs require engineer-stamped drawings; tracking who submitted what and when lives in someone's email",
               "Post-installation corrections are the most expensive rework in the trade — cutting out set posts is a day's lost labor",
             ],
-            forLine: 'For: Railing contractors doing residential decks, commercial stairways, and ADA-compliant installs',
+            forLine: 'For: Railing crews doing residential decks, commercial stairways, and ADA-compliant installs',
           },
         ],
         solutions: [
@@ -478,7 +478,7 @@ export const industries: IndustryData[] = [
         },
         faq: [
           {
-            question: 'Is there software built specifically for railing contractors?',
+            question: 'Is there software built specifically for railing companies?',
             answer: "Most field service apps are built for repeat-service trades like HVAC or plumbing — they assume you're scheduling the same type of job week after week. Railing is different: every job is custom, your schedule depends on fabrication and material lead times you don't control, and your install crew needs to know what they're building before they arrive on site. OPS is built for trades that work on a measure-then-build pipeline. You can define your own job stages, attach field measurements and code notes directly to the project, and schedule installs based on where fabrication actually stands — not where you hoped it would be.",
           },
           {
@@ -494,8 +494,8 @@ export const industries: IndustryData[] = [
             answer: "Custom work means your quotes can't be built from a flat rate card — every linear foot of railing has different material, fabrication complexity, and install conditions. OPS lets you build line-item quotes from scratch on any job, capture site-specific notes and photos alongside the pricing, and convert accepted quotes to active jobs in one tap. Because the field measurement data lives on the same job record as the quote, your office doesn't have to re-enter anything when the project moves from sold to scheduled.",
           },
           {
-            question: "What's the difference between OPS and Jobber for a railing contractor?",
-            answer: "Jobber is a solid general field service app, but it's designed around simple service calls with no multi-stage production pipeline. It has no native way to track where a job sits in a fabrication workflow, and it doesn't have inventory management built in — you need to pay for a separate add-on or external tool to track materials. OPS is built with the concept of job stages at the core, so your team always knows whether a job is waiting on a glass order, sitting at the powder coat shop, or ready to schedule. For railing contractors who run a measure-to-install pipeline with multiple trade dependencies, that structure is the difference between running tight and running chaotic.",
+            question: "What's the difference between OPS and Jobber for a railing company?",
+            answer: "Jobber is a solid general field service app, but it's designed around simple service calls with no multi-stage production pipeline. It has no native way to track where a job sits in a fabrication workflow, and it doesn't have inventory management built in — you need to pay for a separate add-on or external tool to track materials. OPS is built with the concept of job stages at the core, so your team always knows whether a job is waiting on a glass order, sitting at the powder coat shop, or ready to schedule. For railing business owners who run a measure-to-install pipeline with multiple trade dependencies, that structure is the difference between running tight and running chaotic.",
           },
         ],
         cta: {
@@ -791,7 +791,7 @@ export const industries: IndustryData[] = [
       en: {
         meta: {
           title: 'Fencing Contractor Management Software | OPS',
-          description: 'Estimate linear footage, schedule weather-dependent installs, and stop losing leads during peak season — built for fence contractors.',
+          description: 'Estimate linear footage, schedule weather-dependent installs, and stop losing leads during peak season — built for fence companies.',
           keywords: [
             'fencing contractor software',
             'fence company management app',
@@ -806,7 +806,7 @@ export const industries: IndustryData[] = [
           ],
         },
         hero: {
-          sectionLabel: 'For Fencing Contractors',
+          sectionLabel: 'For Fencing Companies',
           headline: 'MEASURE ONCE.\nSCHEDULE ONCE.\nBUILD.',
           subtext: "Every fence job starts with a site visit, a tape measure, and math that has to be right — because wrong linear footage means wrong material orders, wrong quotes, and wrong margins. OPS keeps your measurements, materials, and schedule in one place so your crew shows up with the right posts and the right plan.",
         },
@@ -819,7 +819,7 @@ export const industries: IndustryData[] = [
               'Gate count and post spacing vary by style — vinyl, wood, chain link all calculate differently',
               'Supplier price changes between quote day and install day eat your margin with no warning',
             ],
-            forLine: 'For: Fence contractors quoting 5\u201320+ jobs per week across multiple material types',
+            forLine: 'For: Fence business owners quoting 5\u201320+ jobs per week across multiple material types',
           },
           {
             title: 'Weather owns your schedule and you react instead of plan',
@@ -877,8 +877,8 @@ export const industries: IndustryData[] = [
         },
         faq: [
           {
-            question: 'What is the best software for fence contractors?',
-            answer: "Most fence contractors run their business on spreadsheets, notebooks, and text messages — the industry has no dominant software player because generic field service tools don't understand multi-stage install work. Jobber and Housecall Pro handle basic scheduling but have no concept of a job that moves through estimate, permit, post-set, and panel stages. OPS tracks jobs through stages so your post-set crew and panel crew aren't stepping on each other, and your office knows exactly where every job sits without calling the field.",
+            question: 'What is the best software for fence companies?',
+            answer: "Most fence companies run on spreadsheets, notebooks, and text messages — the industry has no dominant software player because generic field service tools don't understand multi-stage install work. Jobber and Housecall Pro handle basic scheduling but have no concept of a job that moves through estimate, permit, post-set, and panel stages. OPS tracks jobs through stages so your post-set crew and panel crew aren't stepping on each other, and your office knows exactly where every job sits without calling the field.",
           },
           {
             question: 'How does OPS help with fence estimating?',
@@ -1057,7 +1057,7 @@ export const industries: IndustryData[] = [
       en: {
         meta: {
           title: 'Concrete Contractor Management Software | OPS',
-          description: 'Schedule pours around weather, coordinate multi-crew staging, and document every batch — built for concrete contractors who can\'t afford a bad pour.',
+          description: 'Schedule pours around weather, coordinate multi-crew staging, and document every batch — built for concrete crews who can\'t afford a bad pour.',
           keywords: [
             'concrete contractor software',
             'concrete business management software',
@@ -1072,7 +1072,7 @@ export const industries: IndustryData[] = [
           ],
         },
         hero: {
-          sectionLabel: 'For Concrete Contractors',
+          sectionLabel: 'For Concrete Companies',
           headline: "YOU CAN'T UN-POUR CONCRETE.\nMAKE SURE THE SCHEDULE IS RIGHT.",
           subtext: "The truck shows up and the clock starts. If the forms aren't ready, the crew isn't staged, or the weather turns — you're paying for mud you can't use. OPS coordinates your crews, tracks weather windows, and documents every pour so the right people are at the right site before the first truck backs in.",
         },
@@ -1085,7 +1085,7 @@ export const industries: IndustryData[] = [
               'A large commercial pour needs forms, rebar, pump, finishers, and 8\u201312 trucks arriving at 15-minute intervals — one breakdown in the sequence and the whole pour is at risk',
               'Cancel tomorrow\'s pour and the cascade hits every project on your schedule for the rest of the week',
             ],
-            forLine: 'For: Concrete contractors making pour-or-wait decisions that cost thousands based on weather apps and gut feel',
+            forLine: 'For: Concrete business owners making pour-or-wait decisions that cost thousands based on weather apps and gut feel',
           },
           {
             title: 'Labor costs 9% more than last year and every idle hour bleeds money',
@@ -1098,14 +1098,14 @@ export const industries: IndustryData[] = [
             forLine: 'For: Concrete company owners paying more for labor while watching productivity drop with every inexperienced hire',
           },
           {
-            title: 'GC software priced for subcontractor budgets',
+            title: 'GC software priced for subtrade budgets',
             bullets: [
               'Procore is the gold standard for construction management — and completely unaffordable for a 10-person concrete crew doing 3\u20134 active jobs',
               'ServiceTitan costs $245\u2013$500+ per tech per month with $5,000\u2013$50,000 implementation — that\'s $30K\u2013$60K/year for a sub with 5\u20138% net margins',
               'Jobber was designed for same-day service calls, not multi-day concrete projects with weather dependencies and multi-crew staging',
-              'The result: most concrete contractors still run on phone calls, text messages, and paper estimates because the software market failed them',
+              'The result: most concrete companies still run on phone calls, text messages, and paper estimates because the software market failed them',
             ],
-            forLine: 'For: Concrete subcontractors who need crew scheduling and job tracking but can\'t justify Procore pricing on sub margins',
+            forLine: 'For: Concrete subtrades who need crew scheduling and job tracking but can\'t justify Procore pricing on sub margins',
           },
         ],
         solutions: [
@@ -1143,23 +1143,23 @@ export const industries: IndustryData[] = [
         },
         faq: [
           {
-            question: 'What is the best software for concrete contractors?',
-            answer: "It depends on your role. If you're a GC managing concrete subs, Procore and Fieldwire are industry standards — but at enterprise pricing designed for companies managing 50+ projects. If you're a concrete subcontractor running 2\u201315 workers, those tools are overbuilt and overpriced. Jobber handles basic scheduling but was designed for same-day service calls — it doesn't understand multi-day pours, weather dependencies, or multi-crew staging. Knowify offers construction-specific job costing but isn't mobile-first for field crews. OPS handles scheduling, crew management, job tracking, and photo documentation at flat-rate pricing that works for sub margins.",
+            question: 'What is the best software for concrete companies?',
+            answer: "It depends on your role. If you're a GC managing concrete subs, Procore and Fieldwire are industry standards — but at enterprise pricing designed for companies managing 50+ projects. If you're a concrete subtrade running 2\u201315 workers, those tools are overbuilt and overpriced. Jobber handles basic scheduling but was designed for same-day service calls — it doesn't understand multi-day pours, weather dependencies, or multi-crew staging. Knowify offers construction-specific job costing but isn't mobile-first for field crews. OPS handles scheduling, crew management, job tracking, and photo documentation at flat-rate pricing that works for sub margins.",
           },
           {
-            question: 'How do concrete contractors handle weather delays?',
-            answer: "The best concrete contractors schedule pours around weather windows, not despite them. They monitor forecasts 3\u20137 days out for temperature, humidity, wind, and precipitation — because concrete that cures below 40\u00B0F weakens permanently, and rain during finishing ruins the surface. When weather forces a reschedule, the cascade hits everything: ready-mix delivery, pump operator, inspector, and crew need to be rescheduled simultaneously while alternate site work gets slotted into the open day. Software that tracks all those dependencies and can cascade changes across projects is the difference between managing weather and reacting to it.",
+            question: 'How do concrete crews handle weather delays?',
+            answer: "The best concrete crews schedule pours around weather windows, not despite them. They monitor forecasts 3\u20137 days out for temperature, humidity, wind, and precipitation — because concrete that cures below 40\u00B0F weakens permanently, and rain during finishing ruins the surface. When weather forces a reschedule, the cascade hits everything: ready-mix delivery, pump operator, inspector, and crew need to be rescheduled simultaneously while alternate site work gets slotted into the open day. Software that tracks all those dependencies and can cascade changes across projects is the difference between managing weather and reacting to it.",
           },
           {
-            question: 'How is the labor shortage affecting concrete contractors?',
+            question: 'How is the labor shortage affecting concrete companies?',
             answer: "Concrete is one of the hardest-hit segments of construction. Over 20% of workers are over 55 and retiring, the residential sector faces a 32% labor shortage, and compensation has risen 9% year-over-year. This creates a triple squeeze: fewer workers, higher cost per worker, and lower average experience. Less experienced crews mean more quality issues — inconsistent finishing, improper curing, substandard formwork. Technology that maximizes productive hours per crew member through better scheduling, reduced idle time, and fewer cascading delays directly addresses all three pressures.",
           },
           {
-            question: 'How is OPS different from Procore for concrete subcontractors?',
+            question: 'How is OPS different from Procore for concrete subtrades?',
             answer: "Procore is built for general contractors managing large-scale construction projects with dozens of subs, change orders, architectural drawings, and bidding portals. If you're a 10-person concrete crew doing 3\u20134 active jobs, you don't need 90% of what Procore offers — but you're paying for all of it. OPS gives concrete subs what they actually need: crew scheduling, multi-site coordination, pour documentation with photos, and time tracking — at flat-rate pricing, not enterprise pricing. You'll be scheduling pours on day one instead of spending months in onboarding.",
           },
           {
-            question: 'What documentation do concrete contractors need per pour?',
+            question: 'What documentation do concrete crews need per pour?',
             answer: "Professional pour documentation protects against quality disputes and satisfies inspection requirements. Key records include batch tickets from the ready-mix supplier showing mix design, slump, and air content. Ambient conditions at pour time — temperature, humidity, wind. Slump test results on-site. Time-stamped photos of formwork, rebar placement, pour progress, and finished surface. For commercial and infrastructure work, this documentation is increasingly required, not optional. OPS captures all of it on your phone during the pour — organized per project and retrievable in seconds.",
           },
         ],
@@ -1205,7 +1205,7 @@ export const industries: IndustryData[] = [
           ],
         },
         hero: {
-          sectionLabel: 'For Flooring Contractors',
+          sectionLabel: 'For Flooring Companies',
           headline: 'YOUR INSTALLERS ARE YOUR\nMOST EXPENSIVE RESOURCE.\nSTOP WASTING THEIR TIME.',
           subtext: "A flooring install isn't a one-day job. It's subfloor prep, material acclimation, installation, transitions, and cleanup across 2\u20135 days — with every phase depending on the last. OPS schedules the full project, tracks material costs in real time, and gives your crew everything they need from the job site floor, not the showroom desk.",
         },
@@ -1218,7 +1218,7 @@ export const industries: IndustryData[] = [
               'Hardwood needs 3\u20135 days to acclimate before installation — if materials arrive late, the entire project stalls',
               'Failed moisture test on a concrete subfloor pushes everything back and you need to redirect the crew to another job without double-booking',
             ],
-            forLine: 'For: Flooring contractors juggling subfloor prep, material delivery, installation crews, and customer schedules across projects that span days',
+            forLine: 'For: Flooring business owners juggling subfloor prep, material delivery, installation crews, and customer schedules across projects that span days',
           },
           {
             title: 'Material waste and blind job costing kill margins',
@@ -1228,7 +1228,7 @@ export const industries: IndustryData[] = [
               'Underestimate tile and you\'re making an emergency distributor run — overestimate and you\'re stuck with inventory tying up cash',
               'Installer wages growing 11% year-over-year — if you quoted using last year\'s labor rates, this year\'s wages eat directly into profit',
             ],
-            forLine: 'For: Flooring contractors losing money because material overages, waste, and inaccurate estimates eat into already-thin margins',
+            forLine: 'For: Flooring companies losing money because material overages, waste, and inaccurate estimates eat into already-thin margins',
           },
           {
             title: 'Showroom software that doesn\'t work from the subfloor',
@@ -1276,12 +1276,12 @@ export const industries: IndustryData[] = [
         },
         faq: [
           {
-            question: 'What is the best software for flooring contractors?',
+            question: 'What is the best software for flooring companies?',
             answer: "It depends on your primary need. If you need comprehensive estimating and material management, QFloors and Epicor RFMS are industry standards — but they're office-centric with no mobile crew interface. Floorzap offers flooring-specific quoting and scheduling in one tool. Jobber handles basic scheduling and invoicing but doesn't understand multi-day project phasing or material coordination. OPS provides mobile-first crew scheduling, multi-day project management, and photo documentation at flat-rate pricing — bridging the gap between showroom software and generic field service tools.",
           },
           {
-            question: 'How do flooring contractors manage multi-day installation projects?',
-            answer: "Successful flooring contractors break projects into phases: subfloor preparation, material acclimation (3\u20135 days for hardwood), installation, transitions and trim, and cleanup. Each phase has specific crew assignments, material requirements, and time estimates. The key is scheduling software that supports multi-day projects with phase dependencies — so when one phase runs over, downstream phases adjust automatically. Material delivery dates must be synchronized with installation phases to prevent crew idle time.",
+            question: 'How do flooring crews manage multi-day installation projects?',
+            answer: "Successful flooring crews break projects into phases: subfloor preparation, material acclimation (3\u20135 days for hardwood), installation, transitions and trim, and cleanup. Each phase has specific crew assignments, material requirements, and time estimates. The key is scheduling software that supports multi-day projects with phase dependencies — so when one phase runs over, downstream phases adjust automatically. Material delivery dates must be synchronized with installation phases to prevent crew idle time.",
           },
           {
             question: 'How do I reduce material waste on flooring jobs?',
@@ -1293,7 +1293,7 @@ export const industries: IndustryData[] = [
           },
           {
             question: 'How is the installer labor shortage affecting flooring companies?',
-            answer: "Skilled flooring installers are the scarcest resource in the trade. The workforce is aging out, younger workers aren't entering at sufficient rates, and installer wages have grown 11% — significantly faster than the 7.3% construction median. This means every hour of installer idle time costs more than it did last year. Flooring contractors can't hire their way out of the problem. The answer is making the crews you have more productive — better scheduling, fewer wasted trips, less rework from miscommunication — so every installer hour generates revenue.",
+            answer: "Skilled flooring installers are the scarcest resource in the trade. The workforce is aging out, younger workers aren't entering at sufficient rates, and installer wages have grown 11% — significantly faster than the 7.3% construction median. This means every hour of installer idle time costs more than it did last year. Flooring companies can't hire their way out of the problem. The answer is making the crews you have more productive — better scheduling, fewer wasted trips, less rework from miscommunication — so every installer hour generates revenue.",
           },
         ],
         cta: {
@@ -1338,7 +1338,7 @@ export const industries: IndustryData[] = [
           ],
         },
         hero: {
-          sectionLabel: 'For Drywall Contractors',
+          sectionLabel: 'For Drywall Companies',
           headline: 'FIVE PHASES. THREE TRADES.\nZERO ROOM FOR ERROR.',
           subtext: "Hanging, taping, mudding, sanding, finishing — each phase has its own crew, its own drying time, and its own way of falling behind. And you're coordinating all of it around electricians who aren't done and painters who are waiting. OPS tracks every phase across every site so your crews go where the work is actually ready.",
         },
@@ -1351,7 +1351,7 @@ export const industries: IndustryData[] = [
               'A 5-crew company has crews at 3\u20134 different sites, each at different phases — knowing which crew goes where tomorrow requires real-time visibility, not phone calls',
               'Schedule sanding based on standard timing, mud isn\'t dry, crew shows up and can\'t work — a wasted day you could have sent them to another site',
             ],
-            forLine: 'For: Drywall contractors managing hanging, taping, mudding, sanding, and finishing across multiple sites while coordinating with electricians, plumbers, and painters',
+            forLine: 'For: Drywall business owners managing hanging, taping, mudding, sanding, and finishing across multiple sites while coordinating with electricians, plumbers, and painters',
           },
           {
             title: 'The labor crisis is making every other problem worse',
@@ -1364,14 +1364,14 @@ export const industries: IndustryData[] = [
             forLine: 'For: Drywall company owners who can\'t find skilled hangers and finishers while wages climb 11% and quality drops with every green hire',
           },
           {
-            title: 'Enterprise software for subcontractor budgets',
+            title: 'Enterprise software for subtrade budgets',
             bullets: [
               'Procore and Buildertrend are built for general contractors — bidding portals, architectural drawings, client selection tools you\'ll never touch',
               'ServiceTitan costs $245\u2013$500+ per tech per month with $5K\u2013$50K implementation — for a 10-person drywall crew, that\'s $30K\u2013$60K/year',
               'Jobber was designed for same-day service calls — no phased construction workflows, no drying time between phases, no trade coordination',
               'So most drywall companies use nothing. Phone calls, text messages, and handshake agreements with the GC. The software market failed this trade.',
             ],
-            forLine: 'For: Drywall subcontractors paying GC prices for software they only use 20% of',
+            forLine: 'For: Drywall subtrades paying GC prices for software they only use 20% of',
           },
         ],
         solutions: [
@@ -1409,23 +1409,23 @@ export const industries: IndustryData[] = [
         },
         faq: [
           {
-            question: 'What is the best software for drywall contractors?',
-            answer: "It depends on your role. If you're a GC with drywall crews, Procore or Buildertrend provide comprehensive project management — at GC pricing. If you're a drywall subcontractor, Contractor+ offers sub-focused features including scheduling and invoicing with a free tier. Jobber is accessible but was designed for same-day service, not phased construction. Knowify offers construction-specific job costing. OPS combines multi-phase scheduling, crew management, photo documentation, and trade coordination at flat-rate pricing that works for sub margins.",
+            question: 'What is the best software for drywall companies?',
+            answer: "It depends on your role. If you're a GC with drywall crews, Procore or Buildertrend provide comprehensive project management — at GC pricing. If you're a drywall subtrade, Contractor+ offers sub-focused features including scheduling and invoicing with a free tier. Jobber is accessible but was designed for same-day service, not phased construction. Knowify offers construction-specific job costing. OPS combines multi-phase scheduling, crew management, photo documentation, and trade coordination at flat-rate pricing that works for sub margins.",
           },
           {
-            question: 'How do drywall contractors manage multi-phase scheduling?',
-            answer: "Successful drywall contractors schedule by phase, not just by day. Hanging, taping, first coat, second coat, sanding, and finishing each require specific crews and drying time between phases. The key is tracking phase completion per site so crews are dispatched to sites that are actually ready for their phase — not sites where mud is still drying. A 5-crew company with 3\u20134 active sites needs multi-site visibility showing phase status across all jobs. Without it, you're making dispatch decisions based on yesterday's phone call instead of today's reality.",
+            question: 'How do drywall crews manage multi-phase scheduling?',
+            answer: "Successful drywall companies schedule by phase, not just by day. Hanging, taping, first coat, second coat, sanding, and finishing each require specific crews and drying time between phases. The key is tracking phase completion per site so crews are dispatched to sites that are actually ready for their phase — not sites where mud is still drying. A 5-crew company with 3\u20134 active sites needs multi-site visibility showing phase status across all jobs. Without it, you're making dispatch decisions based on yesterday's phone call instead of today's reality.",
           },
           {
-            question: 'How is the labor shortage affecting drywall contractors?',
-            answer: "Drywall is one of the hardest-hit trades. 88% of firms report open positions and installer wages have grown 11% — almost double the 7.3% construction average. The shortage hurts quality too: less experienced crews produce finishing work that shows through paint, requiring rework that doubles labor costs. 56% of contractors report failing to meet schedule timelines due to labor shortages. The answer isn't more bodies on overcrowded sites. It's making existing crews more productive through better scheduling that eliminates idle time, wasted trips, and phase mismatches.",
+            question: 'How is the labor shortage affecting drywall companies?',
+            answer: "Drywall is one of the hardest-hit trades. 88% of firms report open positions and installer wages have grown 11% — almost double the 7.3% construction average. The shortage hurts quality too: less experienced crews produce finishing work that shows through paint, requiring rework that doubles labor costs. 56% of construction firms report failing to meet schedule timelines due to labor shortages. The answer isn't more bodies on overcrowded sites. It's making existing crews more productive through better scheduling that eliminates idle time, wasted trips, and phase mismatches.",
           },
           {
-            question: 'How is OPS different from Procore for drywall subcontractors?',
+            question: 'How is OPS different from Procore for drywall subtrades?',
             answer: "Procore is built for general contractors managing dozens of subs, change orders, architectural drawings, and bidding portals across large-scale projects. If you're a drywall sub running 5\u201315 workers across 3\u20134 active job sites, you don't need 90% of what Procore offers — but you're paying enterprise pricing for all of it. OPS gives drywall subs what they actually need: phase-by-phase scheduling, multi-site crew dispatch, photo documentation per phase, and trade coordination — at flat-rate pricing. Deploy it today, not in three months.",
           },
           {
-            question: 'How do drywall contractors coordinate with other trades?',
+            question: 'How do drywall crews coordinate with other trades?',
             answer: "Drywall sits in the middle of the construction sequence: after electrical and plumbing rough-in and inspection, before painting and final trim. A missed handoff from any trade halts your operation. Real-time communication with GCs about site readiness, tracking inspection schedules, and flexible crew dispatching are essential. The most common and expensive failure is sending a crew to a site that isn't ready for their phase. OPS tracks site readiness and phase status so you dispatch crews to sites where work can actually happen — not sites where you're hoping the electrician finished.",
           },
         ],
@@ -1815,7 +1815,7 @@ export const industries: IndustryData[] = [
           },
           {
             question: 'How should I price pressure washing jobs?',
-            answer: "Most contractors charge $0.30\u2013$0.80 per square foot, varying by surface: driveways at $0.50, decks at $0.55, siding at $0.50, roofs at $0.70. Profitable operators target average tickets of $800\u2013$1,200 for residential, with the most successful exceeding $1,400. Know your true cost per job — labor, chemicals, fuel, equipment depreciation, and insurance. Track actual costs versus estimates to tighten pricing over time.",
+            answer: "Most pressure washing companies charge $0.30\u2013$0.80 per square foot, varying by surface: driveways at $0.50, decks at $0.55, siding at $0.50, roofs at $0.70. Profitable operators target average tickets of $800\u2013$1,200 for residential, with the most successful exceeding $1,400. Know your true cost per job — labor, chemicals, fuel, equipment depreciation, and insurance. Track actual costs versus estimates to tighten pricing over time.",
           },
           {
             question: 'How do I manage seasonal revenue swings in pressure washing?',
@@ -1881,7 +1881,7 @@ export const industries: IndustryData[] = [
           {
             title: 'Storm dispatch at 2 AM is pure chaos',
             bullets: [
-              'Trigger thresholds vary by contract — commercial at 1.5 inches, residential at 2, some at 3+. A contractor with 50 properties has 3\u20134 different triggers active at once. That is one person staring at radar at 3 AM making dispatch decisions from memory.',
+              'Trigger thresholds vary by contract — commercial at 1.5 inches, residential at 2, some at 3+. An owner with 50 properties has 3\u20134 different triggers active at once. That is one person staring at radar at 3 AM making dispatch decisions from memory.',
               'Communication breaks down under storm pressure. Phone trees and group texts do not scale during a 12-hour event with dozens of properties and multiple crews.',
               'Routes need reoptimization mid-storm. Blocked roads, equipment breakdowns, last-minute service calls — all require instant rerouting that paper dispatch cannot handle.',
               'Paper work orders have to be processed and billing manually entered after the storm. After a 14-hour overnight event, you spend 3 more hours transcribing logs into QuickBooks.',
@@ -1904,9 +1904,9 @@ export const industries: IndustryData[] = [
               "Slip-and-fall claims average $30,000 per incident. Insurance premiums are rising 6% annually. Carriers are leaving the snow market. A single undefended claim wipes out a season's profit for a company doing $152,000 a year.",
               'Courts require proof of reasonable care — GPS routing, timestamps, photos, material application logs. Without documentation, you are presumed negligent even if service was performed.',
               'Paper logs are not enough. Courts require date, time, weather conditions, materials used, areas serviced, and before/after photographs.',
-              'GPS-verified, timestamped digital records with photos are the new standard of care. Contractors without them face both legal and competitive disadvantage.',
+              'GPS-verified, timestamped digital records with photos are the new standard of care. Companies without them face both legal and competitive disadvantage.',
             ],
-            forLine: 'For: Snow removal contractors exposed to $30,000 slip-and-fall claims with paper-only records',
+            forLine: 'For: Snow removal companies exposed to $30,000 slip-and-fall claims with paper-only records',
           },
         ],
         solutions: [
@@ -1927,7 +1927,7 @@ export const industries: IndustryData[] = [
           },
           {
             title: 'One platform. Snow season and mow season.',
-            copy: "Over half of snow contractors also run landscaping, lawn care, or property maintenance. OPS is not snow-only software that sits idle 7 months a year. One platform, one price, twelve months of value. Snow-specific tools like CrewTracker charge monthly even during the off-season, or force a separate platform for summer work. OPS at $79 a month flat covers both seasons without dual subscriptions.",
+            copy: "Over half of snow removal companies also run landscaping, lawn care, or property maintenance. OPS is not snow-only software that sits idle 7 months a year. One platform, one price, twelve months of value. Snow-specific tools like CrewTracker charge monthly even during the off-season, or force a separate platform for summer work. OPS at $79 a month flat covers both seasons without dual subscriptions.",
             painPointRef: 2,
           },
         ],
@@ -1949,11 +1949,11 @@ export const industries: IndustryData[] = [
           },
           {
             question: 'What billing models do snow removal companies use?',
-            answer: "Most snow contractors juggle five or more billing models: per push, per inch, seasonal flat rate, seasonal with caps, and hourly. You may use three or four simultaneously — commercial clients want seasonal for budget predictability, residential clients want per push. OPS handles all of them natively within the same platform, across the same client list.",
+            answer: "Most snow removal companies juggle five or more billing models: per push, per inch, seasonal flat rate, seasonal with caps, and hourly. You may use three or four simultaneously — commercial clients want seasonal for budget predictability, residential clients want per push. OPS handles all of them natively within the same platform, across the same client list.",
           },
           {
-            question: 'Why is proof of service documentation critical for snow contractors?',
-            answer: "Slip-and-fall claims average $30,000 per incident, and snow contractors bear liability if they cannot prove service was performed to a reasonable standard. Courts require timestamped documentation including service times, weather conditions, materials applied, areas serviced, and photos. GPS-verified digital records have become the standard — paper logs are no longer enough. OPS captures all of this automatically with every service event.",
+            question: 'Why is proof of service documentation critical for snow removal companies?',
+            answer: "Slip-and-fall claims average $30,000 per incident, and snow removal companies bear liability if they cannot prove service was performed to a reasonable standard. Courts require timestamped documentation including service times, weather conditions, materials applied, areas serviced, and photos. GPS-verified digital records have become the standard — paper logs are no longer enough. OPS captures all of this automatically with every service event.",
           },
           {
             question: 'Can general field service software handle snow removal?',
@@ -2394,7 +2394,7 @@ export const industries: IndustryData[] = [
       en: {
         meta: {
           title: 'HVAC Software — Scheduling, Dispatch & Crew Management | OPS',
-          description: 'OPS helps HVAC contractors schedule peak-season calls, dispatch the closest tech, and keep field crews connected — even in basements with no signal. Free to start at $79/mo flat.',
+          description: 'OPS helps HVAC companies schedule peak-season calls, dispatch the closest tech, and keep field crews connected — even in basements with no signal. Free to start at $79/mo flat.',
           keywords: [
             'hvac software',
             'hvac scheduling software',
@@ -2438,9 +2438,9 @@ export const industries: IndustryData[] = [
             title: 'YOU ARE PAYING $250/TECH/MONTH FOR SOFTWARE YOUR CREW REFUSES TO OPEN',
             bullets: [
               'ServiceTitan costs $250-$500 per technician per month plus $5,000-$50,000 in implementation fees. Their own support team says the platform is "not optimized for companies with 3 or fewer technicians." Most HVAC companies have fewer than 5 employees.',
-              'Implementation takes months, not minutes. ServiceTitan onboarding runs 3-12 months. FieldEdge requires a 5-week onboarding period. One contractor paid for a full year of ServiceTitan and was never onboarded.',
+              'Implementation takes months, not minutes. ServiceTitan onboarding runs 3-12 months. FieldEdge requires a 5-week onboarding period. One business owner paid for a full year of ServiceTitan and was never onboarded.',
               'The crew refuses to use it. The owner buys the software, the admin learns 30% of it, and the techs use 5% or nothing. "It is almost like it is too big to where my people are scared to dive in and learn."',
-              'Cancellation is a trap. ServiceTitan requires 12-month contracts with documented termination fees of $5,000-$39,000. One contractor who quit 10 days in was quoted a $39,375 buyout.',
+              'Cancellation is a trap. ServiceTitan requires 12-month contracts with documented termination fees of $5,000-$39,000. One owner who quit 10 days in was quoted a $39,375 buyout.',
             ],
             forLine: 'For HVAC owners paying enterprise prices for software their crew will not touch',
           },
@@ -2493,7 +2493,7 @@ export const industries: IndustryData[] = [
           },
           {
             question: 'Is it worth switching from ServiceTitan to a simpler HVAC app?',
-            answer: 'If your team has fewer than 15-20 technicians and you use less than 30% of ServiceTitan features, you are likely overpaying. One contractor reported paying $400-$600 a month while only using the estimating feature. Another was quoted a $39,375 buyout after canceling 10 days in. The key question: is your crew actually using the software in the field? If not, you are paying enterprise prices for an admin tool. OPS is free to start — you can test it alongside your current platform with zero risk before committing to a switch.',
+            answer: 'If your team has fewer than 15-20 technicians and you use less than 30% of ServiceTitan features, you are likely overpaying. One business owner reported paying $400-$600 a month while only using the estimating feature. Another was quoted a $39,375 buyout after canceling 10 days in. The key question: is your crew actually using the software in the field? If not, you are paying enterprise prices for an admin tool. OPS is free to start — you can test it alongside your current platform with zero risk before committing to a switch.',
           },
           {
             question: 'What features should HVAC scheduling software have for technicians?',
@@ -2528,7 +2528,7 @@ export const industries: IndustryData[] = [
       en: {
         meta: {
           title: 'Plumbing Software — Dispatch, Scheduling & Crew Management | OPS',
-          description: 'OPS helps plumbing contractors dispatch emergency calls in seconds, schedule crews across residential and commercial jobs, and keep techs connected from the basement. Free to start at $79/mo flat.',
+          description: 'OPS helps plumbing companies dispatch emergency calls in seconds, schedule crews across residential and commercial jobs, and keep techs connected from the basement. Free to start at $79/mo flat.',
           keywords: [
             'plumbing software',
             'plumbing scheduling software',
@@ -2573,7 +2573,7 @@ export const industries: IndustryData[] = [
             bullets: [
               'ServiceTitan costs $245-$500 per technician per month plus $5,000-$50,000 in implementation fees. A 5-person plumbing shop pays $1,750 a month minimum before add-ons — and setup takes 3-12 months. Their platform is explicitly "not optimized for companies with 3 or fewer technicians."',
               'Even affordable tools gate critical features. Jobber jumps from $39 to $169 the moment you add a second user. Housecall Pro locks GPS tracking and QuickBooks integration behind the $149 Essentials plan. "Buttons all over the screen with lock symbols to remind you to pay more."',
-              'Implementation kills momentum. ServiceTitan requires a sales demo just to see pricing. Multiple BBB complaints describe contractors who paid for a full year of their subscription while still waiting to get fully onboarded.',
+              'Implementation kills momentum. ServiceTitan requires a sales demo just to see pricing. Multiple BBB complaints describe business owners who paid for a full year of their subscription while still waiting to get fully onboarded.',
               'Support has collapsed across the board. Housecall Pro replaced human support with AI chatbots in 2025. ServiceTitan users report "absolutely the worst customer service I have ever had in my entire life." When your dispatch goes down at 7 AM on a Monday, a chatbot is not going to fix it.',
             ],
             forLine: 'For plumbing business owners paying enterprise prices for features they never use and support that does not exist',
@@ -2662,7 +2662,7 @@ export const industries: IndustryData[] = [
       en: {
         meta: {
           title: 'Electrical Contractor Software — Scheduling, Crew Management & Dispatch | OPS',
-          description: 'OPS helps electrical contractors schedule multi-day jobs, coordinate crews across job sites, and manage inspections — all from a phone that works in panel rooms and basements. Free to start at $79/mo flat.',
+          description: 'OPS helps electricians schedule multi-day jobs, coordinate crews across job sites, and manage inspections — all from a phone that works in panel rooms and basements. Free to start at $79/mo flat.',
           keywords: [
             'electrical contractor software',
             'electrician scheduling app',
@@ -2677,7 +2677,7 @@ export const industries: IndustryData[] = [
           ],
         },
         hero: {
-          sectionLabel: 'electrical contractor software',
+          sectionLabel: 'electrician software',
           headline: 'YOUR CREW IS ON SITE.\nTHE SCHEDULE JUST CHANGED.',
           subtext: '88% of electrical firms have fewer than 20 employees. Every one of them juggles permits, inspections, emergency calls, and multi-day projects. OPS keeps your crews and your office on the same page — even from a panel room with no signal.',
         },
@@ -2690,7 +2690,7 @@ export const industries: IndustryData[] = [
               'Multi-day projects compound the problem. Unlike HVAC service calls, electrical work spans days with material deliveries, permit waits, and inspection gates between phases. Basic FSM tools treat every job as a single-visit event.',
               'Jobber allows double-booking without alerting you. When you have 6 technicians across 4 job sites, one double-book costs an entire day of labor. "Twice in one week crews went to the wrong address."',
             ],
-            forLine: 'For electrical contractors juggling permits, inspections, and emergency calls across multiple sites',
+            forLine: 'For electrical business owners juggling permits, inspections, and emergency calls across multiple sites',
           },
           {
             title: 'CREW COORDINATION BREAKS DOWN AS YOU GROW',
@@ -2716,7 +2716,7 @@ export const industries: IndustryData[] = [
         solutions: [
           {
             title: 'SCHEDULING THAT UNDERSTANDS ELECTRICAL WORK',
-            copy: 'Drag-and-drop scheduling handles multi-day projects natively — not as repeated single-visit entries. Real-time sync means schedule changes propagate to every crew member phone instantly, not through a chain of texts. Visual calendar designed for how electrical contractors think: by crew, by site, by day. Unlike Jobber which allows double-booking without alerts, OPS keeps the calendar clean. Unlike ServiceTitan which takes months to configure, OPS works the day you download it.',
+            copy: 'Drag-and-drop scheduling handles multi-day projects natively — not as repeated single-visit entries. Real-time sync means schedule changes propagate to every crew member phone instantly, not through a chain of texts. Visual calendar designed for how electricians think: by crew, by site, by day. Unlike Jobber which allows double-booking without alerts, OPS keeps the calendar clean. Unlike ServiceTitan which takes months to configure, OPS works the day you download it.',
             painPointRef: 'Scheduling Is a Multi-Dimensional Puzzle',
           },
           {
@@ -2731,7 +2731,7 @@ export const industries: IndustryData[] = [
           },
           {
             title: 'WORKS IN THE PANEL ROOM. WORKS ON THE ROOF. WORKS OFFLINE.',
-            copy: 'Electricians work in basements, crawl spaces, panel rooms, and underground service areas where cell signal dies. OPS works fully offline — schedules, job details, and updates sync automatically when you reconnect. Dark theme reduces glare on job sites, in attics, and on rooftops. Multi-trade support means electrical contractors who also do low-voltage, fire alarm, or solar do not need separate software. Not an ERP with 6 modules. One app that does the job.',
+            copy: 'Electricians work in basements, crawl spaces, panel rooms, and underground service areas where cell signal dies. OPS works fully offline — schedules, job details, and updates sync automatically when you reconnect. Dark theme reduces glare on job sites, in attics, and on rooftops. Multi-trade support means electricians who also do low-voltage, fire alarm, or solar do not need separate software. Not an ERP with 6 modules. One app that does the job.',
             painPointRef: 'Crew Coordination Breaks Down as You Grow',
           },
         ],
@@ -2748,20 +2748,20 @@ export const industries: IndustryData[] = [
         },
         faq: [
           {
-            question: 'What is the best scheduling software for a small electrical contractor?',
-            answer: 'For electrical contractors with 2-15 technicians, the best software balances ease of use, mobile functionality, and cost. ServiceTitan starts at $245 per technician per month, requires a 12-month contract, and takes 3-6 months to implement. Jobber starts at $39 for one user but lacks true offline mode and allows double-booking. OPS is free to start, works offline in basements and panel rooms, and was designed for field crews. Download OPS today and schedule your first job tomorrow with no sales call.',
+            question: 'What is the best scheduling software for a small electrical business?',
+            answer: 'For electrical shops with 2-15 technicians, the best software balances ease of use, mobile functionality, and cost. ServiceTitan starts at $245 per technician per month, requires a 12-month contract, and takes 3-6 months to implement. Jobber starts at $39 for one user but lacks true offline mode and allows double-booking. OPS is free to start, works offline in basements and panel rooms, and was designed for field crews. Download OPS today and schedule your first job tomorrow with no sales call.',
           },
           {
-            question: 'How much does electrical contractor software cost per month?',
+            question: 'How much does electrician software cost per month?',
             answer: 'ServiceTitan runs $245-$500 per technician per month with $5,000-$50,000 in implementation fees. FieldEdge charges $100 per office user plus $125 per tech per month with a $500-$2,000 setup fee. Jobber starts at $39 a month for one user but scales to $169-$599 for teams with $29 per additional user. OPS is free to start with published pricing — no hidden add-ons, no per-module fees, no sales call required.',
           },
           {
-            question: 'Does electrical contractor software work offline on job sites?',
+            question: 'Does electrician software work offline on job sites?',
             answer: 'This is critical for electricians who work in basements, crawl spaces, panel rooms, and underground service areas. Jobber offline mode is limited to viewing schedules and text notes — no timers, no signatures. Knowify users report offline mode does not work at all. OPS was built for the field and works fully offline. Schedules, job details, and updates sync automatically when you reconnect.',
           },
           {
-            question: 'Can I switch from ServiceTitan to a simpler electrical contractor app?',
-            answer: 'Yes. ServiceTitan is designed for large operations with 20 or more technicians. Small shops routinely report it is too complicated, onboarding is terrible, and support is slow. They also require at least 3 technicians and some contractors describe needing lawyers to retrieve their data after leaving. OPS provides a simpler path that your crew will actually use — free to start with no contract.',
+            question: 'Can I switch from ServiceTitan to a simpler electrician app?',
+            answer: 'Yes. ServiceTitan is designed for large operations with 20 or more technicians. Small shops routinely report it is too complicated, onboarding is terrible, and support is slow. They also require at least 3 technicians and some owners describe needing lawyers to retrieve their data after leaving. OPS provides a simpler path that your crew will actually use — free to start with no contract.',
           },
           {
             question: 'What features should an electrician look for in a job management app?',
@@ -2796,7 +2796,7 @@ export const industries: IndustryData[] = [
       en: {
         meta: {
           title: 'Roofing Contractor Software — Crew Scheduling, Weather & Job Management | OPS',
-          description: 'OPS helps roofing contractors schedule crews around weather, coordinate multiple job sites, and keep foremen connected from the roof. Free to start at $79/mo flat.',
+          description: 'OPS helps roofing companies schedule crews around weather, coordinate multiple job sites, and keep foremen connected from the roof. Free to start at $79/mo flat.',
           keywords: [
             'roofing contractor software',
             'roofing crew scheduling app',
@@ -2811,7 +2811,7 @@ export const industries: IndustryData[] = [
           ],
         },
         hero: {
-          sectionLabel: 'roofing contractor software',
+          sectionLabel: 'roofing software',
           headline: 'IT RAINED TUESDAY.\nYOUR WHOLE WEEK JUST CHANGED.',
           subtext: 'Two days of rain reshuffles every crew, every job, every customer expectation. OPS gives your office and your foremen the same real-time schedule — so when the weather changes, you adapt in minutes, not hours of phone calls.',
         },
@@ -2882,7 +2882,7 @@ export const industries: IndustryData[] = [
         },
         faq: [
           {
-            question: 'What is the best scheduling app for roofing contractors?',
+            question: 'What is the best scheduling app for roofing companies?',
             answer: 'For most roofing companies running 2-5 crews, the best scheduling app is one your foremen can use on the roof. AccuLynx and JobNimbus are popular roofing CRMs but they are office-first tools with limited field experiences. ServiceTitan offers AI dispatch but costs $245 per tech per month. OPS fills the gap: a scheduling and crew management app built for the field, not the office. No implementation period, no per-user fees, and a mobile experience designed for workers wearing gloves on a roof.',
           },
           {
@@ -2890,7 +2890,7 @@ export const industries: IndustryData[] = [
             answer: 'Best practice: build 1-2 buffer days per week into each crew schedule. Batch similar jobs by geography to reduce travel time, saving up to 30%. Use weather forecast awareness to proactively reschedule before the morning of. Most roofing companies still handle this reactively — the owner checks the forecast at 5 AM and starts making calls. OPS lets foremen flag weather delays from the field and the office sees it instantly. Rescheduling is drag-and-drop, not a chain of phone calls.',
           },
           {
-            question: 'How much does roofing contractor software cost?',
+            question: 'How much does roofing software cost?',
             answer: 'AccuLynx costs $60-$120 per user per month plus $500-$5,000 in setup fees with a 12-month contract. JobNimbus charges $49-$249 a month with pricing hidden behind a sales call. ServiceTitan runs approximately $245 per technician per month plus $5,000-$50,000 implementation with exit fees of $15,000-$46,000. OPS is free to start with no credit card, no sales call, and no contract. For a 10-person roofing company, annual costs range from $0 with OPS to $36,000 or more with ServiceTitan.',
           },
           {
@@ -3064,7 +3064,7 @@ export const industries: IndustryData[] = [
       en: {
         meta: {
           title: 'Painting Contractor Software — Crew Scheduling, Job Management & Estimating | OPS',
-          description: 'OPS helps painting contractors schedule crews across multiple jobs, track labor hours against budgets, and document work with photos — all from a phone that works inside buildings. Free to start at $79/mo flat.',
+          description: 'OPS helps painting companies schedule crews across multiple jobs, track labor hours against budgets, and document work with photos — all from a phone that works inside buildings. Free to start at $79/mo flat.',
           keywords: [
             'painting contractor software',
             'painting business management app',
@@ -3079,7 +3079,7 @@ export const industries: IndustryData[] = [
           ],
         },
         hero: {
-          sectionLabel: 'painting contractor software',
+          sectionLabel: 'painting company software',
           headline: 'YOUR CREW IS ON THREE JOBS.\nWHO IS WHERE?',
           subtext: '75% of painting industry revenue comes from companies with 1-4 employees. Most still schedule on whiteboards and group chats. OPS gives your crews and your office the same real-time schedule — so everyone knows where to go, what to do, and when they are done.',
         },
@@ -3087,12 +3087,12 @@ export const industries: IndustryData[] = [
           {
             title: 'SCHEDULING IS YOUR BIGGEST NIGHTMARE',
             bullets: [
-              '"Scheduling is my biggest nightmare." One contractor managing 35 jobs a week said it on PaintTalk — and every painting business owner reading this felt it. Once you run 3 or more crews, the manual approach collapses into daily chaos.',
+              '"Scheduling is my biggest nightmare." One painter managing 35 jobs a week said it on PaintTalk — and every painting business owner reading this felt it. Once you run 3 or more crews, the manual approach collapses into daily chaos.',
               'No-shows are endemic. One painting business owner ran through 30 painters in a single year. Crew leaders deal with drama, no-shows, and a workforce with average tenure of 1-2 years. Inefficient scheduling overloads some crews while others sit idle.',
-              'Paper whiteboards work until they do not. Some contractors photograph whiteboard schedules on their phones to keep them accessible. When key people are away, the system breaks. When cancellations cascade, the board cannot keep up.',
+              'Paper whiteboards work until they do not. Some owners photograph whiteboard schedules on their phones to keep them accessible. When key people are away, the system breaks. When cancellations cascade, the board cannot keep up.',
               'Resource allocation failures cost money you never see. When some crew members are overloaded while others idle, you lose on both ends — burned-out crews quit, idle crews cost money. Target billable utilization is 80 percent. Most painting companies have no idea where they actually land.',
             ],
-            forLine: 'For painting contractors managing 2 or more crews across multiple job sites with whiteboards and gut feelings',
+            forLine: 'For painting business owners managing 2 or more crews across multiple job sites with whiteboards and gut feelings',
           },
           {
             title: 'COMMUNICATION BLACK HOLES BETWEEN OFFICE, CREW, AND CUSTOMER',
@@ -3100,7 +3100,7 @@ export const industries: IndustryData[] = [
               '80% of callers will not leave a voicemail. When a crew lead is on a ladder with a roller in hand, they cannot answer. Leads go cold. Jobs go to the next painter who picks up the phone.',
               '59-61% of the painting workforce is Hispanic or Latino and 74% speak Spanish as their primary language. English-only software creates daily friction and language barriers contribute to up to 25% of workplace accidents according to OSHA.',
               'Customers are left in the dark. Painting projects span multiple days and homeowners want to know when crews are coming. Without a clear communication system, important information gets lost and clients are uninformed about arrival times.',
-              'Scope confusion between field and office. An owner sells a job and a crew shows up without clear scope documentation. "Contractors are not paid for work performed — they are paid for the work that is documented." Undocumented changes lead to disputes.',
+              'Scope confusion between field and office. An owner sells a job and a crew shows up without clear scope documentation. You are not paid for work performed — you are paid for the work that is documented. Undocumented changes lead to disputes.',
             ],
             forLine: 'For painting business owners losing leads, losing context, and losing money between the phone, the crew, and the customer',
           },
@@ -3150,11 +3150,11 @@ export const industries: IndustryData[] = [
         },
         faq: [
           {
-            question: 'What is the best software for painting contractors?',
+            question: 'What is the best software for painting companies?',
             answer: 'For estimating specifically, PaintScout is popular at $99 per user per month but it only handles estimates and proposals — no scheduling, crew management, or field operations. For general FSM, Jobber offers quoting, scheduling, and invoicing but charges per user and has no painting-specific features. Most painting companies end up paying for two tools that do not integrate. OPS combines scheduling, job management, photo documentation, and crew communication in one app at $79 a month flat.',
           },
           {
-            question: 'How do painting contractors manage multiple crew schedules?',
+            question: 'How do painting companies manage multiple crew schedules?',
             answer: 'Most still use whiteboards, paper calendars, or group text chats — and it works until it does not. The breaking point is usually 3 or more crews, where the complexity of availability, travel time, job overlap, and cancellations exceeds what manual methods can handle. OPS drag-and-drop scheduling gives the office a full view of every crew while each crew lead sees only their own assignments on their phone. Changes propagate in real time. No more "I did not get the text."',
           },
           {
@@ -3163,7 +3163,7 @@ export const industries: IndustryData[] = [
           },
           {
             question: 'Do I need software that supports Spanish-speaking crews?',
-            answer: '59-61 percent of the painting workforce is Hispanic or Latino, and 74 percent speak Spanish as their primary language. If your crew cannot read work orders in their primary language, they will make mistakes or stop using the software entirely. OSHA estimates language barriers contribute to 25 percent of workplace accidents. Almost no painting contractor software offers a Spanish-language interface. OPS was built with multilingual crews in mind.',
+            answer: '59-61 percent of the painting workforce is Hispanic or Latino, and 74 percent speak Spanish as their primary language. If your crew cannot read work orders in their primary language, they will make mistakes or stop using the software entirely. OSHA estimates language barriers contribute to 25 percent of workplace accidents. Almost no software built for painting companies offers a Spanish-language interface. OPS was built with multilingual crews in mind.',
           },
           {
             question: 'How do I reduce crew turnover in my painting business?',
@@ -4317,7 +4317,7 @@ export const industries: IndustryData[] = [
     content: {
       en: {
         meta: {
-          title: 'Insulation Contractor Software for Crews | OPS',
+          title: 'Insulation Software for Crews | OPS',
           description:
             'OPS is built for insulation crews — spray foam, blown-in, batt, and removal. Schedule crews, document before and after, track material usage, and keep every job on record. Free to start.',
           keywords: [
@@ -4355,7 +4355,7 @@ export const industries: IndustryData[] = [
             bullets: [
               'Energy code compliance requires documentation — R-values achieved, material specifications, coverage area, thickness measurements, before and after photos. Paper records do not cut it when the inspector shows up.',
               'Spray foam jobs require specific documentation: foam type, lot number, thickness per cavity, ambient temperature during application, substrate temperature. Missing data means a failed inspection.',
-              'Rebate programs require proof of work — photos, invoices, material specs, and contractor certifications. Your customer is counting on that documentation to get their $1,600 tax credit. Lose the paperwork, lose the customer.',
+              'Rebate programs require proof of work — photos, invoices, material specs, and installer certifications. Your customer is counting on that documentation to get their $1,600 tax credit. Lose the paperwork, lose the customer.',
               'Before and after thermal imaging or photos are increasingly expected by customers, especially on retrofit jobs. They want to see what they paid for. Without a system that attaches photos to jobs, you are digging through phone galleries.',
             ],
             forLine: 'For insulation crews and field supervisors',
@@ -4658,7 +4658,7 @@ export const industries: IndustryData[] = [
     content: {
       en: {
         meta: {
-          title: 'Demolition Contractor Software for Crews | OPS',
+          title: 'Demolition Software for Crews | OPS',
           description:
             'OPS is built for demolition crews managing multi-phase teardowns, equipment logistics, and safety documentation. Schedule crews, track permits, and keep every job documented. Free to start.',
           keywords: [
@@ -4678,7 +4678,7 @@ export const industries: IndustryData[] = [
           sectionLabel: 'Demolition',
           headline: 'DEMOLITION IS CONTROLLED\nCHAOS. YOUR SCHEDULE\nSHOULD BE JUST CONTROLLED.',
           subtext:
-            'Multi-phase teardowns. Equipment coordination. Permit timelines. Hazmat documentation. Demolition jobs have more moving parts than most trades — and most demo contractors manage them with phone calls and yellow legal pads. OPS gives your crew a system that handles the complexity so they can focus on the work.',
+            'Multi-phase teardowns. Equipment coordination. Permit timelines. Hazmat documentation. Demolition jobs have more moving parts than most trades — and most demo companies manage them with phone calls and yellow legal pads. OPS gives your crew a system that handles the complexity so they can focus on the work.',
         },
         painPoints: [
           {
@@ -4686,7 +4686,7 @@ export const industries: IndustryData[] = [
             bullets: [
               'Demolition is not "show up and swing a hammer." It is a sequence — utility disconnect, hazmat abatement, selective interior demo, structural demo, debris removal, site grading. Skip a step or do them out of order and you have a safety incident or a permit violation.',
               'Each phase requires different crews, different equipment, and different timelines. Your framing crew cannot start until structural demo is complete. Debris hauling cannot start until the dumpsters arrive. One delay cascades through every phase.',
-              'Most demo contractors track phase sequencing in their heads or on a whiteboard. When the owner is not on site, nobody knows which phase is next, what is blocking it, or who is supposed to be where.',
+              'Most demo business owners track phase sequencing in their heads or on a whiteboard. When the owner is not on site, nobody knows which phase is next, what is blocking it, or who is supposed to be where.',
               'Subcontractors — asbestos abatement, environmental testing, utility companies — each have their own timelines that your schedule must accommodate. Coordinating them via text messages is a full-time job.',
             ],
             forLine: 'For demolition company owners and project managers',
@@ -5360,7 +5360,7 @@ export const industries: IndustryData[] = [
           sectionLabel: 'Siding & Exterior',
           headline: 'SIDING CREWS WORK\nOUTSIDE ALL DAY.\nYOUR SOFTWARE SHOULD TOO.',
           subtext:
-            'Multi-day installations. Storm damage surges. Material deliveries that have to match the schedule. Siding and exterior work is weather-dependent, material-dependent, and crew-dependent — and most siding contractors run it all on phone calls and a whiteboard. OPS keeps your crew, your materials, and your schedule in sync.',
+            'Multi-day installations. Storm damage surges. Material deliveries that have to match the schedule. Siding and exterior work is weather-dependent, material-dependent, and crew-dependent — and most siding companies run it all on phone calls and a whiteboard. OPS keeps your crew, your materials, and your schedule in sync.',
         },
         painPoints: [
           {
@@ -6212,18 +6212,18 @@ export const industries: IndustryData[] = [
           sectionLabel: 'Tile Installation',
           headline: 'TILE IS PRECISION WORK.\nYOUR SCHEDULING\nSHOULD BE TOO.',
           subtext:
-            'Multi-day installations. Material that has to be on site before the crew arrives. GC timelines that shift without warning. Tile work demands precision in the layout and precision in the logistics — but most tile contractors still run on phone calls and handwritten schedules. OPS keeps your crews, your materials, and your GC coordination tight.',
+            'Multi-day installations. Material that has to be on site before the crew arrives. GC timelines that shift without warning. Tile work demands precision in the layout and precision in the logistics — but most tile companies still run on phone calls and handwritten schedules. OPS keeps your crews, your materials, and your GC coordination tight.',
         },
         painPoints: [
           {
             title: 'GC SCHEDULES THAT\nPUT YOUR CREW IN LIMBO.',
             bullets: [
-              'As a subcontractor, you do not control the timeline. The GC says "tile crew starts Wednesday" — then moves it to Friday at 5 PM on Tuesday. Your crew is booked. Your material was delivered for Wednesday. Now everything shifts.',
+              'As a subtrade, you do not control the timeline. The GC says "tile crew starts Wednesday" — then moves it to Friday at 5 PM on Tuesday. Your crew is booked. Your material was delivered for Wednesday. Now everything shifts.',
               'Multiple GC projects with overlapping timelines mean your crew is pulled between jobs. One GC pushes, another pulls, and your 3-person crew cannot be in two places at once.',
               'Waiting on other trades — painters need to finish, plumbing rough-in needs inspection, floor prep is not done — means your tile crew shows up and cannot start. A wasted day of labor for a crew standing in an unready room.',
               'Communication with GCs is fragmented. Updates come by text, email, phone call, and sometimes a sticky note on the site board. Missing one update means showing up on the wrong day.',
             ],
-            forLine: 'For tile contractors and business owners',
+            forLine: 'For tile crews and business owners',
           },
           {
             title: 'MATERIAL ON SITE IS\nTHE JOB\'S SINGLE POINT OF FAILURE.',
@@ -6278,7 +6278,7 @@ export const industries: IndustryData[] = [
               comp2: '$99-$499/mo',
             },
             {
-              feature: 'Sub-contractor scheduling',
+              feature: 'Subtrade scheduling',
               ops: 'Flexible scheduling with GC coordination',
               comp1: 'Basic job scheduling',
               comp2: 'Full project management, complex',
@@ -6311,7 +6311,7 @@ export const industries: IndustryData[] = [
         },
         faq: [
           {
-            question: 'Can OPS handle GC schedule changes for tile subcontractors?',
+            question: 'Can OPS handle GC schedule changes for tile crews?',
             answer:
               'Yes. When the GC pushes your start date, drag the job and your crew sees the updated schedule on their phone. Downstream jobs adjust automatically.',
           },
@@ -6560,11 +6560,11 @@ export const industries: IndustryData[] = [
             title: 'BOUNCING BETWEEN\nJOB SITES ALL WEEK.',
             bullets: [
               'A finish carpenter might hit 3-4 different job sites in a week — trim at the new build Monday, built-ins at the remodel Tuesday, punch list at the closing-day house Wednesday. Each site has different details, different GCs, and different expectations.',
-              'As a subcontractor, you are at the mercy of the GC\'s schedule. "We need you Thursday" becomes "actually, Friday" becomes "actually, Monday, the paint is not dry." Your crew\'s week is constantly shifting.',
+              'As a subtrade, you are at the mercy of the GC\'s schedule. "We need you Thursday" becomes "actually, Friday" becomes "actually, Monday, the paint is not dry." Your crew\'s week is constantly shifting.',
               'Multiple active jobs mean multiple sets of measurements, material lists, and customer preferences to track. When the details for Job A get mixed up with Job B, the wrong crown molding gets installed.',
               'Punch lists arrive as handwritten notes, text messages, and photo markup. Every GC sends them differently. Your crew needs a single list, not a treasure hunt across three communication channels.',
             ],
-            forLine: 'For carpentry contractors and business owners',
+            forLine: 'For carpentry crews and business owners',
           },
           {
             title: 'CUSTOM DETAILS THAT\nCANNOT SURVIVE A TEXT MESSAGE.',
@@ -6579,8 +6579,8 @@ export const industries: IndustryData[] = [
           {
             title: 'A MASSIVE TRADE\nWITH ZERO DEDICATED SOFTWARE.',
             bullets: [
-              'Carpentry is the largest skilled trade in the United States — over a million employed carpenters. And yet there is not a single FSM platform that markets specifically to carpentry contractors.',
-              'Generic tools like Jobber and Housecall Pro are built for service calls — show up, fix something, send an invoice. Carpentry work is project-based, multi-day, detail-intensive, and subcontractor-driven. The generic tools do not fit the workflow.',
+              'Carpentry is the largest skilled trade in the United States — over a million employed carpenters. And yet there is not a single FSM platform that markets specifically to carpentry companies.',
+              'Generic tools like Jobber and Housecall Pro are built for service calls — show up, fix something, send an invoice. Carpentry work is project-based, multi-day, detail-intensive, and GC-driven. The generic tools do not fit the workflow.',
               'Construction project management tools like Procore and Buildertrend are built for GCs, not subs. A 3-person trim crew does not need enterprise project management. They need a schedule, job details, and photo documentation.',
               'The result is that most carpentry crews use nothing — paper, texts, and memory. Not because they do not want software, but because nothing was built for how they work.',
             ],
@@ -6662,7 +6662,7 @@ export const industries: IndustryData[] = [
               'Yes. Designer references, customer selections, material specifications, and measurements are attached to the job and visible on your crew\'s phone. Details travel with the carpenter.',
           },
           {
-            question: 'Does OPS handle subcontractor scheduling with GC timelines?',
+            question: 'Does OPS handle subtrade scheduling with GC timelines?',
             answer:
               'Yes. When the GC shifts your start date, drag the job and your crew sees the update. Multiple GC projects with overlapping timelines all visible in one schedule.',
           },
