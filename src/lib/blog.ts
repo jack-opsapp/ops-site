@@ -4,11 +4,17 @@
  * Uses the service role key to bypass RLS.
  * All functions are intended for use in Server Components and Route Handlers.
  *
- * Gracefully returns empty results when Supabase is not configured
- * (e.g. local builds without env vars), so the sitemap and static
- * generation don't fail.
+ * Error policy. Every page that reads journal data is statically rendered
+ * and refreshed by ISR, so whatever a query returns is cached for everyone:
+ *   - Supabase not configured (local builds without env vars, Vercel
+ *     Preview) → empty results, so builds without database keys succeed.
+ *   - A query that fails against a configured database throws (unwrapQuery).
+ *     During ISR regeneration Next keeps serving the last good page, and a
+ *     build fails loudly. Returning empty here would cache a 404 article, an
+ *     empty journal or a sitemap without articles for the whole window.
  */
 
+import { cache } from 'react';
 import { getSupabaseAdmin } from './supabase-admin';
 
 /* -------------------------------------------------------------------------- */
@@ -61,6 +67,22 @@ function tryGetClient() {
   }
 }
 
+/**
+ * Return a query's data, or throw when the query failed — see the error
+ * policy above.
+ */
+export function unwrapQuery<T>(
+  result: { data: T | null; error: { message: string } | null },
+  label: string
+): T | null {
+  if (result.error) {
+    throw new Error(`[blog] ${label}: ${result.error.message}`);
+  }
+  return result.data;
+}
+
+const POST_WITH_CATEGORY = '*, blog_categories!category_id(name, slug)';
+
 /* -------------------------------------------------------------------------- */
 /*  Query helpers                                                             */
 /* -------------------------------------------------------------------------- */
@@ -75,17 +97,15 @@ export async function getLatestPosts(
   const client = tryGetClient();
   if (!client) return [];
 
-  const { data, error } = await client
-    .from('blog_posts')
-    .select('*, blog_categories!category_id(name, slug)')
-    .eq('is_live', true)
-    .order('published_at', { ascending: false })
-    .limit(limit);
-
-  if (error) {
-    console.error('[blog] getLatestPosts error:', error.message);
-    return [];
-  }
+  const data = unwrapQuery(
+    await client
+      .from('blog_posts')
+      .select(POST_WITH_CATEGORY)
+      .eq('is_live', true)
+      .order('published_at', { ascending: false })
+      .limit(limit),
+    'getLatestPosts'
+  );
 
   return (data ?? []) as BlogPostWithCategory[];
 }
@@ -97,22 +117,21 @@ export async function getAllLivePosts(): Promise<BlogPostWithCategory[]> {
   const client = tryGetClient();
   if (!client) return [];
 
-  const { data, error } = await client
-    .from('blog_posts')
-    .select('*, blog_categories!category_id(name, slug)')
-    .eq('is_live', true)
-    .order('published_at', { ascending: false });
-
-  if (error) {
-    console.error('[blog] getAllLivePosts error:', error.message);
-    return [];
-  }
+  const data = unwrapQuery(
+    await client
+      .from('blog_posts')
+      .select(POST_WITH_CATEGORY)
+      .eq('is_live', true)
+      .order('published_at', { ascending: false }),
+    'getAllLivePosts'
+  );
 
   return (data ?? []) as BlogPostWithCategory[];
 }
 
 /**
- * Fetch all live posts filtered by category slug.
+ * Fetch all live posts filtered by category slug. An unknown category
+ * yields no posts.
  */
 export async function getPostsByCategory(
   categorySlug: string
@@ -120,55 +139,82 @@ export async function getPostsByCategory(
   const client = tryGetClient();
   if (!client) return [];
 
-  // First resolve the category id from slug
-  const { data: category, error: catError } = await client
-    .from('blog_categories')
-    .select('id')
-    .eq('slug', categorySlug)
-    .single();
+  const category = unwrapQuery(
+    await client
+      .from('blog_categories')
+      .select('id')
+      .eq('slug', categorySlug)
+      .maybeSingle(),
+    'getPostsByCategory (category)'
+  ) as { id: string } | null;
+  if (!category) return [];
 
-  if (catError || !category) {
-    console.error('[blog] getPostsByCategory — category not found:', categorySlug);
-    return [];
-  }
-
-  const { data, error } = await client
-    .from('blog_posts')
-    .select('*, blog_categories!category_id(name, slug)')
-    .eq('is_live', true)
-    .eq('category_id', category.id)
-    .order('published_at', { ascending: false });
-
-  if (error) {
-    console.error('[blog] getPostsByCategory error:', error.message);
-    return [];
-  }
+  const data = unwrapQuery(
+    await client
+      .from('blog_posts')
+      .select(POST_WITH_CATEGORY)
+      .eq('is_live', true)
+      .eq('category_id', category.id)
+      .order('published_at', { ascending: false }),
+    'getPostsByCategory'
+  );
 
   return (data ?? []) as BlogPostWithCategory[];
 }
 
 /**
- * Fetch a single live post by its slug.
+ * Fetch a single live post by its slug; null when no live post has it.
+ *
+ * Memoized per render: an article's generateMetadata and page both read the
+ * same post, and React `cache` lets them share one query.
  */
-export async function getPostBySlug(
+export const getPostBySlug = cache(async function getPostBySlug(
   slug: string
 ): Promise<BlogPostWithCategory | null> {
   const client = tryGetClient();
   if (!client) return null;
 
-  const { data, error } = await client
-    .from('blog_posts')
-    .select('*, blog_categories!category_id(name, slug)')
-    .eq('slug', slug)
-    .eq('is_live', true)
-    .single();
-
-  if (error) {
-    console.error('[blog] getPostBySlug error:', error.message);
-    return null;
-  }
+  const data = unwrapQuery(
+    await client
+      .from('blog_posts')
+      .select(POST_WITH_CATEGORY)
+      .eq('slug', slug)
+      .eq('is_live', true)
+      .maybeSingle(),
+    'getPostBySlug'
+  );
 
   return (data ?? null) as BlogPostWithCategory | null;
+});
+
+/**
+ * Fetch live posts by slug, returned in the order the slugs were given.
+ * Slugs with no live post are skipped.
+ */
+export async function getLivePostsBySlugs(
+  slugs: string[]
+): Promise<BlogPostWithCategory[]> {
+  if (slugs.length === 0) return [];
+  const client = tryGetClient();
+  if (!client) return [];
+
+  const data = unwrapQuery(
+    await client
+      .from('blog_posts')
+      .select(POST_WITH_CATEGORY)
+      .eq('is_live', true)
+      .in('slug', slugs),
+    'getLivePostsBySlugs'
+  );
+
+  const bySlug = new Map<string, BlogPostWithCategory>();
+  for (const post of (data ?? []) as BlogPostWithCategory[]) {
+    bySlug.set(post.slug, post);
+  }
+
+  return slugs
+    .map((slug) => bySlug.get(slug))
+    .filter((p): p is BlogPostWithCategory => p !== undefined);
 }
 
 /**
@@ -178,15 +224,13 @@ export async function getBlogCategories(): Promise<BlogCategory[]> {
   const client = tryGetClient();
   if (!client) return [];
 
-  const { data, error } = await client
-    .from('blog_categories')
-    .select('id, name, slug')
-    .order('name', { ascending: true });
-
-  if (error) {
-    console.error('[blog] getBlogCategories error:', error.message);
-    return [];
-  }
+  const data = unwrapQuery(
+    await client
+      .from('blog_categories')
+      .select('id, name, slug')
+      .order('name', { ascending: true }),
+    'getBlogCategories'
+  );
 
   return (data ?? []) as BlogCategory[];
 }
@@ -212,44 +256,40 @@ export async function getRelatedLivePosts(
   const seenSlugs = new Set<string>([currentSlug]);
 
   if (currentCategoryId) {
-    const { data, error } = await client
-      .from('blog_posts')
-      .select('*, blog_categories!category_id(name, slug)')
-      .eq('is_live', true)
-      .eq('category_id', currentCategoryId)
-      .neq('slug', currentSlug)
-      .order('published_at', { ascending: false })
-      .limit(limit);
-
-    if (error) {
-      console.error('[blog] getRelatedLivePosts (category) error:', error.message);
-    } else if (data) {
-      for (const post of data as BlogPostWithCategory[]) {
-        collected.push(post);
-        seenSlugs.add(post.slug);
-      }
+    const data = unwrapQuery(
+      await client
+        .from('blog_posts')
+        .select(POST_WITH_CATEGORY)
+        .eq('is_live', true)
+        .eq('category_id', currentCategoryId)
+        .neq('slug', currentSlug)
+        .order('published_at', { ascending: false })
+        .limit(limit),
+      'getRelatedLivePosts (category)'
+    );
+    for (const post of (data ?? []) as BlogPostWithCategory[]) {
+      collected.push(post);
+      seenSlugs.add(post.slug);
     }
   }
 
   if (collected.length < limit) {
     const remaining = limit - collected.length;
-    const { data, error } = await client
-      .from('blog_posts')
-      .select('*, blog_categories!category_id(name, slug)')
-      .eq('is_live', true)
-      .neq('slug', currentSlug)
-      .order('published_at', { ascending: false })
-      .limit(remaining + collected.length);
-
-    if (error) {
-      console.error('[blog] getRelatedLivePosts (fallback) error:', error.message);
-    } else if (data) {
-      for (const post of data as BlogPostWithCategory[]) {
-        if (collected.length >= limit) break;
-        if (seenSlugs.has(post.slug)) continue;
-        collected.push(post);
-        seenSlugs.add(post.slug);
-      }
+    const data = unwrapQuery(
+      await client
+        .from('blog_posts')
+        .select(POST_WITH_CATEGORY)
+        .eq('is_live', true)
+        .neq('slug', currentSlug)
+        .order('published_at', { ascending: false })
+        .limit(remaining + collected.length),
+      'getRelatedLivePosts (fallback)'
+    );
+    for (const post of (data ?? []) as BlogPostWithCategory[]) {
+      if (collected.length >= limit) break;
+      if (seenSlugs.has(post.slug)) continue;
+      collected.push(post);
+      seenSlugs.add(post.slug);
     }
   }
 
@@ -264,15 +304,30 @@ export async function getAllLiveSlugs(): Promise<{ slug: string }[]> {
   const client = tryGetClient();
   if (!client) return [];
 
-  const { data, error } = await client
-    .from('blog_posts')
-    .select('slug')
-    .eq('is_live', true);
-
-  if (error) {
-    console.error('[blog] getAllLiveSlugs error:', error.message);
-    return [];
-  }
+  const data = unwrapQuery(
+    await client.from('blog_posts').select('slug').eq('is_live', true),
+    'getAllLiveSlugs'
+  );
 
   return (data ?? []) as { slug: string }[];
+}
+
+/**
+ * Every live post's slug with its last-change timestamps, for sitemap.xml.
+ */
+export async function getLiveSitemapPosts(): Promise<
+  Pick<BlogPost, 'slug' | 'updated_at' | 'published_at'>[]
+> {
+  const client = tryGetClient();
+  if (!client) return [];
+
+  const data = unwrapQuery(
+    await client
+      .from('blog_posts')
+      .select('slug, updated_at, published_at')
+      .eq('is_live', true),
+    'getLiveSitemapPosts'
+  );
+
+  return (data ?? []) as Pick<BlogPost, 'slug' | 'updated_at' | 'published_at'>[];
 }
