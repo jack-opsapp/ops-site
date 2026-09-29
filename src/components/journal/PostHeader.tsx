@@ -2,7 +2,8 @@
  * PostHeader — Hero section for a journal post
  *
  * Server component. Renders a full-bleed thumbnail (or gradient strip),
- * followed by the post title, category, and metadata on a white surface.
+ * followed by the category, title, description (subtitle) and metadata on a
+ * white surface.
  */
 
 import Image from 'next/image';
@@ -25,6 +26,7 @@ function formatDate(dateStr: string | null): string {
 
 export default function PostHeader({ post }: PostHeaderProps) {
   const categoryName = post.blog_categories?.name;
+  const subtitle = post.subtitle?.trim();
 
   return (
     <header>
@@ -72,7 +74,18 @@ export default function PostHeader({ post }: PostHeaderProps) {
           {post.title}
         </h1>
 
-        <p className="font-caption uppercase text-[11px] tracking-[0.1em] text-ops-text-secondary mt-4">
+        {/* The description: what the article is about, in one or two sentences */}
+        {subtitle && (
+          <p className="font-heading font-light text-xl md:text-2xl leading-snug text-pretty text-ops-text-dark-secondary mt-4 md:mt-5">
+            {subtitle}
+          </p>
+        )}
+
+        <p
+          className={`font-caption uppercase text-[11px] tracking-[0.1em] text-ops-text-secondary ${
+            subtitle ? 'mt-6' : 'mt-4'
+          }`}
+        >
           {post.author || 'OPS Team'}
           {post.published_at && (
             <>

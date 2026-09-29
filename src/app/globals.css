@@ -49,6 +49,7 @@
 
   /* Light-mode inversions */
   --color-ops-text-dark: #000000;
+  --color-ops-text-dark-secondary: rgba(26, 26, 26, 0.65); /* journal deks and teasers on white */
   --color-ops-background-light: #FFFFFF;
 
   /* Fonts */

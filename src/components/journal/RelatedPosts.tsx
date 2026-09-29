@@ -118,7 +118,7 @@ export default async function RelatedPosts({
 
                     {/* Teaser */}
                     {teaser && (
-                      <p className="font-heading font-light text-sm text-[rgba(26,26,26,0.65)] mt-2 line-clamp-3 leading-relaxed">
+                      <p className="font-heading font-light text-sm text-ops-text-dark-secondary mt-2 line-clamp-3 leading-relaxed">
                         {teaser}
                       </p>
                     )}
